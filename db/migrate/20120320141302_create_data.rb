@@ -1,7 +1,7 @@
 class CreateData < ActiveRecord::Migration
   def self.up
     create_table :data do |t|
-      t.int :indicator_id
+      t.integer :indicator_id
       t.string :common_id
       t.text :value
 

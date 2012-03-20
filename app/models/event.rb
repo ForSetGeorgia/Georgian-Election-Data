@@ -1,6 +1,7 @@
 class Event < ActiveRecord::Base
   translates :name
 
+  has_many :event_translations
   has_many :indicators
   belongs_to :shape
   accepts_nested_attributes_for :event_translations

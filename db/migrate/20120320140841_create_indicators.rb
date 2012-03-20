@@ -1,8 +1,8 @@
 class CreateIndicators < ActiveRecord::Migration
   def self.up
     create_table :indicators do |t|
-      t.int :event_id
-      t.int :shape_type_id
+      t.integer :event_id
+      t.integer :shape_type_id
 
       t.timestamps
     end

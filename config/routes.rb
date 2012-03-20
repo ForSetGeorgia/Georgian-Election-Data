@@ -1,10 +1,12 @@
 ElectionMap::Application.routes.draw do
 
-  root :to => 'events#index'
+  resources :locales
+
+  root :to => "events#index"
 
   devise_for :users
 
-  match '/:locale' => 'events#index', via: :get
+  match "/:locale" => "events#index", via: :get
 
   scope "/:locale" do
     resources :data
