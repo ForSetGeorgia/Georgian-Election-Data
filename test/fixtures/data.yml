@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  indicator_id: 
+  common_id: MyString
+  value: MyText
+
+two:
+  indicator_id: 
+  common_id: MyString
+  value: MyText

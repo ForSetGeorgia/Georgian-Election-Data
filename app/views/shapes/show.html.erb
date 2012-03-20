@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Parent:</b>
+  <%= @shape.parent_id %>
+</p>
+
+<p>
+  <b>Shape type:</b>
+  <%= @shape.shape_type_id %>
+</p>
+
+<p>
+  <b>Common:</b>
+  <%= @shape.common_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @shape.name %>
+</p>
+
+<p>
+  <b>Geo data:</b>
+  <%= @shape.geo_data %>
+</p>
+
+
+<%= link_to 'Edit', edit_shape_path(@shape) %> |
+<%= link_to 'Back', shapes_path %>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  event_id: 
+  shape_type_id: 
+  name: MyString
+
+two:
+  event_id: 
+  shape_type_id: 
+  name: MyString

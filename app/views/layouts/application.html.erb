@@ -1,14 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ElectionMap</title>
+  <title><%= "#{yield (:title)} - Election Map" || "Election Map" %></title>
   <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <!--[if IE 6]><%= stylesheet_link_tag 'ie6' %><![endif]-->
+  <!--[if IE 7]><%= stylesheet_link_tag 'ie7' %><![endif]-->
 </head>
 <body>
 
-<%= yield %>
+<div id="main">
+	<div id="user_nav">  
+	  <% if user_signed_in? %>  
+	    Signed in as <%= current_user.email %>. Not you?  
+	    <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>  
+	  <% else %>  
+	    <%= link_to "Sign up", new_user_registration_path %> or  
+	    <%= link_to "Sign in", new_user_session_path %>  
+	  <% end %>  
+	</div>  
+
+  <div id="language-form">
+    <ul>
+    <% @locales.each do |locale| %>
+      <% unless locale.language.to_s == I18n.locale.to_s %> 
+        <li><%= link_to locale.name, url_for(locale: locale.language) %></li>
+      <% end %>
+    <% end %>
+    </ul>
+  </div>
+  
+	<h2><%= yield(:title) %></h2>
+
+
+	<p class="notice"><%= notice %></p>
+	<p class="alert"><%= alert %></p>
+
+
+  <%= yield %>
+</div>
 
 </body>
 </html>

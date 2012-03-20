@@ -1,4 +1,35 @@
 ElectionMap::Application.routes.draw do
+
+  root :to => 'events#index'
+
+  devise_for :users
+
+  match '/:locale' => 'events#index', via: :get
+
+  scope "/:locale" do
+    resources :data
+  end
+  
+  scope "/:locale" do
+    resources :indicator_scales
+  end
+  
+  scope "/:locale" do
+    resources :indicators
+  end
+  
+  scope "/:locale" do
+    resources :events
+  end
+  
+  scope "/:locale" do
+    resources :shapes
+  end
+  
+  scope "/:locale" do
+    resources :shape_types
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

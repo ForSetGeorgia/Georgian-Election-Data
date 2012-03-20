@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Indicator:</b>
+  <%= @indicator_scale.indicator_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @indicator_scale.name %>
+</p>
+
+<p>
+  <b>Min:</b>
+  <%= @indicator_scale.min %>
+</p>
+
+<p>
+  <b>Max:</b>
+  <%= @indicator_scale.max %>
+</p>
+
+
+<%= link_to 'Edit', edit_indicator_scale_path(@indicator_scale) %> |
+<%= link_to 'Back', indicator_scales_path %>

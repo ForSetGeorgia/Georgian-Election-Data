@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  parent_id: 
+  shape_type_id: 
+  common_id: MyString
+  name: MyString
+  geo_data: 
+
+two:
+  parent_id: 
+  shape_type_id: 
+  common_id: MyString
+  name: MyString
+  geo_data: 

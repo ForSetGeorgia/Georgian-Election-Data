@@ -1,0 +1,37 @@
+<%= form_for(@shape) do |f| %>
+  <% if @shape.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@shape.errors.count, "error") %> prohibited this shape from being saved:</h2>
+
+      <ul>
+      <% @shape.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :parent_id %><br />
+    <%= f.text_field :parent_id %>
+  </div>
+  <div class="field">
+    <%= f.label :shape_type_id %><br />
+    <%= f.text_field :shape_type_id %>
+  </div>
+  <div class="field">
+    <%= f.label :common_id %><br />
+    <%= f.text_field :common_id %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :geo_data %><br />
+    <%= f.text_field :geo_data %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
