@@ -27,6 +27,9 @@ class IndicatorScalesController < ApplicationController
   # GET /indicator_scales/new.json
   def new
     @indicator_scale = IndicatorScale.new
+    # create the translation object for however many locales there are
+    # so the form will properly create all of the nested form fields
+    @locales.length.times {@indicator_scale.indicator_scale_translations.build}
 
     respond_to do |format|
       format.html # new.html.erb
@@ -82,4 +85,60 @@ class IndicatorScalesController < ApplicationController
       format.json { head :ok }
     end
   end
+
+    # GET /indicator_scales/upload
+    # GET /indicator_scales/upload.json
+    def upload
+  		if request.post? && params[:file].present?
+  logger.debug "content type = #{params[:file].content_type}"
+  			if params[:file].content_type == "text/csv"
+  logger.debug "content type is CSV, processing"
+
+  		    infile = params[:file].read
+  		    n, errs = 0, ""
+
+  				IndicatorScale.transaction do
+  				  CSV.parse(infile) do |row|
+  				    n += 1
+  				    # SKIP: header i.e. first row OR blank row
+  				    next if n == 1 or row.join.blank?
+  				    # build new indicator record
+  				    ind_scale = IndicatorScale.build_from_csv(row)
+  				    # Save upon valid 
+  				    # otherwise collect error records to export
+              if !ind_scale.nil?
+    				    if ind_scale.valid?
+    				      ind_scale.save
+    				    else
+    				      # an error occurred, stop
+    				      errs = "Row #{n} is not valid."
+    				      raise ActiveRecord::Rollback
+    				      break
+    				    end
+  			      else
+    			      # an error occurred, stop
+    			      errs = "Row #{n} has an event or shape type that is not in the database or the indicator already exists."
+    			      raise ActiveRecord::Rollback
+    			      break
+              end
+  				  end
+  				end
+  logger.debug " - processed #{n} rows"
+  		    if errs.length > 0
+  logger.debug " - errors found!"
+  					flash[:notice] = "Errors were encountered and no records were saved.  The problem was the following: #{errs}"
+  		      redirect_to upload_indicator_scales_path #GET
+  		    else
+  logger.debug " - no errors found!"
+  					flash[:notice] = "Your file was successfully processed!"
+  		      redirect_to upload_indicator_scales_path #GET
+  		    end
+  			else
+  logger.debug "content type is NOT CSV, stopping"
+  				flash[:notice] = "Your file must be a CSV format."
+          redirect_to upload_indicator_scales_path #GET
+  			end
+  		end
+    end
+
 end

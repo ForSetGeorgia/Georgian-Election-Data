@@ -1,14 +1,14 @@
-<% title 'Upload a CSV file' %>
+<% title 'Upload a CSV file For Indicators' %>
 
-<%= form_tag upload_indicators_path, :multipart => true do |f| %>
-	<%= f.error_messages %>
+<%= form_tag upload_indicators_path, :multipart => true do %>
 
 	<div>
-		<%= f.file_field :file, 'CSV File to Upload', :accept => 'text/csv'
+		CSV File to Upload
+		<%= file_field_tag 'file', :accept => 'text/csv' %>
+	</div>
 	<div>
-	<div>
-	  <%= f.submit, "Proces CSV File" %>
-	<div>
+	  <%= submit_tag "Process CSV File" %>
+	</div>
 <% end %>
 
 <%= link_to 'Back', indicators_path %>

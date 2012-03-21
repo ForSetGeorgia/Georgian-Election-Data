@@ -1,4 +1,5 @@
 <%= semantic_form_for @event_type do |f| %>
+	<%= f.semantic_errors %>
 	<%= f.inputs :for => :event_type_translations do |event_type_translation, i| %>
 		
 		<% formLocale = @locales[i-1].language %>

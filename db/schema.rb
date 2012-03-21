@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120321135022) do
+ActiveRecord::Schema.define(:version => 20120321213208) do
 
   create_table "data", :force => true do |t|
     t.integer  "indicator_id"
@@ -55,10 +55,19 @@ ActiveRecord::Schema.define(:version => 20120321135022) do
     t.datetime "updated_at"
   end
 
+  create_table "indicator_scale_translations", :force => true do |t|
+    t.integer  "indicator_scale_id"
+    t.string   "locale"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "indicator_scale_translations", ["indicator_scale_id"], :name => "index_412234fdb185d426c004e05119f032969291aa2f"
+  add_index "indicator_scale_translations", ["locale"], :name => "index_indicator_scale_translations_on_locale"
+
   create_table "indicator_scales", :force => true do |t|
     t.integer  "indicator_id"
-    t.integer  "min"
-    t.integer  "max"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

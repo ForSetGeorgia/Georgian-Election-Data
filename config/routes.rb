@@ -16,7 +16,12 @@ ElectionMap::Application.routes.draw do
   end
   
   scope "/:locale" do
-    resources :indicator_scales
+    resources :indicator_scales do
+			collection do
+        get :upload
+        post :upload
+			end
+		end
   end
   
   scope "/:locale" do

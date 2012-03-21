@@ -3,9 +3,7 @@
 <table>
   <tr>
     <th>Indicator</th>
-    <th>Min</th>
-    <th>Max</th>
-    <th></th>
+    <th>Name</th>
     <th></th>
     <th></th>
   </tr>
@@ -13,8 +11,7 @@
 <% @indicator_scales.each do |indicator_scale| %>
   <tr>
     <td><%= indicator_scale.indicator_id %></td>
-    <td><%= indicator_scale.min %></td>
-    <td><%= indicator_scale.max %></td>
+    <td><%= indicator_scale.name %></td>
     <td><%= link_to 'Show', indicator_scale %></td>
     <td><%= link_to 'Edit', edit_indicator_scale_path(indicator_scale) %></td>
     <td><%= link_to 'Destroy', indicator_scale, confirm: 'Are you sure?', method: :delete %></td>

@@ -97,7 +97,7 @@ logger.debug "content type = #{params[:file].content_type}"
 logger.debug "content type is CSV, processing"
 
 		    infile = params[:file].read
-		    n, errs = 0, []
+		    n, errs = 0, ""
 
 				Indicator.transaction do
 				  CSV.parse(infile) do |row|
@@ -108,18 +108,27 @@ logger.debug "content type is CSV, processing"
 				    ind = Indicator.build_from_csv(row)
 				    # Save upon valid 
 				    # otherwise collect error records to export
-				    if ind.valid?
-				      ind.save
-				    else
-				      errs << row
-				    end
+            if !ind.nil?
+  				    if ind.valid?
+  				      ind.save
+  				    else
+  				      # an error occurred, stop
+  				      errs = "Row #{n} is not valid."
+  				      raise ActiveRecord::Rollback
+  				      break
+  				    end
+			      else
+  			      # an error occurred, stop
+  			      errs = "Row #{n} has an event or shape type that is not in the database or the indicator already exists."
+  			      raise ActiveRecord::Rollback
+  			      break
+            end
 				  end
 				end
 logger.debug " - processed #{n} rows"
-		    # Export Error file for later upload upon correction
-		    if errs.any?
+		    if errs.length > 0
 logger.debug " - errors found!"
-					flash[:notice] = "The following errors were encountered:<br /> #{errs}"
+					flash[:notice] = "Errors were encountered and no records were saved.  The problem was the following: #{errs}"
 		      redirect_to upload_indicators_path #GET
 		    else
 logger.debug " - no errors found!"
