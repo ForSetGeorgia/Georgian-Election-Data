@@ -1,4 +1,6 @@
 class LocalesController < ApplicationController
+  before_filter :authenticate_user!
+
   # GET /locales
   # GET /locales.json
   def index

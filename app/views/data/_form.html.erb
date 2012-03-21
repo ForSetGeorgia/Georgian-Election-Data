@@ -1,29 +1,9 @@
-<%= form_for(@datum) do |f| %>
-  <% if @datum.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@datum.errors.count, "error") %> prohibited this datum from being saved:</h2>
+<%= semantic_form_for(@datum) do |f| %>
+	<%= f.inputs do %>
+		<%= f.input :indicator %>
+		<%= f.input :common_id %>
+		<%= f.input :value %>
+	<% end %>
 
-      <ul>
-      <% @datum.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :indicator_id %><br />
-    <%= f.text_field :indicator_id %>
-  </div>
-  <div class="field">
-    <%= f.label :common_id %><br />
-    <%= f.text_field :common_id %>
-  </div>
-  <div class="field">
-    <%= f.label :value %><br />
-    <%= f.text_area :value %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+	<%= f.actions :submit, :reset, :cancel %>
 <% end %>

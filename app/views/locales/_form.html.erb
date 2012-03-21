@@ -4,7 +4,5 @@
     <%= f.input :name %>
   <% end %>
 
-  <%= f.actions do %>
-    <%= f.action :submit, :as => :input %>
-  <% end %>
+	<%= f.actions :submit, :reset, :cancel %>
 <% end %>

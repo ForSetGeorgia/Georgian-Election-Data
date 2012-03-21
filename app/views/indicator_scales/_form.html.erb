@@ -1,33 +1,10 @@
-<%= form_for(@indicator_scale) do |f| %>
-  <% if @indicator_scale.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@indicator_scale.errors.count, "error") %> prohibited this indicator_scale from being saved:</h2>
+<%= semantic_form_for(@indicator_scale) do |f| %>
+	<%= f.inputs do %>
+		<%= f.input :indicator %>
+		<%= f.input :min %>
+		<%= f.input :max %>
+	<% end %>
 
-      <ul>
-      <% @indicator_scale.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+	<%= f.actions :submit, :reset, :cancel %>
 
-  <div class="field">
-    <%= f.label :indicator_id %><br />
-    <%= f.text_field :indicator_id %>
-  </div>
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :min %><br />
-    <%= f.text_field :min %>
-  </div>
-  <div class="field">
-    <%= f.label :max %><br />
-    <%= f.text_field :max %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
 <% end %>

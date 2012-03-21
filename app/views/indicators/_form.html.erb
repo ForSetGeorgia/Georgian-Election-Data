@@ -1,29 +1,20 @@
-<%= form_for(@indicator) do |f| %>
-  <% if @indicator.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@indicator.errors.count, "error") %> prohibited this indicator from being saved:</h2>
+<%= semantic_form_for(@indicator) do |f| %>
+	<%= f.inputs :for => :indicator_translations do |indicator_translation, i| %>
+		
+		<% formLocale = @locales[i-1].language %>
+		
+		<div id="form-<%= formLocale %>" class="multilanguage" style="<%= 'display:none;' if formLocale.to_s != params[:locale] %>">
+			<%= indicator_translation.input :name %>
+			<%= indicator_translation.hidden_field :locale , :value => formLocale %>
+		</div>
 
-      <ul>
-      <% @indicator.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+	<% end %>
 
-  <div class="field">
-    <%= f.label :event_id %><br />
-    <%= f.text_field :event_id %>
-  </div>
-  <div class="field">
-    <%= f.label :shape_type_id %><br />
-    <%= f.text_field :shape_type_id %>
-  </div>
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+	<%= f.inputs do %>
+		<%= f.input :event %>
+		<%= f.input :shape_type %>
+	<% end %>
+
+	<%= f.actions :submit, :reset, :cancel %>
+
 <% end %>

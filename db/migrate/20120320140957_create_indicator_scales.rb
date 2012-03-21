@@ -2,7 +2,6 @@ class CreateIndicatorScales < ActiveRecord::Migration
   def self.up
     create_table :indicator_scales do |t|
       t.integer :indicator_id
-      t.string :name
       t.integer :min
       t.integer :max
 

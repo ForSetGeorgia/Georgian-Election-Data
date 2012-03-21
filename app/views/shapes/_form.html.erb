@@ -1,37 +1,22 @@
-<%= form_for(@shape) do |f| %>
-  <% if @shape.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@shape.errors.count, "error") %> prohibited this shape from being saved:</h2>
+<%= semantic_form_for(@shape) do |f| %>
+	<%= f.inputs :for => :shape_translations do |shape_translation, i| %>
+		
+		<% formLocale = @locales[i-1].language %>
+		
+		<div id="form-<%= formLocale %>" class="multilanguage" style="<%= 'display:none;' if formLocale.to_s != params[:locale] %>">
+			<%= shape_translation.input :name %>
+			<%= shape_translation.hidden_field :locale , :value => formLocale %>
+		</div>
 
-      <ul>
-      <% @shape.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+	<% end %>
 
-  <div class="field">
-    <%= f.label :parent_id %><br />
-    <%= f.text_field :parent_id %>
-  </div>
-  <div class="field">
-    <%= f.label :shape_type_id %><br />
-    <%= f.text_field :shape_type_id %>
-  </div>
-  <div class="field">
-    <%= f.label :common_id %><br />
-    <%= f.text_field :common_id %>
-  </div>
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :geo_data %><br />
-    <%= f.text_field :geo_data %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+	<%= f.inputs do %>
+		<%= f.input :shape_type %>
+		<%= f.input :parent_id %>
+		<%= f.input :common_id %>
+		<%= f.input :geo_data, :as => :text %>
+	<% end %>
+
+	<%= f.actions :submit, :reset, :cancel %>
+
 <% end %>

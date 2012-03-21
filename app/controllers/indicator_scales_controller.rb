@@ -1,4 +1,6 @@
 class IndicatorScalesController < ApplicationController
+  before_filter :authenticate_user!
+
   # GET /indicator_scales
   # GET /indicator_scales.json
   def index

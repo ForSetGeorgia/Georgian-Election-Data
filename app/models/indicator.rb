@@ -5,7 +5,7 @@ class Indicator < ActiveRecord::Base
   has_many :data
   has_many :indicator_translations
   belongs_to :event
-  belongs_to :shape_type_id
+  belongs_to :shape_type
   accepts_nested_attributes_for :indicator_translations
   attr_accessible :event_id, :shape_type_id , :indicator_translations_attributes
   attr_accessor :locale

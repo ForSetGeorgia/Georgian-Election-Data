@@ -6,10 +6,10 @@ class Event < ActiveRecord::Base
   belongs_to :shape
   belongs_to :event_type
   accepts_nested_attributes_for :event_translations
-  attr_accessible :shape_id , :event_translations_attributes
+  attr_accessible :shape_id, :event_type_id, :event_translations_attributes
   attr_accessor :locale
 
-  validates :start_shape_id, :presence => true
+  validates :shape_id, :presence => true
   
   scope :l10n , joins(:event_translations).where('locale = ?',I18n.locale)
   scope :by_name , order('name').l10n

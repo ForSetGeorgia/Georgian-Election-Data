@@ -1,21 +1,15 @@
-<%= form_for(@shape_type) do |f| %>
-  <% if @shape_type.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@shape_type.errors.count, "error") %> prohibited this shape_type from being saved:</h2>
+<%= semantic_form_for(@shape_type) do |f| %>
+	<%= f.inputs :for => :shape_type_translations do |shape_type_translation, i| %>
+		
+		<% formLocale = @locales[i-1].language %>
+		
+		<div id="form-<%= formLocale %>" class="multilanguage" style="<%= 'display:none;' if formLocale.to_s != params[:locale] %>">
+			<%= shape_type_translation.input :name %>
+			<%= shape_type_translation.hidden_field :locale , :value => formLocale %>
+		</div>
 
-      <ul>
-      <% @shape_type.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+	<% end %>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+	<%= f.actions :submit, :reset, :cancel %>
+
 <% end %>

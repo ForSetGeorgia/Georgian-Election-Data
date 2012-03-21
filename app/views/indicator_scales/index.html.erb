@@ -1,9 +1,8 @@
-<h1>Listing indicator_scales</h1>
+<% title 'Listing indicator_scales' %>
 
 <table>
   <tr>
     <th>Indicator</th>
-    <th>Name</th>
     <th>Min</th>
     <th>Max</th>
     <th></th>
@@ -14,7 +13,6 @@
 <% @indicator_scales.each do |indicator_scale| %>
   <tr>
     <td><%= indicator_scale.indicator_id %></td>
-    <td><%= indicator_scale.name %></td>
     <td><%= indicator_scale.min %></td>
     <td><%= indicator_scale.max %></td>
     <td><%= link_to 'Show', indicator_scale %></td>

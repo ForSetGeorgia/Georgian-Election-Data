@@ -1,4 +1,6 @@
 class ShapesController < ApplicationController
+  before_filter :authenticate_user!
+
   # GET /shapes
   # GET /shapes.json
   def index
@@ -25,6 +27,9 @@ class ShapesController < ApplicationController
   # GET /shapes/new.json
   def new
     @shape = Shape.new
+    # create the translation object for however many locales there are
+    # so the form will properly create all of the nested form fields
+    @locales.length.times {@shape.shape_translations.build}
 
     respond_to do |format|
       format.html # new.html.erb

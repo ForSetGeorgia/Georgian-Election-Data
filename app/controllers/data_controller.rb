@@ -1,4 +1,6 @@
 class DataController < ApplicationController
+  before_filter :authenticate_user!
+
   # GET /data
   # GET /data.json
   def index

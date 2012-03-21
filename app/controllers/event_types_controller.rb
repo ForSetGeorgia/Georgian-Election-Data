@@ -1,4 +1,6 @@
 class EventTypesController < ApplicationController
+  before_filter :authenticate_user!
+
   # GET /event_types
   # GET /event_types.json
   def index
@@ -25,6 +27,9 @@ class EventTypesController < ApplicationController
   # GET /event_types/new.json
   def new
     @event_type = EventType.new
+    # create the translation object for however many locales there are
+    # so the form will properly create all of the nested form fields
+    @locales.length.times {@event_type.event_type_translations.build}
 
     respond_to do |format|
       format.html # new.html.erb

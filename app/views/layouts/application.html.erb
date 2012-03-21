@@ -55,7 +55,8 @@
 	
 	<footer class="group" style="position: static; ">
 		  <% if user_signed_in? %>  
-			Signed in as <%= current_user.email %>. Not you?  
+			Signed in as <%= current_user.email %>. 
+			<%= link_to "Admin", admin_path %>  
 			<%= link_to "Sign out", destroy_user_session_path, :method => :delete %>  
 		  <% else %>  
 			<%= link_to "Sign up", new_user_registration_path %> or  

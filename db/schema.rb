@@ -57,7 +57,6 @@ ActiveRecord::Schema.define(:version => 20120321084509) do
 
   create_table "indicator_scales", :force => true do |t|
     t.integer  "indicator_id"
-    t.string   "name"
     t.integer  "min"
     t.integer  "max"
     t.datetime "created_at"
