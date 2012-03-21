@@ -1,6 +1,7 @@
 class CreateEvents < ActiveRecord::Migration
   def self.up
     create_table :events do |t|
+      t.integer :event_type_id
       t.integer :shape_id
 
       t.timestamps

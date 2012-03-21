@@ -1,5 +1,5 @@
 class Indicator < ActiveRecord::Base
-  translates :name
+  translates :name, :name_abbrv
 
   has_many :indicator_scales
   has_many :data
@@ -13,5 +13,5 @@ class Indicator < ActiveRecord::Base
   validates :event_id, :shape_type_id, :presence => true
   
   scope :l10n , joins(:indicator_translations).where('locale = ?',I18n.locale)
-  scope :by_title , order('title').l10n
+  scope :by_name , order('name').l10n
 end

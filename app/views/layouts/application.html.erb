@@ -16,6 +16,15 @@
     
      		<div class="wrap group"> 
 				<div class="map"><a href="/"><%= image_tag "georgia.png", :size => '96x51', :alt => 'Election map logo', :title => 'Home' %></a></div> 
+				<div id="language_form">
+					<ul>
+					<% @locales.each do |locale| %>
+						<% unless locale.language.to_s == I18n.locale.to_s %> 
+							<li><%= link_to locale.name, url_for(locale: locale.language) %></li>
+						<% end %>
+					<% end %>
+					</ul>
+				</div>
 				<div class="logo"><a href="http://www.ndi.org/" target="_blank"><%= image_tag "logo.png", :size => '150x48', :alt => 'National Democratic Institute', :title => 'National Democratic Institute' %></a></div>
     		</div>
     
@@ -33,25 +42,6 @@
      </header>
 
 	<section id="container" class="wrap group">
-		<div id="user_nav">  
-		  <% if user_signed_in? %>  
-		    Signed in as <%= current_user.email %>. Not you?  
-		    <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>  
-		  <% else %>  
-		    <%= link_to "Sign up", new_user_registration_path %> or  
-		    <%= link_to "Sign in", new_user_session_path %>  
-		  <% end %>  
-		</div>  
-
-	  <div id="language-form">
-	    <ul>
-	    <% @locales.each do |locale| %>
-	      <% unless locale.language.to_s == I18n.locale.to_s %> 
-	        <li><%= link_to locale.name, url_for(locale: locale.language) %></li>
-	      <% end %>
-	    <% end %>
-	    </ul>
-	  </div>
 
 		<h2><%= yield(:title) %></h2>
 		<section id="content" class="group">
@@ -64,7 +54,13 @@
 	</section>
 	
 	<footer class="group" style="position: static; ">
-		<a href="#">Log Out</a>
+		  <% if user_signed_in? %>  
+			Signed in as <%= current_user.email %>. Not you?  
+			<%= link_to "Sign out", destroy_user_session_path, :method => :delete %>  
+		  <% else %>  
+			<%= link_to "Sign up", new_user_registration_path %> or  
+			<%= link_to "Sign in", new_user_session_path %>  
+		  <% end %>  
 		<a>|</a>
 		<a href="#">Manage Users</a>
 		<a>|</a>

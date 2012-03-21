@@ -1,5 +1,7 @@
 ElectionMap::Application.routes.draw do
 
+  resources :event_types
+
   resources :locales
 
   root :to => "events#index"

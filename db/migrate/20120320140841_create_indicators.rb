@@ -6,7 +6,7 @@ class CreateIndicators < ActiveRecord::Migration
 
       t.timestamps
     end
-    Indicator.create_translation_table! :name => :string    
+    Indicator.create_translation_table! :name => :string, :name_abbrv => :string
   end
   def self.down
     drop_table :indicators

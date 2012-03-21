@@ -9,5 +9,5 @@ class ShapeType < ActiveRecord::Base
   attr_accessor :locale
 
   scope :l10n , joins(:shape_type_translations).where('locale = ?',I18n.locale)
-  scope :by_title , order('title').l10n
+  scope :by_name , order('name').l10n
 end

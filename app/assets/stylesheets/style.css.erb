@@ -75,7 +75,7 @@ a:hover
 
 #container
 {
-    margin: 4.5em auto
+    margin: 2.5em auto
 }
 
 /* Top */
@@ -101,7 +101,7 @@ a:hover
 
     float: right !important;
 }
-
+/* not used
 #top .title
 {
     margin: 0 5%;
@@ -113,11 +113,19 @@ a:hover
     line-height: 2;
     cursor: default
 }
-
+*/
 #top .map
 {
     margin-left: 5%;
-    width: 15%;
+    width: 30%;
+}
+
+#top #language_form
+{
+    margin-left: 5%;
+    width: 30%;
+	height: 51px;
+	text-align: center;
 }
 
 #top-line
@@ -136,26 +144,26 @@ a:hover
 
 #splash > .wrap
 {
-    width: 50% !important
+    width: 70% !important;
 }
 
 #splash .mode
 {
     position: relative;
-    float: left
+    float: left;
 }
 
 #splash .mode a
 {
     display: block;
-    margin: -7px 3em 7px;
+    margin: -7px 2em 7px;
     height: 87px;
     line-height: 87px;
     color: #FFF;
     font-size: 200%;
     text-shadow: 2px 2px 0 #555;
     float: left;
-    text-decoration: none
+    text-decoration: none;
 }
 
 #splash .mode a.active,
@@ -174,7 +182,7 @@ a:hover
 {
     position: absolute;
     bottom: -23px;
-    left: 60px;
+    left: 50px;
     width: 110px;
     height: 32px;
     background: url(<%=asset_path "arrow.png"%>) no-repeat

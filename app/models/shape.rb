@@ -10,5 +10,5 @@ class Shape < ActiveRecord::Base
   validates :parent_id, :shape_type_id, :common_id, :geo_data, :presence => true
   
   scope :l10n , joins(:shape_translations).where('locale = ?',I18n.locale)
-  scope :by_title , order('name').l10n
+  scope :by_name , order('name').l10n
 end
