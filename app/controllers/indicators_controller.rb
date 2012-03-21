@@ -1,4 +1,5 @@
 class IndicatorsController < ApplicationController
+require 'csv'
   before_filter :authenticate_user!
 
   # GET /indicators
@@ -85,4 +86,54 @@ class IndicatorsController < ApplicationController
       format.json { head :ok }
     end
   end
+
+
+  # GET /indicators/upload
+  # GET /indicators/upload.json
+  def upload
+		if request.post? && params[:file].present?
+logger.debug "content type = #{params[:file].content_type}"
+			if params[:file].content_type == "text/csv"
+logger.debug "content type is CSV, processing"
+
+		    infile = params[:file].read
+		    n, errs = 0, []
+
+				Indicator.transaction do
+				  CSV.parse(infile) do |row|
+				    n += 1
+				    # SKIP: header i.e. first row OR blank row
+				    next if n == 1 or row.join.blank?
+				    # build new indicator record
+				    ind = Indicator.build_from_csv(row)
+				    # Save upon valid 
+				    # otherwise collect error records to export
+				    if ind.valid?
+				      ind.save
+				    else
+				      errs << row
+				    end
+				  end
+				end
+logger.debug " - processed #{n} rows"
+		    # Export Error file for later upload upon correction
+		    if errs.any?
+logger.debug " - errors found!"
+					flash[:notice] = "The following errors were encountered:<br /> #{errs}"
+		      redirect_to upload_indicators_path #GET
+		    else
+logger.debug " - no errors found!"
+					flash[:notice] = "Your file was successfully processed!"
+		      redirect_to upload_indicators_path #GET
+		    end
+			else
+logger.debug "content type is NOT CSV, stopping"
+				flash[:notice] = "Your file must be a CSV format."
+        redirect_to upload_indicators_path #GET
+			end
+		end
+  end
+
+
+
 end

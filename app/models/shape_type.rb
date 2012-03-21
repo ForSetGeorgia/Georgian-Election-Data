@@ -10,4 +10,6 @@ class ShapeType < ActiveRecord::Base
 
   scope :l10n , joins(:shape_type_translations).where('locale = ?',I18n.locale)
   scope :by_name , order('name').l10n
+
+
 end

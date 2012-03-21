@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120321084509) do
+ActiveRecord::Schema.define(:version => 20120321135022) do
 
   create_table "data", :force => true do |t|
     t.integer  "indicator_id"

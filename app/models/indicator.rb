@@ -14,4 +14,31 @@ class Indicator < ActiveRecord::Base
   
   scope :l10n , joins(:indicator_translations).where('locale = ?',I18n.locale)
   scope :by_name , order('name').l10n
+
+
+  def self.build_from_csv(row)
+    # see if indicator already exists for the provided event and shape_type
+
+		# get the event id
+		event = Event.find_by_name(row[0])
+		# get the shape type id
+		shape_type = ShapeType.find_by_name(row[1])
+
+		if event.nil? || shape_type.nil?
+logger.debug "event or shape type was not found"				
+		else
+
+			# populate record
+			ind = Indicator.new
+			ind.event_id = event.id
+			ind.shape_type_id = shape_type.id
+			ind.indicator_translations.build(:locale => 'en', :name => row[2], :name_abbrv => row[3])
+			ind.indicator_translations.build(:locale => 'ka', :name => row[4], :name_abbrv => row[5])
+
+logger.debug "indicator has #{ind.indicator_translations.length} translations"
+logger.debug "created the indicator object, returning"
+		  return ind
+		end
+  end
+  
 end

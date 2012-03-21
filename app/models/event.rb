@@ -9,7 +9,9 @@ class Event < ActiveRecord::Base
   attr_accessible :shape_id, :event_type_id, :event_translations_attributes
   attr_accessor :locale
 
-  validates :shape_id, :presence => true
+  validates :event_type_id, :presence => true
+  #do not require shape id for the geo data might not be loaded yet
+#  validates :shape_id, :presence => true
   
   scope :l10n , joins(:event_translations).where('locale = ?',I18n.locale)
   scope :by_name , order('name').l10n
