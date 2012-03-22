@@ -106,8 +106,7 @@ logger.debug "content type is CSV, processing"
 				    next if n == 1 or row.join.blank?
 				    # build new indicator record
 				    ind = Indicator.build_from_csv(row)
-				    # Save upon valid 
-				    # otherwise collect error records to export
+				    # Save if valid 
             if !ind.nil?
   				    if ind.valid?
   				      ind.save

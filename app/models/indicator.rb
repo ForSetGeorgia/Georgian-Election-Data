@@ -46,7 +46,7 @@ logger.debug "event or shape type was not found"
 logger.debug "indicator has #{ind.indicator_translations.length} translations"
         # scales
         finishedScales = false # keep looping until find empty cell
-        i = 6
+        i = 6 # where first scale starts
         until finishedScales do
           if row[i].nil? || row[i+1].nil?
             # found empty cell, stop

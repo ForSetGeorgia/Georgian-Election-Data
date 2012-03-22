@@ -1,0 +1,23 @@
+<% title 'Upload a CSV file For Data' %>
+
+<%= form_tag upload_data_path, :multipart => true do %>
+	<div>
+		<p>
+			You can upload data in one file using the following columns.
+			Please note that you can add as many 'Indicator/Value' columns as you need.
+		</p>
+		<blockquote><p><%= Datum.csv_header %></p></blockquote>
+	</div>
+
+	<div>
+		<p>
+			CSV File to Upload
+			<%= file_field_tag 'file', :accept => 'text/csv' %>
+		</p>
+	</div>
+	<div>
+	  <%= submit_tag "Process CSV File" %>
+	</div>
+<% end %>
+
+<%= link_to 'Back', data_path %>

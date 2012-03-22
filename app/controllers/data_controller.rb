@@ -1,4 +1,6 @@
 class DataController < ApplicationController
+require 'csv'
+
   before_filter :authenticate_user!
 
   # GET /data
@@ -82,4 +84,62 @@ class DataController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  # GET /data/upload
+  # GET /data/upload.json
+  def upload
+		if request.post? && params[:file].present?
+logger.debug "content type = #{params[:file].content_type}"
+			if params[:file].content_type == "text/csv"
+logger.debug "content type is CSV, processing"
+
+		    infile = params[:file].read
+		    n, errs = 0, ""
+
+				Datum.transaction do
+				  CSV.parse(infile) do |row|
+				    n += 1
+				    # SKIP: header i.e. first row OR blank row
+				    next if n == 1 or row.join.blank?
+				    # build new data record for all data in this row
+				    data = Datum.build_from_csv(row)
+				    # Save if valid 
+            if !data.nil? && data.length > 0
+							data.each do |datum|
+						    if datum.valid?
+						      datum.save
+						    else
+						      # an error occurred, stop
+						      errs = "Row #{n} is not valid."
+						      raise ActiveRecord::Rollback
+						      break
+						    end
+							end
+			      else
+  			      # an error occurred, stop
+  			      errs = "Row #{n} has an event or shape type or indicator that is not in the database or the data record already exists."
+  			      raise ActiveRecord::Rollback
+  			      break
+            end
+				  end
+				end
+logger.debug " - processed #{n} rows"
+		    if errs.length > 0
+logger.debug " - errors found!"
+					flash[:notice] = "Errors were encountered and no records were saved.  The problem was the following: #{errs}"
+		      redirect_to upload_data_path #GET
+		    else
+logger.debug " - no errors found!"
+					flash[:notice] = "Your file was successfully processed!"
+		      redirect_to upload_data_path #GET
+		    end
+			else
+logger.debug "content type is NOT CSV, stopping"
+				flash[:notice] = "Your file must be a CSV format."
+        redirect_to upload_data_path #GET
+			end
+		end
+  end
+
+
 end
