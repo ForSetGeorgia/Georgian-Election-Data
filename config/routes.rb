@@ -10,6 +10,8 @@ ElectionMap::Application.routes.draw do
   # route needed for map data, returns districts for a region
   match '/region_districts(/:region_id)', :to => 'root#region_districts', :as => :region_districts, :via => 'get'
 
+  match '/:locale/map', :to => 'root#map', :as => :map, :via => 'get'
+  
   scope "/:locale" do
     resources :locales
   end
