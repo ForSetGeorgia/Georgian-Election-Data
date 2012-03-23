@@ -6,4 +6,6 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require openlayers
 //= require_tree .
+

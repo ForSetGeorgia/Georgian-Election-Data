@@ -1,0 +1,141 @@
+window.onload = map_init;
+
+var map, base, layer, dis_layer = previous_region = false, options = {
+    'boundsLeft': 4260630.1231925,
+    'boundsBottom': 4999230.0089212,
+    'boundsRight': 5422472.9529191,
+    'boundsTop': 5427277.3672416,
+    'zoom': 7,
+    'lat': 42.236652,
+    'lon': 43.59375
+};
+
+OpenLayers.defaultStyleSrc = '/../common/modules/openlayers/theme/default/style.css';
+OpenLayers.defaultMarkerSrc = '/../common/modules/openlayers/img/blank.gif';
+
+function hover_handler (feature)
+{
+  document.getElementById("map-obj-title").innerHTML = feature.attributes.name || feature.attributes.name_ka;
+}
+
+function mouseout_handler (feature)
+{
+
+}
+
+function region_click_handler (feature)
+{
+  target = event.target || this.handlers.feature.evt.target;
+
+  if (target === previous_region)
+  {
+    return;
+  }
+  target.style.display = "none";
+  if (previous_region)
+  {
+    previous_region.style.display = "block";
+  }
+
+  dis_layer.format = OpenLayers.Format.GeoJSON;
+  dis_layer.setUrl('<%= Rails.application.routes.url_helpers.region_districts_path %>/' + feature.data.id + '.json');
+
+  map.zoomToExtent(feature.geometry.getBounds());
+  previous_region = target;
+
+  dis_layer.setZIndex(layer.getZIndex() + 1);
+}
+
+function zoomend_handler ()
+{
+  map_zoom_out_div = document.getElementById("map-zoom-out")
+  map_zoom_out_div.style.display = (options.zoom < map.zoom) ? "block" : "none";
+  if (options.zoom == map.zoom)
+  {
+    previous_region.style.display = "block";
+    dis_layer.removeAllFeatures();
+    dis_layer.setZIndex(layer.getZIndex() - 1);
+  }
+}
+
+function map_init()
+{
+  // Map
+  map = new OpenLayers.Map('map', {
+    controls: [],
+    restrictedExtent: new OpenLayers.Bounds(options.boundsLeft, options.boundsBottom, options.boundsRight, options.boundsTop)
+  });
+
+  // Base Layer
+  base = new OpenLayers.Layer.OSM('Georgia', 'http://a.tile.mapspot.ge/ndi_en/${z}/${x}/${y}.png', {
+    numZoomLevels: 19
+  });
+  base.setOpacity(0);
+
+  // Regions Layer
+  layer = new OpenLayers.Layer.GML('Regions', '/assets/json/regions.json', {
+    format: OpenLayers.Format.GeoJSON,
+    styleMap: map_styles()
+  });
+
+  // Districts Layer
+  dis_layer = new OpenLayers.Layer.GML('Districts');
+
+  // Selection
+  var select = new OpenLayers.Control.SelectFeature(layer, {
+    hover: true,
+    onSelect: hover_handler,
+    onUnselect: mouseout_handler,
+    clickFeature: region_click_handler
+  });
+
+  var select_district = new OpenLayers.Control.SelectFeature(dis_layer, {
+    hover: true,
+    onSelect: hover_handler,
+    onUnselect: mouseout_handler,
+  });
+
+  map.addControls([select, select_district]);
+  select.activate();
+  select_district.activate();
+
+  // Configuration
+  map.addLayers([
+    base,
+    layer,
+    dis_layer
+  ]);
+  dis_layer.setZIndex(layer.getZIndex() - 1);
+  map.setCenter(new OpenLayers.LonLat(options.lon, options.lat));
+  map.zoomTo(options.zoom);
+  map.events.register('zoomend', false, zoomend_handler);
+
+
+  document.getElementById("map-zoom-out").onclick = function ()
+  {
+    if (options.zoom == map.zoom)
+    {
+      return;
+    }
+    map.zoomTo(options.zoom);
+  }
+}
+
+function map_styles()
+{
+  return new OpenLayers.StyleMap({
+    'default': {
+      'fillColor': '#9183B5',
+      'strokeColor': '#fff',
+      'strokeWidth': .4,
+      'fillOpacity': 1
+    },
+    'select': {
+      'strokeColor': '#fff',
+      'fillColor': '#64588C',
+      'strokeWidth': 1.1,
+      'cursor': 'pointer',
+      'fillOpacity': .6
+    }
+  });
+}

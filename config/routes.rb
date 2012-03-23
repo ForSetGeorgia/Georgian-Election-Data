@@ -6,11 +6,14 @@ ElectionMap::Application.routes.draw do
 
   match "/:locale" => "root#index", via: :get
   match '/:locale/admin', :to => 'root#admin', :as => :admin, :via => 'get'
-  
+
+  # route needed for map data, returns districts for a region
+  match '/region_districts(/:region_id)', :to => 'root#region_districts', :as => :region_districts, :via => 'get'
+
   scope "/:locale" do
     resources :locales
   end
-  
+
   scope "/:locale" do
     resources :data do
 			collection do
@@ -20,7 +23,7 @@ ElectionMap::Application.routes.draw do
 			end
 		end
   end
-  
+
   scope "/:locale" do
     resources :indicator_scales
   end
