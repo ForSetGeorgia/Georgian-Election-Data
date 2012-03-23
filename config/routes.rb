@@ -6,6 +6,7 @@ ElectionMap::Application.routes.draw do
 
   match "/:locale" => "root#index", via: :get
   match '/:locale/admin', :to => 'root#admin', :as => :admin, :via => 'get'
+  match '/:locale/map', :to => 'root#map', :as => :map, :via => 'get'
   
   scope "/:locale" do
     resources :locales

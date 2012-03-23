@@ -4,10 +4,10 @@ development:
     username: election-map
     password: k=~B@aArTYb?
     encoding: utf8
-    host: 192.168.1.200
-    port: 3306
-#    host: 127.0.0.1
-#    socket: /tmp/mysql.sock
+#    host: 192.168.1.200
+#    port: 3306
+    host: 127.0.0.1
+    socket: /tmp/mysql.sock
     reconnect: true
     pool: 5
 

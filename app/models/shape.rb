@@ -15,7 +15,7 @@ class Shape < ActiveRecord::Base
   scope :by_name , order('name').l10n
 
     def self.csv_header
-      "Event, Shape Type, Parent ID, Common ID, Geometry".split(",")
+      "Event, Shape Type, Parent ID, Common ID, Common Name, Geometry".split(",")
     end
 
     def self.build_from_csv(file)
@@ -23,7 +23,8 @@ class Shape < ActiveRecord::Base
 	    n, msg = 0, ""
 
 			Shape.transaction do
-			  CSV.parse(infile) do |row|
+			  CSV.parse(infile, :col_sep => "\t") do |row|
+
 			    n += 1
 			    # SKIP: header i.e. first row OR blank row
 			    next if n == 1 or row.join.blank?
@@ -48,7 +49,8 @@ class Shape < ActiveRecord::Base
               if row[2].nil? || row[2].strip.length == 0
                 # no root exists in db, but this is the root, so add it
     logger.debug "adding root shape"
-                shape = Shape.create :shape_type_id => shape_type.id, :common_id => row[3].strip, :geometry => row[4].strip
+                shape = Shape.create :shape_type_id => shape_type.id, :common_id => row[3].strip, 
+									:common_name => row[4].strip, :geometry => row[5].strip
                 if shape.valid?
                   # update the event to have this as the root
     logger.debug "updating event to map to this root shape"
@@ -84,7 +86,7 @@ class Shape < ActiveRecord::Base
                 return msg
               else
                 # only conintue if all values are present
-                if row[2].nil? || row[3].nil? || row[4].nil?
+                if row[2].nil? || row[3].nil? || row[5].nil?
             		  msg = "Row #{n} - Data is missing that is required to save record."
       logger.debug "**missing data in row"
                   raise ActiveRecord::Rollback
@@ -134,7 +136,8 @@ class Shape < ActiveRecord::Base
                       else
                         # found parent, add child
         logger.debug "found parent, saving this row"
-                        shape = parent.children.create :shape_type_id => shape_type.id, :common_id => row[3].strip, :geometry => row[4].strip
+                        shape = parent.children.create :shape_type_id => shape_type.id, :common_id => row[3].strip, 
+													:common_name => row[4].strip, :geometry => row[5].strip
 
                         if !shape.valid?
                           # could not create shape

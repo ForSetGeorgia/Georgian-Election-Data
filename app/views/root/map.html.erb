@@ -1,0 +1,49 @@
+<% title @event_type_name %>
+
+<% if !@indicators.nil? && @indicators.length > 0 %>
+	<ul id="indicators" class="group">
+		<% @indicators.each do |indicator| %>
+			<li><%= link_to indicator.name_abbrv, map_path(request.parameters.merge({:indicator_id => indicator.id})), :title => indicator.name %></li>
+		<% end %>
+	</ul>
+<% end %>
+
+<% if !@events.nil? && @events.length > 0 %>
+	<ul id="datasets" class="group">
+		<% @events.each_with_index do |event, i| %>
+			<li id="<%= event.name.sub(' ', '-') %>" <% if i==0%>class="first"<% end %> ><%= link_to event.name, map_path(request.parameters.merge({:event_id => event.id})), :title => event.name %></li>
+		<% end %>
+	</ul>
+<% end %>
+
+<section id="map" class="group">
+	<div id="map-container">
+	</div>
+	<div id="map-overlay">
+		Loading...
+	</div>
+	<div id="map-title">
+		Regions of Georgia
+	</div>
+	<div id="map-box" style="display: none">
+		<h1>&nbsp;</h1>
+		<div class="content">
+			&nbsp;
+		</div>
+	</div>
+</section>
+<section id="map-footer">
+	<div class="legend middle group">
+		<canvas id="canvas" style="width: 735px; height: 400px; display: none"></canvas>
+		<a href="javascript:;" id="export-link"><img src="http://deda.jumpstart.ge/electionmap/images/export-button.png" width="" height="" alt=""/>Export</a>
+	</div>
+	<div id="legend-container" class="legend middle group" style="margin: 0 2em">
+		<ul id="legend">
+		</ul>
+	</div>
+</section>
+<ul id="views" class="group">
+	<li class="active"><a href="#">Regions</a></li>
+</ul>
+</section>
+
