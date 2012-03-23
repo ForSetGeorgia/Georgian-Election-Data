@@ -13,9 +13,9 @@ class Datum < ActiveRecord::Base
   def self.build_from_csv(row)
 		data = []
 		# get the event id
-		event = Event.find_by_name(row[0])
+		event = Event.find_by_name(row[0].strip)
 		# get the shape type id
-		shape_type = ShapeType.find_by_name(row[1])
+		shape_type = ShapeType.find_by_name(row[1].strip)
 
 		if event.nil? || shape_type.nil?
 logger.debug "event or shape type was not found"				
@@ -32,22 +32,22 @@ logger.debug "event or shape type was not found"
 				  # see if indicator already exists for the provided event and shape_type
 				  indicator = Indicator.includes(:indicator_translations)
 				    .where('indicators.event_id = ? and indicators.shape_type_id = ? and indicator_translations.locale="en" and indicator_translations.name= ?', 
-				      event.id, shape_type.id, row[i])
+				      event.id, shape_type.id, row[i].strip)
 				  
 				  if indicator.nil?
 	logger.debug "indicator was not found"
 				    return nil
 					else
-	logger.debug "indicator was found: #{indicator[0].id}"
+	logger.debug "indicator was found: #{indicator.first.id}"
 						# check if data already exists
-						alreadyExists = Datum.where(:indicator_id => indicator[0].id, :common_id => row[2])
+						alreadyExists = Datum.where(:indicator_id => indicator.first.id, :common_id => row[2].strip)
 						
 			      if alreadyExists.nil? || alreadyExists.length == 0
 							# populate record
 							datum = Datum.new
-							datum.indicator_id = indicator[0].id
-							datum.common_id = row[2]
-							datum.value = row[i+1]				
+							datum.indicator_id = indicator.first.id
+							datum.common_id = row[2].strip
+							datum.value = row[i+1].strip
 							# add to data array
 							data << datum
 

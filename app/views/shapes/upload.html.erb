@@ -1,0 +1,22 @@
+<% title 'Upload a CSV file For Shapes' %>
+
+<%= form_tag upload_shapes_path, :multipart => true do %>
+	<div>
+		<p>
+			You can upload shapes in one file using the following columns.
+		</p>
+		<blockquote><p><%= Shape.csv_header %></p></blockquote>
+	</div>
+
+	<div>
+		<p>
+			CSV File to Upload
+			<%= file_field_tag 'file', :accept => 'text/csv' %>
+		</p>
+	</div>
+	<div>
+	  <%= submit_tag "Process CSV File" %>
+	</div>
+<% end %>
+
+<%= link_to 'Back', shapes_path %>

@@ -12,9 +12,8 @@
 
 	<%= f.inputs do %>
 		<%= f.input :shape_type %>
-		<%= f.input :parent_id %>
 		<%= f.input :common_id %>
-		<%= f.input :geo_data, :as => :text %>
+		<%= f.input :geometry, :as => :text %>
 	<% end %>
 
 	<%= f.actions :submit, :reset, :cancel %>

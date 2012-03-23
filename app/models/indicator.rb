@@ -22,9 +22,9 @@ class Indicator < ActiveRecord::Base
 
   def self.build_from_csv(row)
 		# get the event id
-		event = Event.find_by_name(row[0])
+		event = Event.find_by_name(row[0].strip)
 		# get the shape type id
-		shape_type = ShapeType.find_by_name(row[1])
+		shape_type = ShapeType.find_by_name(row[1].strip)
 
 		if event.nil? || shape_type.nil?
 logger.debug "event or shape type was not found"				
@@ -33,7 +33,7 @@ logger.debug "event or shape type was not found"
       # see if indicator already exists for the provided event and shape_type
       alreadyExists = Indicator.includes(:indicator_translations)
         .where('indicators.event_id = ? and indicators.shape_type_id = ? and indicator_translations.locale="en" and indicator_translations.name= ?', 
-          event.id, shape_type.id, row[2])
+          event.id, shape_type.id, row[2].strip)
       
       if alreadyExists.nil? || alreadyExists.length == 0
   			# populate record
@@ -41,8 +41,8 @@ logger.debug "event or shape type was not found"
   			ind.event_id = event.id
   			ind.shape_type_id = shape_type.id
         # translations
-  			ind.indicator_translations.build(:locale => 'en', :name => row[2], :name_abbrv => row[3])
-  			ind.indicator_translations.build(:locale => 'ka', :name => row[4], :name_abbrv => row[5])
+  			ind.indicator_translations.build(:locale => 'en', :name => row[2].strip, :name_abbrv => row[3].strip)
+  			ind.indicator_translations.build(:locale => 'ka', :name => row[4].strip, :name_abbrv => row[5].strip)
 logger.debug "indicator has #{ind.indicator_translations.length} translations"
         # scales
         finishedScales = false # keep looping until find empty cell
@@ -54,8 +54,8 @@ logger.debug "indicator has #{ind.indicator_translations.length} translations"
           else
             # found scale, add it
             scale = ind.indicator_scales.build
-      			scale.indicator_scale_translations.build(:locale => 'en', :name => row[i])
-      			scale.indicator_scale_translations.build(:locale => 'ka', :name => row[i+1])
+      			scale.indicator_scale_translations.build(:locale => 'en', :name => row[i].strip)
+      			scale.indicator_scale_translations.build(:locale => 'ka', :name => row[i+1].strip)
       			i+=2
           end
         end

@@ -1,5 +1,7 @@
 class ShapeType < ActiveRecord::Base
   translates :name
+  has_ancestry
+  
 
   has_many :indicators
   has_many :shapes

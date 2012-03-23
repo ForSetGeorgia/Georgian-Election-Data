@@ -16,7 +16,7 @@ ActiveRecord::Base.connection.execute("TRUNCATE shape_types")
 ActiveRecord::Base.connection.execute("TRUNCATE shape_type_translations") 
 
 ShapeType.create(:shape_type_translations_attributes => {"0"=>{:name=>"ქვეყანა", :locale=>"ka"}, "1"=>{:name=>"Country", :locale=>"en"}})
-ShapeType.create(:shape_type_translations_attributes => {"0"=>{:name=>"რეგიონში", :locale=>"ka"}, "1"=>{:name=>"Region", :locale=>"en"}})
-ShapeType.create(:shape_type_translations_attributes => {"0"=>{:name=>"რაიონის", :locale=>"ka"}, "1"=>{:name=>"District", :locale=>"en"}})
-ShapeType.create(:shape_type_translations_attributes => {"0"=>{:name=>"საუბნო", :locale=>"ka"}, "1"=>{:name=>"Precinct", :locale=>"en"}})
+ShapeType.create(:ancestry => '1', :shape_type_translations_attributes => {"0"=>{:name=>"რეგიონში", :locale=>"ka"}, "1"=>{:name=>"Region", :locale=>"en"}})
+ShapeType.create(:ancestry => '1/2', :shape_type_translations_attributes => {"0"=>{:name=>"რაიონის", :locale=>"ka"}, "1"=>{:name=>"District", :locale=>"en"}})
+ShapeType.create(:ancestry => '1/2/3', :shape_type_translations_attributes => {"0"=>{:name=>"საუბნო", :locale=>"ka"}, "1"=>{:name=>"Precinct", :locale=>"en"}})
 

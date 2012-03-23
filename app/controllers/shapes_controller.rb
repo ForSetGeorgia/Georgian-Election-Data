@@ -1,4 +1,5 @@
 class ShapesController < ApplicationController
+  require 'csv'
   before_filter :authenticate_user!
 
   # GET /shapes
@@ -85,4 +86,34 @@ class ShapesController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  # GET /shapes/upload
+  # GET /shapes/upload.json
+  def upload
+		if request.post? && params[:file].present?
+logger.debug "content type = #{params[:file].content_type}"
+			if params[:file].content_type == "text/csv"
+logger.debug "content type is CSV, processing"
+
+        msg = Shape.build_from_csv(params[:file])
+        if msg.nil? || msg.length == 0
+          # no errors, success!
+					flash[:notice] = "Your file was successfully processed!"
+		      redirect_to upload_shapes_path #GET
+        else
+          # errors
+					flash[:notice] = "Errors were encountered and no records were saved.  The problem was the following: #{msg}"
+		      redirect_to upload_shapes_path #GET
+        end 
+
+			else
+logger.debug "content type is NOT CSV, stopping"
+				flash[:notice] = "Your file must be a CSV format."
+        redirect_to upload_shapes_path #GET
+			end
+		end
+  end
+
+
+
 end

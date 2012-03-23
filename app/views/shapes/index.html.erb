@@ -1,8 +1,8 @@
 <% title 'Listing shapes' %>
 
+
 <table>
   <tr>
-    <th>Parent</th>
     <th>Shape type</th>
     <th>Common</th>
     <th>Name</th>
@@ -14,11 +14,10 @@
 
 <% @shapes.each do |shape| %>
   <tr>
-    <td><%= shape.parent_id %></td>
     <td><%= shape.shape_type_id %></td>
     <td><%= shape.common_id %></td>
     <td><%= shape.name %></td>
-    <td><%= shape.geo_data %></td>
+    <td><%= shape.geometry %></td>
     <td><%= link_to 'Show', shape %></td>
     <td><%= link_to 'Edit', edit_shape_path(shape) %></td>
     <td><%= link_to 'Destroy', shape, confirm: 'Are you sure?', method: :delete %></td>
