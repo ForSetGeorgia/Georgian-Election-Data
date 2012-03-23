@@ -15,7 +15,7 @@ class Shape < ActiveRecord::Base
   scope :by_name , order('name').l10n
 
     def self.csv_header
-      "Event, Shape Type, Parent ID, Common ID, Geometry"
+      "Event, Shape Type, Parent ID, Common ID, Geometry".split(",")
     end
 
     def self.build_from_csv(file)

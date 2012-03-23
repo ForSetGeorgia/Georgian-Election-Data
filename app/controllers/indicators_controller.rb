@@ -96,44 +96,16 @@ logger.debug "content type = #{params[:file].content_type}"
 			if params[:file].content_type == "text/csv"
 logger.debug "content type is CSV, processing"
 
-		    infile = params[:file].read
-		    n, errs = 0, ""
-
-				Indicator.transaction do
-				  CSV.parse(infile) do |row|
-				    n += 1
-				    # SKIP: header i.e. first row OR blank row
-				    next if n == 1 or row.join.blank?
-				    # build new indicator record
-				    ind = Indicator.build_from_csv(row)
-				    # Save if valid 
-            if !ind.nil?
-  				    if ind.valid?
-  				      ind.save
-  				    else
-  				      # an error occurred, stop
-  				      errs = "Row #{n} is not valid."
-  				      raise ActiveRecord::Rollback
-  				      break
-  				    end
-			      else
-  			      # an error occurred, stop
-  			      errs = "Row #{n} has an event or shape type that is not in the database or the indicator already exists."
-  			      raise ActiveRecord::Rollback
-  			      break
-            end
-				  end
-				end
-logger.debug " - processed #{n} rows"
-		    if errs.length > 0
-logger.debug " - errors found!"
-					flash[:notice] = "Errors were encountered and no records were saved.  The problem was the following: #{errs}"
-		      redirect_to upload_indicators_path #GET
-		    else
-logger.debug " - no errors found!"
+		    msg = Indicator.build_from_csv(params[:file])
+        if msg.nil? || msg.length == 0
+          # no errors, success!
 					flash[:notice] = "Your file was successfully processed!"
 		      redirect_to upload_indicators_path #GET
-		    end
+        else
+          # errors
+					flash[:notice] = "Errors were encountered and no records were saved.  The problem was the following: #{msg}"
+		      redirect_to upload_indicators_path #GET
+        end 
 			else
 logger.debug "content type is NOT CSV, stopping"
 				flash[:notice] = "Your file must be a CSV format."
@@ -143,5 +115,15 @@ logger.debug "content type is NOT CSV, stopping"
   end
 
 
+  # GET /indicators/export
+  def export
+    filename ="indicators_template"
+    csv_data = CSV.generate do |csv|
+      csv << Indicator.csv_header
+    end 
+    send_data csv_data,
+      :type => 'text/csv; charset=iso-8859-1; header=present',
+      :disposition => "attachment; filename=#{filename}.csv"
+  end 
 
 end

@@ -3,9 +3,8 @@
 <%= form_tag upload_shapes_path, :multipart => true do %>
 	<div>
 		<p>
-			You can upload shapes in one file using the following columns.
+			<%= link_to "Download the CSV template file for Shapes", export_shapes_path %>
 		</p>
-		<blockquote><p><%= Shape.csv_header %></p></blockquote>
 	</div>
 
 	<div>

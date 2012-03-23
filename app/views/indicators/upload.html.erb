@@ -3,10 +3,9 @@
 <%= form_tag upload_indicators_path, :multipart => true do %>
 	<div>
 		<p>
-			You can upload indicators and their scales in one file using the following columns.
+			<%= link_to "Download the CSV template file for Indicators", export_indicators_path %>.
 			Please note that you can add as many 'Scale Name' columns as you need.
 		</p>
-		<blockquote><p><%= Indicator.csv_header %></p></blockquote>
 	</div>
 
 	<div>
