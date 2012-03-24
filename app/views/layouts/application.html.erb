@@ -3,7 +3,6 @@
 <head>
   <title><%= "#{yield (:title)} - Election Map" || "Election Map" %></title>
   <%= stylesheet_link_tag    "application" %>
-  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
   <!--[if IE 6]><%= stylesheet_link_tag 'ie6' %><![endif]-->
   <!--[if IE 7]><%= stylesheet_link_tag 'ie7' %><![endif]-->
@@ -34,7 +33,7 @@
 			<div class="wrap group"> 
 				<% @event_types.each do |type| %>
 					<div class="mode group">
-						<%= link_to type.name, map_path(:event_type => type.id) %>
+						<%= link_to type.name, root_path(:event_type => type.id) %>
 					</div>
 				<% end %>
 		</section>

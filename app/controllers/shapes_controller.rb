@@ -92,8 +92,8 @@ class ShapesController < ApplicationController
   def upload
 		if request.post? && params[:file].present?
 logger.debug "content type = #{params[:file].content_type}"
-			if params[:file].content_type == "text/csv"
-logger.debug "content type is CSV, processing"
+			if params[:file].content_type == "text/csv" || params[:file].content_type == "text/plain"
+logger.debug "content type is CSV/txt, processing"
 
         msg = Shape.build_from_csv(params[:file])
         if msg.nil? || msg.length == 0
@@ -105,10 +105,9 @@ logger.debug "content type is CSV, processing"
 					flash[:notice] = "Errors were encountered and no records were saved.  The problem was the following: #{msg}"
 		      redirect_to upload_shapes_path #GET
         end 
-
 			else
-logger.debug "content type is NOT CSV, stopping"
-				flash[:notice] = "Your file must be a CSV format."
+logger.debug "content type is NOT CSV/txt, stopping"
+				flash[:notice] = "Your file must be a CSV or tab-delimited txt format."
         redirect_to upload_shapes_path #GET
 			end
 		end

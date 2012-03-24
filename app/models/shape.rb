@@ -93,7 +93,7 @@ class Shape < ActiveRecord::Base
                   return msg
                 else
       logger.debug "chekcing if row already in db"
-                  alreadyExists = root.descendants.where ({:shape_type_id => shape_type.id, :common_id => row[2].strip})
+                  alreadyExists = root.descendants.where ({:shape_type_id => shape_type.id, :common_id => row[3].strip, :common_name => row[4].strip})
                   if alreadyExists.nil? || alreadyExists.length == 0
       logger.debug "row is not in db, get parent shape type"
                     # record does not exist yet

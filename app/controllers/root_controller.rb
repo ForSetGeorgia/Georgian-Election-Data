@@ -4,13 +4,6 @@ class RootController < ApplicationController
   # GET /
   # GET /.json
   def index
-
-    respond_to do |format|
-      format.html # index.html.erb
-    end
-  end
-
-  def map
 		# get the event type id
 		event_type_id = params[:event_type].nil? ? @event_types.first.id : params[:event_type]
 
@@ -33,6 +26,10 @@ class RootController < ApplicationController
 			@indicators = Indicator.where(:event_id => params[:event_id], :shape_type_id => shape_type_id)
 		end
 
+		render :layout => 'map'
+  end
+
+  def map
 		render :layout => 'map'
   end
 
