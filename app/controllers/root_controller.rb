@@ -1,5 +1,5 @@
 class RootController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index, :region_districts]
+  before_filter :authenticate_user!
 
   # GET /
   # GET /.json
