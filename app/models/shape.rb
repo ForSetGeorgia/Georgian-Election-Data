@@ -6,13 +6,34 @@ class Shape < ActiveRecord::Base
   has_many :shape_translations
   belongs_to :shape_type
   accepts_nested_attributes_for :shape_translations
-  attr_accessible :shape_type_id, :common_id, :geometry, :shape_translations_attributes
+  attr_accessible :shape_type_id, :common_id, :common_name, :geometry, :shape_translations_attributes
   attr_accessor :locale
 
   validates :shape_type_id, :common_id, :geometry, :presence => true
   
   scope :l10n , joins(:shape_translations).where('locale = ?',I18n.locale)
   scope :by_name , order('name').l10n
+
+
+		# create the properly formatted json string
+		def self.build_json(shapes)
+			json = ''
+			if !shapes.nil? && shapes.length > 0
+				json = '{ "type": "FeatureCollection","features": ['
+				shapes.each_with_index do |shape, i|
+					json << '{ "type": "Feature",	"geometry": '
+					json << shape.geometry
+					json << ', "properties": {"common_id":"'
+					json << shape.common_id
+					json << '", "common_name":"'
+					json << shape.common_name
+					json << '"}}'
+					json << ',' if i < shapes.length-1 # do not add comma for the last shape
+				end
+				json << ']}'
+			end
+			return json
+		end
 
     def self.csv_header
       "Event, Shape Type, Parent ID, Common ID, Common Name, Geometry".split(",")
@@ -93,7 +114,8 @@ class Shape < ActiveRecord::Base
                   return msg
                 else
       logger.debug "chekcing if row already in db"
-                  alreadyExists = root.descendants.where ({:shape_type_id => shape_type.id, :common_id => row[3].strip, :common_name => row[4].strip})
+                  alreadyExists = root.descendants.where ({:shape_type_id => shape_type.id, 
+											:common_id => row[3].strip, :common_name => row[4].strip, :geometry => row[5].strip})
                   if alreadyExists.nil? || alreadyExists.length == 0
       logger.debug "row is not in db, get parent shape type"
                     # record does not exist yet

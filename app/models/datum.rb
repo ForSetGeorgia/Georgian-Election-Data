@@ -1,13 +1,13 @@
 class Datum < ActiveRecord::Base
   belongs_to :indicator
 
-  attr_accessible :indicator_id, :common_id, :value
+  attr_accessible :indicator_id, :common_id, :common_name, :value
 
-  validates :indicator_id, :common_id, :value, :presence => true
+  validates :indicator_id, :common_id, :common_name, :value, :presence => true
 
 
   def self.csv_header
-    "Event, Shape Type, Common ID, Indicator, Value, Indicator, Value".split(",")
+    "Event, Shape Type, Common ID, Common Name, Indicator, Value, Indicator, Value".split(",")
   end
 
   def self.build_from_csv(file)
@@ -33,7 +33,7 @@ class Datum < ActiveRecord::Base
 				else
 		logger.debug "event and shape found, procesing indicators"
 					finishedIndicators = false
-					i = 3 # where first indicator starts
+					i = 4 # where first indicator starts
 
 					until finishedIndicators do
 					  if row[i].nil? || row[i+1].nil?
@@ -55,7 +55,8 @@ class Datum < ActiveRecord::Base
 							else
 			logger.debug "indicator found, checking if data exists"
 								# check if data already exists
-								alreadyExists = Datum.where(:indicator_id => indicator.first.id, :common_id => row[2].strip)
+								alreadyExists = Datum.where(:indicator_id => indicator.first.id, 
+									:common_id => row[2].strip, :common_name => row[3].strip)
 					
 								if alreadyExists.nil? || alreadyExists.length == 0
 			logger.debug "data does not exist, save it"
@@ -63,6 +64,7 @@ class Datum < ActiveRecord::Base
 									datum = Datum.new
 									datum.indicator_id = indicator.first.id
 									datum.common_id = row[2].strip
+									datum.common_id = row[3].strip
 									datum.value = row[i+1].strip
 
 		logger.debug "saving record"

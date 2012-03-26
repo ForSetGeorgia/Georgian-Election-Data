@@ -29,9 +29,39 @@ class RootController < ApplicationController
 		render :layout => 'map'
   end
 
+  # GET /events/shape/:id
+  # GET /events/shape/:id.json
+  def shape
+		#get the parent shape
+		shape = Shape.where(:id => params[:id])
+
+    respond_to do |format|
+      format.json { render json: Shape.build_json(shape) }
+    end
+  end
+
+  # GET /events/children_shapes/:parent_id
+  # GET /events/children_shapes/:parent_id.json
+  def children_shapes
+		geometries = ''
+
+		#get the parent shape
+		shape = Shape.where(:id => params[:parent_id])
+		
+		if !shape.nil? && shape.length > 0 && shape.first.has_children?
+			# get all of the children of the parent and format for json
+			geometries = Shape.build_json(shape.first.children)
+		end
+
+    respond_to do |format|
+      format.json { render json: geometries}
+    end
+  end
+
   def map
 		render :layout => 'map'
   end
+
 
   # GET /events/admin
   # GET /events/admin.json

@@ -6,6 +6,8 @@ ElectionMap::Application.routes.draw do
 
   match "/:locale" => "root#index", via: :get, :as => :root
   match '/:locale/admin', :to => 'root#admin', :as => :admin, :via => :get
+  match '/:locale/shape/:id', :to => 'root#shape', :as => :shape, :via => :get, :defaults => {:format => 'json'}
+  match '/:locale/children_shapes/:parent_id', :to => 'root#children_shapes', :as => :children_shapes, :via => :get, :defaults => {:format => 'json'}
 
   # route needed for map data, returns districts for a region
   match '/region_districts(/:region_id)', :to => 'root#region_districts', :as => :region_districts, :via => 'get'
