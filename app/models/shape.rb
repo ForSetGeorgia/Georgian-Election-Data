@@ -26,7 +26,9 @@ class Shape < ActiveRecord::Base
 					json << ', "properties": {"common_id":"'
 					json << shape.common_id
 					json << '", "common_name":"'
-					json << shape.common_name
+					if !shape.common_name.nil?
+					  json << shape.common_name
+					end
 					json << '"}}'
 					json << ',' if i < shapes.length-1 # do not add comma for the last shape
 				end

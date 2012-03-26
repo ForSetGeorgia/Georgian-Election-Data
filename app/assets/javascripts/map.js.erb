@@ -1,55 +1,78 @@
+//= require openlayers
 //= require jquery
 //= require jquery_ujs
-//= require openlayers
 
-window.onload = map_init;
+// Define global variables which can be used in all functions
+var map, vectors;
 
-function map_init()
-{
-  // Map
-  map = new OpenLayers.Map('map', {
-		projection: 'EPSG:900913',
-    controls: []
-  });
+// Function called from body tag
+function init(){
+    var lon = 41.709981;
+    var lat = 44.792998;
+    var zoom = 2;
 
-  base = new OpenLayers.Layer.GML(
-    'Georgia', '/en/shape/1',
-    {
-        format:     OpenLayers.Format.GeoJSON,
-        isBaseLayer:true,
-        rendererOptions: {
-            zIndexing: true
+    var context = {
+        getColour: function(feature) {
+            return feature.attributes["colour"];
         }
-    }
-  );
+    };
+
+    var template = {
+		fillOpacity: 0.9,
+        strokeColor: "#555555",
+        strokeWidth: 1,
+        fillColor: "${getColour}"
+    };
+
+    var style = new OpenLayers.Style(template, {context: context});
+    var styleMap = new OpenLayers.StyleMap({'default': style});
+
+	var options = {
+        numZoomLevels: 6,
+        controls: []  // Remove all controls
+    };
+
+    // Create a new map with options defined above
+    map = new OpenLayers.Map( 'map', options );
+
+    //OpenLayers.Feature.Vector.style['default']['strokeColor'] = "#000000";
+
+    // Create polygon layer as vector features
+    // http://dev.openlayers.org/docs/files/OpenLayers/Layer/Vector-js.html
+    vectors = new OpenLayers.Layer.GML( "Internet users", "/en/shape/7589",
+                                        { format: OpenLayers.Format.GeoJSON,
+                                          styleMap: styleMap,
+                                          isBaseLayer: true,
+                                          projection: new OpenLayers.Projection("EPSG:4326"),
+                                          attribution: "<a href='http://data.un.org'>UN Data</a>" } );
+
+    map.addLayer(vectors);
+
+    map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
 
 
-  map.addLayers([base]);
 
+    // Add map controls: http://dev.openlayers.org/docs/files/OpenLayers/Control-js.html
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
+    map.addControl(new OpenLayers.Control.MousePosition());
+    map.addControl(new OpenLayers.Control.MouseDefaults());
+    map.addControl(new OpenLayers.Control.PanZoomBar());
 
-	map.layers[0].onFeatureInsert = function(feature){
-		alert('inserting feature, setting map bounds: ' + feature.geometry.getBounds());
-	};
+    var options = {
+        hover: true,
+        onSelect: serialize
+    };
 
-
+    var select = new OpenLayers.Control.SelectFeature(vectors, options);
+    map.addControl(select);
+    select.activate();
 
 }
 
-function map_styles()
-{
-  return new OpenLayers.StyleMap({
-    'default': {
-      'fillColor': '#9183B5',
-      'strokeColor': '#fff',
-      'strokeWidth': .4,
-      'fillOpacity': 1
-    },
-    'select': {
-      'strokeColor': '#fff',
-      'fillColor': '#64588C',
-      'strokeWidth': 1.1,
-      'cursor': 'pointer',
-      'fillOpacity': .6
-    }
-  });
+
+
+function serialize() {
+    var Msg = vectors.selectedFeatures[0].attributes["name"] + ": ";
+    Msg    += vectors.selectedFeatures[0].attributes["value"];
+    document.getElementById("info").innerHTML = Msg;
 }
