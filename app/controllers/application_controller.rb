@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   end
   
   def set_default_values
-    @default_shape_id = 1
+    @default_shape_id = 175
 		@default_shape_type_id = 2
   end
   

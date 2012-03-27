@@ -137,27 +137,6 @@ function click_handler (feature)
 		url += url.indexOf("?") > 0 ? "&" : "?"
 		url += "shape_id=" + feature.attributes.id;		
 	}
-alert("new url = " + url);
 	window.location.href = url;
-
-//  target = event.target || this.handlers.feature.evt.target;
-
-//  if (target === previous_region)
-//  {
-//    return;
-//  }
-//  target.style.display = "none";
-//  if (previous_region)
-//  {
-//    previous_region.style.display = "block";
-//  }
-
-//  dis_layer.format = OpenLayers.Format.GeoJSON;
-//  dis_layer.setUrl('<%= Rails.application.routes.url_helpers.region_districts_path %>/' + feature.data.id + '.json');
-
-//  map.zoomToExtent(feature.geometry.getBounds());
-//  previous_region = target;
-
-//  dis_layer.setZIndex(layer.getZIndex() + 1);
 }
 

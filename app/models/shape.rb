@@ -21,7 +21,7 @@ class Shape < ActiveRecord::Base
 			if !shapes.nil? && shapes.length > 0
 				json = '{ "type": "FeatureCollection","features": ['
 				shapes.each_with_index do |shape, i|
-					json << '{ "type": "Feature",	"geometry": '
+					json << '{ "type": "Feature", "geometry": '
 					json << shape.geometry
 					json << ', "properties": {"common_id":"'
 					json << shape.common_id
