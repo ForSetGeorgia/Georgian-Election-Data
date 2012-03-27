@@ -3,7 +3,7 @@ class RootController < ApplicationController
 
   # GET /
   # GET /.json
-  def index
+	def index
 		# get the event type id
 		event_type_id = params[:event_type].nil? ? @event_types.first.id : params[:event_type]
 
@@ -19,15 +19,34 @@ class RootController < ApplicationController
 		@events = Event.where(:event_type_id => event_type_id)
 
 		# get the shape type id
-		shape_type_id = 2
+		shape_type_id = params[:shape_type].nil? ? @shape_type_id : params[:shape_type]
 
 		# get the indicators
 		if !params[:event_id].nil?
 			@indicators = Indicator.where(:event_id => params[:event_id], :shape_type_id => shape_type_id)
 		end
 
+		# set js variables
+		# - find the selected event; if not selected just load default
+		event = nil
+		@events.each do |ev|
+			if ev.id.to_s == params[:event_id]
+				event = ev 
+				break
+			end
+		end
+		if event.nil? || event.shape_id.nil?
+			# set default
+logger.debug "no event selected or event does not have a shape assigned to it, using defaults for gon variables"
+			gon.shape_path = shape_path(:id => @default_shape_id)
+			gon.children_shapes_path = children_shapes_path(:parent_id => @default_shape_id)
+		else
+			gon.shape_path = shape_path(:id => event.shape_id)
+			gon.children_shapes_path = children_shapes_path(:parent_id => event.shape_id)
+		end
+
 		render :layout => 'map'
-  end
+	end
 
   # GET /events/shape/:id
   # GET /events/shape/:id.json

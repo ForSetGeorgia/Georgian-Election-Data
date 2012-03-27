@@ -2,11 +2,12 @@
 <html>
 <head>
   <title><%= "#{yield (:title)} - Election Map" || "Election Map" %></title>
+	<%= include_gon %>
   <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "map" %>
   <%= csrf_meta_tags %>
 </head>
-<body onload="init()">
+<body>
 
     <header class="group">
     

@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   before_filter :set_election_types
   before_filter :set_shape_types
+  before_filter :set_default_values
   
   def set_locale
     I18n.locale = params[:locale] if params[:locale]
@@ -12,6 +13,11 @@ class ApplicationController < ActionController::Base
   
   def set_election_types
     @event_types = EventType.all
+  end
+  
+  def set_default_values
+    @default_shape_id = 1
+		@default_shape_type_id = 2
   end
   
   def set_shape_types

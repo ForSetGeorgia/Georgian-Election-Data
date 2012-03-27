@@ -29,6 +29,12 @@ class Shape < ActiveRecord::Base
 					if !shape.common_name.nil?
 					  json << shape.common_name
 					end
+					json << '", "has_children":"'
+					json << shape.has_children?.to_s
+					json << '", "id":"'
+					json << shape.id.to_s
+					json << '", "shape_type_id":"'
+					json << shape.shape_type_id.to_s
 					json << '"}}'
 					json << ',' if i < shapes.length-1 # do not add comma for the last shape
 				end
