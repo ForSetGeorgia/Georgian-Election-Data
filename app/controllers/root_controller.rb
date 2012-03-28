@@ -137,12 +137,22 @@ private
 		# indicator scales
 		if !params[:indicator_id].nil?
 			gon.showing_indicators = true
-			gon.indicator_scales = ''
+			build_indicator_scale_array
 		else
 			gon.showing_indicators = false
 		end
 
   end
 
+  # build an array of indicator scales that will be used in js
+  def build_indicator_scale_array
+    if !params[:indicator_id].nil?
+      # get the scales
+      scales = IndicatorScale.where(:indicator_id => params[:indicator_id])
+      if !scales.nil? && scales.length > 0
+        gon.indicator_scales = scales
+      end
+    end
+  end
 
 end

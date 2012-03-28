@@ -18,7 +18,7 @@ function map_init(){
 
   vector_base = new OpenLayers.Layer.Vector("Base Layer", {isBaseLayer: true});
 
-  vector_child = new OpenLayers.Layer.Vector("Child Layer");
+  vector_child = new OpenLayers.Layer.Vector("Child Layer", {styleMap: build_indicator_scale_styles()});
 
   map.addLayers([vector_base, vector_child]);
 
@@ -101,9 +101,231 @@ alert("no features");
 function load_vector_child(resp){
 	if (resp.success()){
     vector_child.addFeatures(resp.features);
+	// now that the child vector is loaded, lets show the legend
+    draw_legend();
   } else {
 alert("no features");
   }
+}
+
+// Legend
+function draw_legend()
+{
+	var colors = ['#ffffff', '#FFFFB2', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#B10026'];
+    var leg = $('#legend');
+	if (gon.indicator_scales && gon.indicator_scales.length > 0){
+		for (var i=0; i<gon.indicator_scales.length; i++){
+        	leg.append('<li><span style="background: ' + colors[i] + '"></span> ' + gon.indicator_scales[i].name + '</li>');
+		}
+	} else {
+		// no legend
+		leg.innerHTML = "";
+	}
+    $('#legend-container').fadeIn('slow');
+}
+
+// build the color mapping for the indicators
+function build_indicator_scale_styles() {
+    var theme = new OpenLayers.Style();
+	var colors = ['#ffffff', '#FFFFB2', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#B10026'];
+	if (gon.indicator_scales && gon.indicator_scales.length > 0){
+		// look at each scale and create the builder
+		for (var i=0; i<gon.indicator_scales.length; i++){
+			var name = gon.indicator_scales[i].name;
+			var color = colors[i];
+
+			// look in the name for >, <, or -
+			// - if find => create appropriate comparison filter
+			// - else use ==
+		    var rule;
+			var indexG = name.indexOf(">");
+			var indexL = name.indexOf("<");
+			var indexB = name.indexOf("-");
+			if (indexG >= 0) {
+				// set to >
+				if (indexG == 0){
+					rule = build_rule(color, ">", name.slice(1));
+				}
+				else if (indexG == name.length-1) {
+					rule = build_rule(color, ">", name.slice(0, indexG-1));
+				}
+				else {
+					// > is in middle of string.  can not handle
+				}
+			} else if (indexL >= 0) {
+				// set to <
+				if (indexG == 0){
+					rule = build_rule(color, "<", name.slice(1));
+				}
+				else if (indexG == name.length-1) {
+					rule = build_rule(color, "<", name.slice(0, indexG-1));
+				}
+				else {
+					// > is in middle of string.  can not handle
+				}
+			} else if (indexB >= 0) {
+				// set to < and >
+				rule = build_rule(color, "..", name.slice(0, indexB), name.slice(indexB+1));
+			} else {
+				// set to '='
+				rule = build_rule(color, "==", name);
+			}
+			// add the rule to the theme
+			if (rule){
+			    theme.addRules([rule]);
+			}
+		}
+	}
+    
+    var stylemap = new OpenLayers.StyleMap({'default':theme, 'select': {'strokeColor': '#0000ff', 'fillColor': '#0000ff', 'strokeWidth': 2}});
+    return stylemap;
+}
+
+function build_rule(color, type, value1, value2){
+	var rule;
+	if (type == ".." && value1 && value2){
+	    rule = new OpenLayers.Rule({
+	      	filter: new OpenLayers.Filter.Comparison({
+		        type: type,
+		        property: "value",
+		        lowerBoundary: value1,
+		 		upperBoundary: value2}),
+	        symbolizer: {"Polygon": {'fillColor': color}}
+	    });
+	} else if (type && value1){
+	    rule = new OpenLayers.Rule({
+	      	filter: new OpenLayers.Filter.Comparison({
+		        type: type,
+		        property: "value",
+		        value: value1 }),
+	        symbolizer: {"Polygon": {'fillColor': color}}
+	    });
+	}
+
+	return rule;
+}
+
+function build_style() {
+    var theme = new OpenLayers.Style();
+    var rule1 = new OpenLayers.Rule({
+      	filter: new OpenLayers.Filter.Comparison({
+	        type: OpenLayers.Filter.Comparison.GREATER_THAN,
+	        property: "value",
+	        value: 500 }),
+        symbolizer: {"Polygon": {'fillColor': '#B10026'}}
+    });
+    var rule2 = new OpenLayers.Rule({
+		filter: new OpenLayers.Filter.Logical({
+	        type: OpenLayers.Filter.Logical.AND,
+	        filters: [ 
+	            new OpenLayers.Filter.Comparison({
+	                type: OpenLayers.Filter.Comparison.LESS_THAN,
+	                property: "value",
+	                value: 501
+	            }),
+	            new OpenLayers.Filter.Comparison({
+	                type: OpenLayers.Filter.Comparison.GREATER_THAN,
+	                property: "value",
+	                value: 400
+	            })
+	        ]
+	        }),
+        symbolizer: {"Polygon": {'fillColor': '#E31A1C'}}
+    });
+    var rule3 = new OpenLayers.Rule({
+		filter: new OpenLayers.Filter.Logical({
+	        type: OpenLayers.Filter.Logical.AND,
+	        filters: [ 
+	            new OpenLayers.Filter.Comparison({
+	                type: OpenLayers.Filter.Comparison.LESS_THAN,
+	                property: "value",
+	                value: 401
+	            }),
+	            new OpenLayers.Filter.Comparison({
+	                type: OpenLayers.Filter.Comparison.GREATER_THAN,
+	                property: "value",
+	                value: 300
+	            })
+	        ]
+	        }),
+        symbolizer: {"Polygon": {'fillColor': '#FC4E2A'}}
+    });
+    var rule4 = new OpenLayers.Rule({
+		filter: new OpenLayers.Filter.Logical({
+	        type: OpenLayers.Filter.Logical.AND,
+	        filters: [ 
+	            new OpenLayers.Filter.Comparison({
+	                type: OpenLayers.Filter.Comparison.LESS_THAN,
+	                property: "value",
+	                value: 301
+	            }),
+	            new OpenLayers.Filter.Comparison({
+	                type: OpenLayers.Filter.Comparison.GREATER_THAN,
+	                property: "value",
+	                value: 200
+	            })
+	        ]
+	        }),
+        symbolizer: {"Polygon": {'fillColor': '#FD8D3C'}}
+    });
+    var rule5 = new OpenLayers.Rule({
+		filter: new OpenLayers.Filter.Logical({
+	        type: OpenLayers.Filter.Logical.AND,
+	        filters: [ 
+	            new OpenLayers.Filter.Comparison({
+	                type: OpenLayers.Filter.Comparison.LESS_THAN,
+	                property: "value",
+	                value: 201
+	            }),
+	            new OpenLayers.Filter.Comparison({
+	                type: OpenLayers.Filter.Comparison.GREATER_THAN,
+	                property: "value",
+	                value: 100
+	            })
+	        ]
+	        }),
+        symbolizer: {"Polygon": {'fillColor': '#FEB24C'}}
+    });
+    var rule6 = new OpenLayers.Rule({
+		filter: new OpenLayers.Filter.Logical({
+	        type: OpenLayers.Filter.Logical.AND,
+	        filters: [ 
+	            new OpenLayers.Filter.Comparison({
+	                type: OpenLayers.Filter.Comparison.LESS_THAN,
+	                property: "value",
+	                value: 101
+	            }),
+	            new OpenLayers.Filter.Comparison({
+	                type: OpenLayers.Filter.Comparison.GREATER_THAN,
+	                property: "value",
+	                value: 0
+	            })
+	        ]
+	        }),
+        symbolizer: {"Polygon": {'fillColor': '#FED976'}}
+    });
+
+    var rule7 = new OpenLayers.Rule({
+		filter: new OpenLayers.Filter.Comparison({
+	        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+	        property: "value",
+	        value: 0
+        }),
+        symbolizer: {"Polygon": {'fillColor': '#FFFFB2'}}
+    });
+
+    var rule8 = new OpenLayers.Rule({
+		filter: new OpenLayers.Filter.Comparison({
+	        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+	        property: "value",
+	        value: "N/A"
+        }),
+        symbolizer: {"Polygon": {'fillColor': '#ffffff'}}
+    });
+    theme.addRules([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8]);
+    
+    var stylemap = new OpenLayers.StyleMap({'default':theme, 'select': {'strokeColor': '#0000ff', 'fillColor': '#0000ff', 'strokeWidth': 2}});
+    return stylemap;
 }
 
 // show the object's name
@@ -112,17 +334,11 @@ function hover_handler (feature)
 	var text = feature.attributes.common_name;
 	if (gon.showing_indicators){
 		text += ' : <span style="text-decoration:underline;">';
-		if (feature.attributes.value.length === 0){
-			text += "N/A";
-		} else {
-			text += feature.attributes.value;
-		}
+		text += feature.attributes.value;
 		text += "</span>";
 	}
   document.getElementById("map-obj-title").innerHTML = text;
 }
-
-
 
 function click_handler (feature)
 {
