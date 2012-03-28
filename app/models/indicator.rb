@@ -1,6 +1,8 @@
 class Indicator < ActiveRecord::Base
   translates :name, :name_abbrv
 
+	has_many :shapes, :foreign_key => 'shape_type_id'
+
   has_many :indicator_scales
   has_many :data
   has_many :indicator_translations
@@ -15,6 +17,23 @@ class Indicator < ActiveRecord::Base
   scope :l10n , joins(:indicator_translations).where('locale = ?',I18n.locale)
   scope :by_name , order('name').l10n
 
+
+	# the shape_type has changed, get the indicator that 
+  # matches the indicator from the last shape type
+	def self.find_new_id(parent_indicator, child_shape_type)
+		if (parent_indicator.nil? || child_shape_type.nil?)
+			return nil		
+		else
+			sql = "select ic.* "
+			sql << "from indicators as ip "
+			sql << "inner join indicators as ic on ip.event_id = ic.event_id  "
+			sql << "inner join indicator_translations as ipt on ip.id = ipt.indicator_id "
+			sql << "inner join indicator_translations as ict on ic.id = ict.indicator_id and ipt.name = ict.name and ipt.locale = ict.locale "
+			sql << "where ip.id = :parent_indicator and ic.shape_type_id = :child_shape_type "
+		
+			find_by_sql([sql, :parent_indicator => parent_indicator, :child_shape_type => child_shape_type])
+		end
+	end
 
   def self.csv_header
     "Event, Shape Type, en: Indicator Name, en: Indicator Abbrv, ka: Indicator Name, ka: Indicator Abbrv, en: Scale Name, ka: Scale Name, en: Scale Name, ka: Scale Name".split(",")

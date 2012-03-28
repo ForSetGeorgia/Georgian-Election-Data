@@ -38,7 +38,7 @@ function map_init(){
 	// create event to load the features and set the bound
 	// after protocol has read in json
 	prot.read({
-			callback: set_features_bounds
+			callback: load_vector_base
 	});
 
 	// load the child layer
@@ -56,35 +56,25 @@ function map_init(){
 	// create event to load the features and set the bound
 	// after protocol has read in json
 	prot2.read({
-			callback: set_features_bounds
+			callback: load_vector_child
 	});
 
 
   // Selection
-  var select_base = new OpenLayers.Control.SelectFeature(vector_base, {
-    hover: true,
-    onSelect: hover_handler,
-    clickFeature: click_handler
-  });
-
-  map.addControls([select_base]);
-  select_base.activate();
-
-/*
   var select_child = new OpenLayers.Control.SelectFeature(vector_child, {
     hover: true,
-    onSelect: hover_handler
+    onSelect: hover_handler,
+		clickFeature: click_handler
   });
-  map.addControls([select_base, select_child]);
-  select_base.activate();
+  map.addControls([select_child]);
   select_child.activate();
-*/
+
 
 }
 
 // load the features and set the bound
 // after protocol has read in json
-function set_features_bounds(resp){
+function load_vector_base(resp){
 	if (resp.success()){
 		var features = resp.features;         
     var bounds;
@@ -107,36 +97,68 @@ alert("no features");
 	}
 }
 
+// load the features for the children into the vector_child layer
+function load_vector_child(resp){
+	if (resp.success()){
+    vector_child.addFeatures(resp.features);
+  } else {
+alert("no features");
+  }
+}
+
 // show the object's name
 function hover_handler (feature)
 {
-  document.getElementById("map-obj-title").innerHTML = feature.attributes.common_name
+	var text = feature.attributes.common_name;
+	if (gon.showing_indicators){
+		text += ' : <span style="text-decoration:underline;">';
+		if (feature.attributes.value.length === 0){
+			text += "N/A";
+		} else {
+			text += feature.attributes.value;
+		}
+		text += "</span>";
+	}
+  document.getElementById("map-obj-title").innerHTML = text;
 }
 
 
 
 function click_handler (feature)
 {
-	// get the current url
-	url = window.location.href;
-	// look for the shape_id parameter
-	index = url.indexOf("shape_id=");
-	if (index > 0){
-		// found shape_id, now need to replace the id with that of this feature
-		indexAfter = url.indexOf("&", index+9);
-		if (indexAfter > 0){
-			// there is another paramter after this one
-			url = url.slice(0, index+9) + feature.attributes.id + url.slice(indexAfter);
-		}else {
-			// no more parameters after this one
-			url = url.slice(0, index+9) + feature.attributes.id;
-		}
-	}else {
-		// no shape_id yet, add it
-		// if this is the first query string, add the ?, otherwise add &
-		url += url.indexOf("?") > 0 ? "&" : "?"
-		url += "shape_id=" + feature.attributes.id;		
-	}
+	// add/update the shape_id parameter
+	var url = update_query_parameter(window.location.href, "shape_id", feature.attributes.id);
+
+	// add/update the shape_type_id parameter
+	url = update_query_parameter(url, "shape_type_id", feature.attributes.shape_type_id);
+
+	// add/update the parameter to indicate that the shape was clicked on
+	url = update_query_parameter(url, "shape_click", true);
+
+	// load the url
 	window.location.href = url;
 }
 
+// add/update the query paramter with the provided name and value
+function update_query_parameter(url, name, value){
+	// get the current url
+	var index = url.indexOf(name + "=");
+	var name_length = name.length+1; // use +1 to account for the '='
+	if (index > 0){
+		// found it, now need to replace the value
+		var indexAfter = url.indexOf("&", index+name_length);
+		if (indexAfter > 0){
+			// there is another paramter after this one
+			url = url.slice(0, index+name_length) + value + url.slice(indexAfter);
+		}else {
+			// no more parameters after this one
+			url = url.slice(0, index+name_length) + value;
+		}
+	}else {
+		// not in query string yet, add it
+		// if this is the first query string, add the ?, otherwise add &
+		url += url.indexOf("?") > 0 ? "&" : "?"
+		url += name + "=" + value;		
+	}
+	return url;
+}

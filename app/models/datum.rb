@@ -6,6 +6,20 @@ class Datum < ActiveRecord::Base
   validates :indicator_id, :common_id, :common_name, :value, :presence => true
 
 
+	# get the data value for a specific shape
+	def self.get_data_for_shape(shape_id, indicator_id)
+		if (indicator_id.nil? || shape_id.nil?)
+			return nil		
+		else
+			sql = "SELECT d.id, d.value FROM data as d "
+			sql << "inner join indicators as i on d.indicator_id = i.id "
+			sql << "left join shapes as s on d.common_id = s.common_id and d.common_name = s.common_name and i.shape_type_id = s.shape_type_id "
+			sql << "WHERE i.id = :indicator_id AND s.id = :shape_id"
+		
+			find_by_sql([sql, :indicator_id => indicator_id, :shape_id => shape_id])
+		end
+	end
+
   def self.csv_header
     "Event, Shape Type, Common ID, Common Name, Indicator, Value, Indicator, Value".split(",")
   end
@@ -64,7 +78,7 @@ class Datum < ActiveRecord::Base
 									datum = Datum.new
 									datum.indicator_id = indicator.first.id
 									datum.common_id = row[2].strip
-									datum.common_id = row[3].strip
+									datum.common_name = row[3].strip
 									datum.value = row[i+1].strip
 
 		logger.debug "saving record"

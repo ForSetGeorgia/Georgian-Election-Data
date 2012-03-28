@@ -3,6 +3,8 @@ class Shape < ActiveRecord::Base
   has_ancestry
   require 'csv'
 
+	has_many :indicators, :foreign_key => 'shape_type_id'
+
   has_many :shape_translations
   belongs_to :shape_type
   accepts_nested_attributes_for :shape_translations
@@ -16,25 +18,31 @@ class Shape < ActiveRecord::Base
 
 
 		# create the properly formatted json string
-		def self.build_json(shapes)
+		def self.build_json(shapes, indicator_id)
 			json = ''
 			if !shapes.nil? && shapes.length > 0
 				json = '{ "type": "FeatureCollection","features": ['
 				shapes.each_with_index do |shape, i|
 					json << '{ "type": "Feature", "geometry": '
 					json << shape.geometry
-					json << ', "properties": {"common_id":"'
+					json << ', "properties": {'
+					json << '"id":"'
+					json << shape.id.to_s
+					json << '", "common_id":"'
 					json << shape.common_id
 					json << '", "common_name":"'
-					if !shape.common_name.nil?
-					  json << shape.common_name
-					end
+				  json << shape.common_name if !shape.common_name.nil?
 					json << '", "has_children":"'
 					json << shape.has_children?.to_s
-					json << '", "id":"'
-					json << shape.id.to_s
 					json << '", "shape_type_id":"'
 					json << shape.shape_type_id.to_s
+					json << '", "value":"'
+					if !indicator_id.nil?
+						data = Datum.get_data_for_shape(shape.id, indicator_id)
+						if !data.nil? && data.length == 1
+							json << data[0].value
+						end
+					end
 					json << '"}}'
 					json << ',' if i < shapes.length-1 # do not add comma for the last shape
 				end
