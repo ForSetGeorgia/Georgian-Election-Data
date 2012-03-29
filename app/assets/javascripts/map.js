@@ -70,6 +70,12 @@ function map_init(){
   map.addControls([select_child]);
   select_child.activate();
 
+	// if indicator values are loaded, show the export button
+	if (gon.indicator_name){
+		$('#map-export').show(0);
+	} else {
+		$('#map-export').hide(0);
+	}
 
 }
 
@@ -122,7 +128,8 @@ function draw_legend()
 		// no legend
 		leg.innerHTML = "";
 	}
-    $('#legend-container').fadeIn('slow');
+//    $('#legend-container').fadeIn('slow');
+    $('#legend-container').show(0);
 }
 
 // build the color mapping for the indicators
@@ -326,7 +333,7 @@ function build_style() {
 	        property: "value",
 	        value: "No Data"
         }),
-        symbolizer: {"Polygon": {'fillColor': '#cccccc', 'fillOpacity': 1}}
+        symbolizer: {"Polygon": {'fillColor': '#eeeeee', 'fillOpacity': 1}}
     });
     theme.addRules([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8]);
     
@@ -405,4 +412,6 @@ function populate_map_box(title, indicator, value)
         box.show(0);
     }
 }
+
+
 

@@ -51,7 +51,7 @@ body
     font-family: tahoma, arial, verdana;
 }
 
-a
+a, a:link, a:hover, a:visited, a:active
 {
     color: #FFF;
     text-shadow: 1px 1px 1px #555;
@@ -367,12 +367,36 @@ a:hover
 }
 
 */
+
+#map-export { 
+	position: absolute; 
+	right: 0px; 
+	top: 375px; 
+	z-index: 9999; 
+	background: #6E6E6E; 
+	cursor: pointer; 
+	font-size: 12px; 
+	padding: 5px; 
+  box-shadow: 0 0 3px #444;
+  -moz-box-shadow: 0 0 3px #444;
+  -webkit-box-shadow: 0 0 3px #444;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  border-top-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-bottom-right-radius: 3px;
+	display: none;
+}
+
+
 /* Map Box */
 #map-title
 {
     position: absolute;
     left: 0;
     top: 0;
+		z-index: 9999; 
     min-width: 200px;
     padding: 5px 10px 6px;
     background: #A6A6A6;
@@ -882,7 +906,40 @@ label.error { display: block; margin: 0 !important; }
     margin-right: 5px
 }
 
+
+/* Legend */
+#legend-container
+{
+    display: none;
+    width: 100%;
+    background: #A6A6A6;
+}
+
+#legend
+{
+    width: 100%;
+}
+
+#legend li
+{
+    line-height: normal;
+    font-weight: bold;
+    margin: 2px 4px;
+    float: left;
+    cursor: default
+}
+
+#legend li span
+{
+    display: block;
+    float: left;
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+}
+
 /* Tables */
+/*
 table.style
 {
     width: 100%;
@@ -918,33 +975,4 @@ table.style td.even
 {
     background: #C0CBD7
 }
-
-/* Legend */
-#legend-container
-{
-    display: none
-}
-
-#legend
-{
-    width: 220px
-}
-
-#legend li
-{
-    line-height: normal;
-    font-weight: bold;
-    margin: 2px 4px;
-    float: left;
-    width: 100px;
-    cursor: default
-}
-
-#legend li span
-{
-    display: block;
-    float: left;
-    width: 14px;
-    height: 14px;
-    margin-right: 4px;
-}
+*/

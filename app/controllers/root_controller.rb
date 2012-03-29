@@ -26,6 +26,11 @@ class RootController < ApplicationController
 		if (!shape_type.nil? && shape_type.has_children?)
 			# found child, save id
 			shape_type_id = shape_type.children.first.id
+
+			# set the map title
+			# format = children shape types of parent shape type
+			shape_id = params[:shape_id].nil? ? @default_shape_id : params[:shape_id]
+			@map_title = shape_type.children.first.name.pluralize + " of " + shape_type.name + " " + Shape.get_shape_name(shape_id).common_id
 		end
 
 		# get the indicators for the children shape_type
@@ -57,6 +62,7 @@ class RootController < ApplicationController
 		# reset the shape click parameter
 		# - used to indicate that the page is loading due to a shape being clicked on
 		params[:shape_click] = false
+
 
 		# set js variables
     set_gon_variables

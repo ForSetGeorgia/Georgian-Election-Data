@@ -3,7 +3,11 @@
 <% if !@indicators.nil? && @indicators.length > 0 %>
 	<ul id="indicators" class="group">
 		<% @indicators.each do |indicator| %>
-			<li><%= link_to indicator.name_abbrv, root_path(request.parameters.merge({:indicator_id => indicator.id})), :title => indicator.name %></li>
+			<% is_active = indicator.id.to_s == params[:indicator_id] ? "active" : "not_active" %>
+			<li>
+				<%= link_to indicator.name_abbrv, root_path(request.parameters.merge({:indicator_id => indicator.id})), 
+					:title => indicator.name, :class => is_active %>
+			</li>
 		<% end %>
 	</ul>
 <% end %>
@@ -11,7 +15,8 @@
 <% if !@events.nil? && @events.length > 0 %>
 	<ul id="datasets" class="group">
 		<% @events.each_with_index do |event, i| %>
-			<li id="<%= event.name.sub(' ', '-') %>" <% if i==0%>class="first"<% end %> ><%= link_to event.name, root_path(request.parameters.merge({:event_id => event.id})), :title => event.name %><span></span></li>
+			<% is_active = event.id.to_s == params[:event_id] ? "active" : "not_active" %>
+			<li id="<%= event.name.sub(' ', '-') %>" <% if i==0%>class="first"<% elsif i==@events.count-1%>class="last"<% end %> ><%= link_to event.name, root_path(request.parameters.merge({:event_id => event.id})), :title => event.name, :class => is_active %><span></span></li>
 		<% end %>
 	</ul>
 <% end %>
@@ -20,27 +25,24 @@
 
   <div id="map"></div>
 
-	<div id="map-title">
-		Regions of Georgia
-	</div>
+	<div id="map-title"><%= @map_title%></div>
 
 	<div id="map-box" style="display: none">
 		<h1>&nbsp;</h1>
 		<div id="map-box-content"><span id="map-box-indicator"></span>&nbsp;<span id="map-box-value"></span></div>
 	</div>
-</section>
 
-<section id="map-footer">
-	<div class="legend middle group">
-		<canvas id="canvas" style="width: 735px; height: 400px; display: none"></canvas>
-		<a href="javascript:;" id="export-link"><%= image_tag "export-button.png", :alt => 'Export map', :title => 'Export map' %>Export</a>
+	<div id="map-export">
+		<a href="javascript:;" id="export-link"><%= image_tag "export-button.png", :alt => 'Export map', :title => 'Export map' %></a>
 	</div>
-	<div id="legend-container" class="legend middle group" style="margin: 0 2em">
+
+	<div id="legend-container">
 		<ul id="legend">
 		</ul>
 	</div>
 </section>
-<ul id="views" class="group">
+
+<ul id="views" class="group" style="clear:both;">
 	<li class="active"><a href="#">Regions</a></li>
 </ul>
 </section>

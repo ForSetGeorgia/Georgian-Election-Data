@@ -16,6 +16,10 @@ class Shape < ActiveRecord::Base
   scope :l10n , joins(:shape_translations).where('locale = ?',I18n.locale)
   scope :by_name , order('name').l10n
 
+	# get the name of the shape (common_id)
+	def self.get_shape_name(shape_id)
+		return shape_id.nil? ? "" : select("common_id").where(:id => shape_id).first
+	end
 
 		# create the properly formatted json string
 		def self.build_json(shapes, indicator_id)
