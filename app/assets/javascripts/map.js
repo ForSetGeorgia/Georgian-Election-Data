@@ -178,6 +178,15 @@ function build_indicator_scale_styles() {
 }
 
 function build_rule(color, type, value1, value2){
+	if (value1 && parseInt(value1))
+	{
+	    value1 = parseInt(value1);
+	}
+	if (value2 && parseInt(value2))
+	{
+	    value2 = parseInt(value2);
+	}
+
 	if (type == OpenLayers.Filter.Comparison.BETWEEN && value1 && value2){
 	    return new OpenLayers.Rule({
 			name: "between " + value1 + " and " + value2,
