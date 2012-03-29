@@ -111,7 +111,7 @@ alert("no features");
 // Legend
 function draw_legend()
 {
-	var colors = ['#ffffff', '#FFFFB2', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#B10026'];
+	var colors = ['#eeeeee', '#FFFFB2', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#B10026'];
     var leg = $('#legend');
 	if (gon.indicator_scales && gon.indicator_scales.length > 0){
 		for (var i=0; i<gon.indicator_scales.length; i++){
@@ -126,8 +126,9 @@ function draw_legend()
 
 // build the color mapping for the indicators
 function build_indicator_scale_styles() {
+	var rules = [];
     var theme = new OpenLayers.Style();
-	var colors = ['#ffffff', '#FFFFB2', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#B10026'];
+	var colors = ['#eeeeee', '#FFFFB2', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#B10026'];
 	if (gon.indicator_scales && gon.indicator_scales.length > 0){
 		// look at each scale and create the builder
 		for (var i=0; i<gon.indicator_scales.length; i++){
@@ -137,72 +138,76 @@ function build_indicator_scale_styles() {
 			// look in the name for >, <, or -
 			// - if find => create appropriate comparison filter
 			// - else use ==
-		    var rule;
 			var indexG = name.indexOf(">");
 			var indexL = name.indexOf("<");
 			var indexB = name.indexOf("-");
 			if (indexG >= 0) {
 				// set to >
 				if (indexG == 0){
-					rule = build_rule(color, ">", name.slice(1));
+					rules.push(build_rule(color, OpenLayers.Filter.Comparison.GREATER_THAN, name.slice(1)));
 				}
 				else if (indexG == name.length-1) {
-					rule = build_rule(color, ">", name.slice(0, indexG-1));
+					rules.push(build_rule(color, OpenLayers.Filter.Comparison.GREATER_THAN, name.slice(0, indexG-1)));
 				}
 				else {
 					// > is in middle of string.  can not handle
 				}
 			} else if (indexL >= 0) {
 				// set to <
-				if (indexG == 0){
-					rule = build_rule(color, "<", name.slice(1));
+				if (indexL == 0){
+					rules.push(build_rule(color, OpenLayers.Filter.Comparison.LESS_THAN, name.slice(1)));
 				}
-				else if (indexG == name.length-1) {
-					rule = build_rule(color, "<", name.slice(0, indexG-1));
+				else if (indexL == name.length-1) {
+					rules.push(build_rule(color, OpenLayers.Filter.Comparison.LESS_THAN, name.slice(0, indexL-1)));
 				}
 				else {
 					// > is in middle of string.  can not handle
 				}
 			} else if (indexB >= 0) {
-				// set to < and >
-				rule = build_rule(color, "..", name.slice(0, indexB), name.slice(indexB+1));
+				// set to between
+				rules.push(build_rule(color, OpenLayers.Filter.Comparison.BETWEEN, name.slice(0, indexB), name.slice(indexB+1)));
 			} else {
 				// set to '='
-				rule = build_rule(color, "==", name);
-			}
-			// add the rule to the theme
-			if (rule){
-			    theme.addRules([rule]);
+				rules.push(build_rule(color, OpenLayers.Filter.Comparison.EQUAL_TO, name));
 			}
 		}
 	}
-    
-    var stylemap = new OpenLayers.StyleMap({'default':theme, 'select': {'strokeColor': '#0000ff', 'fillColor': '#0000ff', 'strokeWidth': 2}});
-    return stylemap;
+
+    theme.addRules(rules);
+    return new OpenLayers.StyleMap({'default':theme, 'select': {'strokeColor': '#0000ff', 'fillColor': '#0000ff', 'strokeWidth': 2}});
 }
 
 function build_rule(color, type, value1, value2){
-	var rule;
-	if (type == ".." && value1 && value2){
-	    rule = new OpenLayers.Rule({
-	      	filter: new OpenLayers.Filter.Comparison({
-		        type: type,
-		        property: "value",
-		        lowerBoundary: value1,
-		 		upperBoundary: value2}),
-	        symbolizer: {"Polygon": {'fillColor': color}}
+	if (type == OpenLayers.Filter.Comparison.BETWEEN && value1 && value2){
+	    return new OpenLayers.Rule({
+			name: "between " + value1 + " and " + value2,
+			filter: new OpenLayers.Filter.Logical({
+		        type: OpenLayers.Filter.Logical.AND,
+		        filters: [ 
+		            new OpenLayers.Filter.Comparison({
+		                type: OpenLayers.Filter.Comparison.LESS_THAN_OR_EQUAL_TO,
+		                property: "value",
+		                value: value2
+		            }),
+		            new OpenLayers.Filter.Comparison({
+		                type: OpenLayers.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO,
+		                property: "value",
+		                value: value1
+		            })
+		        ]
+		        }),
+	        symbolizer: {"Polygon": {'fillColor': color, 'fillOpacity': 1}}
 	    });
 	} else if (type && value1){
-	    rule = new OpenLayers.Rule({
+	    return new OpenLayers.Rule({
+			name: type + " " + value1,
 	      	filter: new OpenLayers.Filter.Comparison({
 		        type: type,
 		        property: "value",
 		        value: value1 }),
-	        symbolizer: {"Polygon": {'fillColor': color}}
+	        symbolizer: {"Polygon": {'fillColor': color, 'fillOpacity': 1}}
 	    });
 	}
-
-	return rule;
 }
 
 function build_style() {
@@ -212,7 +217,7 @@ function build_style() {
 	        type: OpenLayers.Filter.Comparison.GREATER_THAN,
 	        property: "value",
 	        value: 500 }),
-        symbolizer: {"Polygon": {'fillColor': '#B10026'}}
+        symbolizer: {"Polygon": {'fillColor': '#B10026', 'fillOpacity': 1}}
     });
     var rule2 = new OpenLayers.Rule({
 		filter: new OpenLayers.Filter.Logical({
@@ -230,7 +235,7 @@ function build_style() {
 	            })
 	        ]
 	        }),
-        symbolizer: {"Polygon": {'fillColor': '#E31A1C'}}
+        symbolizer: {"Polygon": {'fillColor': '#E31A1C', 'fillOpacity': 1}}
     });
     var rule3 = new OpenLayers.Rule({
 		filter: new OpenLayers.Filter.Logical({
@@ -248,7 +253,7 @@ function build_style() {
 	            })
 	        ]
 	        }),
-        symbolizer: {"Polygon": {'fillColor': '#FC4E2A'}}
+        symbolizer: {"Polygon": {'fillColor': '#FC4E2A', 'fillOpacity': 1}}
     });
     var rule4 = new OpenLayers.Rule({
 		filter: new OpenLayers.Filter.Logical({
@@ -266,7 +271,7 @@ function build_style() {
 	            })
 	        ]
 	        }),
-        symbolizer: {"Polygon": {'fillColor': '#FD8D3C'}}
+        symbolizer: {"Polygon": {'fillColor': '#FD8D3C', 'fillOpacity': 1}}
     });
     var rule5 = new OpenLayers.Rule({
 		filter: new OpenLayers.Filter.Logical({
@@ -284,7 +289,7 @@ function build_style() {
 	            })
 	        ]
 	        }),
-        symbolizer: {"Polygon": {'fillColor': '#FEB24C'}}
+        symbolizer: {"Polygon": {'fillColor': '#FEB24C', 'fillOpacity': 1}}
     });
     var rule6 = new OpenLayers.Rule({
 		filter: new OpenLayers.Filter.Logical({
@@ -302,7 +307,7 @@ function build_style() {
 	            })
 	        ]
 	        }),
-        symbolizer: {"Polygon": {'fillColor': '#FED976'}}
+        symbolizer: {"Polygon": {'fillColor': '#FED976', 'fillOpacity': 1}}
     });
 
     var rule7 = new OpenLayers.Rule({
@@ -311,16 +316,16 @@ function build_style() {
 	        property: "value",
 	        value: 0
         }),
-        symbolizer: {"Polygon": {'fillColor': '#FFFFB2'}}
+        symbolizer: {"Polygon": {'fillColor': '#FFFFB2', 'fillOpacity': 1}}
     });
 
     var rule8 = new OpenLayers.Rule({
 		filter: new OpenLayers.Filter.Comparison({
 	        type: OpenLayers.Filter.Comparison.EQUAL_TO,
 	        property: "value",
-	        value: "N/A"
+	        value: "No Data"
         }),
-        symbolizer: {"Polygon": {'fillColor': '#ffffff'}}
+        symbolizer: {"Polygon": {'fillColor': '#cccccc', 'fillOpacity': 1}}
     });
     theme.addRules([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8]);
     
