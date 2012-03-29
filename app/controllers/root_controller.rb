@@ -34,7 +34,7 @@ class RootController < ApplicationController
 		end
 
 		# get the indicators for the children shape_type
-		if !params[:event_id].nil? && !shape_type_id.nil?
+		if !params[:event_id].nil? && !@shape_type_id.nil?
 			@indicators = Indicator.where(:event_id => params[:event_id], :shape_type_id => @shape_type_id)
 		end
 
@@ -44,7 +44,7 @@ class RootController < ApplicationController
 			if !params[:shape_click].nil? && params[:shape_click] == "true"
 				# we know the parent indicator id and the new shape type
 				# - use that to find the new indicator id
-				@child_indicator = Indicator.find_new_id(params[:indicator_id], shape_type_id, params[:locale])
+				@child_indicator = Indicator.find_new_id(params[:indicator_id], @shape_type_id, params[:locale])
 				if @child_indicator.nil? || @child_indicator.length == 0
 					# could not find a match, reset the indicator id
 					params[:indicator_id] = nil
