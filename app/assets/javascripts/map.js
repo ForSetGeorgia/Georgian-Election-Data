@@ -64,8 +64,8 @@ function map_init(){
   var select_child = new OpenLayers.Control.SelectFeature(vector_child, {
     hover: true,
     onSelect: hover_handler,
-		clickFeature: click_handler,
-		onUnselect: mouseout_handler
+		onUnselect: mouseout_handler,
+		clickFeature: click_handler
   });
   map.addControls([select_child]);
   select_child.activate();
@@ -336,17 +336,20 @@ function build_style() {
 
 function click_handler (feature)
 {
-	// add/update the shape_id parameter
-	var url = update_query_parameter(window.location.href, "shape_id", feature.attributes.id);
+	// if the feature has children, continue
+	if (feature.attributes.has_children == "true"){
+		// add/update the shape_id parameter
+		var url = update_query_parameter(window.location.href, "shape_id", feature.attributes.id);
 
-	// add/update the shape_type_id parameter
-	url = update_query_parameter(url, "shape_type_id", feature.attributes.shape_type_id);
+		// add/update the shape_type_id parameter
+		url = update_query_parameter(url, "shape_type_id", feature.attributes.shape_type_id);
 
-	// add/update the parameter to indicate that the shape was clicked on
-	url = update_query_parameter(url, "shape_click", true);
+		// add/update the parameter to indicate that the shape was clicked on
+		url = update_query_parameter(url, "shape_click", true);
 
-	// load the url
-	window.location.href = url;
+		// load the url
+		window.location.href = url;
+	}
 }
 
 // add/update the query paramter with the provided name and value
