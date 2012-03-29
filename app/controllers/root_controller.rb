@@ -22,10 +22,10 @@ class RootController < ApplicationController
 		parent_shape_type_id = params[:shape_type_id].nil? ? @default_shape_type_id : params[:shape_type_id]
 		# now get the shape type id that is the child
 		shape_type = ShapeType.find(parent_shape_type_id)
-		shape_type_id = nil
+		@shape_type_id = nil
 		if (!shape_type.nil? && shape_type.has_children?)
 			# found child, save id
-			shape_type_id = shape_type.children.first.id
+			@shape_type_id = shape_type.children.first.id
 
 			# set the map title
 			# format = children shape types of parent shape type
@@ -35,7 +35,7 @@ class RootController < ApplicationController
 
 		# get the indicators for the children shape_type
 		if !params[:event_id].nil? && !shape_type_id.nil?
-			@indicators = Indicator.where(:event_id => params[:event_id], :shape_type_id => shape_type_id)
+			@indicators = Indicator.where(:event_id => params[:event_id], :shape_type_id => @shape_type_id)
 		end
 
 		# get the indicator

@@ -42,8 +42,16 @@
 	</div>
 </section>
 
-<ul id="views" class="group" style="clear:both;">
-	<li class="active"><a href="#">Regions</a></li>
+<ul id="views" class="group">
+	<% if @shape_types.count > 0 %>
+		<% @shape_types.each do |type| %>
+			<% is_active = type.id == @shape_type_id ? "active" : "not_active" %>
+			<li class="<%= is_active %>">
+				<%= link_to type.name, root_path(request.parameters.merge({:shape_type_id => type.id})), 
+								:title => type.name %>
+			</li>
+		<% end %>
+	<% end %>
 </ul>
 </section>
 
