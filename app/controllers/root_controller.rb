@@ -33,17 +33,24 @@ class RootController < ApplicationController
 			@indicators = Indicator.where(:event_id => params[:event_id], :shape_type_id => shape_type_id)
 		end
 
+		# get the indicator
 		# if a shape was clicked on, update the indicator_id to be valid for the new shape_type
-		if !params[:shape_click].nil? && params[:shape_click] == "true"
-			# we know the parent indicator id and the new shape type
-			# - use that to find the new indicator id
-			@child_indicator = Indicator.find_new_id(params[:indicator_id], shape_type_id)
-			if @child_indicator.nil? || @child_indicator.length == 0
-				# could not find a match, reset the indicator id
-				params[:indicator_id] = nil
+		if !params[:indicator_id].nil?
+			if !params[:shape_click].nil? && params[:shape_click] == "true"
+				# we know the parent indicator id and the new shape type
+				# - use that to find the new indicator id
+				@child_indicator = Indicator.find_new_id(params[:indicator_id], shape_type_id, params[:locale])
+				if @child_indicator.nil? || @child_indicator.length == 0
+					# could not find a match, reset the indicator id
+					params[:indicator_id] = nil
+				else
+					# save the new value				
+					params[:indicator_id] = @child_indicator.first.id
+					@indicator = @child_indicator.first
+				end
 			else
-				# save the new value				
-				params[:indicator_id] = @child_indicator.first.id
+				# get the selected indicator 
+				@indicator = Indicator.find(params[:indicator_id])
 			end
 		end
 
@@ -133,6 +140,12 @@ private
 			gon.shape_path = shape_path(:id => params[:shape_id])
 			gon.children_shapes_path = children_shapes_path(:parent_id => params[:shape_id], :indicator_id => params[:indicator_id])
     end
+
+		# indicator name
+		if !@indicator.nil?
+			gon.indicator_name = @indicator.name
+			gon.indicator_name_abbrv = @indicator.name_abbrv
+		end
 
 		# indicator scales
 		if !params[:indicator_id].nil?

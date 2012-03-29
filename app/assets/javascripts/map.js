@@ -64,7 +64,8 @@ function map_init(){
   var select_child = new OpenLayers.Control.SelectFeature(vector_child, {
     hover: true,
     onSelect: hover_handler,
-		clickFeature: click_handler
+		clickFeature: click_handler,
+		onUnselect: mouseout_handler
   });
   map.addControls([select_child]);
   select_child.activate();
@@ -333,18 +334,6 @@ function build_style() {
     return stylemap;
 }
 
-// show the object's name
-function hover_handler (feature)
-{
-	var text = feature.attributes.common_name;
-	if (gon.showing_indicators){
-		text += ' : <span style="text-decoration:underline;">';
-		text += feature.attributes.value;
-		text += "</span>";
-	}
-  document.getElementById("map-obj-title").innerHTML = text;
-}
-
 function click_handler (feature)
 {
 	// add/update the shape_id parameter
@@ -383,3 +372,34 @@ function update_query_parameter(url, name, value){
 	}
 	return url;
 }
+
+// show the map box
+function hover_handler (feature)
+{
+	populate_map_box(feature.attributes.common_name, gon.indicator_name_abbrv + ":", feature.attributes.value);
+}
+
+// hide the map box
+function mouseout_handler (feature)
+{
+	$('#map-box').hide(0);
+}
+
+function populate_map_box(title, indicator, value)
+{
+		var box = $('#map-box');
+    if (title)
+    {
+        box.children('h1').text(title);
+    }
+    if (indicator && value)
+    {
+        box.children('#map-box-content').children('#map-box-indicator').text(indicator);
+        box.children('#map-box-content').children('#map-box-value').text(value);
+    }
+    if (title || (indicator && value))
+    {
+        box.show(0);
+    }
+}
+

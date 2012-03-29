@@ -314,24 +314,7 @@ a:hover
     -webkit-box-shadow: 0 0 10px #444;
     -moz-box-shadow: 0 0 10px #444
 }
-#map-obj-title { 
-	position: absolute; 
-	z-index: 9999; 
-	right: 0; top: 0; 
-    min-width: 200px;
-    padding: 5px 10px 6px;
-    background: #A6A6A6;
-    box-shadow: 0 0 3px #444;
-    -moz-box-shadow: 0 0 3px #444;
-    -webkit-box-shadow: 0 0 3px #444;
-    -webkit-border-top-left-radius: 3px;
-    -moz-border-radius-topleft: 3px;
-    border-top-left-radius: 3px;
-    -webkit-border-bottom-right-radius: 3px;
-    -moz-border-radius-bottomright: 3px;
-    border-bottom-right-radius: 3px;
-	}
-#map-zoom-out { position: absolute; left: 5px; bottom: 4px; z-index: 9999; background: rgba(0, 0, 0, .6); cursor: pointer; font-size: 12px; padding: 2px 3px; color: #fff; display: none; }
+
 /*
 #map-container
 {
@@ -385,24 +368,6 @@ a:hover
 
 */
 /* Map Box */
-#map-box
-{
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 200px;
-    box-shadow: 0 0 4px #444;
-    -moz-box-shadow: 0 0 4px #444;
-    -webkit-box-shadow: 0 0 4px #444;
-    -webkit-border-bottom-left-radius: 3px;
-    -moz-border-radius-bottomleft: 3px;
-    border-bottom-left-radius: 3px;
-    -webkit-border-top-right-radius: 3px;
-    -moz-border-radius-topright: 3px;
-    border-top-right-radius: 3px;
-    z-index: 99999;
-}
-
 #map-title
 {
     position: absolute;
@@ -422,6 +387,24 @@ a:hover
     border-bottom-right-radius: 3px;
 }
 
+#map-box
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 200px;
+    box-shadow: 0 0 4px #444;
+    -moz-box-shadow: 0 0 4px #444;
+    -webkit-box-shadow: 0 0 4px #444;
+    -webkit-border-bottom-left-radius: 3px;
+    -moz-border-radius-bottomleft: 3px;
+    border-bottom-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-right-radius: 3px;
+    z-index: 99999;
+}
+
 #map-box > h1
 {
     padding: 5px 10px;
@@ -435,7 +418,7 @@ a:hover
     border-top-right-radius: 3px;
 }
 
-#map-box > .content
+#map-box > #map-box-content
 {
     padding: 5px 7px 4px;
     background: #F0F0F0;
@@ -445,12 +428,12 @@ a:hover
     border-bottom-left-radius: 3px;
 }
 
-#map-box > .content > p
+#map-box > #map-box-content > #map-box-indicator
 {
     margin-bottom: 3px
 }
 
-#map-box > .content b
+#map-box > #map-box-content > #map-box-value
 {
     font-weight: bold !important
 }
