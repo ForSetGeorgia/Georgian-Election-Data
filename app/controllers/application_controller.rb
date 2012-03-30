@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
   
   def set_default_values
     @default_shape_id = 175
+		@default_event_id = 2
 		@default_shape_type_id = 1
   end
   

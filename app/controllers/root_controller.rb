@@ -18,6 +18,9 @@ class RootController < ApplicationController
 		# get the events
 		@events = Event.where(:event_type_id => event_type_id)
 
+		# get the current event
+		params[:event_id] = @default_event_id	if (params[:event_id].nil?)
+
 		# get the shape type id that was clicked
 		parent_shape_type_id = params[:shape_type_id].nil? ? @default_shape_type_id : params[:shape_type_id]
 		# now get the shape type id that is the child

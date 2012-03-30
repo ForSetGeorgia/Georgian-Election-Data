@@ -135,7 +135,7 @@ function draw_legend()
 // build the color mapping for the indicators
 function build_indicator_scale_styles() {
 	var rules = [];
-    var theme = new OpenLayers.Style();
+  var theme = new OpenLayers.Style();
 	var colors = ['#eeeeee', '#FFFFB2', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#B10026'];
 	if (gon.indicator_scales && gon.indicator_scales.length > 0){
 		// look at each scale and create the builder
@@ -225,129 +225,6 @@ function build_rule(color, type, value1, value2){
 	        symbolizer: {"Polygon": {'fillColor': color, 'fillOpacity': 1}}
 	    });
 	}
-}
-
-function build_style() {
-    var theme = new OpenLayers.Style();
-    var rule1 = new OpenLayers.Rule({
-      	filter: new OpenLayers.Filter.Comparison({
-	        type: OpenLayers.Filter.Comparison.GREATER_THAN,
-	        property: "value",
-	        value: 500 }),
-        symbolizer: {"Polygon": {'fillColor': '#B10026', 'fillOpacity': 1}}
-    });
-    var rule2 = new OpenLayers.Rule({
-		filter: new OpenLayers.Filter.Logical({
-	        type: OpenLayers.Filter.Logical.AND,
-	        filters: [ 
-	            new OpenLayers.Filter.Comparison({
-	                type: OpenLayers.Filter.Comparison.LESS_THAN,
-	                property: "value",
-	                value: 501
-	            }),
-	            new OpenLayers.Filter.Comparison({
-	                type: OpenLayers.Filter.Comparison.GREATER_THAN,
-	                property: "value",
-	                value: 400
-	            })
-	        ]
-	        }),
-        symbolizer: {"Polygon": {'fillColor': '#E31A1C', 'fillOpacity': 1}}
-    });
-    var rule3 = new OpenLayers.Rule({
-		filter: new OpenLayers.Filter.Logical({
-	        type: OpenLayers.Filter.Logical.AND,
-	        filters: [ 
-	            new OpenLayers.Filter.Comparison({
-	                type: OpenLayers.Filter.Comparison.LESS_THAN,
-	                property: "value",
-	                value: 401
-	            }),
-	            new OpenLayers.Filter.Comparison({
-	                type: OpenLayers.Filter.Comparison.GREATER_THAN,
-	                property: "value",
-	                value: 300
-	            })
-	        ]
-	        }),
-        symbolizer: {"Polygon": {'fillColor': '#FC4E2A', 'fillOpacity': 1}}
-    });
-    var rule4 = new OpenLayers.Rule({
-		filter: new OpenLayers.Filter.Logical({
-	        type: OpenLayers.Filter.Logical.AND,
-	        filters: [ 
-	            new OpenLayers.Filter.Comparison({
-	                type: OpenLayers.Filter.Comparison.LESS_THAN,
-	                property: "value",
-	                value: 301
-	            }),
-	            new OpenLayers.Filter.Comparison({
-	                type: OpenLayers.Filter.Comparison.GREATER_THAN,
-	                property: "value",
-	                value: 200
-	            })
-	        ]
-	        }),
-        symbolizer: {"Polygon": {'fillColor': '#FD8D3C', 'fillOpacity': 1}}
-    });
-    var rule5 = new OpenLayers.Rule({
-		filter: new OpenLayers.Filter.Logical({
-	        type: OpenLayers.Filter.Logical.AND,
-	        filters: [ 
-	            new OpenLayers.Filter.Comparison({
-	                type: OpenLayers.Filter.Comparison.LESS_THAN,
-	                property: "value",
-	                value: 201
-	            }),
-	            new OpenLayers.Filter.Comparison({
-	                type: OpenLayers.Filter.Comparison.GREATER_THAN,
-	                property: "value",
-	                value: 100
-	            })
-	        ]
-	        }),
-        symbolizer: {"Polygon": {'fillColor': '#FEB24C', 'fillOpacity': 1}}
-    });
-    var rule6 = new OpenLayers.Rule({
-		filter: new OpenLayers.Filter.Logical({
-	        type: OpenLayers.Filter.Logical.AND,
-	        filters: [ 
-	            new OpenLayers.Filter.Comparison({
-	                type: OpenLayers.Filter.Comparison.LESS_THAN,
-	                property: "value",
-	                value: 101
-	            }),
-	            new OpenLayers.Filter.Comparison({
-	                type: OpenLayers.Filter.Comparison.GREATER_THAN,
-	                property: "value",
-	                value: 0
-	            })
-	        ]
-	        }),
-        symbolizer: {"Polygon": {'fillColor': '#FED976', 'fillOpacity': 1}}
-    });
-
-    var rule7 = new OpenLayers.Rule({
-		filter: new OpenLayers.Filter.Comparison({
-	        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-	        property: "value",
-	        value: 0
-        }),
-        symbolizer: {"Polygon": {'fillColor': '#FFFFB2', 'fillOpacity': 1}}
-    });
-
-    var rule8 = new OpenLayers.Rule({
-		filter: new OpenLayers.Filter.Comparison({
-	        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-	        property: "value",
-	        value: "No Data"
-        }),
-        symbolizer: {"Polygon": {'fillColor': '#eeeeee', 'fillOpacity': 1}}
-    });
-    theme.addRules([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8]);
-    
-    var stylemap = new OpenLayers.StyleMap({'default':theme, 'select': {'strokeColor': '#0000ff', 'fillColor': '#0000ff', 'strokeWidth': 2}});
-    return stylemap;
 }
 
 function click_handler (feature)
