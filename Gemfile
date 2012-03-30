@@ -11,6 +11,7 @@ gem 'will_paginate', '3.0.3' # add paging to long lists
 gem 'gon', '2.2.2' # push data into js
 gem 'dynamic_form', '1.1.4' # to see form error messages
 gem 'ancestry', '1.2.5' # control parent/child relationships with shapes
+gem 'unicorn', '4.2.1' # http server
 
 # for debugging
 # to get debugging to work, follow directions at:
