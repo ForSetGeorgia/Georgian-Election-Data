@@ -118,9 +118,9 @@ alert("no features");
 // Legend
 function draw_legend()
 {
-	var colors = ['#eeeeee', '#FFFFB2', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#B10026'];
-    var leg = $('#legend');
-	if (gon.indicator_scales && gon.indicator_scales.length > 0){
+	var colors = gon.indicator_scale_colors;
+  var leg = $('#legend');
+	if (gon.indicator_scales && gon.indicator_scales.length > 0 && gon.indicator_scale_colors && gon.indicator_scale_colors.length > 0){
 		for (var i=0; i<gon.indicator_scales.length; i++){
         	leg.append('<li><span style="background: ' + colors[i] + '"></span> ' + gon.indicator_scales[i].name + '</li>');
 		}
@@ -136,8 +136,8 @@ function draw_legend()
 function build_indicator_scale_styles() {
 	var rules = [];
   var theme = new OpenLayers.Style();
-	var colors = ['#eeeeee', '#FFFFB2', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#B10026'];
-	if (gon.indicator_scales && gon.indicator_scales.length > 0){
+	var colors = gon.indicator_scale_colors;
+	if (gon.indicator_scales && gon.indicator_scales.length > 0 && gon.indicator_scale_colors && gon.indicator_scale_colors.length > 0){
 		// look at each scale and create the builder
 		for (var i=0; i<gon.indicator_scales.length; i++){
 			var name = gon.indicator_scales[i].name;

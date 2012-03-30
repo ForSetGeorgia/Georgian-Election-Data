@@ -21,6 +21,11 @@ class Shape < ActiveRecord::Base
 		return shape_id.nil? ? "" : select("common_id").where(:id => shape_id).first
 	end
 
+	# get the name of the shape (common_id)
+	def self.get_shape_no_geometry(shape_id)
+		return shape_id.nil? ? "" : select("id, shape_type_id, common_id, common_name, ancestry").where(:id => shape_id).first
+	end
+
 		# create the properly formatted json string
 		def self.build_json(shapes, indicator_id)
 			json = ''

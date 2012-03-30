@@ -21,6 +21,10 @@ class RootController < ApplicationController
 		# get the current event
 		params[:event_id] = @default_event_id	if (params[:event_id].nil?)
 
+		# get the shape
+		shape_id = params[:shape_id].nil? ? @default_shape_id : params[:shape_id]
+		@shape = Shape.get_shape_no_geometry(shape_id)
+
 		# get the shape type id that was clicked
 		parent_shape_type_id = params[:shape_type_id].nil? ? @default_shape_type_id : params[:shape_type_id]
 		# now get the shape type id that is the child
@@ -32,8 +36,7 @@ class RootController < ApplicationController
 
 			# set the map title
 			# format = children shape types of parent shape type
-			shape_id = params[:shape_id].nil? ? @default_shape_id : params[:shape_id]
-			@map_title = shape_type.children.first.name.pluralize + " of " + shape_type.name + " " + Shape.get_shape_name(shape_id).common_id
+			@map_title = shape_type.children.first.name.pluralize + " of " + shape_type.name + " " + Shape.get_shape_name(@shape.id).common_id
 		end
 
 		# get the indicators for the children shape_type
@@ -154,6 +157,7 @@ private
 		if !@indicator.nil?
 			gon.indicator_name = @indicator.name
 			gon.indicator_name_abbrv = @indicator.name_abbrv
+			gon.indicator_scale_colors = IndicatorScale.get_colors(@indicator.id)
 		end
 
 		# indicator scales
