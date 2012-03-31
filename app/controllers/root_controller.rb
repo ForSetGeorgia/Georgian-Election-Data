@@ -1,5 +1,5 @@
 class RootController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [:index, :shape, :children_shapes]
 
   # GET /
   # GET /.json

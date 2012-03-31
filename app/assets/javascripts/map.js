@@ -6,11 +6,21 @@ window.onload = map_init;
 
 // Define global variables which can be used in all functions
 var map, vector_base, vector_child;
+var scale_nodata = [];
+scale_nodata['name'] = "No Data";
+var color_nodata = "#cccccc";
 
 // Function called from body tag
 function map_init(){
 
+	// add no data to scales
+	if (gon.indicator_scale_colors && gon.indicator_scales){
+		gon.indicator_scale_colors.splice(0,0,color_nodata);
+		gon.indicator_scales.splice(0,0,scale_nodata);
+	}
+
 	var options = {
+		theme: null,
         controls: []  // Remove all controls
   };
 
@@ -118,15 +128,15 @@ alert("no features");
 // Legend
 function draw_legend()
 {
-	var colors = gon.indicator_scale_colors;
-  var leg = $('#legend');
+  var legend = $('#legend');
 	if (gon.indicator_scales && gon.indicator_scales.length > 0 && gon.indicator_scale_colors && gon.indicator_scale_colors.length > 0){
+
 		for (var i=0; i<gon.indicator_scales.length; i++){
-        	leg.append('<li><span style="background: ' + colors[i] + '"></span> ' + gon.indicator_scales[i].name + '</li>');
+        	legend.append('<li><span style="background: ' + gon.indicator_scale_colors[i] + '"></span> ' + gon.indicator_scales[i].name + '</li>');
 		}
 	} else {
 		// no legend
-		leg.innerHTML = "";
+		legend.innerHTML = "";
 	}
 //    $('#legend-container').fadeIn('slow');
     $('#legend-container').show(0);
@@ -136,12 +146,13 @@ function draw_legend()
 function build_indicator_scale_styles() {
 	var rules = [];
   var theme = new OpenLayers.Style();
-	var colors = gon.indicator_scale_colors;
 	if (gon.indicator_scales && gon.indicator_scales.length > 0 && gon.indicator_scale_colors && gon.indicator_scale_colors.length > 0){
+		
 		// look at each scale and create the builder
 		for (var i=0; i<gon.indicator_scales.length; i++){
+
 			var name = gon.indicator_scales[i].name;
-			var color = colors[i];
+			var color = gon.indicator_scale_colors[i];
 
 			// look in the name for >, <, or -
 			// - if find => create appropriate comparison filter
@@ -186,12 +197,10 @@ function build_indicator_scale_styles() {
 }
 
 function build_rule(color, type, value1, value2){
-	if (value1 && parseInt(value1))
-	{
+	if (value1 && parseInt(value1)) {
 	    value1 = parseInt(value1);
 	}
-	if (value2 && parseInt(value2))
-	{
+	if (value2 && parseInt(value2)) {
 	    value2 = parseInt(value2);
 	}
 

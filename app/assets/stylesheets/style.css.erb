@@ -726,18 +726,12 @@ footer > a
     font-size: 11pt;
 }
 
-#content > p
+#content p
 {
-    margin-bottom: 1.5em;
-    line-height: 1.25;
+    margin: 1em 0;
 }
 
-#content > p:last-child
-{
-    margin-bottom: 0;
-}
-
-#container > h2
+#container h2
 {
     display: block;
     margin-bottom: 1.5em;
@@ -748,6 +742,39 @@ footer > a
     text-align: center;
     text-transform: capitalize;
 }
+
+#container #content h3
+{
+    display: block;
+    margin: 1.5em 0;
+    color: #000;
+    font-size: 125%;
+    text-shadow: 0 0 25px #FFF;
+    text-decoration: none;
+}
+
+#container #content a, #container #content a:link, #container #content a:hover, #container #content a:visited, #container #content a:active
+{
+    color: #000;
+    text-shadow: none;
+}
+#container  #content a:hover
+{
+    text-decoration: none;
+}
+
+#container #content ul
+{
+    list-style: disc; 
+	margin-left: 1.5em;
+}
+#container #content ol
+{
+    list-style: decimal;
+	margin-left: 1.5em;
+}
+
+
 
 /* Forms */
 label

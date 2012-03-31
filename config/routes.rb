@@ -9,6 +9,8 @@ ElectionMap::Application.routes.draw do
   match '/:locale/shape/:id', :to => 'root#shape', :as => :shape, :via => :get, :defaults => {:format => 'json'}
   match '/:locale/children_shapes/:parent_id', :to => 'root#children_shapes', :as => :children_shapes, :via => :get, :defaults => {:format => 'json'}
 
+	match "/export/:type(/:data)" => "export#index"
+
   scope "/:locale" do
     resources :locales
   end
@@ -24,7 +26,13 @@ ElectionMap::Application.routes.draw do
   end
 
   scope "/:locale" do
-    resources :indicator_scales
+    resources :indicator_scales do
+  		collection do
+        get :upload
+        post :upload
+        get :export
+  		end
+    end
   end
   
   scope "/:locale" do

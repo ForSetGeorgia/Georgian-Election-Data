@@ -91,9 +91,7 @@ class ShapesController < ApplicationController
   # GET /shapes/upload.json
   def upload
 		if request.post? && params[:file].present?
-logger.debug "content type = #{params[:file].content_type}"
 			if params[:file].content_type == "text/csv" || params[:file].content_type == "text/plain"
-logger.debug "content type is CSV/txt, processing"
 
         msg = Shape.build_from_csv(params[:file])
         if msg.nil? || msg.length == 0
@@ -106,7 +104,6 @@ logger.debug "content type is CSV/txt, processing"
 		      redirect_to upload_shapes_path #GET
         end 
 			else
-logger.debug "content type is NOT CSV/txt, stopping"
 				flash[:notice] = "Your file must be a CSV or tab-delimited txt format."
         redirect_to upload_shapes_path #GET
 			end

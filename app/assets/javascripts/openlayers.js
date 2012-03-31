@@ -1,4 +1,128 @@
-(function(){if(window.google&&google.gears){return;}
+/*
+
+  OpenLayers.js -- OpenLayers Map Viewer Library
+
+  Copyright 2005-2011 OpenLayers Contributors, released under the FreeBSD
+  license. Please see http://svn.openlayers.org/trunk/openlayers/license.txt
+  for the full text of the license.
+
+  Includes compressed code under the following licenses:
+
+  (For uncompressed versions of the code used please see the
+  OpenLayers SVN repository: <http://openlayers.org/>)
+
+*/
+
+/* Contains portions of Prototype.js:
+ *
+ * Prototype JavaScript framework, version 1.4.0
+ *  (c) 2005 Sam Stephenson <sam@conio.net>
+ *
+ *  Prototype is freely distributable under the terms of an MIT-style license.
+ *  For details, see the Prototype web site: http://prototype.conio.net/
+ *
+ *--------------------------------------------------------------------------*/
+
+/**  
+*  
+*  Contains portions of Rico <http://openrico.org/>
+* 
+*  Copyright 2005 Sabre Airline Solutions  
+*  
+*  Licensed under the Apache License, Version 2.0 (the "License"); you
+*  may not use this file except in compliance with the License. You
+*  may obtain a copy of the License at
+*  
+*         http://www.apache.org/licenses/LICENSE-2.0  
+*  
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+*  implied. See the License for the specific language governing
+*  permissions and limitations under the License. 
+*
+**/
+
+/**
+ * Contains XMLHttpRequest.js <http://code.google.com/p/xmlhttprequest/>
+ * Copyright 2007 Sergey Ilinsky (http://www.ilinsky.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+/**
+ * Contains portions of Gears <http://code.google.com/apis/gears/>
+ *
+ * Copyright 2007, Google Inc.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *  1. Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *  3. Neither the name of Google Inc. nor the names of its contributors may be
+ *     used to endorse or promote products derived from this software without
+ *     specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+ * EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Sets up google.gears.*, which is *the only* supported way to access Gears.
+ *
+ * Circumvent this file at your own risk!
+ *
+ * In the future, Gears may automatically define google.gears.* without this
+ * file. Gears may use these objects to transparently fix bugs and compatibility
+ * issues. Applications that use the code below will continue to work seamlessly
+ * when that happens.
+ */
+
+/**
+ * OpenLayers.Util.pagePosition is based on Yahoo's getXY method, which is
+ * Copyright (c) 2006, Yahoo! Inc.
+ * All rights reserved.
+ * 
+ * Redistribution and use of this software in source and binary forms, with or
+ * without modification, are permitted provided that the following conditions
+ * are met:
+ * 
+ * * Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ * 
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * 
+ * * Neither the name of Yahoo! Inc. nor the names of its contributors may be
+ *   used to endorse or promote products derived from this software without
+ *   specific prior written permission of Yahoo! Inc.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * POSSIBILITY OF SUCH DAMAGE.
+ */(function(){if(window.google&&google.gears){return;}
 var factory=null;if(typeof GearsFactory!='undefined'){factory=new GearsFactory();}else{try{factory=new ActiveXObject('Gears.Factory');if(factory.getBuildInfo().indexOf('ie_mobile')!=-1){factory.privateSetGlobalObject(this);}}catch(e){if((typeof navigator.mimeTypes!='undefined')&&navigator.mimeTypes["application/x-googlegears"]){factory=document.createElement("object");factory.style.display="none";factory.width=0;factory.height=0;factory.type="application/x-googlegears";document.documentElement.appendChild(factory);}}}
 if(!factory){return;}
 if(!window.google){google={};}
@@ -293,7 +417,7 @@ window.clearInterval(this.interval);this.interval=null;this.playing=false;},play
 var c=f-b;value[i]=this.easing.apply(this,[this.time,b,c,this.duration]);}
 this.time++;if(this.callbacks&&this.callbacks.eachStep){this.callbacks.eachStep.call(this,value);}
 if(this.time>this.duration){this.stop();}},CLASS_NAME:"OpenLayers.Tween"});OpenLayers.Easing={CLASS_NAME:"OpenLayers.Easing"};OpenLayers.Easing.Linear={easeIn:function(t,b,c,d){return c*t/d+b;},easeOut:function(t,b,c,d){return c*t/d+b;},easeInOut:function(t,b,c,d){return c*t/d+b;},CLASS_NAME:"OpenLayers.Easing.Linear"};OpenLayers.Easing.Expo={easeIn:function(t,b,c,d){return(t==0)?b:c*Math.pow(2,10*(t/d-1))+b;},easeOut:function(t,b,c,d){return(t==d)?b+c:c*(-Math.pow(2,-10*t/d)+1)+b;},easeInOut:function(t,b,c,d){if(t==0)return b;if(t==d)return b+c;if((t/=d/2)<1)return c/2*Math.pow(2,10*(t-1))+b;return c/2*(-Math.pow(2,-10*--t)+2)+b;},CLASS_NAME:"OpenLayers.Easing.Expo"};OpenLayers.Easing.Quad={easeIn:function(t,b,c,d){return c*(t/=d)*t+b;},easeOut:function(t,b,c,d){return-c*(t/=d)*(t-2)+b;},easeInOut:function(t,b,c,d){if((t/=d/2)<1)return c/2*t*t+b;return-c/2*((--t)*(t-2)-1)+b;},CLASS_NAME:"OpenLayers.Easing.Quad"};OpenLayers.Map=OpenLayers.Class({Z_INDEX_BASE:{BaseLayer:100,Overlay:325,Feature:725,Popup:750,Control:1000},EVENT_TYPES:["preaddlayer","addlayer","preremovelayer","removelayer","changelayer","movestart","move","moveend","zoomend","popupopen","popupclose","addmarker","removemarker","clearmarkers","mouseover","mouseout","mousemove","dragstart","drag","dragend","changebaselayer"],id:null,fractionalZoom:false,events:null,allOverlays:false,div:null,dragging:false,size:null,viewPortDiv:null,layerContainerOrigin:null,layerContainerDiv:null,layers:null,controls:null,popups:null,baseLayer:null,center:null,resolution:null,zoom:0,panRatio:1.5,viewRequestID:0,tileSize:null,projection:"EPSG:4326",units:'degrees',resolutions:null,maxResolution:1.40625,minResolution:null,maxScale:null,minScale:null,maxExtent:null,minExtent:null,restrictedExtent:null,numZoomLevels:16,theme:null,displayProjection:null,fallThrough:true,panTween:null,eventListeners:null,panMethod:OpenLayers.Easing.Expo.easeOut,panDuration:50,paddingForPopups:null,minPx:null,maxPx:null,initialize:function(div,options){if(arguments.length===1&&typeof div==="object"){options=div;div=options&&options.div;}
-this.tileSize=new OpenLayers.Size(OpenLayers.Map.TILE_WIDTH,OpenLayers.Map.TILE_HEIGHT);this.maxExtent=new OpenLayers.Bounds(-180,-90,180,90);this.paddingForPopups=new OpenLayers.Bounds(15,15,15,15);this.theme=OpenLayers.defaultStyleSrc||OpenLayers._getScriptLocation()+'theme/default/style.css';OpenLayers.Util.extend(this,options);this.layers=[];this.id=OpenLayers.Util.createUniqueID("OpenLayers.Map_");this.div=OpenLayers.Util.getElement(div);if(!this.div){this.div=document.createElement("div");this.div.style.height="1px";this.div.style.width="1px";}
+this.tileSize=new OpenLayers.Size(OpenLayers.Map.TILE_WIDTH,OpenLayers.Map.TILE_HEIGHT);this.maxExtent=new OpenLayers.Bounds(-180,-90,180,90);this.paddingForPopups=new OpenLayers.Bounds(15,15,15,15);this.theme=OpenLayers._getScriptLocation()+'theme/default/style.css';OpenLayers.Util.extend(this,options);this.layers=[];this.id=OpenLayers.Util.createUniqueID("OpenLayers.Map_");this.div=OpenLayers.Util.getElement(div);if(!this.div){this.div=document.createElement("div");this.div.style.height="1px";this.div.style.width="1px";}
 OpenLayers.Element.addClass(this.div,'olMap');var id=this.id+"_OpenLayers_ViewPort";this.viewPortDiv=OpenLayers.Util.createDiv(id,null,null,null,"relative",null,"hidden");this.viewPortDiv.style.width="100%";this.viewPortDiv.style.height="100%";this.viewPortDiv.className="olMapViewport";this.div.appendChild(this.viewPortDiv);var eventsDiv=document.createElement("div");eventsDiv.id=this.id+"_events";eventsDiv.style.position="absolute";eventsDiv.style.width="100%";eventsDiv.style.height="100%";eventsDiv.style.zIndex=this.Z_INDEX_BASE.Control-1;this.viewPortDiv.appendChild(eventsDiv);this.eventsDiv=eventsDiv;this.events=new OpenLayers.Events(this,this.eventsDiv,this.EVENT_TYPES,this.fallThrough,{includeXY:true});id=this.id+"_OpenLayers_Container";this.layerContainerDiv=OpenLayers.Util.createDiv(id);this.layerContainerDiv.style.zIndex=this.Z_INDEX_BASE['Popup']-1;this.eventsDiv.appendChild(this.layerContainerDiv);this.updateSize();if(this.eventListeners instanceof Object){this.events.on(this.eventListeners);}
 this.events.register("movestart",this,this.updateSize);if(OpenLayers.String.contains(navigator.appName,"Microsoft")){this.events.register("resize",this,this.updateSize);}else{this.updateSizeDestroy=OpenLayers.Function.bind(this.updateSize,this);OpenLayers.Event.observe(window,'resize',this.updateSizeDestroy);}
 if(this.theme){var addNode=true;var nodes=document.getElementsByTagName('link');for(var i=0,len=nodes.length;i<len;++i){if(OpenLayers.Util.isEquivalentUrl(nodes.item(i).href,this.theme)){addNode=false;break;}}
@@ -450,7 +574,7 @@ if(this.map!=null){this.map.events.triggerEvent("changelayer",{layer:this,proper
 if(this.wrapDateLine){var wrappingOptions={'rightTolerance':this.getResolution(),'leftTolerance':this.getResolution()};bounds=bounds.wrapDateLine(this.maxExtent,wrappingOptions);}
 return bounds;},CLASS_NAME:"OpenLayers.Layer"});OpenLayers.Layer.SphericalMercator={getExtent:function(){var extent=null;if(this.sphericalMercator){extent=this.map.calculateBounds();}else{extent=OpenLayers.Layer.FixedZoomLevels.prototype.getExtent.apply(this);}
 return extent;},getLonLatFromViewPortPx:function(viewPortPx){return OpenLayers.Layer.prototype.getLonLatFromViewPortPx.apply(this,arguments);},getViewPortPxFromLonLat:function(lonlat){return OpenLayers.Layer.prototype.getViewPortPxFromLonLat.apply(this,arguments);},initMercatorParameters:function(){this.RESOLUTIONS=[];var maxResolution=156543.03390625;for(var zoom=0;zoom<=this.MAX_ZOOM_LEVEL;++zoom){this.RESOLUTIONS[zoom]=maxResolution/Math.pow(2,zoom);}
-this.units="m";this.projection=this.projection||"EPSG:900913";},forwardMercator:function(lon,lat){var x=lon*20037508.34/180;var y=Math.log(Math.tan((90+lat)*Math.PI/360))/(Math.PI/180);y=y*20037508.34/180;return new OpenLayers.LonLat(x,y);},inverseMercator:function(x,y){var lon=(x/20037508.34)*180;var lat=(y/20037508.34)*180;lat=180/Math.PI*(2*Math.atan(Math.exp(lat*Math.PI/180))-Math.PI/2);return new OpenLayers.LonLat(lon,lat);},projectForward:function(point){var lonlat=OpenLayers.Layer.SphericalMercator.forwardMercator(point.x,point.y);point.x=lonlat.lon;point.y=lonlat.lat;return point;},projectInverse:function(point){var lonlat=OpenLayers.Layer.SphericalMercator.inverseMercator(point.x,point.y);point.x=lonlat.lon;point.y=lonlat.lat;return point;}};(function(){var codes=["EPSG:900913","EPSG:3857","EPSG:102113","EPSG:102100"];var add=OpenLayers.Projection.addTransform;var merc=OpenLayers.Layer.SphericalMercator;var same=OpenLayers.Projection.nullTransform;var i,len,code,other,j;for(i=0,len=codes.length;i<len;++i){code=codes[i];add("EPSG:4326",code,merc.projectForward);add(code,"EPSG:4326",merc.projectInverse);for(j=i+1;j<len;++j){other=codes[j];add(code,other,same);add(other,code,same);}}})();OpenLayers.Layer.EventPane=OpenLayers.Class(OpenLayers.Layer,{smoothDragPan:true,isBaseLayer:true,isFixed:true,pane:null,mapObject:null,initialize:function(name,options){OpenLayers.Layer.prototype.initialize.apply(this,arguments);if(this.pane==null){this.pane=OpenLayers.Util.createDiv(this.div.id+"_EventPane");}},destroy:function(){this.mapObject=null;this.pane=null;OpenLayers.Layer.prototype.destroy.apply(this,arguments);},setMap:function(map){OpenLayers.Layer.prototype.setMap.apply(this,arguments);this.pane.style.zIndex=parseInt(this.div.style.zIndex)+1;this.pane.style.display=this.div.style.display;this.pane.style.width="100%";this.pane.style.height="100%";if(OpenLayers.BROWSER_NAME=="msie"){this.pane.style.background="url("+(OpenLayers.defaultMarkerSrc||OpenLayers.Util.getImagesLocation())+"blank.gif)";}
+this.units="m";this.projection=this.projection||"EPSG:900913";},forwardMercator:function(lon,lat){var x=lon*20037508.34/180;var y=Math.log(Math.tan((90+lat)*Math.PI/360))/(Math.PI/180);y=y*20037508.34/180;return new OpenLayers.LonLat(x,y);},inverseMercator:function(x,y){var lon=(x/20037508.34)*180;var lat=(y/20037508.34)*180;lat=180/Math.PI*(2*Math.atan(Math.exp(lat*Math.PI/180))-Math.PI/2);return new OpenLayers.LonLat(lon,lat);},projectForward:function(point){var lonlat=OpenLayers.Layer.SphericalMercator.forwardMercator(point.x,point.y);point.x=lonlat.lon;point.y=lonlat.lat;return point;},projectInverse:function(point){var lonlat=OpenLayers.Layer.SphericalMercator.inverseMercator(point.x,point.y);point.x=lonlat.lon;point.y=lonlat.lat;return point;}};(function(){var codes=["EPSG:900913","EPSG:3857","EPSG:102113","EPSG:102100"];var add=OpenLayers.Projection.addTransform;var merc=OpenLayers.Layer.SphericalMercator;var same=OpenLayers.Projection.nullTransform;var i,len,code,other,j;for(i=0,len=codes.length;i<len;++i){code=codes[i];add("EPSG:4326",code,merc.projectForward);add(code,"EPSG:4326",merc.projectInverse);for(j=i+1;j<len;++j){other=codes[j];add(code,other,same);add(other,code,same);}}})();OpenLayers.Layer.EventPane=OpenLayers.Class(OpenLayers.Layer,{smoothDragPan:true,isBaseLayer:true,isFixed:true,pane:null,mapObject:null,initialize:function(name,options){OpenLayers.Layer.prototype.initialize.apply(this,arguments);if(this.pane==null){this.pane=OpenLayers.Util.createDiv(this.div.id+"_EventPane");}},destroy:function(){this.mapObject=null;this.pane=null;OpenLayers.Layer.prototype.destroy.apply(this,arguments);},setMap:function(map){OpenLayers.Layer.prototype.setMap.apply(this,arguments);this.pane.style.zIndex=parseInt(this.div.style.zIndex)+1;this.pane.style.display=this.div.style.display;this.pane.style.width="100%";this.pane.style.height="100%";if(OpenLayers.BROWSER_NAME=="msie"){this.pane.style.background="url("+OpenLayers.Util.getImagesLocation()+"blank.gif)";}
 if(this.isFixed){this.map.eventsDiv.appendChild(this.pane);}else{this.map.layerContainerDiv.appendChild(this.pane);}
 this.loadMapObject();if(this.mapObject==null){this.loadWarningMessage();}},removeMap:function(map){if(this.pane&&this.pane.parentNode){this.pane.parentNode.removeChild(this.pane);}
 OpenLayers.Layer.prototype.removeMap.apply(this,arguments);},loadWarningMessage:function(){this.div.style.backgroundColor="darkblue";var viewSize=this.map.getSize();var msgW=Math.min(viewSize.w,300);var msgH=Math.min(viewSize.h,200);var size=new OpenLayers.Size(msgW,msgH);var centerPx=new OpenLayers.Pixel(viewSize.w/2,viewSize.h/2);var topLeft=centerPx.add(-size.w/2,-size.h/2);var div=OpenLayers.Util.createDiv(this.name+"_warning",topLeft,size,null,null,null,"auto");div.style.padding="7px";div.style.backgroundColor="yellow";div.innerHTML=this.getWarningHTML();this.div.appendChild(div);},getWarningHTML:function(){return"";},display:function(display){OpenLayers.Layer.prototype.display.apply(this,arguments);this.pane.style.display=this.div.style.display;},setZIndex:function(zIndex){OpenLayers.Layer.prototype.setZIndex.apply(this,arguments);this.pane.style.zIndex=parseInt(this.div.style.zIndex)+1;},moveByPx:function(dx,dy){OpenLayers.Layer.prototype.moveByPx.apply(this,arguments);if(this.dragPanMapObject){this.dragPanMapObject(dx,-dy);}else{this.moveTo(this.map.getCachedCenter());}},moveTo:function(bounds,zoomChanged,dragging){OpenLayers.Layer.prototype.moveTo.apply(this,arguments);if(this.mapObject!=null){var newCenter=this.map.getCenter();var newZoom=this.map.getZoom();if(newCenter!=null){var moOldCenter=this.getMapObjectCenter();var oldCenter=this.getOLLonLatFromMapObjectLonLat(moOldCenter);var moOldZoom=this.getMapObjectZoom();var oldZoom=this.getOLZoomFromMapObjectZoom(moOldZoom);if(!(newCenter.equals(oldCenter))||!(newZoom==oldZoom)){if(!zoomChanged&&oldCenter&&this.dragPanMapObject&&this.smoothDragPan){var oldPx=this.map.getViewPortPxFromLonLat(oldCenter);var newPx=this.map.getViewPortPxFromLonLat(newCenter);this.dragPanMapObject(newPx.x-oldPx.x,oldPx.y-newPx.y);}else{var center=this.getMapObjectLonLatFromOLLonLat(newCenter);var zoom=this.getMapObjectZoomFromOLZoom(newZoom);this.setMapObjectCenter(center,zoom,dragging);}}}}},getLonLatFromViewPortPx:function(viewPortPx){var lonlat=null;if((this.mapObject!=null)&&(this.getMapObjectCenter()!=null)){var moPixel=this.getMapObjectPixelFromOLPixel(viewPortPx);var moLonLat=this.getMapObjectLonLatFromMapObjectPixel(moPixel);lonlat=this.getOLLonLatFromMapObjectLonLat(moLonLat);}
@@ -971,13 +1095,13 @@ if(this.isLoading){this.events.triggerEvent("reload");}else{this.isLoading=true;
 return this.renderTile();},resetBackBuffer:function(){this.showTile();if(this.backBufferTile&&(this.isFirstDraw||!this.layer.numLoadingTiles)){this.isFirstDraw=false;var maxExtent=this.layer.maxExtent;var withinMaxExtent=(maxExtent&&this.bounds.intersectsBounds(maxExtent,false));if(withinMaxExtent){this.backBufferTile.position=this.position;this.backBufferTile.bounds=this.bounds;this.backBufferTile.size=this.size;this.backBufferTile.imageSize=this.layer.getImageSize(this.bounds)||this.size;this.backBufferTile.imageOffset=this.layer.imageOffset;this.backBufferTile.resolution=this.layer.getResolution();this.backBufferTile.renderTile();}
 this.backBufferTile.hide();}},renderTile:function(){if(this.layer.async){this.initImgDiv();this.layer.getURLasync(this.bounds,this,"url",this.positionImage);}else{this.url=this.layer.getURL(this.bounds);this.initImgDiv();this.positionImage();}
 return true;},positionImage:function(){if(this.layer===null){return;}
-OpenLayers.Util.modifyDOMElement(this.frame,null,this.position,this.size);var imageSize=this.layer.getImageSize(this.bounds);if(this.layerAlphaHack){OpenLayers.Util.modifyAlphaImageDiv(this.imgDiv,null,null,imageSize,this.url);}else{OpenLayers.Util.modifyDOMElement(this.imgDiv,null,null,imageSize);this.imgDiv.src=this.url;}},clear:function(){if(this.imgDiv){this.hide();if(OpenLayers.Tile.Image.useBlankTile){this.imgDiv.src=OpenLayers.defaultMarkerSrc||OpenLayers.Util.getImagesLocation()+"blank.gif";}}},initImgDiv:function(){if(this.imgDiv==null){var offset=this.layer.imageOffset;var size=this.layer.getImageSize(this.bounds);if(this.layerAlphaHack){this.imgDiv=OpenLayers.Util.createAlphaImageDiv(null,offset,size,null,"relative",null,null,null,true);}else{this.imgDiv=OpenLayers.Util.createImage(null,offset,size,null,"relative",null,null,true);}
+OpenLayers.Util.modifyDOMElement(this.frame,null,this.position,this.size);var imageSize=this.layer.getImageSize(this.bounds);if(this.layerAlphaHack){OpenLayers.Util.modifyAlphaImageDiv(this.imgDiv,null,null,imageSize,this.url);}else{OpenLayers.Util.modifyDOMElement(this.imgDiv,null,null,imageSize);this.imgDiv.src=this.url;}},clear:function(){if(this.imgDiv){this.hide();if(OpenLayers.Tile.Image.useBlankTile){this.imgDiv.src=OpenLayers.Util.getImagesLocation()+"blank.gif";}}},initImgDiv:function(){if(this.imgDiv==null){var offset=this.layer.imageOffset;var size=this.layer.getImageSize(this.bounds);if(this.layerAlphaHack){this.imgDiv=OpenLayers.Util.createAlphaImageDiv(null,offset,size,null,"relative",null,null,null,true);}else{this.imgDiv=OpenLayers.Util.createImage(null,offset,size,null,"relative",null,null,true);}
 if(OpenLayers.Util.isArray(this.layer.url)){this.imgDiv.urls=this.layer.url.slice();}
 this.imgDiv.className='olTileImage';this.frame.style.zIndex=this.isBackBuffer?0:1;this.frame.appendChild(this.imgDiv);this.layer.div.appendChild(this.frame);if(this.layer.opacity!=null){OpenLayers.Util.modifyDOMElement(this.imgDiv,null,null,null,null,null,null,this.layer.opacity);}
 this.imgDiv.map=this.layer.map;var onload=function(){if(this.isLoading){this.isLoading=false;this.events.triggerEvent("loadend");}};if(this.layerAlphaHack){OpenLayers.Event.observe(this.imgDiv.childNodes[0],'load',OpenLayers.Function.bind(onload,this));}else{OpenLayers.Event.observe(this.imgDiv,'load',OpenLayers.Function.bind(onload,this));}
 var onerror=function(){if(this.imgDiv._attempts>OpenLayers.IMAGE_RELOAD_ATTEMPTS){onload.call(this);}};OpenLayers.Event.observe(this.imgDiv,"error",OpenLayers.Function.bind(onerror,this));}
 this.imgDiv.viewRequestID=this.layer.map.viewRequestID;},removeImgDiv:function(){OpenLayers.Event.stopObservingElement(this.imgDiv);if(this.imgDiv.parentNode==this.frame){this.frame.removeChild(this.imgDiv);this.imgDiv.map=null;}
-this.imgDiv.urls=null;var child=this.imgDiv.firstChild;if(child){OpenLayers.Event.stopObservingElement(child);this.imgDiv.removeChild(child);delete child;}else{this.imgDiv.src=OpenLayers.defaultMarkerSrc||OpenLayers.Util.getImagesLocation()+"blank.gif";}},checkImgURL:function(){if(this.layer){var loaded=this.layerAlphaHack?this.imgDiv.firstChild.src:this.imgDiv.src;if(!OpenLayers.Util.isEquivalentUrl(loaded,this.url)){this.hide();}}},startTransition:function(){if(!this.backBufferTile||!this.backBufferTile.imgDiv){return;}
+this.imgDiv.urls=null;var child=this.imgDiv.firstChild;if(child){OpenLayers.Event.stopObservingElement(child);this.imgDiv.removeChild(child);delete child;}else{this.imgDiv.src=OpenLayers.Util.getImagesLocation()+"blank.gif";}},checkImgURL:function(){if(this.layer){var loaded=this.layerAlphaHack?this.imgDiv.firstChild.src:this.imgDiv.src;if(!OpenLayers.Util.isEquivalentUrl(loaded,this.url)){this.hide();}}},startTransition:function(){if(!this.backBufferTile||!this.backBufferTile.imgDiv){return;}
 var ratio=1;if(this.backBufferTile.resolution){ratio=this.backBufferTile.resolution/this.layer.getResolution();}
 if(ratio!=1){if(this.layer.transitionEffect=='resize'){var upperLeft=new OpenLayers.LonLat(this.backBufferTile.bounds.left,this.backBufferTile.bounds.top);var size=new OpenLayers.Size(this.backBufferTile.size.w*ratio,this.backBufferTile.size.h*ratio);var px=this.layer.map.getLayerPxFromLonLat(upperLeft);OpenLayers.Util.modifyDOMElement(this.backBufferTile.frame,null,px,size);var imageSize=this.backBufferTile.imageSize;imageSize=new OpenLayers.Size(imageSize.w*ratio,imageSize.h*ratio);var imageOffset=this.backBufferTile.imageOffset;if(imageOffset){imageOffset=new OpenLayers.Pixel(imageOffset.x*ratio,imageOffset.y*ratio);}
 OpenLayers.Util.modifyDOMElement(this.backBufferTile.imgDiv,null,imageOffset,imageSize);this.backBufferTile.show();}}else{if(this.layer.singleTile){this.backBufferTile.show();}else{this.backBufferTile.hide();}}},show:function(){this.frame.style.display='';if(OpenLayers.Util.indexOf(this.layer.SUPPORTED_TRANSITIONS,this.layer.transitionEffect)!=-1){if(OpenLayers.IS_GECKO===true){this.frame.scrollLeft=this.frame.scrollLeft;}}},hide:function(){this.frame.style.display='none';},CLASS_NAME:"OpenLayers.Tile.Image"});OpenLayers.Tile.Image.useBlankTile=(OpenLayers.BROWSER_NAME=="safari"||OpenLayers.BROWSER_NAME=="opera");OpenLayers.Format.ArcXML=OpenLayers.Class(OpenLayers.Format.XML,{fontStyleKeys:['antialiasing','blockout','font','fontcolor','fontsize','fontstyle','glowing','interval','outline','printmode','shadow','transparency'],request:null,response:null,initialize:function(options){this.request=new OpenLayers.Format.ArcXML.Request();this.response=new OpenLayers.Format.ArcXML.Response();if(options){if(options.requesttype=="feature"){this.request.get_image=null;var qry=this.request.get_feature.query;this.addCoordSys(qry.featurecoordsys,options.featureCoordSys);this.addCoordSys(qry.filtercoordsys,options.filterCoordSys);if(options.polygon){qry.isspatial=true;qry.spatialfilter.polygon=options.polygon;}else if(options.envelope){qry.isspatial=true;qry.spatialfilter.envelope={minx:0,miny:0,maxx:0,maxy:0};this.parseEnvelope(qry.spatialfilter.envelope,options.envelope);}}else if(options.requesttype=="image"){this.request.get_feature=null;var props=this.request.get_image.properties;this.parseEnvelope(props.envelope,options.envelope);this.addLayers(props.layerlist,options.layers);this.addImageSize(props.imagesize,options.tileSize);this.addCoordSys(props.featurecoordsys,options.featureCoordSys);this.addCoordSys(props.filtercoordsys,options.filterCoordSys);}else{this.request=null;}}
@@ -1353,7 +1477,7 @@ return OpenLayers.String.format(url,xyz);},getXYZ:function(bounds){var res=this.
 {x=((x%limit)+limit)%limit;}
 return{'x':x,'y':y,'z':z};},setMap:function(map){OpenLayers.Layer.Grid.prototype.setMap.apply(this,arguments);if(!this.tileOrigin){this.tileOrigin=new OpenLayers.LonLat(this.maxExtent.left,this.maxExtent.bottom);}},CLASS_NAME:"OpenLayers.Layer.XYZ"});OpenLayers.Layer.OSM=OpenLayers.Class(OpenLayers.Layer.XYZ,{name:"OpenStreetMap",attribution:"Data CC-By-SA by <a href='http://openstreetmap.org/'>OpenStreetMap</a>",sphericalMercator:true,url:'http://tile.openstreetmap.org/${z}/${x}/${y}.png',clone:function(obj){if(obj==null){obj=new OpenLayers.Layer.OSM(this.name,this.url,this.getOptions());}
 obj=OpenLayers.Layer.XYZ.prototype.clone.apply(this,[obj]);return obj;},wrapDateLine:true,CLASS_NAME:"OpenLayers.Layer.OSM"});OpenLayers.Layer.Bing=OpenLayers.Class(OpenLayers.Layer.XYZ,{serverResolutions:[156543.03390625,78271.516953125,39135.7584765625,19567.87923828125,9783.939619140625,4891.9698095703125,2445.9849047851562,1222.9924523925781,611.4962261962891,305.74811309814453,152.87405654907226,76.43702827453613,38.218514137268066,19.109257068634033,9.554628534317017,4.777314267158508,2.388657133579254,1.194328566789627,0.5971642833948135,0.29858214169740677,0.14929107084870338,0.07464553542435169],attributionTemplate:'<span class="olBingAttribution ${type}">'+'<div><a target="_blank" href="http://www.bing.com/maps/">'+'<img src="${logo}" /></a></div>${copyrights}'+'<a style="white-space: nowrap" target="_blank" '+'href="http://www.microsoft.com/maps/product/terms.html">'+'Terms of Use</a></span>',metadata:null,type:"Road",metadataParams:null,initialize:function(options){options=OpenLayers.Util.applyDefaults({sphericalMercator:true},options);var name=options.name||"Bing "+(options.type||this.type);var newArgs=[name,null,options];OpenLayers.Layer.XYZ.prototype.initialize.apply(this,newArgs);this.loadMetadata();},loadMetadata:function(){this._callbackId="_callback_"+this.id.replace(/\./g,"_");window[this._callbackId]=OpenLayers.Function.bind(OpenLayers.Layer.Bing.processMetadata,this);var params=OpenLayers.Util.applyDefaults({key:this.key,jsonp:this._callbackId,include:"ImageryProviders"},this.metadataParams);var url="http://dev.virtualearth.net/REST/v1/Imagery/Metadata/"+
-this.type+"?"+OpenLayers.Util.getParameterString(params);var script=document.createElement("script");script.type="text/javascript";script.src=url;script.id=this._callbackId;document.getElementsByTagName("head")[0].appendChild(script);},initLayer:function(){var res=this.metadata.resourceSets[0].resources[0];var url=res.imageUrl.replace("{quadkey}","${quadkey}");this.url=[];for(var i=0;i<res.imageUrlSubdomains.length;++i){this.url.push(url.replace("{subdomain}",res.imageUrlSubdomains[i]));};this.addOptions({maxResolution:Math.min(this.serverResolutions[res.zoomMin],this.maxResolution),zoomOffset:res.zoomMin,numZoomLevels:Math.min(res.zoomMax+1-res.zoomMin,this.numZoomLevels)},true);},getURL:function(bounds){if(!this.url){return OpenLayers.defaultMarkerSrc||OpenLayers.Util.getImagesLocation()+"blank.gif";}
+this.type+"?"+OpenLayers.Util.getParameterString(params);var script=document.createElement("script");script.type="text/javascript";script.src=url;script.id=this._callbackId;document.getElementsByTagName("head")[0].appendChild(script);},initLayer:function(){var res=this.metadata.resourceSets[0].resources[0];var url=res.imageUrl.replace("{quadkey}","${quadkey}");this.url=[];for(var i=0;i<res.imageUrlSubdomains.length;++i){this.url.push(url.replace("{subdomain}",res.imageUrlSubdomains[i]));};this.addOptions({maxResolution:Math.min(this.serverResolutions[res.zoomMin],this.maxResolution),zoomOffset:res.zoomMin,numZoomLevels:Math.min(res.zoomMax+1-res.zoomMin,this.numZoomLevels)},true);},getURL:function(bounds){if(!this.url){return OpenLayers.Util.getImagesLocation()+"blank.gif";}
 var xyz=this.getXYZ(bounds),x=xyz.x,y=xyz.y,z=xyz.z;var quadDigits=[];for(var i=z;i>0;--i){var digit='0';var mask=1<<(i-1);if((x&mask)!=0){digit++;}
 if((y&mask)!=0){digit++;digit++;}
 quadDigits.push(digit);}
@@ -2111,7 +2235,7 @@ var center=mapBounds.getCenterLonLat();var dataWidth=mapBounds.getWidth()*this.r
 this.layer.events.triggerEvent("loadstart");this.response=this.layer.protocol.read(OpenLayers.Util.applyDefaults({filter:this.createFilter(),callback:this.merge,scope:this},options));},createFilter:function(){var filter=new OpenLayers.Filter.Spatial({type:OpenLayers.Filter.Spatial.BBOX,value:this.bounds,projection:this.layer.projection});if(this.layer.filter){filter=new OpenLayers.Filter.Logical({type:OpenLayers.Filter.Logical.AND,filters:[this.layer.filter,filter]});}
 return filter;},merge:function(resp){this.layer.destroyFeatures();var features=resp.features;if(features&&features.length>0){var remote=this.layer.projection;var local=this.layer.map.getProjectionObject();if(!local.equals(remote)){var geom;for(var i=0,len=features.length;i<len;++i){geom=features[i].geometry;if(geom){geom.transform(remote,local);}}}
 this.layer.addFeatures(features);}
-this.response=null;this.layer.events.triggerEvent("loadend");},CLASS_NAME:"OpenLayers.Strategy.BBOX"});OpenLayers.Layer.WorldWind=OpenLayers.Class(OpenLayers.Layer.Grid,{DEFAULT_PARAMS:{},isBaseLayer:true,lzd:null,zoomLevels:null,initialize:function(name,url,lzd,zoomLevels,params,options){this.lzd=lzd;this.zoomLevels=zoomLevels;var newArguments=[];newArguments.push(name,url,params,options);OpenLayers.Layer.Grid.prototype.initialize.apply(this,newArguments);this.params=OpenLayers.Util.applyDefaults(this.params,this.DEFAULT_PARAMS);},getZoom:function(){var zoom=this.map.getZoom();var extent=this.map.getMaxExtent();zoom=zoom-Math.log(this.maxResolution/(this.lzd/512))/Math.log(2);return zoom;},getURL:function(bounds){bounds=this.adjustBounds(bounds);var zoom=this.getZoom();var extent=this.map.getMaxExtent();var deg=this.lzd/Math.pow(2,this.getZoom());var x=Math.floor((bounds.left-extent.left)/deg);var y=Math.floor((bounds.bottom-extent.bottom)/deg);if(this.map.getResolution()<=(this.lzd/512)&&this.getZoom()<=this.zoomLevels){return this.getFullRequestString({L:zoom,X:x,Y:y});}else{return OpenLayers.defaultMarkerSrc||OpenLayers.Util.getImagesLocation()+"blank.gif";}},CLASS_NAME:"OpenLayers.Layer.WorldWind"});OpenLayers.Format.WMTSCapabilities=OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,{defaultVersion:"1.0.0",yx:{"urn:ogc:def:crs:EPSG::4326":true},createLayer:function(capabilities,config){var layer;var required={layer:true,matrixSet:true};for(var prop in required){if(!(prop in config)){throw new Error("Missing property '"+prop+"' in layer configuration.");}}
+this.response=null;this.layer.events.triggerEvent("loadend");},CLASS_NAME:"OpenLayers.Strategy.BBOX"});OpenLayers.Layer.WorldWind=OpenLayers.Class(OpenLayers.Layer.Grid,{DEFAULT_PARAMS:{},isBaseLayer:true,lzd:null,zoomLevels:null,initialize:function(name,url,lzd,zoomLevels,params,options){this.lzd=lzd;this.zoomLevels=zoomLevels;var newArguments=[];newArguments.push(name,url,params,options);OpenLayers.Layer.Grid.prototype.initialize.apply(this,newArguments);this.params=OpenLayers.Util.applyDefaults(this.params,this.DEFAULT_PARAMS);},getZoom:function(){var zoom=this.map.getZoom();var extent=this.map.getMaxExtent();zoom=zoom-Math.log(this.maxResolution/(this.lzd/512))/Math.log(2);return zoom;},getURL:function(bounds){bounds=this.adjustBounds(bounds);var zoom=this.getZoom();var extent=this.map.getMaxExtent();var deg=this.lzd/Math.pow(2,this.getZoom());var x=Math.floor((bounds.left-extent.left)/deg);var y=Math.floor((bounds.bottom-extent.bottom)/deg);if(this.map.getResolution()<=(this.lzd/512)&&this.getZoom()<=this.zoomLevels){return this.getFullRequestString({L:zoom,X:x,Y:y});}else{return OpenLayers.Util.getImagesLocation()+"blank.gif";}},CLASS_NAME:"OpenLayers.Layer.WorldWind"});OpenLayers.Format.WMTSCapabilities=OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,{defaultVersion:"1.0.0",yx:{"urn:ogc:def:crs:EPSG::4326":true},createLayer:function(capabilities,config){var layer;var required={layer:true,matrixSet:true};for(var prop in required){if(!(prop in config)){throw new Error("Missing property '"+prop+"' in layer configuration.");}}
 var contents=capabilities.contents;var matrixSet=contents.tileMatrixSets[config.matrixSet];var layers=contents.layers;var layerDef;for(var i=0,ii=contents.layers.length;i<ii;++i){if(contents.layers[i].identifier===config.layer){layerDef=contents.layers[i];break;}}
 if(layerDef&&matrixSet){var style;for(var i=0,ii=layerDef.styles.length;i<ii;++i){style=layerDef.styles[i];if(style.isDefault){break;}}
 layer=new OpenLayers.Layer.WMTS(OpenLayers.Util.applyDefaults(config,{url:capabilities.operationsMetadata.GetTile.dcp.http.get,name:layerDef.title,style:style.identifier,matrixIds:matrixSet.matrixIds}));}

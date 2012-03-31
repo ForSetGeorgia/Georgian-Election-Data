@@ -1,5 +1,6 @@
 class Indicator < ActiveRecord::Base
   translates :name, :name_abbrv
+  require 'csv'
 
 	has_many :shapes, :foreign_key => 'shape_type_id'
 
@@ -90,13 +91,21 @@ class Indicator < ActiveRecord::Base
 								i+=2 # move on to the next set of indicator scales
 					    end
 					  end
-		logger.debug "saving record"
-					  # Save if valid 
-				    if ind.valid?
-				      ind.save
+					  # only save if there were between 3 and 9 scales
+					  if i==6 || i >= 10 || i <= 22
+  		logger.debug "saving record"
+  					  # Save if valid 
+  				    if ind.valid?
+  				      ind.save
+  				    else
+  				      # an error occurred, stop
+  				      msg = "Row #{n} is not valid."
+  				      raise ActiveRecord::Rollback
+  				      return msg
+  				    end
 				    else
-				      # an error occurred, stop
-				      msg = "Row #{n} is not valid."
+				      # scales out of range, stop
+				      msg = "Row #{n} must have between 3 and 9 indicator scales."
 				      raise ActiveRecord::Rollback
 				      return msg
 				    end
