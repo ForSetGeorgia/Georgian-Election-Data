@@ -77,7 +77,6 @@ class Datum < ActiveRecord::Base
     	logger.debug "+++ deleting existing datum"
                     Datum.destroy (alreadyExists[0].id)
                     alreadyExists = nil
-                  end
                 end
 
 								if alreadyExists.nil? || alreadyExists.length == 0

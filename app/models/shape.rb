@@ -143,7 +143,6 @@ class Shape < ActiveRecord::Base
       	logger.debug "+++ deleting existing shape"
                       Shape.destroy (alreadyExists[0].id)
                       alreadyExists = nil
-                    end
                   end
 
                   if alreadyExists.nil? || alreadyExists.length == 0
