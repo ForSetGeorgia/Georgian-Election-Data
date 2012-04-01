@@ -24,7 +24,7 @@ class Datum < ActiveRecord::Base
     "Event, Shape Type, Common ID, Common Name, Indicator, Value, Indicator, Value".split(",")
   end
 
-  def self.build_from_csv(file)
+  def self.build_from_csv(file, deleteExistingRecord)
     infile = file.read
     n, msg = 0, ""
 
@@ -72,6 +72,14 @@ class Datum < ActiveRecord::Base
 								alreadyExists = Datum.where(:indicator_id => indicator.first.id, 
 									:common_id => row[2].strip, :common_name => row[3].strip)
 					
+                # if the datum already exists and deleteExistingRecord is true, delete the datum
+                if !alreadyExists.nil? && alreadyExists.length > 0 && deleteExistingRecord
+    	logger.debug "+++ deleting existing datum"
+                    Datum.destroy (alreadyExists[0].id)
+                    alreadyExists = nil
+                  end
+                end
+
 								if alreadyExists.nil? || alreadyExists.length == 0
 			logger.debug "data does not exist, save it"
 									# populate record

@@ -3,9 +3,7 @@ class Shape < ActiveRecord::Base
   has_ancestry
   require 'csv'
 
-	has_many :indicators, :foreign_key => 'shape_type_id'
-
-  has_many :shape_translations
+  has_many :shape_translations, :dependent => :destroy
   belongs_to :shape_type
   accepts_nested_attributes_for :shape_translations
   attr_accessible :shape_type_id, :common_id, :common_name, :geometry, :shape_translations_attributes
@@ -62,7 +60,7 @@ class Shape < ActiveRecord::Base
       "Event, Shape Type, Parent ID, Common ID, Common Name, Geometry".split(",")
     end
 
-    def self.build_from_csv(file)
+    def self.build_from_csv(file, deleteExistingRecord)
 	    infile = file.read
 	    n, msg = 0, ""
 
@@ -139,6 +137,15 @@ class Shape < ActiveRecord::Base
       logger.debug "chekcing if row already in db"
                   alreadyExists = root.descendants.where ({:shape_type_id => shape_type.id, 
 											:common_id => row[3].strip, :common_name => row[4].strip, :geometry => row[5].strip})
+
+                  # if the shape already exists and deleteExistingRecord is true, delete the sha[e]
+                  if !alreadyExists.nil? && alreadyExists.length > 0 && deleteExistingRecord
+      	logger.debug "+++ deleting existing shape"
+                      Shape.destroy (alreadyExists[0].id)
+                      alreadyExists = nil
+                    end
+                  end
+
                   if alreadyExists.nil? || alreadyExists.length == 0
       logger.debug "row is not in db, get parent shape type"
                     # record does not exist yet

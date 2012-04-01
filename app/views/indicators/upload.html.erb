@@ -56,6 +56,10 @@
 			CSV File to Upload
 			<%= file_field_tag 'file', :accept => 'text/csv,text/plain' %>
 		</p>
+		<p>
+			<%= check_box_tag(:delete_records) %>
+			<%= label_tag(:delete_records, "Delete existing indicators and their data records on file for the provided Event and Shape Type(s)") %>
+		</p>
 	</div>
 	<div>
 	  <%= submit_tag "Process CSV File" %>

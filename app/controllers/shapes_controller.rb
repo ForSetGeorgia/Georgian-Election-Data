@@ -93,7 +93,7 @@ class ShapesController < ApplicationController
 		if request.post? && params[:file].present?
 			if params[:file].content_type == "text/csv" || params[:file].content_type == "text/plain"
 
-        msg = Shape.build_from_csv(params[:file])
+        msg = Shape.build_from_csv(params[:file], params[:delete_records].nil? ? nil : true)
         if msg.nil? || msg.length == 0
           # no errors, success!
 					flash[:notice] = "Your file was successfully processed!"

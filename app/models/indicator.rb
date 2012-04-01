@@ -2,11 +2,9 @@ class Indicator < ActiveRecord::Base
   translates :name, :name_abbrv
   require 'csv'
 
-	has_many :shapes, :foreign_key => 'shape_type_id'
-
-  has_many :indicator_scales
-  has_many :data
-  has_many :indicator_translations
+  has_many :indicator_translations, :dependent => :destroy
+  has_many :indicator_scales, :dependent => :destroy
+  has_many :data, :dependent => :destroy
   belongs_to :event
   belongs_to :shape_type
   accepts_nested_attributes_for :indicator_translations
@@ -40,7 +38,7 @@ class Indicator < ActiveRecord::Base
     "Event, Shape Type, en: Indicator Name, en: Indicator Abbrv, ka: Indicator Name, ka: Indicator Abbrv, en: Scale Name, ka: Scale Name, Scale Color, en: Scale Name, ka: Scale Name, Scale Color".split(",")
   end
 
-  def self.build_from_csv(file)
+  def self.build_from_csv(file, deleteExistingRecord)
     infile = file.read
     n, msg = 0, ""
     index_first_scale = 6
@@ -77,6 +75,13 @@ class Indicator < ActiveRecord::Base
   					alreadyExists = Indicator.includes(:indicator_translations)
   					  .where('indicators.event_id = ? and indicators.shape_type_id = ? and indicator_translations.locale="en" and indicator_translations.name= ?', 
   					    event.id, shape_type.id, row[2].strip)
+					
+            # if the indicator already exists and deleteExistingRecord is true, delete the indicator
+            if !alreadyExists.nil? && alreadyExists.length > 0 && deleteExistingRecord
+	logger.debug "+++ deleting existing indicator"
+                Indicator.destroy (alreadyExists[0].id)
+                alreadyExists = nil
+            end
 					
   					if alreadyExists.nil? || alreadyExists.length == 0
   	logger.debug "record does not exist, populate obj"

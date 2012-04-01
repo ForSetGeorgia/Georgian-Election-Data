@@ -3,7 +3,7 @@ class IndicatorScale < ActiveRecord::Base
   require 'csv'
 
   belongs_to :indicator
-  has_many :indicator_scale_translations
+  has_many :indicator_scale_translations, :dependent => :destroy
   accepts_nested_attributes_for :indicator_scale_translations
   attr_accessible :indicator_id, :color, :indicator_scale_translations_attributes
   attr_accessor :locale
@@ -54,7 +54,7 @@ logger.debug "+++ num of indicator scales = #{num_levels}"
     "Event, Shape Type, en: Indicator Name, en: Scale Name, ka: Scale Name, Scale Color, en: Scale Name, ka: Scale Name, Scale Color".split(",")
   end
 
-  def self.build_from_csv(file, deleteExistingScales)
+  def self.build_from_csv(file, deleteExistingRecord)
     infile = file.read
     n, msg = 0, ""
     index_first_scale = 3
@@ -92,18 +92,17 @@ logger.debug "+++ num of indicator scales = #{num_levels}"
   						.where('indicators.event_id = ? and indicators.shape_type_id = ? and indicator_translations.locale="en" and indicator_translations.name= ?', 
   							event.id, shape_type.id, row[2].strip)
 					
+            # if the indicator already exists and deleteExistingRecord is true, delete the indicator scales
+            if !alreadyExists.nil? && alreadyExists.length > 0 && deleteExistingRecord
+	logger.debug "+++ deleting existing indicator scales"
+                IndicatorScale.destroy_all (["indicator_id = ?", alreadyExists[0].id])
+                alreadyExists[0].indicator_scales = []
+            end
+
   					if !alreadyExists.nil? && alreadyExists.length > 0
   	logger.debug "+++ indicator record exists, populate scales"
   	          indicator = alreadyExists[0]
-              if deleteExistingScales
-                # if the indicator already has scales, delete them
-                if indicator.indicator_scales.length > 0
-  	logger.debug "+++ deleting existing idicator scales"
-                  # delete the scales
-                  IndicatorScale.delete_all (["indicator_id = ?", indicator.id])
-                  indicator.indicator_scales = []
-                end
-              end
+
   						# populate record
   					  finishedScales = false # keep looping until find empty cell
   					  i = index_first_scale # where first scale starts
