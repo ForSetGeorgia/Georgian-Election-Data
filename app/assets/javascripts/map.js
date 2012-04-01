@@ -7,8 +7,9 @@ window.onload = map_init;
 // Define global variables which can be used in all functions
 var map, vector_base, vector_child;
 var scale_nodata = [];
-scale_nodata['name'] = "No Data";
 var color_nodata = "#cccccc";
+scale_nodata['name'] = "No Data";
+scale_nodata['color'] = color_nodata;
 
 // Function called from body tag
 function map_init(){
@@ -130,9 +131,16 @@ function draw_legend()
 {
   var legend = $('#legend');
 	if (gon.indicator_scales && gon.indicator_scales.length > 0 && gon.indicator_scale_colors && gon.indicator_scale_colors.length > 0){
-
+		var color = "";
 		for (var i=0; i<gon.indicator_scales.length; i++){
-        	legend.append('<li><span style="background: ' + gon.indicator_scale_colors[i] + '"></span> ' + gon.indicator_scales[i].name + '</li>');
+			// if the scale has a color, use it, otherwise use app color
+			if (gon.indicator_scales[i].color && gon.indicator_scales[i].color.length > 0){
+				color = gon.indicator_scales[i].color;
+			} else {
+				color = gon.indicator_scale_colors[i];
+			}
+
+        	legend.append('<li><span style="background: ' + color + '"></span> ' + gon.indicator_scales[i].name + '</li>');
 		}
 	} else {
 		// no legend
@@ -152,7 +160,13 @@ function build_indicator_scale_styles() {
 		for (var i=0; i<gon.indicator_scales.length; i++){
 
 			var name = gon.indicator_scales[i].name;
-			var color = gon.indicator_scale_colors[i];
+			var color = "";
+			// if the scale has a color, use it, otherwise use app color
+			if (gon.indicator_scales[i].color && gon.indicator_scales[i].color.length > 0){
+				color = gon.indicator_scales[i].color;
+			} else {
+				color = gon.indicator_scale_colors[i];
+			}
 
 			// look in the name for >, <, or -
 			// - if find => create appropriate comparison filter
@@ -216,7 +230,7 @@ function build_rule(color, type, value1, value2){
 		                value: value2
 		            }),
 		            new OpenLayers.Filter.Comparison({
-		                type: OpenLayers.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO,
+		                type: OpenLayers.Filter.Comparison.GREATER_THAN,
 		                property: "value",
 		                value: value1
 		            })

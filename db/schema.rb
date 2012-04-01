@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120326090808) do
+ActiveRecord::Schema.define(:version => 20120401060103) do
 
   create_table "data", :force => true do |t|
     t.integer  "indicator_id"
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(:version => 20120326090808) do
     t.integer  "indicator_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "color"
   end
 
   add_index "indicator_scales", ["indicator_id"], :name => "index_indicator_scales_on_indicator_id"

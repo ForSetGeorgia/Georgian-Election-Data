@@ -5,7 +5,7 @@ class IndicatorScale < ActiveRecord::Base
   belongs_to :indicator
   has_many :indicator_scale_translations
   accepts_nested_attributes_for :indicator_scale_translations
-  attr_accessible :indicator_id, :indicator_scale_translations_attributes
+  attr_accessible :indicator_id, :color, :indicator_scale_translations_attributes
   attr_accessor :locale
 
   scope :l10n , joins(:indicator_scale_translations).where('locale = ?',I18n.locale)
@@ -51,88 +51,111 @@ logger.debug "+++ num of indicator scales = #{num_levels}"
 	end
 	
   def self.csv_header
-    "Event, Shape Type, en: Indicator Name, en: Scale Name, ka: Scale Name, en: Scale Name, ka: Scale Name".split(",")
+    "Event, Shape Type, en: Indicator Name, en: Scale Name, ka: Scale Name, Scale Color, en: Scale Name, ka: Scale Name, Scale Color".split(",")
   end
 
   def self.build_from_csv(file, deleteExistingScales)
     infile = file.read
     n, msg = 0, ""
+    index_first_scale = 3
+    columns_per_scale = 3
 
 		IndicatorScale.transaction do
 		  CSV.parse(infile) do |row|
+        num_colors_found_for_indicator = 0 # record number of colors found
+
 		    n += 1
 		    # SKIP: header i.e. first row OR blank row
 		    next if n == 1 or row.join.blank?
-
-				# get the event id
-				event = Event.find_by_name(row[0].strip)
-				# get the shape type id
-				shape_type = ShapeType.find_by_name(row[1].strip)
-
-				if event.nil? || shape_type.nil?
-	logger.debug "+++ event or shape type was not found"				
-    		  msg = "Row #{n} - The event or shape type was not found."
+  
+        # if the event or shape type are not provided, stop
+        if row[0].nil? || row[0].strip.length == 0 || row[1].nil? || row[1].strip.length == 0
+	logger.debug "+++ event or shape type not provided"				
+    		  msg = "Row #{n} - The event or shape type was not found in the spreadsheet."
 		      raise ActiveRecord::Rollback
     		  return msg
 				else
-	logger.debug "+++ found event and shape type, seeing if indicator record exists"
-					# see if indicator exists for the provided event and shape_type
-					alreadyExists = Indicator.includes(:indicator_translations)
-						.where('indicators.event_id = ? and indicators.shape_type_id = ? and indicator_translations.locale="en" and indicator_translations.name= ?', 
-							event.id, shape_type.id, row[2].strip)
+  				# get the event id
+  				event = Event.find_by_name(row[0].strip)
+  				# get the shape type id
+  				shape_type = ShapeType.find_by_name(row[1].strip)
+
+  				if event.nil? || shape_type.nil?
+  	logger.debug "+++ event or shape type was not found"				
+      		  msg = "Row #{n} - The event or shape type was not found in the database."
+  		      raise ActiveRecord::Rollback
+      		  return msg
+  				else
+  	logger.debug "+++ found event and shape type, seeing if indicator record exists"
+  					# see if indicator exists for the provided event and shape_type
+  					alreadyExists = Indicator.includes(:indicator_translations)
+  						.where('indicators.event_id = ? and indicators.shape_type_id = ? and indicator_translations.locale="en" and indicator_translations.name= ?', 
+  							event.id, shape_type.id, row[2].strip)
 					
-					if !alreadyExists.nil? && alreadyExists.length > 0
-	logger.debug "+++ indicator record exists, populate scales"
-	          indicator = alreadyExists[0]
-            if deleteExistingScales
-              # if the indicator already has scales, delete them
-              if indicator.indicator_scales.length > 0
-	logger.debug "+++ deleting existing idicator scales"
-                # delete the scales
-                IndicatorScale.delete_all (["indicator_id = ?", indicator.id])
+  					if !alreadyExists.nil? && alreadyExists.length > 0
+  	logger.debug "+++ indicator record exists, populate scales"
+  	          indicator = alreadyExists[0]
+              if deleteExistingScales
+                # if the indicator already has scales, delete them
+                if indicator.indicator_scales.length > 0
+  	logger.debug "+++ deleting existing idicator scales"
+                  # delete the scales
+                  IndicatorScale.delete_all (["indicator_id = ?", indicator.id])
+                  indicator.indicator_scales = []
+                end
               end
-            end
-						# populate record
-					  finishedScales = false # keep looping until find empty cell
-					  i = 3 # where first scale starts
-					  until finishedScales do
-					    if row[i].nil? || row[i+1].nil?
-					      # found empty cell, stop
-					      finishedScales = true
-					    else
-					      # found scale, add it
-					      scale = indicator.indicator_scales.build
-								scale.indicator_scale_translations.build(:locale => 'en', :name => row[i].strip)
-								scale.indicator_scale_translations.build(:locale => 'ka', :name => row[i+1].strip)
-								i+=2 # move on to the next set of indicator scales
-					    end
-					  end
-					  # only save scales if there were between 3 and 9
-					  if i >= 7 || i <= 19
-  		logger.debug "+++ saving record"
-  					  # Save if valid 
-  				    if indicator.valid?
-  				      indicator.save
+  						# populate record
+  					  finishedScales = false # keep looping until find empty cell
+  					  i = index_first_scale # where first scale starts
+  					  until finishedScales do
+  					    if row[i].nil? || row[i+1].nil?
+  					      # found empty cell, stop
+  					      finishedScales = true
+  					    else
+  					      # found scale, add it
+  					      scale = indicator.indicator_scales.build
+      					  scale.color = row[i+2].strip if (!row[i+2].nil? && row[i+2].strip.length > 0)
+  								scale.indicator_scale_translations.build(:locale => 'en', :name => row[i].strip)
+  								scale.indicator_scale_translations.build(:locale => 'ka', :name => row[i+1].strip)
+
+                  # remember if a color was found
+                  num_colors_found_for_indicator+=1 if (!row[i+2].nil? && row[i+2].strip.length > 0)
+
+  								i+=columns_per_scale # move on to the next set of indicator scales
+  					    end
+  					  end
+  					  # save scales if color provided for all scales or 
+  					  #  there were between 3 and 9 scales and no color
+    		logger.debug "+++ num of colors found for this row: #{num_colors_found_for_indicator} and scale length = #{indicator.indicator_scales.length}"
+    		logger.debug "+++ i = #{i}, lower bound = #{(3*columns_per_scale + index_first_scale)}, upper bound = #{(9*columns_per_scale + index_first_scale)}"
+  					  if ((num_colors_found_for_indicator > 0 && num_colors_found_for_indicator == indicator.indicator_scales.length) || 
+  					      (i >= (3*columns_per_scale + index_first_scale) && i <= (9*columns_per_scale + index_first_scale)))
+					    
+    		logger.debug "+++ saving record"
+    					  # Save if valid 
+    				    if indicator.valid?
+    				      indicator.save
+    				    else
+    				      # an error occurred, stop
+    				      msg = "Row #{n} is not valid."
+    				      raise ActiveRecord::Rollback
+    				      return msg
+    				    end
   				    else
-  				      # an error occurred, stop
-  				      msg = "Row #{n} is not valid."
+  				      # not enough colors or scales out of range
+  				      msg = "Row #{n} must have colors for every scale or, if no color provided, can only have between 3 and 9 indicator scales."
   				      raise ActiveRecord::Rollback
   				      return msg
   				    end
-				    else
-				      # scales out of range, stop
-				      msg = "Row #{n} must have between 3 and 9 indicator scales."
-				      raise ActiveRecord::Rollback
-				      return msg
-				    end
-					else
-		logger.debug "+++ **record does not exist!"
-			      msg = "Row #{n} indicator does not already exists in the database."
-			      raise ActiveRecord::Rollback
-			      return msg
-					end
-				end
-			end
+  					else
+  		logger.debug "+++ **record does not exist!"
+  			      msg = "Row #{n} indicator does not already exists in the database."
+  			      raise ActiveRecord::Rollback
+  			      return msg
+  					end
+  				end
+  			end
+  		end
 		end
   logger.debug "+++ procssed #{n} rows in CSV file"
     return msg 

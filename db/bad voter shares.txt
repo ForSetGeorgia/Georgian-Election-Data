@@ -1,0 +1,45 @@
+# in election map
+# records with voter share > 1
+select *
+from data as d, indicators as i, indicator_translations as it
+where
+i.id = it.indicator_id
+and i.id = d.indicator_id
+and it.locale = 'en' 
+and it.name like 'voter share%'
+and d.value >1
+
+#########################
+# in election data
+# valid ballot mis-typed as 85 instead of 485
+update `2008 pres - raw` set final_ballots_valid_p11 = 485 where district_id = 59 and precinct_id = 73;
+# valid ballot mis-typed as 314 instead of 814
+update `2008 pres - raw` set final_ballots_valid_p11 = 814 where district_id = 22 and precinct_id = 64;
+# valid ballot mis-typed as 191 instead of 1191
+update `2008 pres - raw` set final_ballots_valid_p11 = 1191 where district_id = 23 and precinct_id = 30;
+# valid ballot mis-typed as 85 instead of 485
+update `2008 pres - raw` set final_ballots_valid_p11 = 485 where district_id = 59 and precinct_id = 73;
+
+
+# which rows whose sum of voters for candidates does not equal the ballots_valid column (801 rows out of 3464 ~ 23%)
+select
+`Region` ,
+`district_Name` ,
+`district_id` ,
+`precinct_id` ,
+`final_signature_total__P7_`,
+`final_ballots_valid__P11_`,
+`final_ballots_invalid__P12_`,
+`final_ballots_spoiled__P10_`,
+(`Levan Gachechiladze` + `Arkadi (Badri) Patarkatsishvili` + `Davit Gamkrelidze` + `Shalva Natelashvili`+ `Mikheil Saakashvili`+`Giorgi (Gia) Maisashvili`+`Irina Sarishvili-Chanturia`) as sum,
+  `Levan Gachechiladze`,
+  `Arkadi (Badri) Patarkatsishvili`,
+  `Davit Gamkrelidze`,
+  `Shalva Natelashvili`,
+  `Mikheil Saakashvili`,
+  `Giorgi (Gia) Maisashvili`,
+  `Irina Sarishvili-Chanturia`
+
+from `2008 pres - raw`
+where 
+(`Levan Gachechiladze` + `Arkadi (Badri) Patarkatsishvili` + `Davit Gamkrelidze` + `Shalva Natelashvili`+ `Mikheil Saakashvili`+`Giorgi (Gia) Maisashvili`+`Irina Sarishvili-Chanturia`) <> `final_ballots_valid__P11_`
