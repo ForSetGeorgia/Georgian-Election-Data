@@ -43,3 +43,31 @@ select
 from `2008 pres - raw`
 where 
 (`Levan Gachechiladze` + `Arkadi (Badri) Patarkatsishvili` + `Davit Gamkrelidze` + `Shalva Natelashvili`+ `Mikheil Saakashvili`+`Giorgi (Gia) Maisashvili`+`Irina Sarishvili-Chanturia`) <> `final_ballots_valid__P11_`
+
+
+# 2008 parl party list
+select
+`region`,
+`district_Name`,
+`district_id`,
+`precinct_id`,
+`fsignatures_turnout overall`,
+`fspoiled ballots`,
+`finvalid ballots`,
+`valid`,
+(`Georgian Politics` + `Republican party of Georgia` + `Rightist alliance Topadze-Industrialists` + `Labor party` + `United National Movement` + `Georgian sportsmen's union` + `United Opposition` + `Radical-democratic national party of Georgia` + `Christian-democratic Alliance (CDA)` + `Targamadze-Christian-democratic movement (CDM)` + `Traditionallists-Our Georgia-Women's party` + `Our Country`) as sum,
+`Georgian Politics`,
+`Republican party of Georgia`,
+`Rightist alliance Topadze-Industrialists`,
+`Labor party`,
+`United National Movement`,
+`Georgian sportsmen's union`,
+`United Opposition`,
+`Radical-democratic national party of Georgia`,
+`Christian-democratic Alliance (CDA)`,
+`Targamadze-Christian-democratic movement (CDM)`,
+`Traditionallists-Our Georgia-Women's party`,
+`Our Country`
+from `2008 parl party list - raw`
+where 
+(`Georgian Politics` + `Republican party of Georgia` + `Rightist alliance Topadze-Industrialists` + `Labor party` + `United National Movement` + `Georgian sportsmen's union` + `United Opposition` + `Radical-democratic national party of Georgia` + `Christian-democratic Alliance (CDA)` + `Targamadze-Christian-democratic movement (CDM)` + `Traditionallists-Our Georgia-Women's party` + `Our Country`) <> `valid`
