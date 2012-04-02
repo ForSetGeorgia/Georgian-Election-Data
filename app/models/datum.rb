@@ -34,6 +34,7 @@ class Datum < ActiveRecord::Base
 		    # SKIP: header i.e. first row OR blank row
 		    next if n == 1 or row.join.blank?
 
+		logger.debug "processing row #{n}"				
 				# get the event id
 				event = Event.find_by_name(row[0].strip)
 				# get the shape type id
@@ -70,7 +71,8 @@ class Datum < ActiveRecord::Base
 			logger.debug "indicator found, checking if data exists"
 								# check if data already exists
 								alreadyExists = Datum.where(:indicator_id => indicator.first.id, 
-									:common_id => row[2].strip, :common_name => row[3].strip)
+									:common_id => row[2].nil? ? row[2] : row[2].strip, 
+									:common_name => row[3].nil? ? row[3] : row[3].strip)
 					
                 # if the datum already exists and deleteExistingRecord is true, delete the datum
                 if !alreadyExists.nil? && alreadyExists.length > 0 && deleteExistingRecord
@@ -84,9 +86,9 @@ class Datum < ActiveRecord::Base
 									# populate record
 									datum = Datum.new
 									datum.indicator_id = indicator.first.id
-									datum.common_id = row[2].strip
-									datum.common_name = row[3].strip
-									datum.value = row[i+1].strip
+									datum.common_id = row[2].nil? ? row[2] : row[2].strip
+									datum.common_name = row[3].nil? ? row[3] : row[3].strip
+									datum.value = row[i+1].nil? ? row[i+1] : row[i+1].strip
 
 		logger.debug "saving record"
 									if datum.valid?

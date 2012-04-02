@@ -115,10 +115,10 @@ class Indicator < ActiveRecord::Base
   					  # save if no scales provided 
   					  #  or if scales color provided for all scales
   					  #  or there were between 3 and 9 scales and no color
-    		logger.debug "+++ num of colors found for this row: #{num_colors_found_for_indicator} and scale length = #{indicator.indicator_scales.length}"
+    		logger.debug "+++ num of colors found for this row: #{num_colors_found_for_indicator} and scale length = #{ind.indicator_scales.length}"
     		logger.debug "+++ i = #{i}, lower bound = #{(3*columns_per_scale + index_first_scale)}, upper bound = #{(9*columns_per_scale + index_first_scale)}"
   					  if ((i==index_first_scale) || 
-  					      (num_colors_found_for_indicator > 0 && num_colors_found_for_indicator == indicator.indicator_scales.length) || 
+  					      (num_colors_found_for_indicator > 0 && num_colors_found_for_indicator == ind.indicator_scales.length) || 
   					      (i >= (3*columns_per_scale + index_first_scale) && i <= (9*columns_per_scale + index_first_scale)))
     		logger.debug "saving record"
     					  # Save if valid 

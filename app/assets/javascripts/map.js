@@ -25,9 +25,17 @@ function map_init(){
         controls: []  // Remove all controls
   };
 
+	var baseStyle = new OpenLayers.StyleMap({
+      "default": new OpenLayers.Style({
+          fillColor: "#bfbe8d",
+          strokeColor: "#777777",
+          strokeWidth: 1
+      })
+  });
+
   map = new OpenLayers.Map('map', options);
 
-  vector_base = new OpenLayers.Layer.Vector("Base Layer", {isBaseLayer: true});
+  vector_base = new OpenLayers.Layer.Vector("Base Layer", {isBaseLayer: true, styleMap: baseStyle});
 
   vector_child = new OpenLayers.Layer.Vector("Child Layer", {styleMap: build_indicator_scale_styles()});
 
@@ -153,7 +161,11 @@ function draw_legend()
 // build the color mapping for the indicators
 function build_indicator_scale_styles() {
 	var rules = [];
-  var theme = new OpenLayers.Style();
+  var theme = new OpenLayers.Style({
+      fillColor: "#bfbe8d",
+      strokeColor: "#777777",
+      strokeWidth: 1
+  });
 	if (gon.indicator_scales && gon.indicator_scales.length > 0 && gon.indicator_scale_colors && gon.indicator_scale_colors.length > 0){
 		
 		// look at each scale and create the builder
@@ -204,9 +216,10 @@ function build_indicator_scale_styles() {
 				rules.push(build_rule(color, OpenLayers.Filter.Comparison.EQUAL_TO, name));
 			}
 		}
-	}
 
     theme.addRules(rules);
+	}
+
     return new OpenLayers.StyleMap({'default':theme, 'select': {'strokeColor': '#0000ff', 'fillColor': '#0000ff', 'strokeWidth': 2}});
 }
 
