@@ -233,7 +233,7 @@ Rails.logger.debug("************* shape type is precinct = '#{shape_type.is_prec
 			results["indicator"]["name_abbrv"] = indicator_type.nil? ? nil : indicator_type.summary_name
 			results["indicator"]["description"] = nil
 			results["indicator"]["number_format"] = nil
-      results["indicator"]["scales"] = [{:name => IndicatorScale::NO_DATA_TEXT, :color => IndicatorScale::NO_DATA_COLOR }]
+      results["indicator"]["scales"] = [{:name => IndicatorScale.no_data_text, :color => IndicatorScale::NO_DATA_COLOR }]
 			results["indicator"]["scale_colors"] = [IndicatorScale::NO_DATA_COLOR]
 			results["indicator"]["switcher_indicator_id"] = nil
 

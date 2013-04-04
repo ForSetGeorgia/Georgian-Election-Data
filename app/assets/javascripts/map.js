@@ -33,6 +33,7 @@ if (gon.openlayers){
 
 	// Function called from body tag
 	function map_init(){
+/*
 		// add no data to scales
 		if (gon.indicator_scale_colors && gon.indicator_scales){
 			gon.indicator_scale_colors.splice(0,0,color_nodata);
@@ -43,7 +44,7 @@ if (gon.openlayers){
 		if (gon.indicator_number_format){
 			number_format = gon.indicator_number_format;
 		}
-
+*/
 		var options = {
 		  projection: WGS84_google_mercator,
 		  displayProjection: WGS84,

@@ -5,13 +5,10 @@ function indicators_toggle()
 {
 //    $('div#indicator_menu_tabs').slideToggle(200);
 //	$('div#indicator_menu_scale .toggle').slideToggle(300);
-console.log("ind toggle called - ind status = " + the_indicators.status);
 	if (the_indicators.status === 'show') {
-console.log("hiding");
 		the_indicators.hide();
 	}
 	else{
-console.log("showing");
 		the_indicators.show();
 	}
 }

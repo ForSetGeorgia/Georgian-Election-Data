@@ -14,7 +14,10 @@ class IndicatorScale < ActiveRecord::Base
   scope :by_name , order('name').l10n
 
   NO_DATA_COLOR = "#CCCCCC"
-  NO_DATA_TEXT = I18n.t('app.msgs.no_data')
+
+  def self.no_data_text
+    I18n.t('app.msgs.no_data')
+  end
 
   # have to turn this off so csv upload works since adding indicator and scale at same time, no indicator id exists yet
   #validates :indicator_id, :presence => true
@@ -51,7 +54,7 @@ class IndicatorScale < ActiveRecord::Base
       scales = with_translations(I18n.locale).where(:indicator_id => indicator_id)
       if scales && !scales.empty?
         # insert no data record
-        x = {:name => NO_DATA_TEXT, :color => NO_DATA_COLOR}
+        x = {:name => no_data_text, :color => NO_DATA_COLOR}
         hash = scales.map{|x| x.to_hash}
         hash.insert(0,x)
         return hash
