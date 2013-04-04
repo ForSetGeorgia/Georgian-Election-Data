@@ -19,9 +19,9 @@
               (index2.present? && type2.descendant_ids.index(@parent_shape_type).present?))  %>
           <li class="active_shape_nav">
             <% if @summary_view_type_name == params[:view_type] %>
-             <%= link_to(image_tag("shape_arrow_active.png") + nav.link_text, summary_shape_level_map_path(params.merge({:shape_type_id => nav.shape_type_id, :shape_id => get_shape_id(nav.shape_type_id, true), :change_shape_type => "true", :parent_shape_clickable => "false"})), :title => nav.link_text) %>
+             <%= link_to(image_tag("shape_arrow_active.png") + nav.link_text, summary_shape_level_map_path(params.merge({:shape_type_id => nav.shape_type_id, :shape_id => get_shape_id(nav.shape_type_id, true), :change_shape_type => "true", :parent_shape_clickable => "false", :indicator_id => nil})), :title => nav.link_text) %>
             <% else %>
-             <%= link_to(image_tag("shape_arrow_active.png") + nav.link_text, shape_level_map_path(params.merge({:shape_type_id => nav.shape_type_id, :shape_id => get_shape_id(nav.shape_type_id, true), :change_shape_type => "true", :parent_shape_clickable => "false"})), :title => nav.link_text) %>
+             <%= link_to(image_tag("shape_arrow_active.png") + nav.link_text, shape_level_map_path(params.merge({:shape_type_id => nav.shape_type_id, :shape_id => get_shape_id(nav.shape_type_id, true), :change_shape_type => "true", :parent_shape_clickable => "false", :indicator_type_id => nil})), :title => nav.link_text) %>
             <% end %>
           </li>
         <% end %>
@@ -47,9 +47,9 @@
   		         <li class="lev-ind">
   					   <% if type.has_children? %>
   					     <% if @summary_view_type_name == params[:view_type] %>
-  				         <%= link_to type.name_singular, summary_shape_level_map_path(params.merge({:shape_type_id => type.parent_id, :shape_id => get_shape_id(type.id), :change_shape_type => "true", :parent_shape_clickable => type.is_root?.to_s})), :title => type.name_singular %>
+  				         <%= link_to type.name_singular, summary_shape_level_map_path(params.merge({:shape_type_id => type.parent_id, :shape_id => get_shape_id(type.id), :change_shape_type => "true", :parent_shape_clickable => type.is_root?.to_s, :indicator_id => nil})), :title => type.name_singular %>
                  <% else %>
-  				         <%= link_to type.name_singular, shape_level_map_path(params.merge({:shape_type_id => type.parent_id, :shape_id => get_shape_id(type.id), :change_shape_type => "true", :parent_shape_clickable => type.is_root?.to_s})), :title => type.name_singular %>
+  				         <%= link_to type.name_singular, shape_level_map_path(params.merge({:shape_type_id => type.parent_id, :shape_id => get_shape_id(type.id), :change_shape_type => "true", :parent_shape_clickable => type.is_root?.to_s, :indicator_type_id => nil})), :title => type.name_singular %>
                  <% end %>
   					   <% else %>
   						   <%= type.name_singular %>
