@@ -116,8 +116,13 @@ $(function(){
 			// language
 			// - add ind type id and view type
 			$('a.language_link_switcher').each(function(index){
-				$(this).attr('href',
-					update_query_parameter($(this).attr('href'), 'indicator_type_id', 'indicator_type', id));
+				if (get_query_parameter($(this).attr('href'), 'indicator_type_id', 'indicator_type') == undefined){
+					$(this).attr('href',
+						replace_query_parameter($(this).attr('href'), 'indicator_id', 'indicator', 'indicator_type_id', 'indicator_type', id, id));
+				} else {
+					$(this).attr('href',
+						update_query_parameter($(this).attr('href'), 'indicator_type_id', 'indicator_type', id));
+				}
 				$(this).attr('href',
 					update_query_parameter($(this).attr('href'), 'view_type', 'view_type', gon.summary_view_type_name));
 			});
@@ -175,8 +180,13 @@ $(function(){
 			// language
 			// - add ind id and view type
 			$('a.language_link_switcher').each(function(index){
-				$(this).attr('href',
-					update_query_parameter($(this).attr('href'), 'indicator_id', 'indicator', id));
+				if (get_query_parameter($(this).attr('href'), 'indicator_id', 'indicator') == undefined){
+					$(this).attr('href',
+						replace_query_parameter($(this).attr('href'), 'indicator_type_id', 'indicator_type', 'indicator_id', 'indicator', id, id));
+				} else {
+					$(this).attr('href',
+						update_query_parameter($(this).attr('href'), 'indicator_id', 'indicator', id));
+				}
 				$(this).attr('href',
 					remove_query_parameter($(this).attr('href'), 'view_type', 'view_type'));
 			});

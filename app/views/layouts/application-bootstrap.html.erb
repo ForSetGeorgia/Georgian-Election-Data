@@ -17,7 +17,7 @@
 		<meta property="og:description" content="<%= @event_description.nil? ? '' : strip_tags(@event_description) %>" />
 	  <meta property="og:type" content="non_profit" />
 	  <meta property="og:url" content="<%= current_url %>" />
-	  <!--meta property="og:image" content="<%= full_url(@visualization.image.url(:thumb, false)) %>" /-->
+	  <!--meta property="og:image" content="<%# %>" /-->
 	  <meta property="og:site_name" content="<%= t('app.common.app_name') %>" />
 		<!-- for /social sites -->
 
@@ -94,7 +94,11 @@
 								<li><%= link_to t(".data_archives"), data_archives_path %></li>
 								<% I18n.available_locales.each do |locale| %>
 									<% if locale != I18n.locale %>
-										<li><%= link_to t("app.language.#{locale}"), params.merge(:locale => locale) %></li>
+                    <% if @summary_view_type_name == params[:view_type] %>
+  										<li><%= link_to t("app.language.#{locale}"), params.merge(:locale => locale, :indicator_id => nil), :class => 'language_link_switcher' %></li>
+                    <% else %>
+  										<li><%= link_to t("app.language.#{locale}"), params.merge(:locale => locale, :indicator_type_id => nil), :class => 'language_link_switcher' %></li>
+                    <% end %>
 									<% end %>
 								<% end %>
 		          </ul>
