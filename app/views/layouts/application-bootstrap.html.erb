@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html lang="<%= I18n.locale %>">
   <head itemscope itemtype="http://schema.org/NGO">
-		<!-- for social sites -->
-		<meta itemprop="name" content="<%= content_for?(:title) ? "#{yield(:title)} > #{t('app.common.app_name')}" :
-				t('app.common.app_name') %>">
-		<meta itemprop="description" content="<%= @event_description.nil? ? nil : strip_tags(@event_description) %>">
-		<!-- for /social sites -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= content_for?(:title) ? "#{yield(:title)} > #{t('app.common.app_name')}" :
 				t('app.common.app_name') %></title>
+
+		<!-- for social sites -->
+		<meta itemprop="name" content="<%= content_for?(:title) ? "#{yield(:title)} > #{t('app.common.app_name')}" :
+				t('app.common.app_name') %>">
+		<meta itemprop="description" content="<%= @event_description.nil? ? '' : strip_tags(@event_description) %>">
+
+	  <meta property="og:title" content="<%= content_for?(:title) ? "#{yield(:title)} > #{t('app.common.app_name')}" :
+			  t('app.common.app_name') %>" />
+		<meta property="og:description" content="<%= @event_description.nil? ? '' : strip_tags(@event_description) %>" />
+	  <meta property="og:type" content="non_profit" />
+	  <meta property="og:url" content="<%= current_url %>" />
+	  <!--meta property="og:image" content="<%= full_url(@visualization.image.url(:thumb, false)) %>" /-->
+	  <meta property="og:site_name" content="<%= t('app.common.app_name') %>" />
+		<!-- for /social sites -->
+
+
     <%= include_gon %>
     <%= csrf_meta_tags %>
 
