@@ -441,22 +441,22 @@ function PopupIndicatorCheckPosition(mouse_location)
 }
 
 function updatePopUpPosition(e) {
-if (typeof(popup) !== "undefined" && popup.visible()) {
-	var mapPntPx = map.events.getMousePosition(e);
-	// keep the bottom of the tip just a few pixels above the mouse
-	if (popup.relativePosition.indexOf('t') > -1 ){
-	  mapPntPx = mapPntPx.add(0, -5);
-	}	else {
-	  mapPntPx = mapPntPx.add(0, 20);
-	}
+  if (typeof(popup) !== "undefined" && popup.visible()) {
+	  var mapPntPx = map.events.getMousePosition(e);
+	  // keep the bottom of the tip just a few pixels above the mouse
+	  if (popup.relativePosition.indexOf('t') > -1 ){
+	    mapPntPx = mapPntPx.add(0, -5);
+	  }	else {
+	    mapPntPx = mapPntPx.add(0, 20);
+	  }
 
-  popup.lonlat = map.getLonLatFromViewPortPx(mapPntPx);
-  popup.updatePosition();
-  PopupIndicatorCheckPosition(mapPntPx);
-}
+    popup.lonlat = map.getLonLatFromViewPortPx(mapPntPx);
+    popup.updatePosition();
+    PopupIndicatorCheckPosition(mapPntPx);
+  }
 }
 
-function unhighlight_shape(feature)
+function unhighlight_shape(feature, redraw_layer)
 {
 	if (feature !== undefined && f_style_backup !== undefined){
 		feature.style = f_style_backup;
@@ -472,7 +472,7 @@ function mapFreeze(feature)
   makeFeaturePopup(feature, true, true, function(){
     map.controls[1].activate();
 		map.events.register('mousemove', map, updatePopUpPosition);
-    unhighlight_shape(feature);
+    unhighlight_shape(feature, true);
   });
 	map.events.un({'mousemove': updatePopUpPosition});
 }
