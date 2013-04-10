@@ -466,16 +466,20 @@ function unhighlight_shape(feature, redraw_layer)
 	}
 }
 
+function close_popup(feature){
+  map.controls[1].activate();
+  removeFeaturePopups();
+  unhighlight_shape(feature, true);
+//	map.events.register('mousemove', map, updatePopUpPosition);
+  map.events.un({'mousemove': updatePopUpPosition});
+}
+
 function mapFreeze(feature)
 {
   map.controls[1].deactivate();
   makeFeaturePopup(feature, true, true, function(){
-    map.controls[1].activate();
-    removeFeaturePopups();
-    unhighlight_shape(feature, true);
-		map.events.register('mousemove', map, updatePopUpPosition);
+    close_popup(feature);
   }, true);
-//	map.events.un({'mousemove': updatePopUpPosition});
 }
 
 

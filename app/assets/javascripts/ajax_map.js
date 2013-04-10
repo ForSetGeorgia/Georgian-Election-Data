@@ -224,7 +224,9 @@ $(function(){
 
 			// reset popups
 //console.log("removing popups");
-      removeFeaturePopups();
+      close_popup(current_highlighted_feature);
+//      removeFeaturePopups();
+//    	map.events.un({'mousemove': updatePopUpPosition});
 /*			map.controls[1].activate();
 			$.each(map.popups, function(index, value){
 				map.removePopup(map.popups[index]);
@@ -232,7 +234,7 @@ $(function(){
 */
 //console.log("unhighlighting shapes");
 			// if shape is highlighted, turn it off
-			unhighlight_shape(current_highlighted_feature, false);
+//			unhighlight_shape(current_highlighted_feature, false);
 
 			// reset the map extent based on the vector parent bounds
 //console.log("resting map extent");
