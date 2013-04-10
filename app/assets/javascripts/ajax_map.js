@@ -329,7 +329,7 @@ $(function(){
 //console.log("old url = " + link);
 //console.log("new url = " + new_url);
 
-    History.pushState({link:link, id:id, datai:datai, dt_highlight_shape:dt_highlight_shape},
+  History.pushState({link:link, id:id, datai:datai, dt_highlight_shape:dt_highlight_shape},
 			new_title, new_url);
 
 	}
