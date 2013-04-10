@@ -301,14 +301,33 @@ $(function(){
 				new_title += seperator;
 		}
 
-
 		var new_url;
+    new_url = link; // no need to change anything since the link coming in already has all the params set.
+/*
 		if (link.search('summary') !== -1)
 		{
-			new_url = update_query_parameter(link, 'indicator_type_id', 'indicator_type', id);
+//			new_url = update_query_parameter(link, 'indicator_type_id', 'indicator_type', id);
+			if (get_query_parameter(link, 'indicator_type_id', 'indicator_type') == undefined){
+				new_url =
+					replace_query_parameter(link, 'indicator_id', 'indicator', 'indicator_type_id', 'indicator_type', id, id);
+			} else {
+				new_url =
+					update_query_parameter(link, 'indicator_type_id', 'indicator_type', id);
+			}
 		} else {
-			new_url = update_query_parameter(link, 'indicator_id', 'indicator', id);
+//			new_url = update_query_parameter(link, 'indicator_id', 'indicator', id);
+			if (get_query_parameter(link, 'indicator_id', 'indicator') == undefined){
+				new_url =
+					replace_query_parameter(link, 'indicator_type_id', 'indicator_type', 'indicator_id', 'indicator', id, id);
+			} else {
+				new_url =
+					update_query_parameter(link, 'indicator_id', 'indicator', id);
+			}
 		}
+*/
+
+//console.log("old url = " + link);
+//console.log("new url = " + new_url);
 
     History.pushState({link:link, id:id, datai:datai, dt_highlight_shape:dt_highlight_shape},
 			new_title, new_url);

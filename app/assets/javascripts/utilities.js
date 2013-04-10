@@ -1,43 +1,3 @@
-// add/update the query paramter with the provided name and value
-function update_query_parameter(url, name, name2, value){
-	// get the current url
-	var index = url.indexOf(name + "=");
-	var index2 = url.indexOf("/" + name2 + "/");
-	if (index > 0){
-		// found 'name=', now need to replace the value
-		var name_length = name.length+1; // use +1 to account for the '='
-		var indexAfter = url.indexOf("&", index+name_length);
-		if (indexAfter > 0){
-			// there is another paramter after this one
-			url = url.slice(0, index+name_length) + value + url.slice(indexAfter);
-		}else {
-			// no more parameters after this one
-			url = url.slice(0, index+name_length) + value;
-		}
-	}else if (index2 > 0) {
-		// found '/name/', now need to replace the value
-		var name_length = name2.length+2; // use +2 to account for the '/' at the beginning and end
-		var indexAfter = url.indexOf("/", index2+name_length);
-		var indexAfter2 = url.indexOf("?", index2+name_length);
-		if (indexAfter > 0){
-			// there is another paramter after this one
-			url = url.slice(0, index2+name_length) + value + url.slice(indexAfter);
-		} else if (indexAfter2 > 0){
-			// there is another paramter after this one
-			url = url.slice(0, index2+name_length) + value + url.slice(indexAfter2);
-		}else {
-			// no more parameters after this one
-			url = url.slice(0, index2+name_length) + value;
-		}
-	}else {
-		// not in query string yet, add it
-		// if this is the first query string, add the ?, otherwise add &
-		url += url.indexOf("?") > 0 ? "&" : "?"
-		url += name + "=" + value;
-	}
-	return url;
-}
-
 // get the query paramter with the provided name
 // - name is the long name of the parameter (e.g., event_id)
 // - name2 is the abbreviated name that shows in the pretty url (e.g., event)
@@ -75,10 +35,54 @@ function get_query_parameter(url, name, name2){
 	return value;
 }
 
+// add/update the query paramter with the provided name and value
+function update_query_parameter(url, name, name2, value){
+  var new_url;
+	// get the current url
+	var index = url.indexOf(name + "=");
+	var index2 = url.indexOf("/" + name2 + "/");
+	if (index > 0){
+		// found 'name=', now need to replace the value
+		var name_length = name.length+1; // use +1 to account for the '='
+		var indexAfter = url.indexOf("&", index+name_length);
+		if (indexAfter > 0){
+			// there is another paramter after this one
+			new_url = url.slice(0, index+name_length) + value + url.slice(indexAfter);
+		}else {
+			// no more parameters after this one
+			new_url = url.slice(0, index+name_length) + value;
+		}
+	}else if (index2 > 0) {
+		// found '/name/', now need to replace the value
+		var name_length = name2.length+2; // use +2 to account for the '/' at the beginning and end
+		var indexAfter = url.indexOf("/", index2+name_length);
+		var indexAfter2 = url.indexOf("?", index2+name_length);
+		if (indexAfter > 0){
+			// there is another paramter after this one
+			new_url = url.slice(0, index2+name_length) + value + url.slice(indexAfter);
+		} else if (indexAfter2 > 0){
+			// there is another paramter after this one
+			new_url = url.slice(0, index2+name_length) + value + url.slice(indexAfter2);
+		}else {
+			// no more parameters after this one
+			new_url = url.slice(0, index2+name_length) + value;
+		}
+	}else {
+		// not in query string yet, add it
+		// if this is the first query string, add the ?, otherwise add &
+    new_url = url;
+		new_url += new_url.indexOf("?") > 0 ? "&" : "?"
+		new_url += name + "=" + value;
+	}
+	return new_url;
+}
+
+
 // replace the query paramter with the new one that is provided
 // - name is the long name of the parameter (e.g., event_id)
 // - name2 is the abbreviated name that shows in the pretty url (e.g., event)
 function replace_query_parameter(url, old_name, old_name2, new_name, new_name2, value, value2){
+  var new_url;
 	// get the current url
 	var index = url.indexOf(old_name + "=");
 	var index2 = url.indexOf("/" + old_name2 + "/");
@@ -88,10 +92,10 @@ function replace_query_parameter(url, old_name, old_name2, new_name, new_name2, 
 		var indexAfter = url.indexOf("&", index+name_length);
 		if (indexAfter > 0){
 			// there is another paramter after this one
-			url = url.slice(0, index) + new_name + "=" + value + url.slice(indexAfter);
+			new_url = url.slice(0, index) + new_name + "=" + value + url.slice(indexAfter);
 		}else {
 			// no more parameters after this one
-			url = url.slice(0, index) + new_name + "=" + value;
+			new_url = url.slice(0, index) + new_name + "=" + value;
 		}
 	}else if (index2 > 0) {
 		// found '/name/', now need to replace the value
@@ -100,27 +104,29 @@ function replace_query_parameter(url, old_name, old_name2, new_name, new_name2, 
 		var indexAfter2 = url.indexOf("?", index2+name_length);
 		if (indexAfter > 0){
 			// there is another paramter after this one
-			url = url.slice(0, index2+1) + new_name2 + "/" + value2 + url.slice(indexAfter);
+			new_url = url.slice(0, index2+1) + new_name2 + "/" + value2 + url.slice(indexAfter);
 		} else if (indexAfter2 > 0){
 			// there is another paramter after this one
-			url = url.slice(0, index2+1) + new_name2 + "/" + value2 + url.slice(indexAfter2);
+			new_url = url.slice(0, index2+1) + new_name2 + "/" + value2 + url.slice(indexAfter2);
 		}else {
 			// no more parameters after this one
-			url = url.slice(0, index2+1) + new_name2 + "/" + value2;
+			new_url = url.slice(0, index2+1) + new_name2 + "/" + value2;
 		}
 	}else {
 		// not in query string yet, add it
 		// if this is the first query string, add the ?, otherwise add &
-		url += url.indexOf("?") > 0 ? "&" : "?"
-		url += new_name + "=" + value;
+    new_url = url;
+		new_url += new_url.indexOf("?") > 0 ? "&" : "?"
+		new_url += new_name + "=" + value;
 	}
-	return url;
+	return new_url;
 }
 
 // remove the query paramter with the provided name and value
 // - name is the long name of the parameter (e.g., event_id)
 // - name2 is the abbreviated name that shows in the pretty url (e.g., event)
 function remove_query_parameter(url, name, name2){
+  var new_url;
 	// get the current url
 	var index = url.indexOf(name + "=");
 	var index2 = url.indexOf("/" + name2 + "/");
@@ -130,10 +136,10 @@ function remove_query_parameter(url, name, name2){
 		var indexAfter = url.indexOf("&", index+name_length);
 		if (indexAfter > 0){
 			// there is another paramter after this one
-			url = url.slice(0, index) + url.slice(indexAfter);
+			new_url = url.slice(0, index) + url.slice(indexAfter);
 		}else {
 			// no more parameters after this one
-			url = url.slice(0, index);
+			new_url = url.slice(0, index);
 		}
 	}else if (index2 > 0) {
 		// found '/name/', now need to remove the parameter and its value
@@ -142,16 +148,16 @@ function remove_query_parameter(url, name, name2){
 		var indexAfter2 = url.indexOf("?", index2+name_length);
 		if (indexAfter > 0){
 			// there is another paramter after this one
-			url = url.slice(0, index2) + url.slice(indexAfter);
+			new_url = url.slice(0, index2) + url.slice(indexAfter);
 		} else if (indexAfter2 > 0){
 			// there is another paramter after this one
-			url = url.slice(0, index2) + url.slice(indexAfter2);
+			new_url = url.slice(0, index2) + url.slice(indexAfter2);
 		}else {
 			// no more parameters after this one
-			url = url.slice(0, index2);
+			new_url = url.slice(0, index2);
 		}
 	}
-	return url;
+	return new_url;
 }
 
 function full_height (element)
