@@ -820,7 +820,7 @@ if (gon.openlayers){
 
 	// Create the popup for the feature
 	var popup;
-	function makeFeaturePopup(feature_data, stright, close_button, close_button_func)
+	function makeFeaturePopup(feature_data, stright, close_button, close_button_func, disable_move)
 	{
 		if (typeof(stright) === "undefined")
 		  stright = false;
@@ -829,6 +829,7 @@ if (gon.openlayers){
 
       // remove all popups
 			removeFeaturePopups();
+  	  map.events.un({'mousemove': updatePopUpPosition});
 
       // create popup
       var feature = feature_data,
@@ -868,7 +869,11 @@ if (gon.openlayers){
 	   PopupIndicatorCheckPosition(map.getViewPortPxFromLonLat(feature_center));
 
 		// when mouse moves, also move the popup
-		map.events.register('mousemove', map, updatePopUpPosition);
+		if (typeof(disable_move) === "undefined"){
+  		map.events.register('mousemove', map, updatePopUpPosition);
+    } else {
+    	map.events.un({'mousemove': updatePopUpPosition});
+    }
 
     // close button
 		if (close_button)

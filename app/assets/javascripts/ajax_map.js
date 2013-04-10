@@ -224,11 +224,12 @@ $(function(){
 
 			// reset popups
 //console.log("removing popups");
-			map.controls[1].activate();
+      removeFeaturePopups();
+/*			map.controls[1].activate();
 			$.each(map.popups, function(index, value){
 				map.removePopup(map.popups[index]);
 			});
-
+*/
 //console.log("unhighlighting shapes");
 			// if shape is highlighted, turn it off
 			unhighlight_shape(current_highlighted_feature, false);

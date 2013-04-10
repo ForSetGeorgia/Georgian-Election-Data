@@ -471,10 +471,11 @@ function mapFreeze(feature)
   map.controls[1].deactivate();
   makeFeaturePopup(feature, true, true, function(){
     map.controls[1].activate();
-		map.events.register('mousemove', map, updatePopUpPosition);
+    removeFeaturePopups();
     unhighlight_shape(feature, true);
-  });
-	map.events.un({'mousemove': updatePopUpPosition});
+		map.events.register('mousemove', map, updatePopUpPosition);
+  }, true);
+//	map.events.un({'mousemove': updatePopUpPosition});
 }
 
 
