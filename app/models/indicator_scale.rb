@@ -34,7 +34,11 @@ class IndicatorScale < ActiveRecord::Base
 			num_levels = count_by_indicator(indicator_id)
 			if num_levels.present?
         colors = ScaleColors.get_colors("OrRd", num_levels)
-        colors = [] if colors.nil?
+        if colors.present?
+          colors.insert(0, NO_DATA_COLOR)
+        else
+          colors = []
+        end
 				return colors
 			end
 		end
