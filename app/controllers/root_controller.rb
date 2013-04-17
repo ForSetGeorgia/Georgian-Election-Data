@@ -318,9 +318,9 @@ logger.debug "////////////// - no default found"
     # create the page title
     if @map_title && @event_name
       if params[:view_type] == @summary_view_type_name && @indicator_types && !@indicator_types.empty?
-        @page_title = "#{@event_name} > #{@indicator_types[0].summary_name} > #{@map_title}".html_safe
+        @page_title = "#{@event_name} » #{@indicator_types[0].summary_name} » #{@map_title}".html_safe
       elsif @indicator
-        @page_title = "#{@event_name} > #{@indicator.name_abbrv_w_parent} > #{@map_title}".html_safe
+        @page_title = "#{@event_name} » #{@indicator.name_abbrv_w_parent} » #{@map_title}".html_safe
       end
     end
 

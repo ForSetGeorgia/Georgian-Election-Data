@@ -908,6 +908,12 @@ if (gon.openlayers){
 	// load the hidden form with the values so the export link works
 	function load_hidden_form()
 	{
+    // update gon variables needed for svg export
+    gon.indicator_name = json_data['indicator']['name'];
+    gon.indicator_name_abbrv = json_data['indicator']['name_abbrv'];
+    gon.indicator_description = json_data['indicator']['description'];
+    gon.view_type = json_data['view_type'];
+
 		if (gon.indicator_name || (gon.view_type == gon.summary_view_type_name)){
 			// update the url for the download data link
 			$("#export-data-xls").attr('href',update_query_parameter($("#export-data-xls").attr('href'), "event_name", "event_name", gon.event_name));
@@ -919,12 +925,12 @@ if (gon.openlayers){
 				// get the indicator names and colors
 				var scales = [];
 				var colors = [];
-				for (i=0; i<gon.indicator_scales.length; i++){
-					scales[i] = format_number(gon.indicator_scales[i].name);
-					if (gon.indicator_scales[i].color && gon.indicator_scales[i].color.length > 0){
-						colors[i] = gon.indicator_scales[i].color;
-					} else {
-						colors[i] = gon.indicator_scale_colors[i];
+				for (i=0; i<json_data["indicator"]["scales"].length; i++){
+					scales[i] = format_number(json_data["indicator"]["scales"][i].name);
+					if (json_data["indicator"]["scales"][i].color && json_data["indicator"]["scales"][i].color.length > 0){
+					  colors[i] = json_data["indicator"]["scales"][i].color;
+				  } else {
+					  colors[i] = json_data["indicator"]["scale_colors"][i];
 					}
 				}
 
