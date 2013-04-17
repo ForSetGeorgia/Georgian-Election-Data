@@ -307,8 +307,6 @@ $(function(){
 				new_title += seperator;
 		}
 
-    gon.map_title = new_title;
-
 		var new_url;
     new_url = link; // no need to change anything since the link coming in already has all the params set.
 /*

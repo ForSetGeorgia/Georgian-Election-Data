@@ -913,6 +913,8 @@ if (gon.openlayers){
     gon.indicator_name_abbrv = json_data['indicator']['name_abbrv'];
     gon.indicator_description = json_data['indicator']['description'];
     gon.view_type = json_data['view_type'];
+    gon.map_title = $(document).attr('title');
+
 
 		if (gon.indicator_name || (gon.view_type == gon.summary_view_type_name)){
 			// update the url for the download data link
