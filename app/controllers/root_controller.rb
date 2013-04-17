@@ -690,6 +690,30 @@ logger.debug " - no matching event found!"
 			# data set id
 			gon.data_set_id = params[:data_set_id]
 			gon.data_set_id_most_recent = @most_recent_dataset.id if @most_recent_dataset
+
+      # save the initial values for the jquery history state
+  		if params[:view_type] == @summary_view_type_name
+        gon.history_url = summary_map_url(
+          :event_type_id => params[:event_type_id],
+          :event_id => params[:event_id],
+          :shape_type_id => params[:shape_type_id],
+          :shape_id => params[:shape_id],
+          :indicator_type_id => params[:indicator_type_id], 
+          :view_type => @summary_view_type_name,
+          :custom_view => params[:custom_view]            
+        )
+        gon.history_id = params[:indicator_type_id]
+      else
+        gon.history_url = indicator_map_url(
+          :event_type_id => params[:event_type_id],
+          :event_id => params[:event_id],
+          :shape_type_id => params[:shape_type_id],
+          :shape_id => params[:shape_id],
+          :indicator_id => params[:indicator_id],
+          :custom_view => params[:custom_view]            
+        )
+        gon.history_id = params[:indicator_id]
+      end
 	  end
 
 		# data table

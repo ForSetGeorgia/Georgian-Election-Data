@@ -9,6 +9,9 @@ $(function(){
         return false;
     }
 
+    // initialize the first state
+    History.replaceState({link:gon.history_url, id:gon.history_id, datai:1, dt_highlight_shape:null}, $(document).attr('title'), $(location).attr('href'))
+
     var State = History.getState();
 
     // Log Initial State
@@ -196,7 +199,7 @@ $(function(){
 	// get the new json data and update the appropriate components
    function load_state(link, id, datai)
    {
-//console.log("------------------- indicator click");
+//console.log("------------------- load state");
 			// update the url to get the data
 		  var query;
 			// json data path
@@ -438,13 +441,17 @@ $(function(){
     // Bind to StateChange Event
     History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
         var State = History.getState(); // Note: We are using History.getState() instead of event.state
-//        History.log(State.data, State.title, State.url);
+        if ('link' in State.data){
+//          History.log(State.data, State.title, State.url);
 
-				// save the highlight shape variable
-				gon.dt_highlight_shape = State.data.dt_highlight_shape;
+				  // save the highlight shape variable
+				  gon.dt_highlight_shape = State.data.dt_highlight_shape;
 
-				// load the json and reset the page
-				load_state(State.data.link, State.data.id, State.data.datai);
+				  // load the json and reset the page
+				  load_state(State.data.link, State.data.id, State.data.datai);
+        } else {
+          // ajax link does not exist
+        }
     });
 
 });
