@@ -42,7 +42,9 @@
   	<div id="social_links" class="span3">
   		<ul class="clear">
   			<li class="f">
-  				<a href="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>" target="_blank" title="facebook"></a>
+  				<a href="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>" 
+              target="_blank" title="facebook"
+              id="facebook_link" data-url="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}" %>"></a>
   			</li>
   			<li class="t">
   				<a href="https://twitter.com/share" target="_blank" title="twitter"></a>
