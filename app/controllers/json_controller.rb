@@ -167,6 +167,12 @@ class JsonController < ApplicationController
 	#################################################
   # GET /json/children_data/:parent_id/shape_type/:shape_type_id/event/:event_id/indicator/:indicator_id(/parent_clickable/:parent_shape_clickable)
   def children_data
+    # if the ind id is not a number, do not continue
+    test = Integer(params[:indicator_id]) rescue nil
+    if test.nil?
+      return nil
+    end
+
     start = Time.now
 		data = nil
 
@@ -253,6 +259,12 @@ class JsonController < ApplicationController
 
   # GET /json/custom_children_data/:parent_id/shape_type/:shape_type_id/event/:event_id/indicator_id/:indicator_id
   def custom_children_data
+    # if the ind id is not a number, do not continue
+    test = Integer(params[:indicator_id]) rescue nil
+    if test.nil?
+      return nil
+    end
+
     start = Time.now
 		data = nil
 
@@ -285,6 +297,12 @@ class JsonController < ApplicationController
 	#################################################
   # GET /json/summary_children_data/:parent_id/shape_type/:shape_type_id/event/:event_id/indicator_type/:indicator_type_id
   def summary_children_data
+    # if the ind type id is not a number, do not continue
+    test = Integer(params[:indicator_type_id]) rescue nil
+    if test.nil?
+      return nil
+    end
+
     start = Time.now
 		data = nil
 
@@ -374,6 +392,12 @@ class JsonController < ApplicationController
 
   # GET /json/summary_custom_children_data/:parent_id/shape_type/:shape_type_id/event/:event_id/indicator_type/:indicator_type_id
   def summary_custom_children_data
+    # if the ind type id is not a number, do not continue
+    test = Integer(params[:indicator_type_id]) rescue nil
+    if test.nil?
+      return nil
+    end
+
     start = Time.now
 		data = nil
 		# get data set id if not provided
