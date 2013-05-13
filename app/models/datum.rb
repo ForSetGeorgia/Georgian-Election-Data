@@ -416,10 +416,10 @@ Rails.logger.debug("*********************** - found data, adding it to results")
 								if data["summary_data"]["data"][index][:value] != I18n.t('app.msgs.no_data')
 								  #&& data["summary_data"][index][:value] != "0"
 
-                  has_duplicates = data["has_duplicates"]
+                  has_duplicates = data["summary_data"]["has_duplicates"]
 		              rank = Datum.new
 		              rank.value = data["summary_data"]["data"][index][:rank].to_s
-		              rank["number_format"] = " / #{data["total_ranks"]}"
+		              rank["number_format"] = " / #{data["summary_data"]["total_ranks"]}"
 		              rank["number_format"] += " *" if has_duplicates
 		              rank["indicator_type_name"] = data["summary_data"]["data"][index][:indicator_type_name]
 		              rank["indicator_name"] = I18n.t('app.common.overall_placement')
