@@ -12,7 +12,7 @@ class Datum < ActiveRecord::Base
   attr_accessor :number_format, :shape_id, :shape_type_name, :color,
 		:indicator_name, :indicator_name_abbrv, :indicator_description,
 		:indicator_type_id, :indicator_type_name, :core_indicator_id, :num_precincts,
-		:visible
+		:visible, :rank
 
   DATA_TYPE = {:official => "official", :live => "live"}
 	PRECINCTS_REPORTED = {:number => 'Precincts Reported (#)', :percent => 'Precincts Reported (%)'}
@@ -73,6 +73,7 @@ class Datum < ActiveRecord::Base
 			:value => self.value,
 			:formatted_value => self.formatted_value,
 			:number_format => self.number_format,
+      :rank => self.rank,
 			:color => self[:color],
 			:indicator_type_id => self[:indicator_type_id],
 			:indicator_type_name => self[:indicator_type_name],
@@ -415,21 +416,17 @@ Rails.logger.debug("*********************** - found data, adding it to results")
 								if data["summary_data"]["data"][index][:value] != I18n.t('app.msgs.no_data')
 								  #&& data["summary_data"][index][:value] != "0"
 
-                  # returns {:rank, :total, :has_duplicates}
-                  h = compute_placement(data["summary_data"]["data"], data["summary_data"]["data"][index][:value])
-                  has_duplicates = h[:has_duplicates]
-                  if h.present?
-  		              rank = Datum.new
-  		              rank.value = h[:rank].to_s
-  		              rank["number_format"] = " / #{h[:total]}"
-  		              rank["number_format"] += " *" if h[:has_duplicates]
-  		              rank["indicator_type_name"] = data["summary_data"]["data"][index][:indicator_type_name]
-  		              rank["indicator_name"] = I18n.t('app.common.overall_placement')
-  		              rank["indicator_name_abbrv"] = I18n.t('app.common.overall_placement')
-  		  						data_hash = Hash.new
-  		  						data_hash["data_item"] = rank.to_hash
-  		  	        	results << data_hash
-                  end
+                  has_duplicates = data["has_duplicates"]
+		              rank = Datum.new
+		              rank.value = data["summary_data"]["data"][index][:rank].to_s
+		              rank["number_format"] = " / #{data["total_ranks"]}"
+		              rank["number_format"] += " *" if has_duplicates
+		              rank["indicator_type_name"] = data["summary_data"]["data"][index][:indicator_type_name]
+		              rank["indicator_name"] = I18n.t('app.common.overall_placement')
+		              rank["indicator_name_abbrv"] = I18n.t('app.common.overall_placement')
+		  						data_hash = Hash.new
+		  						data_hash["data_item"] = rank.to_hash
+		  	        	results << data_hash
 								end
 
 	              # add total # of indicators in the summary
@@ -667,6 +664,8 @@ Rails.logger.debug("*********************** - found data, adding it to results")
 		results["summary_data"]["data"] = []
 		results["summary_data"]["visible"] = true
 		results["summary_data"]["has_openlayers_rule_value"] = false
+		results["summary_data"]["total_ranks"] = nil
+		results["summary_data"]["has_duplicates"] = false
 
 		if shape_id.present? && shape_type_id.present? && event_id.present? && indicator_type_id.present? && data_set_id.present?
 			json = []
@@ -686,15 +685,30 @@ Rails.logger.debug("*********************** - found data, adding it to results")
         hash["data"] = []
         hash["visible"] = true
         hash["has_openlayers_rule_value"] = false
+		    hash["total_ranks"] = nil
+		    hash["has_duplicates"] = false
 
-  			if !data.blank?
+logger.debug "************* -- data length = #{data.length}"
+  			if data.present?
 logger.debug "************* getting summary data relationship params ****************"
-					if !relationship.blank?
+					if relationship.present?
 logger.debug "************* - visible = #{relationship.first.visible}"
 logger.debug "************* - has_openlayers_rule_value = #{relationship.first.has_openlayers_rule_value}"
             hash["visible"] = relationship.first.visible
             hash["has_openlayers_rule_value"] = relationship.first.has_openlayers_rule_value
 					end
+
+          # add the ranking of each item
+          d_index = 0
+          while d_index < data.length do 
+            h = compute_placement(data, data[d_index][:value])
+		        data[d_index].rank = h[:rank]
+            if d_index == 0
+		          hash["total_ranks"] = h[:total]
+		          hash["has_duplicates"] = h[:has_duplicates]
+            end
+            d_index += 1
+          end
 
   				hash["data"] = data.collect{|x|	x.to_hash}
   			end
@@ -708,6 +722,8 @@ logger.debug "************* visible flag from cache = #{json['visible']}"
 logger.debug "************* has_openlayers_rule_value flag from cache = #{json['has_openlayers_rule_value']}"
 			results["summary_data"]["visible"] = json['visible']
 			results["summary_data"]["has_openlayers_rule_value"] = json['has_openlayers_rule_value']
+			results["summary_data"]["total_ranks"] = json['total_ranks']
+			results["summary_data"]["has_duplicates"] = json['has_duplicates']
       # add summary data
 			results["summary_data"]["data"] = json['data'].map{|x| x.symbolize_keys}
     end
