@@ -170,7 +170,10 @@ class JsonController < ApplicationController
     # if the ind id is not a number, do not continue
     test = Integer(params[:indicator_id]) rescue nil
     if test.nil?
-      return nil
+      respond_to do |format|
+        format.json { render json: nil.to_json }
+      end
+      return
     end
 
     start = Time.now
@@ -262,7 +265,10 @@ class JsonController < ApplicationController
     # if the ind id is not a number, do not continue
     test = Integer(params[:indicator_id]) rescue nil
     if test.nil?
-      return nil
+      respond_to do |format|
+        format.json { render json: nil.to_json }
+      end
+      return
     end
 
     start = Time.now
@@ -300,7 +306,10 @@ class JsonController < ApplicationController
     # if the ind type id is not a number, do not continue
     test = Integer(params[:indicator_type_id]) rescue nil
     if test.nil?
-      return nil
+      respond_to do |format|
+        format.json { render json: nil.to_json }
+      end
+      return
     end
 
     start = Time.now
@@ -395,7 +404,10 @@ class JsonController < ApplicationController
     # if the ind type id is not a number, do not continue
     test = Integer(params[:indicator_type_id]) rescue nil
     if test.nil?
-      return nil
+      respond_to do |format|
+        format.json { render json: nil.to_json }
+      end
+      return
     end
 
     start = Time.now
