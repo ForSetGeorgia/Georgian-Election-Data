@@ -209,7 +209,7 @@ class Datum < ActiveRecord::Base
 		return hash
 	end
 
-	def self.build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type)
+	def self.build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit=nil)
 		start = Time.now
     results = Hash.new
 		if shape_id.present? && shape_type_id.present? && event_id.present? && indicator_type_id.present? &&
@@ -248,8 +248,7 @@ Rails.logger.debug("************* shape type is precinct = '#{shape_type.is_prec
         shapes.each do |shape|
       	  # get all of the related json data for this indicator type
       	  data = build_related_indicator_json(shape.id, shape_type_id, shape_type.is_precinct, event_id, data_set_id, data_type,
-      	    event.event_indicator_relationships.where(:indicator_type_id => indicator_type_id))
-
+      	    event.event_indicator_relationships.where(:indicator_type_id => indicator_type_id), limit)
           summary = data.select{|x| x.has_key?("summary_data") && x["summary_data"].present? &&
                       x["summary_data"]["data"][0][:indicator_type_id].to_s == indicator_type_id.to_s &&
     									x["summary_data"]["data"][0][:formatted_value] != I18n.t('app.msgs.no_data')}
@@ -263,7 +262,6 @@ Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
               shape_values.first["shape_values"]["title"] = summary.first["summary_data"]["data"].first[:indicator_type_name]
             end
           end
-
           # save the data
       	  results["shape_data"] << data
   	    end
@@ -357,7 +355,7 @@ Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
   #    {"data_item" => {}}
   #    {"footnote" => {}}
   # ]
-	def self.build_related_indicator_json(shape_id, shape_type_id, is_precinct, event_id, data_set_id, data_type, relationships)
+	def self.build_related_indicator_json(shape_id, shape_type_id, is_precinct, event_id, data_set_id, data_type, relationships, limit=nil)
     results = []
 
     # create empty shape_values hash
@@ -388,7 +386,7 @@ Rails.logger.debug("*********************** all data provided!")
 	      if rel.related_indicator_type_id.present?
 Rails.logger.debug("*********************** getting summary data for ind type #{rel.related_indicator_type_id}")
 	        # get the summary for this indciator type
-					data = build_summary_data_json(shape_id, shape_type_id, event_id, rel.related_indicator_type_id, data_set_id)
+					data = build_summary_data_json(shape_id, shape_type_id, event_id, rel.related_indicator_type_id, data_set_id, limit)
 					if data.present? && data["summary_data"].present? && data["summary_data"]["data"].present?
 Rails.logger.debug("*********************** - found data, adding it to results")
 	        	results << data
@@ -657,7 +655,7 @@ Rails.logger.debug("*********************** - found data, adding it to results")
 =end
 
   # get the summary data for an indicator type in an event for a shape
-	def self.build_summary_data_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id)
+	def self.build_summary_data_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, limit=nil)
 		start = Time.now
 		results = Hash.new
 		results["summary_data"] = Hash.new
@@ -688,7 +686,6 @@ Rails.logger.debug("*********************** - found data, adding it to results")
 		    hash["total_ranks"] = nil
 		    hash["has_duplicates"] = false
 
-logger.debug "************* -- data length = #{data.length}"
   			if data.present?
 logger.debug "************* getting summary data relationship params ****************"
 					if relationship.present?
@@ -717,7 +714,6 @@ logger.debug "*****************************"
   		})
 
       # update summary data flags
-logger.debug "************* json keys = #{json.keys}"
 logger.debug "************* visible flag from cache = #{json['visible']}"
 logger.debug "************* has_openlayers_rule_value flag from cache = #{json['has_openlayers_rule_value']}"
 			results["summary_data"]["visible"] = json['visible']
@@ -725,7 +721,12 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 			results["summary_data"]["total_ranks"] = json['total_ranks']
 			results["summary_data"]["has_duplicates"] = json['has_duplicates']
       # add summary data
-			results["summary_data"]["data"] = json['data'].map{|x| x.symbolize_keys}
+      # if limit provided, limit the number of records returned
+      if limit.present? && limit > 0
+  			results["summary_data"]["data"] = json['data'].map{|x| x.symbolize_keys}[0..limit-1]
+      else
+  			results["summary_data"]["data"] = json['data'].map{|x| x.symbolize_keys}
+      end
     end
 #		puts "******* time to get_related_indicator_type_data: #{Time.now-start} seconds for event #{event_id}"
     return results

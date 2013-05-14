@@ -17,6 +17,8 @@ class JsonController < ApplicationController
 	FILE_CACHE_KEY_SUMMARY_CUSTOM_CHILDREN_DATA =
 		"event_[event_id]/data_set_[data_set_id]/[locale]/summary_custom_children_data/shape_type_[shape_type_id]/shape_[parent_id]_indicator_type_[indicator_type_id]"
 
+  SUMMARY_LIMIT = 5
+
 	#################################################
 	##### event menu
 	#################################################
@@ -384,9 +386,11 @@ class JsonController < ApplicationController
 				  }
 =end
           if !params[:parent_shape_clickable].nil? && params[:parent_shape_clickable].to_s == "true"
-	          data = Datum.build_summary_json(shape.id, shape.shape_type_id, params[:event_id], params[:indicator_type_id], params[:data_set_id], params[:data_type]).to_json
+	          data = Datum.build_summary_json(shape.id, shape.shape_type_id, params[:event_id], params[:indicator_type_id], 
+                    params[:data_set_id], params[:data_type], SUMMARY_LIMIT).to_json
           elsif shape.has_children?
-	          data = Datum.build_summary_json(shape.id, params[:shape_type_id], params[:event_id], params[:indicator_type_id], params[:data_set_id], params[:data_type]).to_json
+	          data = Datum.build_summary_json(shape.id, params[:shape_type_id], params[:event_id], params[:indicator_type_id], 
+                    params[:data_set_id], params[:data_type], SUMMARY_LIMIT).to_json
           end
 
 			  end
@@ -425,7 +429,8 @@ class JsonController < ApplicationController
 		        .gsub("[shape_type_id]", params[:shape_type_id])
 				    .gsub("[data_set_id]", params[:data_set_id])
 		  data = JsonCache.fetch_data(key) {
-			  Datum.build_summary_json(params[:parent_id], params[:shape_type_id], params[:event_id], params[:indicator_type_id], params[:data_set_id], params[:data_type]).to_json
+			  Datum.build_summary_json(params[:parent_id], params[:shape_type_id], params[:event_id], 
+              params[:indicator_type_id], params[:data_set_id], params[:data_type], SUMMARY_LIMIT).to_json
 		  }
     end
 
