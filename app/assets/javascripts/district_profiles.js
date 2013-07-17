@@ -22,7 +22,7 @@ function show_appropriate_district_events(ths){
         tfoot.attr('colspan', Number(tfoot.attr('colspan'))+1);
       }
 
-      // make sure all checkboxes with this id are not checked
+      // make sure all options with this id are checked
       $('#district_profile .tab-pane.active select.event_filter_select option[value="' + $(this).val() + '"]').prop("selected", true);
       $('#district_profile .tab-pane.active select.event_filter_select option[value="' + $(this).val() + '"]').trigger("liszt:updated");
     }else{
@@ -39,7 +39,7 @@ function show_appropriate_district_events(ths){
         tfoot.attr('colspan', Number(tfoot.attr('colspan'))-1);
       }
 
-      // make sure all checkboxes with this id are not checked
+      // make sure all options with this id are not checked
       $('#district_profile .tab-pane.active select.event_filter_select option[value="' + $(this).val() + '"]').prop("selected", false);
       $('#district_profile .tab-pane.active select.event_filter_select option[value="' + $(this).val() + '"]').trigger("liszt:updated");
     }

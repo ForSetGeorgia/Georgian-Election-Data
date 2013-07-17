@@ -19,7 +19,7 @@
  *= require data_archives
  *= require indicator_profiles
  *= require district_profiles
- *= require event_filter_dropdown
+ *= require filter_dropdown
   *= require_self
 */
 

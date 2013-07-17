@@ -6,6 +6,16 @@
 		<% cqo = @dt.cols_p - @dt.static_cols %>
 
 
+    <div id="data_table_filter_container">
+      <select id="data_table_filter" class="event_filter_select chzn-select" multiple>
+			  <% @dt.dd_titles.each_with_index do |title, i| %>
+			    <% val = ((i + 1).to_f / cqo).ceil.to_s %>
+			    <% selected = i < cqo ? 'selected="selected"'.html_safe : '' %>
+			    <option <%= selected %> data-i="<%= (i + 1) %>" value="<%= val %>"><%= title %></option>
+			  <% end %>
+      </select>
+    </div>
+
 		<table id="map_data_table" class="table table-striped">
 		 <thead>
 		  <tr>

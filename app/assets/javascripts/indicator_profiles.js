@@ -23,7 +23,7 @@ function show_appropriate_indicator_events(ths){
           tfoot.attr('colspan', Number(tfoot.attr('colspan'))+1);
         }
 
-        // make sure all checkboxes with this id are not checked
+        // make sure all options with this id are checked
         $('#indicator_profile .tab-pane.active select.event_filter_select option[value="' + $(this).val() + '"]').prop("selected", true);
         $('#indicator_profile .tab-pane.active select.event_filter_select option[value="' + $(this).val() + '"]').trigger("liszt:updated");
       }else{
@@ -40,7 +40,7 @@ function show_appropriate_indicator_events(ths){
           tfoot.attr('colspan', Number(tfoot.attr('colspan'))-1);
         }
 
-        // make sure all checkboxes with this id are not checked
+        // make sure all options with this id are not checked
         $('#indicator_profile .tab-pane.active select.event_filter_select option[value="' + $(this).val() + '"]').prop("selected", false);
         $('#indicator_profile .tab-pane.active select.event_filter_select option[value="' + $(this).val() + '"]').trigger("liszt:updated");
       }
