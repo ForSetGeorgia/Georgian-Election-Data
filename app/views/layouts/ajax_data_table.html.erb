@@ -175,9 +175,14 @@
 		gon.dt.all         = <%= @dt.gon[:dt][:all] %>;
 	//gon.dt.common_name = <%= @dt.gon[:dt][:common_name] %>;
 	
+    // create file name for downloads
+    var file_name = $('h1').html();
+    file_name += " - ";
+    file_name += $('navmenu-select p').html();
+
     $(document).ready(function(){
 	    $('#map_data_table').dataTable({
-        "sDom": "<'row-fluid'<'span6'f><'span6'l>r>t<'row-fluid'<'span6'i><'span6'p>>",    
+        "sDom": "<'row-fluid'<'span6'f><'span6'Tl>r>t<'row-fluid'<'span6'i><'span6'p>>",    
         "sPaginationType": "bootstrap",
         "bJQueryUI": false,
         "bProcessing": true,
@@ -187,7 +192,20 @@
           "sUrl": gon.datatable_i18n_url
         },
         "iDisplayLength": 20,
-        "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]]
+        "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]],
+        "oTableTools": {
+			    "aButtons": [
+            {
+              "sExtends": "csv",
+              "sTitle": file_name + " - csv"
+            },
+            {
+              "sExtends": "xls",
+              "sTitle": file_name + " - xls"
+            }
+			    ]
+		    }
+        
       });
     });
     
