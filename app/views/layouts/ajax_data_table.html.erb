@@ -5,6 +5,52 @@
 	<% if !td.nil? && !td.empty? %>
 		<% cqo = @dt.cols_p - @dt.static_cols %>
 
+
+		<table id="map_data_table" class="table table-striped">
+		 <thead>
+		  <tr>
+		    <% td[0].each_with_index do |value, i| %>
+		      <% cgnumber = (i > 0) ? ((i - @dt.static_cols + (cqo - (i - @dt.static_cols) % cqo)) / cqo).to_s : 0 %>
+		      <% classname = 'cg' + cgnumber.to_s %>
+		      <th data-i="<%= i %>" <%= (i > cqo) ? ('class="' + classname + ' hidden"').html_safe : ('class="' + classname + '"').html_safe %>>
+		        <span><%= value %></span>
+		      </th>
+		    <% end %>
+		  </tr>
+		 </thead>
+
+		 <tbody>
+		  <% td[1..(td.length - 1)].each do |row| %>
+		    <tr>
+		      <% row.each_with_index do |value, i| %>
+		        <% cgnumber = (i > 0) ? ((i - @dt.static_cols + (cqo - (i - @dt.static_cols) % cqo)) / cqo).to_s : 0 %>
+		        <% classname = 'cg' + cgnumber.to_s %>
+		        <td data-i="<%= i %>" <%= (i > cqo) ? ('class="' + classname + ' hidden"').html_safe : ('class="' + classname + '"').html_safe %>>
+		          <% if i == 0 %>
+		            <span><%= value %></span>
+		          <% elsif i == 1 && @dt.indicator_type_ids.present?%>
+		            <%= link_to value, summary_map_path(:event_type_id => params[:event_type_id],
+										:event_id => params[:event_id], :shape_type_id => params[:shape_type_id],
+										:shape_id => params[:shape_id], :indicator_type_id => @dt.indicator_type_ids[td[0][i]],
+										:view_type => @summary_view_type_name, :custom_view => params[:custom_view],
+										:data_type => params[:data_type], :data_set_id => params[:data_set_id],
+										:highlight_shape => row[0], :indicator_id => nil) %>
+		          <% else %>
+		            <%= link_to(value, indicator_map_path(:event_type_id => params[:event_type_id],
+										:event_id => params[:event_id], :shape_id => params[:shape_id],
+										:shape_type_id => params[:shape_type_id], :indicator_id => @dt.indicator_ids[i],
+										:custom_view => params[:custom_view], :highlight_shape => row[0],
+										:data_type => params[:data_type], :data_set_id => params[:data_set_id], 
+                    :indicator_type_id => nil)) %>
+		          <% end %>
+		        </td>
+		      <% end %>
+		    </tr>
+		  <% end %>
+		 </tbody>
+		</table>
+
+<div style="display: none;">
 		<div id="data-table-top" class="row-fluid">
 			<div class="switchers clearfix span10">
 				<div class="arrows">
@@ -102,7 +148,7 @@
 		  <% end %>
 		 </tbody>
 		</table>
-
+</div>
 	<% end %>
 
 	<script type="text/javascript">
@@ -118,6 +164,24 @@
 		gon.dt.p           = <%= @dt.gon[:dt][:p] %>;
 		gon.dt.all         = <%= @dt.gon[:dt][:all] %>;
 	//gon.dt.common_name = <%= @dt.gon[:dt][:common_name] %>;
+	
+    $(document).ready(function(){
+	    $('#map_data_table').dataTable({
+        "sDom": "<'row-fluid'<'span6'f><'span6'l>r>t<'row-fluid'<'span6'i><'span6'p>>",    
+        "sPaginationType": "bootstrap",
+        "bJQueryUI": false,
+        "bProcessing": true,
+        "bStateSave": true,
+        "bAutoWidth": false,
+        "oLanguage": {
+          "sUrl": gon.datatable_i18n_url
+        },
+        "iDisplayLength": 20,
+        "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]]
+      });
+    });
+    
+
 	</script>
 	<script type="text/javascript" src="/assets/data_table.js"></script>
 <% end %>
