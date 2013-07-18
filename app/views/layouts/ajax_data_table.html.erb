@@ -7,7 +7,7 @@
       <select id="data_table_filter" class="event_filter_select chzn-select" multiple>
 			  <% @table_data.titles.each_with_index do |title, i| %>
 			    <% selected = i < default_cols_show ? 'selected="selected"'.html_safe : '' %>
-			    <option <%= selected %> data-i="<%= (i + 1) %>" value="<%= i %>"><%= title %></option>
+			    <option <%= selected %> data-id="<%= @table_data.indicator_ids[i] %>" value="<%= i %>"><%= title %></option>
 			  <% end %>
       </select>
     </div>
@@ -16,7 +16,7 @@
 		 <thead>
 		  <tr>
 		    <% data[0].each_with_index do |value, i| %>
-		      <th data-i="<%= i %>" <%= (i > default_cols_show) ? ('class="hidden"').html_safe : '' %>>
+		      <th data-id="<%= @table_data.indicator_ids[i] %>" <%= (i > default_cols_show) ? ('class="hidden"').html_safe : '' %>>
 		        <span><%= value %></span>
 		      </th>
 		    <% end %>
@@ -27,7 +27,7 @@
 		  <% data[1..(data.length - 1)].each do |row| %>
 		    <tr>
 		      <% row.each_with_index do |value, i| %>
-		        <td data-i="<%= i %>" <%= (i > default_cols_show) ? ('class="hidden"').html_safe : '' %>>
+		        <td data-id="<%= @table_data.indicator_ids[i] %>" <%= (i > default_cols_show) ? ('class="hidden"').html_safe : '' %>>
 		          <% if i == 0 %>
 		            <span><%= value %></span>
 		          <% elsif i == 1 && @table_data.indicator_type_ids.present?%>
@@ -58,6 +58,17 @@
     var file_name = $('.navmenu-select p').html();
 
     $(document).ready(function(){
+      // if indicator is selected, highlight it in table
+      $('table#map_data_table th').removeClass('highlighted');
+      $('table#map_data_table td').removeClass('highlighted');
+      var ind_id = <%= @table_data.selected_id %>;
+      if (ind_id != undefined){
+      console.log('highlighting id = ' + ind_id.toString());
+        $('table#map_data_table th[data-id="' + ind_id + '"]').addClass('highlighted');
+        $('table#map_data_table td[data-id="' + ind_id + '"]').addClass('highlighted');
+      }
+
+      // apply jquery datatable
 	    $('#map_data_table').dataTable({
         "sDom": "<'row-fluid'<'span6'f><'span6'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
         "sPaginationType": "bootstrap",

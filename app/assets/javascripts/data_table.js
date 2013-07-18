@@ -6,7 +6,7 @@ $(document).ready(function() {
     // apply chosen jquery to filters
     $('select#data_table_filter').chosen({width: "100%"});
     // record which columns are visible by default
-    $('select#data_table_filter').find(":selected").each(function() { was_selected_map.push($(this).data('i')) });
+    $('select#data_table_filter').find(":selected").each(function() { was_selected_map.push($(this).data('id')) });
 
 
     // when indicator filter changes, update what indicators to show
@@ -16,7 +16,7 @@ $(document).ready(function() {
       var selected = [];
       
       // get all options that are selected
-      $(this).find(":selected").each(function() { selected.push($(this).data('i')) });
+      $(this).find(":selected").each(function() { selected.push($(this).data('id')) });
 
       // find was was de-selected and turn col off
       for (var j in selected) {
@@ -25,8 +25,8 @@ $(document).ready(function() {
       for (var i in was_selected_map) {
         if (typeof lookup[was_selected_map[i]] == 'undefined') {
           // item removed
-          $('table#map_data_table th[data-i="' + was_selected_map[i] + '"]').addClass('hidden');
-          $('table#map_data_table td[data-i="' + was_selected_map[i] + '"]').addClass('hidden');
+          $('table#map_data_table th[data-id="' + was_selected_map[i] + '"]').addClass('hidden');
+          $('table#map_data_table td[data-id="' + was_selected_map[i] + '"]').addClass('hidden');
         } 
       }      
        
@@ -38,8 +38,8 @@ $(document).ready(function() {
       for (var i in selected) {
         if (typeof lookup[selected[i]] == 'undefined') {
           // item added
-          $('table#map_data_table th[data-i="' + selected[i] + '"]').removeClass('hidden');
-          $('table#map_data_table td[data-i="' + selected[i] + '"]').removeClass('hidden');
+          $('table#map_data_table th[data-id="' + selected[i] + '"]').removeClass('hidden');
+          $('table#map_data_table td[data-id="' + selected[i] + '"]').removeClass('hidden');
         } 
       }      
 

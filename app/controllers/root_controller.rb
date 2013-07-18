@@ -361,12 +361,16 @@ logger.debug "//////////////////////////////////////////////////////// done with
 				  'titles'          => [],
 				  'selected_id'        => ''
         )
+        
         # the data contains the election name, common name, common id in first 3 cols
         # and we don't need - so skip
 				@table_data.data.each_with_index do |val, i|
 				  @table_data.data[i] = @table_data.data[i][cols_skip..- 1]
 				end
-        
+
+        # same thing for indicator ids
+			  @table_data.indicator_ids = @table_data.indicator_ids[cols_skip..- 1]
+                
 				# selected indicator id
 				if params[:indicator_id].blank? || params[:indicator_id] == 'null'
 				  if params[:view_type] == params[:summary_view_type_name]

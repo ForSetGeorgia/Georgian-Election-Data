@@ -1079,7 +1079,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 
 			core_ind_names = []
 			core_ind_desc = []
-			if ind_types && !ind_types.empty?
+			if ind_types.present?
 				# pull out the core indicator names and desc
 				ind_ids = ind_types.map{|x| x.core_indicators.map{|y| y.indicators.map{|z| z.id}}}.flatten(2)
 				core_ind_names = ind_types.map{|x| x.core_indicators.map{|y| y.core_indicator_translations[0].name}}.flatten(1)
