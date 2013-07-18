@@ -8,7 +8,7 @@
                 </h3>
                 <select id="event_filter_<%= "#{type["name"]}_#{index}" %>" class="event_filter_select chzn-select" multiple data-id="<%= type["id"]%>">
                   <% type["events"].each_with_index do |event, e_index| %>
-                    <option value="<%= event["id"] %>" <%= e_index < 3 ? "selected='selected'" : "" %> id="<%= "event_#{event["id"]}_#{index}" %>">
+                    <option value="<%= event["id"] %>" <%= e_index < 3 ? "selected=selected" : "" %> id="<%= "event_#{event["id"]}_#{index}" %>" data-id="<%= event["id"] %>">
                       <%= event["name"] %>
                     </option>
                   <% end %>
