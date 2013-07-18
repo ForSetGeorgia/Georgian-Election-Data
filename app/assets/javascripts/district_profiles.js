@@ -178,7 +178,7 @@ function build_district_profile_table(json_data){
     if (rows.length > 1){
       var html = "";
 
-      html += "<table class='table table-striped table-bordered'>";
+      html += "<table class='table table-striped table-bordered profile-table'>";
 
       // add header
       html += "<thead>";

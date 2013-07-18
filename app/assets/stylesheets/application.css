@@ -17,8 +17,7 @@
  *= require data_table
  *= require news
  *= require data_archives
- *= require indicator_profiles
- *= require district_profiles
+ *= require profile_data_table
  *= require filter_dropdown
   *= require_self
 */
