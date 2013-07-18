@@ -24,7 +24,7 @@ $(document).ready(function(){
   } );
 
   $('.indicator_profiles table').dataTable({
-    "sDom": "<'row-fluid'<'span6'f><'span6'l>r>t<'row-fluid'<'span6'i><'span6'p>>",    
+    "sDom": "<'row-fluid'<'span6'f><'span6'>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
     "sPaginationType": "bootstrap",
     "bJQueryUI": false,
     "bProcessing": true,
@@ -38,7 +38,7 @@ $(document).ready(function(){
   });
   
   $('#district_profiles table').dataTable({
-    "sDom": "<'row-fluid'<'span6'f><'span6'l>r>t<'row-fluid'<'span6'i><'span6'p>>",    
+    "sDom": "<'row-fluid'<'span6'f><'span6'>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
     "sPaginationType": "bootstrap",
     "bJQueryUI": false,
     "bProcessing": true,

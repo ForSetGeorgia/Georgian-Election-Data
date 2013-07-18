@@ -176,13 +176,11 @@
 	//gon.dt.common_name = <%= @dt.gon[:dt][:common_name] %>;
 	
     // create file name for downloads
-    var file_name = $('h1').html();
-    file_name += " - ";
-    file_name += $('navmenu-select p').html();
+    var file_name = $('.navmenu-select p').html();
 
     $(document).ready(function(){
 	    $('#map_data_table').dataTable({
-        "sDom": "<'row-fluid'<'span6'fl><'span6'T>r>t<'row-fluid'<'span6'i><'span6'p>>",    
+        "sDom": "<'row-fluid'<'span6'f><'span6'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
         "sPaginationType": "bootstrap",
         "bJQueryUI": false,
         "bProcessing": true,
