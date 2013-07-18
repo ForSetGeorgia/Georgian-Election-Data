@@ -21,7 +21,7 @@ function load_data_table ()
     $('#blur_table_image').hide();
     $('#dt_ajax_replace').html(data);
 //    dt.clean();
-    dt.init();
+//    dt.init();
 /* old
     container.css({height: 'auto'});
     container.html(data);

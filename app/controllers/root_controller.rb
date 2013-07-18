@@ -339,68 +339,51 @@ logger.debug "//////////////////////////////////////////////////////// done with
 	end
 
   def data_table
-    child_shape_type_id = params[:child_shape_type_id]
-    summary_view_type_name = params[:summary_view_type_name]
-    params[:custom_view] = params[:custom_view].nil? ? false : params[:custom_view]
+    params[:custom_view] = params[:custom_view].blank? ? false : params[:custom_view]
 
 		# if data type is live, the dataset must also be provided
 		params_ok = true
-		if params[:data_type] == Datum::DATA_TYPE[:live] && !(params[:data_set_id] && !params[:data_set_id].empty?)
+		if params[:data_type] == Datum::DATA_TYPE[:live] && params[:data_set_id].blank?
 			params_ok = false
 		end
-
+  
 		if params_ok
 			# get the data
-		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], child_shape_type_id, params[:shape_id])
+		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:child_shape_type_id], params[:shape_id])
 
-			if !get_data.nil? && !get_data.empty? && get_data[:data] && !get_data[:data].empty?
-				dt = OpenStruct.new(
-				  'cols_p'             => 7, #data columns count per turn
-				  'skip_cols'          => 3, #data columns skip count, e.g. ["Event", " Map Level", " District ID"]
-				  'static_cols'        => 1, #data static columns count, e.g. "District name"
-
+			if get_data.present? && get_data[:data].present?
+        cols_skip = 3
+        cols_static = 1
+        @table_data = OpenStruct.new(
 				  'data'               => get_data[:data],
 				  'indicator_ids'      => get_data[:indicator_ids],
 				  'indicator_type_ids' => get_data[:indicator_type_ids],
-				  'dd_titles'          => []
-				)
-				s = dt.skip_cols + dt.static_cols
-				dt.indicator_ids = [0] * dt.static_cols + dt.indicator_ids[s..- 1]
-				dt.data.each_with_index do |val, i|
-				  dt.data[i] = dt.data[i][dt.skip_cols..- 1]
+				  'titles'          => [],
+				  'selected_id'        => ''
+        )
+        # the data contains the election name, common name, common id in first 3 cols
+        # and we don't need - so skip
+				@table_data.data.each_with_index do |val, i|
+				  @table_data.data[i] = @table_data.data[i][cols_skip..- 1]
 				end
-
+        
 				# selected indicator id
-				if params[:indicator_id].nil? || params[:indicator_id] == 'null'
-				  if params[:view_type] == summary_view_type_name
-				    dt.sid = 'winner_ind'
-				  else
-				    dt.sid = ''
+				if params[:indicator_id].blank? || params[:indicator_id] == 'null'
+				  if params[:view_type] == params[:summary_view_type_name]
+				    @table_data.selected_id = 'winner_ind'
 				  end
 				else
-				  dt.sid = params[:indicator_id]
+				  @table_data.selected_id = params[:indicator_id].to_s
 				end
-				dt.sid = dt.sid.to_s
 
-				dt_count = dt.data[0].count
-				# column groups count
-				#dt.groups = ((dt_count - dt.skip_cols).to_f / (dt.cols_p - dt.static_cols)).ceil
-				#c = dt.cols_p - dt.static_cols
-				# dropdown titles
-				#dt.groups.times do |i|
-				#  dt.dd_titles << dt.data[0][dt.static_cols..- 1][(c * i)..(c * (i + 1) - 1)]
-				#end
-				dt.groups = ((dt_count - dt.static_cols).to_f / (dt.cols_p - dt.static_cols)).ceil
-				dt.dd_titles = dt.data[0][dt.static_cols..-1]
-				dt.gon = {:dt => {:g => dt.groups, :p => dt.cols_p, :all => dt.data[0].count}}
-				dt.gon[:dt][:common_name] = params[:highlight_shape].nil? ? false : params[:highlight_shape]
-				@dt = dt
-
-			end
-		end
+				@table_data.titles = @table_data.data[0][cols_static..-1]
+        
+      end
+    end  
 
     render :layout => 'ajax_data_table'
   end
+
 
   # POST /export
 	# generate the svg file
