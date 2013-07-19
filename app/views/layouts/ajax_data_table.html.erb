@@ -6,7 +6,12 @@
     <div id="data_table_filter_container">
       <select id="data_table_filter" class="event_filter_select chzn-select" multiple>
 			  <% @table_data.titles.each_with_index do |title, i| %>
-			    <% selected = i < default_cols_show ? 'selected="selected"'.html_safe : '' %>
+	        <%
+	          selected = ''
+	          if @table_data.selected_id.to_s == @table_data.indicator_ids[i].to_s || i < default_cols_show
+	            selected << 'selected="selected"'
+	          end
+	        %>
 			    <option <%= selected %> data-id="<%= @table_data.indicator_ids[i] %>" value="<%= i %>"><%= title %></option>
 			  <% end %>
       </select>

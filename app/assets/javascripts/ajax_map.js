@@ -10,7 +10,7 @@ $(function(){
     }
 
     // initialize the first state
-    History.replaceState({link:gon.history_url, id:gon.history_id, datai:1, dt_highlight_shape:null}, $(document).attr('title'), $(location).attr('href'))
+    History.replaceState({link:gon.history_url, id:gon.history_id, dataid:1, dt_highlight_shape:null}, $(document).attr('title'), $(location).attr('href'))
 
     var State = History.getState();
 
@@ -204,7 +204,7 @@ $(function(){
 	}
 
 	// get the new json data and update the appropriate components
-   function load_state(link, id, datai)
+   function load_state(link, id, dataid)
    {
 //console.log("------------------- load state");
 			// update the url to get the data
@@ -280,17 +280,21 @@ $(function(){
 
 //console.log("highlighting column");
 				// highlight the correct column in the data table
-				if (datai !== undefined && datai !== null){
-					// get datai of current selected column
-					current_datai = $('#dt_dd_switcher').children('option:selected').data('i');
-					if (current_datai != datai) {
-						// remove current selection
-						$('#dt_dd_switcher option[selected=selected]').attr("selected", null);
-						// select new column
-						$('#dt_dd_switcher option[data-i=' + datai + ']').attr("selected", "selected");
-						// update data table highlighting
-						dt.highlight();
-					}
+				if (dataid !== undefined && dataid !== null){
+					// reset the column to highlight
+          $('table#map_data_table th').removeClass('highlighted');
+          $('table#map_data_table td').removeClass('highlighted');
+					$('table#map_data_table th[data-id="' + dataid + '"]').addClass('highlighted')
+					$('table#map_data_table td[data-id="' + dataid + '"]').addClass('highlighted')
+					
+					// if col is not visible, make it visible
+					$('table#map_data_table th[data-id="' + dataid + '"]').removeClass('hidden')
+					$('table#map_data_table td[data-id="' + dataid + '"]').removeClass('hidden')
+					
+					// select the indicator in the list
+          $('#data_table_filter_container select#data_table_filter option[data-id="' + dataid + '"]').prop('selected', true);
+          $('#data_table_filter_container select#data_table_filter').trigger("liszt:updated");
+					
 				}
 
 //console.log("---------- finish");
@@ -299,7 +303,7 @@ $(function(){
 
 
 	// create the state for the link that was just clicked on
-	function create_push_state(link, id, datai, sub_title, dt_highlight_shape){
+	function create_push_state(link, id, dataid, sub_title, dt_highlight_shape){
 		// create new page title
 		var seperator = ' » ';
 		var new_title = '';
@@ -342,7 +346,7 @@ $(function(){
 //console.log("old url = " + link);
 //console.log("new url = " + new_url);
 
-  History.pushState({link:link, id:id, datai:datai, dt_highlight_shape:dt_highlight_shape},
+  History.pushState({link:link, id:id, dataid:dataid, dt_highlight_shape:dt_highlight_shape},
 			new_title, new_url);
 
 	}
@@ -363,24 +367,15 @@ $(function(){
 		// reset highlight since indicator clicks do not have highlight
 		gon.dt_highlight_shape = null;
 
-		// get the data-i of the th tag that has the same text as the link's title
-		var table_headers = $('#data-table tr th');
-		var datai = null;
+		var dataid = $(this).data('id');
+		
 		// if the title does not exist, use the link text
 		if (title == undefined || title == null){
 			title = $(this).text().trim();
 		}
-		for (var i=0;i<table_headers.length;i++){
-			// have to test for header text because ff gets it one way and ie another
-			var header_text = table_headers[i].textContent? table_headers[i].textContent : table_headers[i].innerText;
-			var index = title.trim().indexOf(header_text.trim());
-			if (index != -1) {
-				datai = $(table_headers[i]).attr('data-i');
-				break;
-			}
-		}
+
 		// load the new data
-		create_push_state(link, id, datai, title, null);
+		create_push_state(link, id, dataid, title, null);
 		return false;
 	});
 
@@ -402,20 +397,20 @@ $(function(){
 		var highlight_shape = decodeURIComponent(get_query_parameter(link, 'highlight_shape', 'highlight_shape'));
 
 		// get the data-i of the td tag that has the link that was just clicked
-		var datai = ths.parent().data('i');
+		var dataid = ths.parent().data('id');
 
 		// create the new title
-		var title = $('#dt_dd_switcher option[data-i=' + datai + ']').text() + ' - ' + highlight_shape
+		var title = $('table#map_data_table th[data-id="' + dataid + '"]').text();
 
 		// load the new data
-		create_push_state(link, id, datai, title, highlight_shape);
+		create_push_state(link, id, dataid, title, highlight_shape);
 
 		return false;
 	}
 
 
 	// add click functions to all links in data table
-	var jq_data_table = $("table#data-table");
+	var jq_data_table = $("table#map_data_table");
 	window.a_clicks_bound = false;
 	jq_data_table.live({
     'DOMNodeInserted': function()
@@ -455,7 +450,7 @@ $(function(){
 				  gon.dt_highlight_shape = State.data.dt_highlight_shape;
 
 				  // load the json and reset the page
-				  load_state(State.data.link, State.data.id, State.data.datai);
+				  load_state(State.data.link, State.data.id, State.data.dataid);
         } else {
           // ajax link does not exist
         }

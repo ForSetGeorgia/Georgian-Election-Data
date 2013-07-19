@@ -33,6 +33,7 @@
 										<li>
 											<%= link_to core.name_abbrv_w_parent, indicator_map_path(params.merge(:indicator_id => indicator.id,
 												:view_type => nil, :indicator_type_id => nil, :highlight_shape => nil)),
+												:"data-id" => indicator.id,
 												:title => core.description_w_parent, :class => is_active %>
                       <% if @shape_type_ids_for_ind_profile.index(@child_shape_type_id).present? %>
                         <div class="profile_link">
