@@ -1077,6 +1077,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 			# get all of the indicators for this event at this shape type
 			ind_types = IndicatorType.find_by_event_shape_type(event_id, shape_type_id)
 
+      ind_ids = []
 			core_ind_names = []
 			core_ind_desc = []
 			if ind_types.present?
@@ -1097,6 +1098,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 
 						# add summary name to id/desc
 						ind_ids.insert(s[:col_start_index], summary_column_name)
+						core_ind_names.insert(s[:col_start_index], s[:summary_name])
 						core_ind_desc.insert(s[:col_start_index], s[:summary_name])
 					end
 				end
@@ -1105,10 +1107,10 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
       # get the shapes we need data for
       shapes = Shape.get_shapes_by_type(shape_id, shape_type_id)
 
-			if core_ind_names && !core_ind_names.empty? && shapes && !shapes.empty?
+			if core_ind_names.present? && shapes.present?
 				# build sql query
 				sql = "select et.name as 'event', stt.name_singular as 'shape_type', d.#{I18n.locale}_common_id as 'common_id', d.#{I18n.locale}_common_name as 'common_name', "
-				core_ind_names.each_with_index do |core, i|
+				core_ind_names[1..-1].each_with_index do |core, i|
 					# if this index is the start of a summary, add the summary column for placeholder later on
 					index = summary.index{|x| x[:col_start_index] == i}
 					if index
@@ -1116,7 +1118,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 					end
 
 					sql << "sum(if(cit.name = \"#{core}\", d.value, null)) as '#{ind_column_name}#{i}' "
-					sql << ", " if i < core_ind_names.length-1
+					sql << ", " if i < core_ind_names.length-2
 
 				end
 
@@ -1150,7 +1152,8 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 					header = []
 				  header_starter = download_header.join("||").gsub("[Level]", data.first.attributes["shape_type"]).split("||")
           header << header_starter
-				  core_ind_desc.each do |core|
+#				  core_ind_desc.each do |core|
+				  core_ind_names.each do |core|
 				    header << core
 				  end
 					table << header.flatten
@@ -1162,7 +1165,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 						row = []
             data_hash = obj.to_hash_data_table
 					  # if need summary, add summary data
-  					if summary && !summary.empty?
+  					if summary.present?
   						summary.each_with_index do |sum, index|
   						  # summary column number
   						  # use this to offset array index pointers below
@@ -1177,7 +1180,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
   							  data_hash["#{summary_column_name}#{sum[:indicator_type_id]}"] = I18n.t('app.msgs.no_data')
 							  else
     							data_hash["#{summary_column_name}#{sum[:indicator_type_id]}"] =
-    							  core_ind_names[data_hash.values.index{|x| x == max}-download_header.length-num_summary_col]
+    							  core_ind_names[data_hash.values.index{|x| x == max}-download_header.length-num_summary_col+1]
                 end
   						end
   					end
@@ -1204,8 +1207,10 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
       end
     end
 
+		indicator_data = {:ids => ind_ids, :names => core_ind_names, :desc => core_ind_desc}
+
 		puts "/////// total time = #{Time.now-start} seconds"
-    return {:data => table, :indicator_ids => ind_ids, :indicator_type_ids => indicator_type_ids}
+    return {:data => table, :indicators => indicator_data, :indicator_type_ids => indicator_type_ids}
 	end
 
 

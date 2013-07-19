@@ -356,9 +356,10 @@ logger.debug "//////////////////////////////////////////////////////// done with
         cols_static = 1
         @table_data = OpenStruct.new(
 				  'data'               => get_data[:data],
-				  'indicator_ids'      => get_data[:indicator_ids],
+				  'indicator_ids'      => get_data[:indicators][:ids],
 				  'indicator_type_ids' => get_data[:indicator_type_ids],
-				  'titles'          => [],
+				  'names'              => get_data[:indicators][:names],
+				  'desc'               => get_data[:indicators][:desc],
 				  'selected_id'        => ''
         )
         
@@ -371,7 +372,7 @@ logger.debug "//////////////////////////////////////////////////////// done with
         # same thing for indicator ids
         # but also skip shape name
 			  @table_data.indicator_ids = @table_data.indicator_ids[(cols_skip+1)..- 1]
-                
+
 				# selected indicator id
 				if params[:indicator_id].blank? || params[:indicator_id] == 'null'
 				  if params[:view_type] == params[:summary_view_type_name]
@@ -380,9 +381,6 @@ logger.debug "//////////////////////////////////////////////////////// done with
 				else
 				  @table_data.selected_id = params[:indicator_id].to_s
 				end
-
-				@table_data.titles = @table_data.data[0][cols_static..-1]
-        
       end
     end  
 

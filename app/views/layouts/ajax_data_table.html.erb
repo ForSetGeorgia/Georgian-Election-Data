@@ -5,7 +5,7 @@
 
     <div id="data_table_filter_container">
       <select id="data_table_filter" class="event_filter_select chzn-select" multiple>
-			  <% @table_data.titles.each_with_index do |title, i| %>
+			  <% @table_data.names.each_with_index do |name, i| %>
 	        <%
 	          selected = ''
 	          if @table_data.selected_id.to_s == @table_data.indicator_ids[i].to_s || i < default_cols_show
@@ -14,10 +14,10 @@
 
             dataid = @table_data.indicator_ids[i]
             if i == 0 && @table_data.indicator_type_ids.present?
-              dataid = 'ind_type_' + @table_data.indicator_type_ids[data[0][i]].to_s
+              dataid = 'ind_type_' + @table_data.indicator_type_ids[data[0][i+1]].to_s
             end
 	        %>
-			    <option <%= selected %> data-id="<%= dataid %>" value="<%= i %>"><%= title %></option>
+			    <option <%= selected %> data-id="<%= dataid %>" value="<%= i %>" title="<%= @table_data.desc[i] %>"><%= name %></option>
 			  <% end %>
       </select>
     </div>
@@ -41,9 +41,14 @@
 	          elsif i > 0
 	            dataid = @table_data.indicator_ids[i-1]
 	          end
+	          
+	          title = ''
+	          if i > 1
+	            title = @table_data.desc[i-1]
+	          end
 	        %>
-		      <th data-id="<%= dataid %>" <%= cls.present? ? "class=#{cls}" : '' %>>
-		        <span><%= value %></span>
+		      <th data-id="<%= dataid %>" <%= cls.present? ? "class=#{cls}" : '' %> >
+		        <span <%= title.present? ? "title='#{title}'".html_safe : '' %>><%= value %></span>
 		      </th>
 		    <% end %>
 		  </tr>
@@ -56,10 +61,15 @@
 		        <%
 		          cls = ''
 		          if i > 0 && @table_data.selected_id.to_s == @table_data.indicator_ids[i-1].to_s
-		            cls << 'highlighted'
+		            cls << 'highlighted '
 		          end
+		          # only show the first default_cols_show cols
 		          if i > default_cols_show && cls.empty?
-		            cls << 'hidden'
+		            cls << 'hidden '
+		          end
+		          # if this is winner, highlight it
+		          if @table_data.indicator_type_ids.present? && row[1] == data[0][i]
+		            cls << 'winner '
 		          end
 		          
               dataid = 'first_col'
@@ -69,7 +79,7 @@
 		            dataid = @table_data.indicator_ids[i-1]
 		          end
 		        %>
-		        <td data-id="<%= dataid %>" <%= cls.present? ? "class=#{cls}" : '' %>>
+		        <td data-id="<%= dataid %>" <%= cls.present? ? "class='#{cls}'".html_safe : '' %>>
 		          <% if i == 0 %>
 		            <span><%= value %></span>
 		          <% elsif i == 1 && @table_data.indicator_type_ids.present?%>
