@@ -247,9 +247,8 @@ td.highlighted > a {
       text-decoration: underline;
     }
     &.highlighted{
-/*      background-color: #d6e6f5;*/
-      border-left: dashed 2px #e26561;
-      border-right: dashed 2px #e26561;
+      background-color: #d6e6f5 !important;
+      border-top: solid 1px #fff;
     }
   }
   td {
@@ -259,6 +258,10 @@ td.highlighted > a {
     border-bottom: 1px solid #dad8d9;
     font-size: 12px;
     background-color: #aec9dc;
+    &.highlighted{
+      border-top: solid 1px #fff;
+      border-bottom: solid 1px #fff;
+    }
   }
   tbody tr:nth-child(even) td {
     background-color: #F4F6F5;

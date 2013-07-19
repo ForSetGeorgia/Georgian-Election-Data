@@ -10,7 +10,7 @@ $(function(){
     }
 
     // initialize the first state
-    History.replaceState({link:gon.history_url, id:gon.history_id, dataid:1, dt_highlight_shape:null}, $(document).attr('title'), $(location).attr('href'))
+    History.replaceState({link:gon.history_url, id:gon.history_id, dataid:1, dt_highlight_shape:null, ind_col_filters:null}, $(document).attr('title'), $(location).attr('href'))
 
     var State = History.getState();
 
@@ -204,7 +204,7 @@ $(function(){
 	}
 
 	// get the new json data and update the appropriate components
-   function load_state(link, id, dataid)
+   function load_state(link, id, dataid, ind_col_filters)
    {
 //console.log("------------------- load state");
 			// update the url to get the data
@@ -278,24 +278,48 @@ $(function(){
 				// - do not wait for the datatable to be loaded
 				$("div#map").trigger("child_layer_loaded");
 
+//console.log("show correct colums in table");
+				// show correct columns in table
+				if (ind_col_filters !== undefined && ind_col_filters !== null){
+          // select the correct options in the select list
+          $('#data_table_filter_container select#data_table_filter option').prop('selected', false);
+          for (var i=0;i<ind_col_filters.length;i++){
+            $('#data_table_filter_container select#data_table_filter option[data-id="' + ind_col_filters[i] + '"]').prop('selected', true);
+          }
+          $('#data_table_filter_container select#data_table_filter').trigger("liszt:updated");
+          
+         
+					// reset columns
+          $('table#map_data_table th').removeClass('highlighted').addClass('hidden');
+          $('table#map_data_table td').removeClass('highlighted').addClass('hidden');
+          // first col should always be shown
+          $('table#map_data_table th[data-id="first_col"]').removeClass('hidden');
+          $('table#map_data_table td[data-id="first_col"]').removeClass('hidden');
+          // turn on correct columns
+          for (var i=0;i<ind_col_filters.length;i++){
+					  $('table#map_data_table th[data-id="' + ind_col_filters[i] + '"]').removeClass('hidden');
+					  $('table#map_data_table td[data-id="' + ind_col_filters[i] + '"]').removeClass('hidden');
+          }
+
+
+				}
+
 //console.log("highlighting column");
 				// highlight the correct column in the data table
 				if (dataid !== undefined && dataid !== null){
 					// reset the column to highlight
-          $('table#map_data_table th').removeClass('highlighted');
-          $('table#map_data_table td').removeClass('highlighted');
-					$('table#map_data_table th[data-id="' + dataid + '"]').addClass('highlighted')
-					$('table#map_data_table td[data-id="' + dataid + '"]').addClass('highlighted')
+					$('table#map_data_table th[data-id="' + dataid + '"]').addClass('highlighted');
+					$('table#map_data_table td[data-id="' + dataid + '"]').addClass('highlighted');
 					
 					// if col is not visible, make it visible
-					$('table#map_data_table th[data-id="' + dataid + '"]').removeClass('hidden')
-					$('table#map_data_table td[data-id="' + dataid + '"]').removeClass('hidden')
+					$('table#map_data_table th[data-id="' + dataid + '"]').removeClass('hidden');
+					$('table#map_data_table td[data-id="' + dataid + '"]').removeClass('hidden');
 					
 					// select the indicator in the list
           $('#data_table_filter_container select#data_table_filter option[data-id="' + dataid + '"]').prop('selected', true);
           $('#data_table_filter_container select#data_table_filter').trigger("liszt:updated");
-					
 				}
+
 
 //console.log("---------- finish");
 			});
@@ -317,6 +341,10 @@ $(function(){
 			if (i < old_title_ary.length-1)
 				new_title += seperator;
 		}
+
+    // get list of indicator ids that are in the col filter
+    var ind_col_filters = [];
+    $('#data_table_filter_container select#data_table_filter option:selected').each(function() { ind_col_filters.push($(this).data('id')) });
 
 		var new_url;
     new_url = link; // no need to change anything since the link coming in already has all the params set.
@@ -346,7 +374,7 @@ $(function(){
 //console.log("old url = " + link);
 //console.log("new url = " + new_url);
 
-  History.pushState({link:link, id:id, dataid:dataid, dt_highlight_shape:dt_highlight_shape},
+  History.pushState({link:link, id:id, dataid:dataid, dt_highlight_shape:dt_highlight_shape, ind_col_filters:ind_col_filters},
 			new_title, new_url);
 
 	}
@@ -450,7 +478,7 @@ $(function(){
 				  gon.dt_highlight_shape = State.data.dt_highlight_shape;
 
 				  // load the json and reset the page
-				  load_state(State.data.link, State.data.id, State.data.dataid);
+				  load_state(State.data.link, State.data.id, State.data.dataid, State.data.ind_col_filters);
         } else {
           // ajax link does not exist
         }

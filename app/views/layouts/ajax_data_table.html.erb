@@ -11,8 +11,13 @@
 	          if @table_data.selected_id.to_s == @table_data.indicator_ids[i].to_s || i < default_cols_show
 	            selected << 'selected="selected"'
 	          end
+
+            dataid = @table_data.indicator_ids[i]
+            if i == 0 && @table_data.indicator_type_ids.present?
+              dataid = 'ind_type_' + @table_data.indicator_type_ids[data[0][i]].to_s
+            end
 	        %>
-			    <option <%= selected %> data-id="<%= @table_data.indicator_ids[i] %>" value="<%= i %>"><%= title %></option>
+			    <option <%= selected %> data-id="<%= dataid %>" value="<%= i %>"><%= title %></option>
 			  <% end %>
       </select>
     </div>
@@ -30,8 +35,10 @@
 	            cls << 'hidden'
 	          end
 
-	          dataid = ''
-	          if i > 0
+            dataid = 'first_col'
+            if i == 1 && @table_data.indicator_type_ids.present?
+              dataid = 'ind_type_' + @table_data.indicator_type_ids[data[0][i]].to_s
+	          elsif i > 0
 	            dataid = @table_data.indicator_ids[i-1]
 	          end
 	        %>
@@ -55,8 +62,10 @@
 		            cls << 'hidden'
 		          end
 		          
-		          dataid = ''
-		          if i > 0
+              dataid = 'first_col'
+              if i == 1 && @table_data.indicator_type_ids.present?
+                dataid = 'ind_type_' + @table_data.indicator_type_ids[data[0][i]].to_s
+		          elsif i > 0
 		            dataid = @table_data.indicator_ids[i-1]
 		          end
 		        %>
