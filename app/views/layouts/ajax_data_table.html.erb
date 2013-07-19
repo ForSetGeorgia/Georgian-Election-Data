@@ -16,7 +16,21 @@
 		 <thead>
 		  <tr>
 		    <% data[0].each_with_index do |value, i| %>
-		      <th data-id="<%= @table_data.indicator_ids[i] %>" <%= (i > default_cols_show) ? ('class="hidden"').html_safe : '' %>>
+	        <%
+	          cls = ''
+	          if i > 0 && @table_data.selected_id.to_s == @table_data.indicator_ids[i-1].to_s
+	            cls << 'highlighted'
+	          end
+	          if i > default_cols_show && cls.empty?
+	            cls << 'hidden'
+	          end
+
+	          dataid = ''
+	          if i > 0
+	            dataid = @table_data.indicator_ids[i-1]
+	          end
+	        %>
+		      <th data-id="<%= dataid %>" <%= cls.present? ? "class=#{cls}" : '' %>>
 		        <span><%= value %></span>
 		      </th>
 		    <% end %>
@@ -27,7 +41,21 @@
 		  <% data[1..(data.length - 1)].each do |row| %>
 		    <tr>
 		      <% row.each_with_index do |value, i| %>
-		        <td data-id="<%= @table_data.indicator_ids[i] %>" <%= (i > default_cols_show) ? ('class="hidden"').html_safe : '' %>>
+		        <%
+		          cls = ''
+		          if i > 0 && @table_data.selected_id.to_s == @table_data.indicator_ids[i-1].to_s
+		            cls << 'highlighted'
+		          end
+		          if i > default_cols_show && cls.empty?
+		            cls << 'hidden'
+		          end
+		          
+		          dataid = ''
+		          if i > 0
+		            dataid = @table_data.indicator_ids[i-1]
+		          end
+		        %>
+		        <td data-id="<%= dataid %>" <%= cls.present? ? "class=#{cls}" : '' %>>
 		          <% if i == 0 %>
 		            <span><%= value %></span>
 		          <% elsif i == 1 && @table_data.indicator_type_ids.present?%>
@@ -58,16 +86,16 @@
     var file_name = $('.navmenu-select p').html();
 
     $(document).ready(function(){
+/*
       // if indicator is selected, highlight it in table
       $('table#map_data_table th').removeClass('highlighted');
       $('table#map_data_table td').removeClass('highlighted');
       var ind_id = <%= @table_data.selected_id %>;
       if (ind_id != undefined){
-      console.log('highlighting id = ' + ind_id.toString());
         $('table#map_data_table th[data-id="' + ind_id + '"]').addClass('highlighted');
         $('table#map_data_table td[data-id="' + ind_id + '"]').addClass('highlighted');
       }
-
+*/
       // apply jquery datatable
 	    $('#map_data_table').dataTable({
         "sDom": "<'row-fluid'<'span6'f><'span6'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    

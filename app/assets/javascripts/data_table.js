@@ -8,7 +8,6 @@ $(document).ready(function() {
     // record which columns are visible by default
     $('select#data_table_filter').find(":selected").each(function() { was_selected_map.push($(this).data('id')) });
 
-
     // when indicator filter changes, update what indicators to show
     // - compare list of what was selected vs what is selected and only update the items that don't match
     $('select#data_table_filter').live('change', function(){

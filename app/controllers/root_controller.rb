@@ -369,7 +369,8 @@ logger.debug "//////////////////////////////////////////////////////// done with
 				end
 
         # same thing for indicator ids
-			  @table_data.indicator_ids = @table_data.indicator_ids[cols_skip..- 1]
+        # but also skip shape name
+			  @table_data.indicator_ids = @table_data.indicator_ids[(cols_skip+1)..- 1]
                 
 				# selected indicator id
 				if params[:indicator_id].blank? || params[:indicator_id] == 'null'
