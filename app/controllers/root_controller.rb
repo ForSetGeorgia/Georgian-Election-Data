@@ -354,6 +354,18 @@ logger.debug "//////////////////////////////////////////////////////// done with
 			if get_data.present? && get_data[:data].present?
         cols_skip = 3
         cols_static = 1
+
+        @default_cols_show = 5
+        @table_data = get_data[:data]
+        @indicator_types = get_data[:indicator_types]
+        @table_selected_id = ''
+        # the data contains the election name, common name, common id in first 3 cols
+        # and we don't need - so skip
+				@table_data.each_with_index do |val, i|
+				  @table_data[i] = @table_data[i][cols_skip..- 1]
+				end
+
+=begin
         @table_data = OpenStruct.new(
 				  'data'               => get_data[:data],
 				  'indicator_ids'      => get_data[:indicators][:ids],
@@ -372,14 +384,14 @@ logger.debug "//////////////////////////////////////////////////////// done with
         # same thing for indicator ids
         # but also skip shape name
 			  @table_data.indicator_ids = @table_data.indicator_ids[(cols_skip+1)..- 1]
-
+=end
 				# selected indicator id
 				if params[:indicator_id].blank? || params[:indicator_id] == 'null'
 				  if params[:view_type] == params[:summary_view_type_name]
-				    @table_data.selected_id = 'winner_ind'
+				    @table_selected_id = params[:indicator_type_id].present? ? "ind_type_#{params[:indicator_type_id]}" : 'winner_ind'
 				  end
 				else
-				  @table_data.selected_id = params[:indicator_id].to_s
+				  @table_selected_id = params[:indicator_id].to_s
 				end
       end
     end  
@@ -693,13 +705,15 @@ logger.debug " - no matching event found!"
 
 		# data table
     iid = (params[:indicator_id].nil? ? 'null' : params[:indicator_id])
+    itid= (params[:indicator_type_id].nil? ? 'null' : params[:indicator_type_id])
     vt = (params[:view_type].nil? ? 'null' : params[:view_type])
 		gon.data_table_path = data_table_path(:event_type_id => params[:event_type_id],
 			:event_id => params[:event_id], :shape_id => params[:shape_id],
 			:shape_type_id => params[:shape_type_id], :indicator_id => iid,
 			:custom_view => params[:custom_view], :child_shape_type_id => @child_shape_type_id,
 			:view_type => vt, :summary_view_type_name => @summary_view_type_name,
-			:data_type => params[:data_type], :data_set_id => params[:data_set_id]
+			:data_type => params[:data_type], :data_set_id => params[:data_set_id],
+			:indicator_type_id => itid
 		)
 
 		gon.dt_highlight_shape = (params[:highlight_shape].nil? ? false : params[:highlight_shape])

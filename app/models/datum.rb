@@ -1065,26 +1065,30 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 		return data.flatten(1)
 	end
 
+  # returns: 
+  #  {data => [table data], indicator_types => [ {id name has_summary indicators => [{id name desc}, {}, {}, ...], {}, ...   ] }
 	def self.get_table_data(event_id, data_set_id, shape_type_id, shape_id)
 		start = Time.now
 		table = []
 		ind_column_name = "ind"
 		summary_column_name = "winner_ind"
 		summary = [] # { :indicatory_type_id, :summary_name, :col_start_index, :col_end_index}
+    # [ {id name has_summary indicators => [{id name desc}, {}, {}, ...], {}, ...   ]
+    indicator_data = []
 
 		if event_id && shape_type_id && shape_id && data_set_id
 
 			# get all of the indicators for this event at this shape type
 			ind_types = IndicatorType.find_by_event_shape_type(event_id, shape_type_id)
 
-      ind_ids = []
+#      ind_ids = []
 			core_ind_names = []
-			core_ind_desc = []
+#			core_ind_desc = []
 			if ind_types.present?
 				# pull out the core indicator names and desc
-				ind_ids = ind_types.map{|x| x.core_indicators.map{|y| y.indicators.map{|z| z.id}}}.flatten(2)
+#				ind_ids = ind_types.map{|x| x.core_indicators.map{|y| y.indicators.map{|z| z.id}}}.flatten(2)
 				core_ind_names = ind_types.map{|x| x.core_indicators.map{|y| y.core_indicator_translations[0].name}}.flatten(1)
-				core_ind_desc = ind_types.map{|x| x.core_indicators.map{|y| y.core_indicator_translations[0].description}}.flatten(1)
+#				core_ind_desc = ind_types.map{|x| x.core_indicators.map{|y| y.core_indicator_translations[0].description}}.flatten(1)
 
 				# if ind type has summary, save info to be used for creating summary column(s)
 				ind_types.each do |type|
@@ -1097,10 +1101,25 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 						summary << s
 
 						# add summary name to id/desc
-						ind_ids.insert(s[:col_start_index], summary_column_name)
+#						ind_ids.insert(s[:col_start_index], summary_column_name)
 						core_ind_names.insert(s[:col_start_index], s[:summary_name])
-						core_ind_desc.insert(s[:col_start_index], s[:summary_name])
+#						core_ind_desc.insert(s[:col_start_index], s[:summary_name])
 					end
+
+          h = Hash.new
+          indicator_data << h
+          h[:id] = type.id
+          h[:name] = type.indicator_type_translations[0].name
+          h[:summary_name] = type.indicator_type_translations[0].summary_name
+          h[:has_summary] = type.has_summary
+          h[:indicators] = []
+          type.core_indicators.each do |ind|
+            ind_h = Hash.new
+            h[:indicators] << ind_h
+            ind_h[:id] = ind.indicators.map{|x| x.id}.first
+            ind_h[:name] = ind.core_indicator_translations[0].name
+            ind_h[:description] = ind.core_indicator_translations[0].description
+          end          
 				end
 			end
 
@@ -1157,8 +1176,9 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 				    header << core
 				  end
 					table << header.flatten
+
           #update list of indicator ids with header_starter
-          ind_ids.insert(0,header_starter.clone).flatten!
+#          ind_ids.insert(0,header_starter.clone).flatten!
 
 					# add data
 					data.each do |obj|
@@ -1199,6 +1219,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 			end
 		end
 
+=begin
     # build indicator type ids hash if summary exists
     indicator_type_ids = {}
     if summary && !summary.empty?
@@ -1208,9 +1229,11 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
     end
 
 		indicator_data = {:ids => ind_ids, :names => core_ind_names, :desc => core_ind_desc}
+=end
 
 		puts "/////// total time = #{Time.now-start} seconds"
-    return {:data => table, :indicators => indicator_data, :indicator_type_ids => indicator_type_ids}
+#    return {:data => table, :indicators => indicator_data, :indicator_type_ids => indicator_type_ids}
+    return {:data => table, :indicator_types => indicator_data}
 	end
 
 

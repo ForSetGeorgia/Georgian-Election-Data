@@ -229,7 +229,37 @@ td.highlighted > a {
 
 #data_table_filter_container{
   margin-bottom: 10px;
-  
+  .chzn-container .chzn-results .group-result{
+    color: #333;
+    border-bottom: dashed 1px #999;
+    border-top: dashed 1px #999;
+  }
+}
+
+#table_color_legend_content{
+  display: none;
+}
+.table_color_legend{
+  text-align: center;
+  padding-top: 8px;
+  & > div{
+    display: inline-block;
+    margin-left: 15px;
+    &:first-of-type{
+      margin-left: 0;
+    }
+    & span{
+      width: 20px;
+      display: inline-block;
+      border: solid 1px #fff;
+      &#table_color_legend_indicator{
+        background-color: #d6e6f5;
+      }
+      &#table_color_legend_winner{
+        background: url("/assets/header-bg.jpg");
+      }
+    }
+  }
 }
 
 #map_data_table{
@@ -251,7 +281,10 @@ td.highlighted > a {
       border-top: solid 1px #fff;
     }
     &.winner{
-      background-color: #e6e6e6 !important;
+      background: url("/assets/header-bg.jpg") !important;
+      a{
+        color: #fff;
+      }
     }
   }
   td {

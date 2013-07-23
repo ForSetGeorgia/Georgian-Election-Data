@@ -1,50 +1,72 @@
-<% if @table_data.present? && @table_data.data.present? %>
-	<% data = @table_data.data %>
+<% if @table_data.present? && @indicator_types.present? %>
 
-    <% default_cols_show = 5 %>
+    <% 
+      ind_ids = [] 
+      ind_desc = []
+      has_summary = false
+    %>
 
     <div id="data_table_filter_container">
       <select id="data_table_filter" class="event_filter_select chzn-select" multiple>
-			  <% @table_data.names.each_with_index do |name, i| %>
-	        <%
-	          selected = ''
-	          if @table_data.selected_id.to_s == @table_data.indicator_ids[i].to_s || i < default_cols_show
-	            selected << 'selected="selected"'
-	          end
+        <% option_index = 0 %>
+        <% @indicator_types.each_with_index do |type, i| %>
+          <optgroup label="<%= type[:name] %>">
+            <% if type[:has_summary] %>
+              <% has_summary = true %>
+              <%
+	              selected = ''
+	              if @table_selected_id.to_s == "ind_type_#{type[:id]}" || option_index < @default_cols_show
+	                selected << 'selected="selected"'
+	              end
+              %>
+    			    <option <%= selected %> data-id="ind_type_<%= type[:id] %>" value="<%= option_index %>" title="<%= type[:summary_name] %>"><%= type[:summary_name] %></option>
+    			    <% 
+    			      option_index += 1 
+    			      ind_ids << "ind_type_#{type[:id]}"
+    			      ind_desc << type[:summary_name]
+    			    %>
+            <% end %>
 
-            dataid = @table_data.indicator_ids[i]
-            if i == 0 && @table_data.indicator_type_ids.present?
-              dataid = 'ind_type_' + @table_data.indicator_type_ids[data[0][i+1]].to_s
-            end
-	        %>
-			    <option <%= selected %> data-id="<%= dataid %>" value="<%= i %>" title="<%= @table_data.desc[i] %>"><%= name %></option>
-			  <% end %>
+            <% type[:indicators].each_with_index do |ind, j| %>
+	            <%
+	              selected = ''
+	              if @table_selected_id.to_s == ind[:id].to_s || option_index < @default_cols_show
+	                selected << 'selected="selected"'
+	              end
+	            %>
+			        <option <%= selected %> data-id="<%= ind[:id] %>" value="<%= option_index %>" title="<%= ind[:descritpion] %>"><%= ind[:name] %></option>
+    			    <% 
+    			      option_index += 1 
+    			      ind_ids << ind[:id]
+    			      ind_desc << ind[:description]
+    			    %>
+            <% end %>
+          </optgroup>
+        <% end %>
       </select>
     </div>
 
 		<table id="map_data_table" class="table table-striped">
 		 <thead>
 		  <tr>
-		    <% data[0].each_with_index do |value, i| %>
+		    <% @table_data[0].each_with_index do |value, i| %>
 	        <%
 	          cls = ''
-	          if i > 0 && @table_data.selected_id.to_s == @table_data.indicator_ids[i-1].to_s
+	          if i > 0 && @table_selected_id.to_s == ind_ids[i-1].to_s
 	            cls << 'highlighted'
 	          end
-	          if i > default_cols_show && cls.empty?
-	            cls << 'hidden'
+	          if i > @default_cols_show && cls.empty?
+	            cls << 'hidden '
 	          end
 
             dataid = 'first_col'
-            if i == 1 && @table_data.indicator_type_ids.present?
-              dataid = 'ind_type_' + @table_data.indicator_type_ids[data[0][i]].to_s
-	          elsif i > 0
-	            dataid = @table_data.indicator_ids[i-1]
+	          if i > 0
+	            dataid = ind_ids[i-1]
 	          end
 	          
 	          title = ''
 	          if i > 1
-	            title = @table_data.desc[i-1]
+	            title = ind_desc[i-1]
 	          end
 	        %>
 		      <th data-id="<%= dataid %>" <%= cls.present? ? "class=#{cls}" : '' %> >
@@ -55,44 +77,41 @@
 		 </thead>
 
 		 <tbody>
-		  <% data[1..(data.length - 1)].each do |row| %>
+		  <% @table_data[1..(@table_data.length - 1)].each do |row| %>
 		    <tr>
 		      <% row.each_with_index do |value, i| %>
-		        <%
-		          cls = ''
-		          if i > 0 && @table_data.selected_id.to_s == @table_data.indicator_ids[i-1].to_s
-		            cls << 'highlighted '
-		          end
-		          # only show the first default_cols_show cols
-		          if i > default_cols_show && cls.empty?
-		            cls << 'hidden '
-		          end
+	          <%
+	            cls = ''
+	            if i > 0 && @table_selected_id.to_s == ind_ids[i-1].to_s
+	              cls << 'highlighted'
+	            end
+	            if i > @default_cols_show && cls.empty?
+	              cls << 'hidden '
+	            end
 		          # if this is winner, highlight it
-		          if @table_data.indicator_type_ids.present? && row[1] == data[0][i]
+		          if has_summary && row[1] == @table_data[0][i]
 		            cls << 'winner '
 		          end
-		          
+
               dataid = 'first_col'
-              if i == 1 && @table_data.indicator_type_ids.present?
-                dataid = 'ind_type_' + @table_data.indicator_type_ids[data[0][i]].to_s
-		          elsif i > 0
-		            dataid = @table_data.indicator_ids[i-1]
-		          end
-		        %>
+	            if i > 0
+	              dataid = ind_ids[i-1]
+	            end
+	          %>
 		        <td data-id="<%= dataid %>" <%= cls.present? ? "class='#{cls}'".html_safe : '' %>>
 		          <% if i == 0 %>
 		            <span><%= value %></span>
-		          <% elsif i == 1 && @table_data.indicator_type_ids.present?%>
+		          <% elsif i == 1 && has_summary%>
 		            <%= link_to value, summary_map_path(:event_type_id => params[:event_type_id],
 										:event_id => params[:event_id], :shape_type_id => params[:shape_type_id],
-										:shape_id => params[:shape_id], :indicator_type_id => @table_data.indicator_type_ids[data[0][i]],
+										:shape_id => params[:shape_id], :indicator_type_id => ind_ids[i].to_s.gsub('ind_type_', ''),
 										:view_type => @summary_view_type_name, :custom_view => params[:custom_view],
 										:data_type => params[:data_type], :data_set_id => params[:data_set_id],
 										:highlight_shape => row[0], :indicator_id => nil) %>
 		          <% else %>
 		            <%= link_to(value, indicator_map_path(:event_type_id => params[:event_type_id],
 										:event_id => params[:event_id], :shape_id => params[:shape_id],
-										:shape_type_id => params[:shape_type_id], :indicator_id => @table_data.indicator_ids[i],
+										:shape_type_id => params[:shape_type_id], :indicator_id => ind_ids[i],
 										:custom_view => params[:custom_view], :highlight_shape => row[0],
 										:data_type => params[:data_type], :data_set_id => params[:data_set_id], 
                     :indicator_type_id => nil)) %>
@@ -105,24 +124,34 @@
 		</table>
 
 
+  <div id="table_color_legend_content">
+    <div>
+      <span id="table_color_legend_indicator">&nbsp;</span> <%= t('.color_legend_indicator') %>
+    </div>
+    <div>
+      <span id="table_color_legend_winner">&nbsp;</span> <%= t('.color_legend_winner') %>
+    </div>
+  </div>
+
 	<script type="text/javascript">
-    // create file name for downloads
-    var file_name = $('.navmenu-select p').html();
 
     $(document).ready(function(){
-/*
-      // if indicator is selected, highlight it in table
-      $('table#map_data_table th').removeClass('highlighted');
-      $('table#map_data_table td').removeClass('highlighted');
-      var ind_id = <%= @table_data.selected_id %>;
-      if (ind_id != undefined){
-        $('table#map_data_table th[data-id="' + ind_id + '"]').addClass('highlighted');
-        $('table#map_data_table td[data-id="' + ind_id + '"]').addClass('highlighted');
+      // create file name for downloads
+      var file_name = $('.navmenu-select p').html();
+
+      // build col sorting array so formatted numbers are sorted properly
+      col_sort = new Array($('#map_data_table th').length);
+      for(var i=0;i<col_sort.length;i++){
+        if (i < 2){
+          col_sort[i] = null
+        }else{
+          col_sort[i] = { "sType": "formatted-num" }
+        }
       }
-*/
+
       // apply jquery datatable
 	    $('#map_data_table').dataTable({
-        "sDom": "<'row-fluid'<'span6'f><'span6'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
+        "sDom": "<'row-fluid'<'span4'f><'span4'<'table_color_legend'>><'span4'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
         "sPaginationType": "bootstrap",
         "bJQueryUI": false,
         "bProcessing": true,
@@ -131,6 +160,7 @@
         "oLanguage": {
           "sUrl": gon.datatable_i18n_url
         },
+        "aoColumns": col_sort,
         "iDisplayLength": 20,
         "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]],
         "oTableTools": {
@@ -145,8 +175,8 @@
             }
 			    ]
 		    }
-        
       });
+      $('div.table_color_legend').html($('#table_color_legend_content').html());
     });
     
 
