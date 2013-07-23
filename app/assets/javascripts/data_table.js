@@ -1,5 +1,5 @@
 var was_selected_map = [];
-
+var table_ind_ids;
 $(document).ready(function() {
 
   if (gon.data_table_path){
@@ -13,19 +13,24 @@ $(document).ready(function() {
     $('select#data_table_filter').live('change', function(){
       var lookup = {};
       var selected = [];
+      var data_table = $('#map_data_table').dataTable();
+      var index;
       
       // get all options that are selected
       $(this).find(":selected").each(function() { selected.push($(this).data('id')) });
 
-      // find was was de-selected and turn col off
+      // find what was de-selected and turn col off
       for (var j in selected) {
         lookup[selected[j]] = selected[j];
       }
       for (var i in was_selected_map) {
         if (typeof lookup[was_selected_map[i]] == 'undefined') {
           // item removed
-          $('table#map_data_table th[data-id="' + was_selected_map[i] + '"]').addClass('hidden');
-          $('table#map_data_table td[data-id="' + was_selected_map[i] + '"]').addClass('hidden');
+          index = table_ind_ids.indexOf(was_selected_map[i]);
+console.log('removing index = ' + (index+1).toString());
+          data_table.fnSetColumnVis(index+1, false);
+//          $('table#map_data_table th[data-id="' + was_selected_map[i] + '"]').addClass('hidden');
+//          $('table#map_data_table td[data-id="' + was_selected_map[i] + '"]').addClass('hidden');
         } 
       }      
        
@@ -37,8 +42,11 @@ $(document).ready(function() {
       for (var i in selected) {
         if (typeof lookup[selected[i]] == 'undefined') {
           // item added
-          $('table#map_data_table th[data-id="' + selected[i] + '"]').removeClass('hidden');
-          $('table#map_data_table td[data-id="' + selected[i] + '"]').removeClass('hidden');
+          index = table_ind_ids.indexOf(selected[i]);
+console.log('adding index = ' + (index+1).toString());
+          data_table.fnSetColumnVis(index+1, true);
+//          $('table#map_data_table th[data-id="' + selected[i] + '"]').removeClass('hidden');
+//          $('table#map_data_table td[data-id="' + selected[i] + '"]').removeClass('hidden');
         } 
       }      
 

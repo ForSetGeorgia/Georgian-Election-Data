@@ -56,7 +56,7 @@
 	            cls << 'highlighted'
 	          end
 	          if i > @default_cols_show && cls.empty?
-	            cls << 'hidden '
+#	            cls << 'hidden '
 	          end
 
             dataid = 'first_col'
@@ -86,7 +86,7 @@
 	              cls << 'highlighted'
 	            end
 	            if i > @default_cols_show && cls.empty?
-	              cls << 'hidden '
+#	              cls << 'hidden '
 	            end
 		          # if this is winner, highlight it
 		          if has_summary && row[1] == @table_data[0][i]
@@ -136,6 +136,10 @@
 	<script type="text/javascript">
 
     $(document).ready(function(){
+      // create local variables
+      var default_cols_show = <%= @default_cols_show %>;
+      table_ind_ids = <%= raw ind_ids.as_json %>; // this is a global variable
+
       // create file name for downloads
       var file_name = $('.navmenu-select p').html();
 
@@ -143,19 +147,21 @@
       col_sort = new Array($('#map_data_table th').length);
       for(var i=0;i<col_sort.length;i++){
         if (i < 2){
-          col_sort[i] = null
-        }else{
-          col_sort[i] = { "sType": "formatted-num" }
+          col_sort[i] = { "bVisible": true };
+        }else if (i < default_cols_show+1){
+          col_sort[i] = { "sType": "formatted-num", "bVisible": true };
+        }else {
+          col_sort[i] = { "sType": "formatted-num", "bVisible": false };
         }
-      }
 
+      }
       // apply jquery datatable
 	    $('#map_data_table').dataTable({
         "sDom": "<'row-fluid'<'span4'f><'span4'<'table_color_legend'>><'span4'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
         "sPaginationType": "bootstrap",
         "bJQueryUI": false,
         "bProcessing": true,
-        "bStateSave": true,
+/*        "bStateSave": true,*/
         "bAutoWidth": false,
         "oLanguage": {
           "sUrl": gon.datatable_i18n_url

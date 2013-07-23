@@ -289,8 +289,8 @@ ka:
     ajax_data_table:
       links: რუკის სანახავად დააჭირეთ მონაცემების ღილაკს.
       sorting: "ერთდროულად რამდენიმე სვეტის სორტირებისთვის გეჭიროთ ღილაკი \"SHIFT\" და აირჩიეთ შესაბამისი სვეტების სათაურები"
-      color_legend_indicator: Indicator in Map
-      color_legend_winner: Winner
+      color_legend_indicator:  მაჩვენებელი რუკაზე
+      color_legend_winner: გამარჯვებული
     application:
       title: საქართველოს საარჩევნო მონაცემები
       ndi_alt: ეროვნული დემოკრატიული ინსტიტუტი
