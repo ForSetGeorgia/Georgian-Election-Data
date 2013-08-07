@@ -203,7 +203,8 @@
 			    ]
 		    }
       });
-      $('div.table_color_legend').html($('#table_color_legend_content').html());
+      // give it time to load georgian characters
+      setTimeout(function(){$('div.table_color_legend').html($('#table_color_legend_content').html())}, 100);
     });
     
 
