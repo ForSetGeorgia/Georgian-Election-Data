@@ -143,18 +143,39 @@
       // create file name for downloads
       var file_name = $('.navmenu-select p').html();
 
+      // to be able to sort the jquery datatable build in the function below
+      jQuery.fn.dataTableExt.oSort['formatted-num-html-asc'] = function ( a1, b1 ) {
+        // the text coming in is a link so get text of link
+        var a = $(a1).text();
+        var b = $(b1).text();
+        var x = a.match(/\d/) ? a.replace( /[^\d\-\.]/g, "" ) : 0;
+        var y = b.match(/\d/) ? b.replace( /[^\d\-\.]/g, "" ) : 0;
+        return parseFloat(x) - parseFloat(y);
+      };
+
+	    jQuery.fn.dataTableExt.oSort['formatted-num-html-desc'] = function ( a1, b1 ) {
+        // the text coming in is a link so get text of link
+        var a = $(a1).text();
+        var b = $(b1).text();
+        var x = a.match(/\d/) ? a.replace( /[^\d\-\.]/g, "" ) : 0;
+        var y = b.match(/\d/) ? b.replace( /[^\d\-\.]/g, "" ) : 0;
+        return parseFloat(y) - parseFloat(x);
+      };
+
+
       // build col sorting array so formatted numbers are sorted properly
       col_sort = new Array($('#map_data_table th').length);
       for(var i=0;i<col_sort.length;i++){
         if (i < 2){
           col_sort[i] = { "bVisible": true };
         }else if (i < default_cols_show+1){
-          col_sort[i] = { "sType": "formatted-num", "bVisible": true };
+          col_sort[i] = { "sType": "formatted-num-html", "bVisible": true };
         }else {
-          col_sort[i] = { "sType": "formatted-num", "bVisible": false };
+          col_sort[i] = { "sType": "formatted-num-html", "bVisible": false };
         }
 
       }
+      
       // apply jquery datatable
 	    $('#map_data_table').dataTable({
         "sDom": "<'row-fluid'<'span4'f><'span4'<'table_color_legend'>><'span4'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    

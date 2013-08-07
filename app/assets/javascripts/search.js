@@ -8,20 +8,17 @@ $(document).ready(function(){
   });
 
   // to be able to sort the jquery datatable build in the function below
-  $.extend( $.fn.dataTableExt.oSort, {
-	  "formatted-num-pre": function ( a ) {
-		  a = (a === "-" || a === "") ? 0 : a.replace( /[^\d\-\.%]/g, "" );
-		  return parseFloat( a );
-	  },
+  jQuery.fn.dataTableExt.oSort['formatted-num-asc'] = function ( a, b ) {
+    var x = a.match(/\d/) ? a.replace( /[^\d\-\.]/g, "" ) : 0;
+    var y = b.match(/\d/) ? b.replace( /[^\d\-\.]/g, "" ) : 0;
+    return parseFloat(x) - parseFloat(y);
+  };
 
-	  "formatted-num-asc": function ( a, b ) {
-		  return a - b;
-	  },
-
-	  "formatted-num-desc": function ( a, b ) {
-		  return b - a;
-	  }
-  } );
+	jQuery.fn.dataTableExt.oSort['formatted-num-desc'] = function ( a, b ) {
+    var x = a.match(/\d/) ? a.replace( /[^\d\-\.]/g, "" ) : 0;
+    var y = b.match(/\d/) ? b.replace( /[^\d\-\.]/g, "" ) : 0;
+    return parseFloat(y) - parseFloat(x);
+  };
 
   $('.indicator_profiles table').dataTable({
     "sDom": "<'row-fluid'<'span6'f><'span6'>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    

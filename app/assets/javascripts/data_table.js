@@ -27,10 +27,8 @@ $(document).ready(function() {
         if (typeof lookup[was_selected_map[i]] == 'undefined') {
           // item removed
           index = table_ind_ids.indexOf(was_selected_map[i]);
-console.log('removing index = ' + (index+1).toString());
-          data_table.fnSetColumnVis(index+1, false);
-//          $('table#map_data_table th[data-id="' + was_selected_map[i] + '"]').addClass('hidden');
-//          $('table#map_data_table td[data-id="' + was_selected_map[i] + '"]').addClass('hidden');
+          if (index > -1)
+            data_table.fnSetColumnVis(index+1, false);
         } 
       }      
        
@@ -43,10 +41,8 @@ console.log('removing index = ' + (index+1).toString());
         if (typeof lookup[selected[i]] == 'undefined') {
           // item added
           index = table_ind_ids.indexOf(selected[i]);
-console.log('adding index = ' + (index+1).toString());
-          data_table.fnSetColumnVis(index+1, true);
-//          $('table#map_data_table th[data-id="' + selected[i] + '"]').removeClass('hidden');
-//          $('table#map_data_table td[data-id="' + selected[i] + '"]').removeClass('hidden');
+          if (index > -1)
+            data_table.fnSetColumnVis(index+1, true);
         } 
       }      
 
