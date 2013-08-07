@@ -1072,6 +1072,8 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 		table = []
 		ind_column_name = "ind"
 		summary_column_name = "winner_ind"
+		core_ind_name_start = 0 # if summary present this will turn to 1
+		
 		summary = [] # { :indicatory_type_id, :summary_name, :col_start_index, :col_end_index}
     # [ {id name has_summary indicators => [{id name desc}, {}, {}, ...], {}, ...   ]
     indicator_data = []
@@ -1104,6 +1106,8 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 #						ind_ids.insert(s[:col_start_index], summary_column_name)
 						core_ind_names.insert(s[:col_start_index], s[:summary_name])
 #						core_ind_desc.insert(s[:col_start_index], s[:summary_name])
+
+            core_ind_name_start = 1
 					end
 
           h = Hash.new
@@ -1129,7 +1133,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 			if core_ind_names.present? && shapes.present?
 				# build sql query
 				sql = "select et.name as 'event', stt.name_singular as 'shape_type', d.#{I18n.locale}_common_id as 'common_id', d.#{I18n.locale}_common_name as 'common_name', "
-				core_ind_names[1..-1].each_with_index do |core, i|
+				core_ind_names[core_ind_name_start..-1].each_with_index do |core, i|
 					# if this index is the start of a summary, add the summary column for placeholder later on
 					index = summary.index{|x| x[:col_start_index] == i}
 					if index
@@ -1137,7 +1141,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 					end
 
 					sql << "sum(if(cit.name = \"#{core}\", d.value, null)) as '#{ind_column_name}#{i}' "
-					sql << ", " if i < core_ind_names.length-2
+					sql << ", " if i < core_ind_names.length-core_ind_name_start-1
 
 				end
 

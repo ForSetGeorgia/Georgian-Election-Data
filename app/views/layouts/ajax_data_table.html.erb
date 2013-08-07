@@ -53,7 +53,7 @@
 	        <%
 	          cls = ''
 	          if i > 0 && @table_selected_id.to_s == ind_ids[i-1].to_s
-	            cls << 'highlighted'
+	            cls << 'highlighted '
 	          end
 	          if i > @default_cols_show && cls.empty?
 #	            cls << 'hidden '
@@ -83,7 +83,7 @@
 	          <%
 	            cls = ''
 	            if i > 0 && @table_selected_id.to_s == ind_ids[i-1].to_s
-	              cls << 'highlighted'
+	              cls << 'highlighted '
 	            end
 	            if i > @default_cols_show && cls.empty?
 #	              cls << 'hidden '
@@ -104,14 +104,14 @@
 		          <% elsif i == 1 && has_summary%>
 		            <%= link_to value, summary_map_path(:event_type_id => params[:event_type_id],
 										:event_id => params[:event_id], :shape_type_id => params[:shape_type_id],
-										:shape_id => params[:shape_id], :indicator_type_id => ind_ids[i].to_s.gsub('ind_type_', ''),
+										:shape_id => params[:shape_id], :indicator_type_id => dataid.to_s.gsub('ind_type_', ''),
 										:view_type => @summary_view_type_name, :custom_view => params[:custom_view],
 										:data_type => params[:data_type], :data_set_id => params[:data_set_id],
 										:highlight_shape => row[0], :indicator_id => nil) %>
 		          <% else %>
 		            <%= link_to(value, indicator_map_path(:event_type_id => params[:event_type_id],
 										:event_id => params[:event_id], :shape_id => params[:shape_id],
-										:shape_type_id => params[:shape_type_id], :indicator_id => ind_ids[i],
+										:shape_type_id => params[:shape_type_id], :indicator_id => dataid,
 										:custom_view => params[:custom_view], :highlight_shape => row[0],
 										:data_type => params[:data_type], :data_set_id => params[:data_set_id], 
                     :indicator_type_id => nil)) %>
@@ -128,9 +128,11 @@
     <div>
       <span id="table_color_legend_indicator">&nbsp;</span> <%= t('.color_legend_indicator') %>
     </div>
-    <div>
-      <span id="table_color_legend_winner">&nbsp;</span> <%= t('.color_legend_winner') %>
-    </div>
+    <% if has_summary %>
+      <div>
+        <span id="table_color_legend_winner">&nbsp;</span> <%= t('.color_legend_winner') %>
+      </div>
+    <% end %>
   </div>
 
 	<script type="text/javascript">
@@ -138,6 +140,7 @@
     $(document).ready(function(){
       // create local variables
       var default_cols_show = <%= @default_cols_show %>;
+      var has_summary = <%= has_summary %>;
       table_ind_ids = <%= raw ind_ids.as_json %>; // this is a global variable
 
       // create file name for downloads
@@ -148,8 +151,9 @@
         // the text coming in is a link so get text of link
         var a = $(a1).text();
         var b = $(b1).text();
-        var x = a.match(/\d/) ? a.replace( /[^\d\-\.]/g, "" ) : 0;
-        var y = b.match(/\d/) ? b.replace( /[^\d\-\.]/g, "" ) : 0;
+        // if string starts with -, keep it, else remove -
+        var x = a.match(/\d/) ? a.match(/^\-/) ? a.replace( /[^\d\-\.]/g, "" ) : a.replace( /[^\d\.]/g, "" ) : 0;
+        var y = b.match(/\d/) ? b.match(/^\-/) ? b.replace( /[^\d\-\.]/g, "" ) : b.replace( /[^\d\.]/g, "" ) : 0;
         return parseFloat(x) - parseFloat(y);
       };
 
@@ -157,16 +161,21 @@
         // the text coming in is a link so get text of link
         var a = $(a1).text();
         var b = $(b1).text();
-        var x = a.match(/\d/) ? a.replace( /[^\d\-\.]/g, "" ) : 0;
-        var y = b.match(/\d/) ? b.replace( /[^\d\-\.]/g, "" ) : 0;
+        // if string starts with -, keep it, else remove -
+        var x = a.match(/\d/) ? a.match(/^\-/) ? a.replace( /[^\d\-\.]/g, "" ) : a.replace( /[^\d\.]/g, "" ) : 0;
+        var y = b.match(/\d/) ? b.match(/^\-/) ? b.replace( /[^\d\-\.]/g, "" ) : b.replace( /[^\d\.]/g, "" ) : 0;
         return parseFloat(y) - parseFloat(x);
       };
 
 
       // build col sorting array so formatted numbers are sorted properly
+      // and only show the first default_cols_show cols
       col_sort = new Array($('#map_data_table th').length);
+      // if first col contains numbers, apply formatted sort to it
+      var is_numeric = $('#map_data_table tbody tr:first td:first').text().match(/\d/);
+      var text_index = has_summary ? 2 : 1;
       for(var i=0;i<col_sort.length;i++){
-        if (i < 2){
+        if (i < text_index && is_numeric == null){
           col_sort[i] = { "bVisible": true };
         }else if (i < default_cols_show+1){
           col_sort[i] = { "sType": "formatted-num-html", "bVisible": true };
@@ -175,7 +184,7 @@
         }
 
       }
-      
+
       // apply jquery datatable
 	    $('#map_data_table').dataTable({
         "sDom": "<'row-fluid'<'span4'f><'span4'<'table_color_legend'>><'span4'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
@@ -203,6 +212,7 @@
 			    ]
 		    }
       });
+      
       // give it time to load georgian characters
       setTimeout(function(){$('div.table_color_legend').html($('#table_color_legend_content').html())}, 100);
     });
