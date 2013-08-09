@@ -1,3 +1,4 @@
+/*
 $(function(){
    var map_export = $("#export"),
        export_map_svg = $("#export-map, #export-data-xls, #export-data-csv, #export .fancybox"),
@@ -28,3 +29,5 @@ $(function(){
    });
 
 });
+
+*/
