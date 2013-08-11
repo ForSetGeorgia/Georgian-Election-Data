@@ -141,6 +141,7 @@
       // create local variables
       var default_cols_show = <%= @default_cols_show %>;
       var has_summary = <%= has_summary %>;
+      var current_ind_id = <%= params[:indicator_id] %>;
       table_ind_ids = <%= raw ind_ids.as_json %>; // this is a global variable
 
       // create file name for downloads
@@ -170,6 +171,7 @@
 
       // build col sorting array so formatted numbers are sorted properly
       // and only show the first default_cols_show cols
+      // or the col for the currently selected indicator
       col_sort = new Array($('#map_data_table th').length);
       // if first col contains numbers, apply formatted sort to it
       var is_numeric = $('#map_data_table tbody tr:first td:first').text().match(/\d/);
@@ -177,12 +179,11 @@
       for(var i=0;i<col_sort.length;i++){
         if (i < text_index && is_numeric == null){
           col_sort[i] = { "bVisible": true };
-        }else if (i < default_cols_show+1){
+        }else if (i < default_cols_show+1 || $($('#map_data_table thead tr:first th')[i]).data('id') == current_ind_id){
           col_sort[i] = { "sType": "formatted-num-html", "bVisible": true };
         }else {
           col_sort[i] = { "sType": "formatted-num-html", "bVisible": false };
         }
-
       }
 
       // apply jquery datatable

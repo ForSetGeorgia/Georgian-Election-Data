@@ -1067,7 +1067,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 
   # returns: 
   #  {data => [table data], indicator_types => [ {id name has_summary indicators => [{id name desc}, {}, {}, ...], {}, ...   ] }
-	def self.get_table_data(event_id, data_set_id, shape_type_id, shape_id)
+	def self.get_table_data(event_id, data_set_id, shape_type_id, shape_id, parent_shape_type_id=nil)
 		start = Time.now
 		table = []
 		ind_column_name = "ind"
@@ -1089,43 +1089,113 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 			if ind_types.present?
 				# pull out the core indicator names and desc
 #				ind_ids = ind_types.map{|x| x.core_indicators.map{|y| y.indicators.map{|z| z.id}}}.flatten(2)
-				core_ind_names = ind_types.map{|x| x.core_indicators.map{|y| y.core_indicator_translations[0].name}}.flatten(1)
+#				core_ind_names = ind_types.map{|x| x.core_indicators.map{|y| y.core_indicator_translations[0].name}}.flatten(1)
 #				core_ind_desc = ind_types.map{|x| x.core_indicators.map{|y| y.core_indicator_translations[0].description}}.flatten(1)
 
 				# if ind type has summary, save info to be used for creating summary column(s)
 				ind_types.each do |type|
 					if type.has_summary
+            # add summary name first
+						core_ind_names << type.indicator_type_translations[0].summary_name
+
 						s = Hash.new
 						s[:indicator_type_id] = type.id
 						s[:summary_name] = type.indicator_type_translations[0].summary_name
-						s[:col_start_index] = core_ind_names.index(type.core_indicators.first.core_indicator_translations[0].name)
-						s[:col_end_index] = core_ind_names.index(type.core_indicators.last.core_indicator_translations[0].name)
+
+            # get names in rank order if parent shape type provided
+            if parent_shape_type_id.present?
+              json = build_summary_data_json(shape_id, parent_shape_type_id, event_id, type.id, data_set_id)
+              sorted_cols = json["summary_data"]["data"].map{|x| x[:indicator_name]}
+              sorted_col_ids = json["summary_data"]["data"].map{|x| x[:core_indicator_id]}
+              core_ind_names << sorted_cols
+              core_ind_names.flatten!
+					    s[:col_start_index] = core_ind_names.index(json["summary_data"]["data"].first[:indicator_name])-1
+					    s[:col_end_index] = core_ind_names.index(json["summary_data"]["data"].last[:indicator_name])-1
+
+              h = Hash.new
+              indicator_data << h
+              h[:id] = type.id
+              h[:name] = type.indicator_type_translations[0].name
+              h[:summary_name] = type.indicator_type_translations[0].summary_name
+              h[:has_summary] = type.has_summary
+              h[:indicators] = []
+              sorted_col_ids.each do |core_id|
+                # get the indicator
+                ind = type.core_indicators.select{|x| x.id == core_id}.first
+                if ind.present?
+                  ind_h = Hash.new
+                  h[:indicators] << ind_h
+                  ind_h[:id] = ind.indicators.map{|x| x.id}.first
+                  ind_h[:name] = ind.core_indicator_translations[0].name
+                  ind_h[:description] = ind.core_indicator_translations[0].description
+                else
+Rails.logger.debug "********************"                
+Rails.logger.debug "********************"                
+Rails.logger.debug "********************"                
+Rails.logger.debug "********************"                
+Rails.logger.debug "could not find core ind from sorted col ids"                
+Rails.logger.debug "********************"                
+Rails.logger.debug "********************"                
+Rails.logger.debug "********************"                
+Rails.logger.debug "********************"                
+                end
+              end
+            else
+      				core_ind_names << type.core_indicators.map{|y| y.core_indicator_translations[0].name}
+              core_ind_names.flatten!
+						  s[:col_start_index] = core_ind_names.index(type.core_indicators.first.core_indicator_translations[0].name)-1
+						  s[:col_end_index] = core_ind_names.index(type.core_indicators.last.core_indicator_translations[0].name)-1
+
+              h = Hash.new
+              indicator_data << h
+              h[:id] = type.id
+              h[:name] = type.indicator_type_translations[0].name
+              h[:summary_name] = type.indicator_type_translations[0].summary_name
+              h[:has_summary] = type.has_summary
+              h[:indicators] = []
+              type.core_indicators.each do |ind|
+                ind_h = Hash.new
+                h[:indicators] << ind_h
+                ind_h[:id] = ind.indicators.map{|x| x.id}.first
+                ind_h[:name] = ind.core_indicator_translations[0].name
+                ind_h[:description] = ind.core_indicator_translations[0].description
+              end          
+            end
+
 						summary << s
+
+=begin
 
 						# add summary name to id/desc
 #						ind_ids.insert(s[:col_start_index], summary_column_name)
 						core_ind_names.insert(s[:col_start_index], s[:summary_name])
 #						core_ind_desc.insert(s[:col_start_index], s[:summary_name])
-
+=end
             core_ind_name_start = 1
-					end
+          else
+            # no summary
+    				core_ind_names << type.core_indicators.map{|y| y.core_indicator_translations[0].name}
 
-          h = Hash.new
-          indicator_data << h
-          h[:id] = type.id
-          h[:name] = type.indicator_type_translations[0].name
-          h[:summary_name] = type.indicator_type_translations[0].summary_name
-          h[:has_summary] = type.has_summary
-          h[:indicators] = []
-          type.core_indicators.each do |ind|
-            ind_h = Hash.new
-            h[:indicators] << ind_h
-            ind_h[:id] = ind.indicators.map{|x| x.id}.first
-            ind_h[:name] = ind.core_indicator_translations[0].name
-            ind_h[:description] = ind.core_indicator_translations[0].description
-          end          
+            h = Hash.new
+            indicator_data << h
+            h[:id] = type.id
+            h[:name] = type.indicator_type_translations[0].name
+            h[:summary_name] = type.indicator_type_translations[0].summary_name
+            h[:has_summary] = type.has_summary
+            h[:indicators] = []
+            type.core_indicators.each do |ind|
+              ind_h = Hash.new
+              h[:indicators] << ind_h
+              ind_h[:id] = ind.indicators.map{|x| x.id}.first
+              ind_h[:name] = ind.core_indicator_translations[0].name
+              ind_h[:description] = ind.core_indicator_translations[0].description
+            end          
+					end
 				end
 			end
+
+      # get rid of all nested arrays
+      core_ind_names.flatten!
 
       # get the shapes we need data for
       shapes = Shape.get_shapes_by_type(shape_id, shape_type_id)

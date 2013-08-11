@@ -349,7 +349,7 @@ logger.debug "//////////////////////////////////////////////////////// done with
   
 		if params_ok
 			# get the data
-		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:child_shape_type_id], params[:shape_id])
+		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:child_shape_type_id], params[:shape_id], params[:shape_type_id])
 
 			if get_data.present? && get_data[:data].present?
         cols_skip = 3
@@ -365,26 +365,6 @@ logger.debug "//////////////////////////////////////////////////////// done with
 				  @table_data[i] = @table_data[i][cols_skip..- 1]
 				end
 
-=begin
-        @table_data = OpenStruct.new(
-				  'data'               => get_data[:data],
-				  'indicator_ids'      => get_data[:indicators][:ids],
-				  'indicator_type_ids' => get_data[:indicator_type_ids],
-				  'names'              => get_data[:indicators][:names],
-				  'desc'               => get_data[:indicators][:desc],
-				  'selected_id'        => ''
-        )
-        
-        # the data contains the election name, common name, common id in first 3 cols
-        # and we don't need - so skip
-				@table_data.data.each_with_index do |val, i|
-				  @table_data.data[i] = @table_data.data[i][cols_skip..- 1]
-				end
-
-        # same thing for indicator ids
-        # but also skip shape name
-			  @table_data.indicator_ids = @table_data.indicator_ids[(cols_skip+1)..- 1]
-=end
 				# selected indicator id
 				if params[:indicator_id].blank? || params[:indicator_id] == 'null'
 				  if params[:view_type] == params[:summary_view_type_name]

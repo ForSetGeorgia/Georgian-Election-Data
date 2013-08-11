@@ -288,36 +288,28 @@ $(function(){
           }
           $('#data_table_filter_container select#data_table_filter').trigger("liszt:updated");
           
-         
-					// reset columns
-          $('table#map_data_table th').removeClass('highlighted').addClass('hidden');
-          $('table#map_data_table td').removeClass('highlighted').addClass('hidden');
-          // first col should always be shown
-          $('table#map_data_table th[data-id="first_col"]').removeClass('hidden');
-          $('table#map_data_table td[data-id="first_col"]').removeClass('hidden');
-          // turn on correct columns
-          for (var i=0;i<ind_col_filters.length;i++){
-					  $('table#map_data_table th[data-id="' + ind_col_filters[i] + '"]').removeClass('hidden');
-					  $('table#map_data_table td[data-id="' + ind_col_filters[i] + '"]').removeClass('hidden');
-          }
-
+          // show the correct table columns
+          update_selected_cols();
 
 				}
 
 //console.log("highlighting column");
 				// highlight the correct column in the data table
 				if (dataid !== undefined && dataid !== null){
-					// reset the column to highlight
-					$('table#map_data_table th[data-id="' + dataid + '"]').addClass('highlighted');
-					$('table#map_data_table td[data-id="' + dataid + '"]').addClass('highlighted');
-					
-					// if col is not visible, make it visible
-					$('table#map_data_table th[data-id="' + dataid + '"]').removeClass('hidden');
-					$('table#map_data_table td[data-id="' + dataid + '"]').removeClass('hidden');
-					
 					// select the indicator in the list
           $('#data_table_filter_container select#data_table_filter option[data-id="' + dataid + '"]').prop('selected', true);
           $('#data_table_filter_container select#data_table_filter').trigger("liszt:updated");
+
+					// show correct columns
+          update_selected_cols();
+
+					// reset the column to highlight
+					$('table#map_data_table th').removeClass('highlighted');
+					$('table#map_data_table td').removeClass('highlighted');
+					$('table#map_data_table th[data-id="' + dataid + '"]').addClass('highlighted');
+					$('table#map_data_table td[data-id="' + dataid + '"]').addClass('highlighted');
+					
+				
 				}
 
 
