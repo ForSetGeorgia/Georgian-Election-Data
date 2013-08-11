@@ -217,6 +217,7 @@ ka:
       indicator_relationship: Indicator with Relationship
       indicator_type_relationship: Indicator Group with Relationship
       winner: გამარჯვებული
+      second_place: 2nd Place
       overall_placement: დაკავებული ადგილი
       total_participants: სუბიექტთა რაოდენობა
       footnote_duplicates: სულ მცირე ორი სუბიექტის შედეგები მიახლოებულია

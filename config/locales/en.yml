@@ -217,6 +217,7 @@ en:
       indicator_relationship: Popup for Indicator
       indicator_type_relationship: Popup for Indicator Group
       winner: Winner
+      second_place: 2nd Place
       overall_placement: Overall Placement
       total_participants: Total Subjects
       footnote_duplicates: At least two Subjects tied

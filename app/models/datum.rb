@@ -257,6 +257,7 @@ Rails.logger.debug("************* shape type is precinct = '#{shape_type.is_prec
             if shape_values.present?
 Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
               shape_values.first["shape_values"]["parent_id"] = shape.parent_id
+              shape_values.first["shape_values"]["shape_name"] = shape.common_name
               shape_values.first["shape_values"]["value"] = summary.first["summary_data"]["data"].first[:indicator_name_abbrv]
               shape_values.first["shape_values"]["color"] = summary.first["summary_data"]["data"].first[:color]
               shape_values.first["shape_values"]["title"] = summary.first["summary_data"]["data"].first[:indicator_type_name]
@@ -332,6 +333,7 @@ Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
             if shape_values.present?
 Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
               shape_values.first["shape_values"]["parent_id"] = shape.parent_id
+              shape_values.first["shape_values"]["shape_name"] = shape.common_name
               shape_values.first["shape_values"]["value"] = data_item.first["data_item"][:value]
               shape_values.first["shape_values"]["number_format"] = data_item.first["data_item"][:number_format]
               shape_values.first["shape_values"]["title"] = data_item.first["data_item"][:indicator_name]
@@ -364,6 +366,7 @@ Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
     # - will be populated with real value by the method that called this method
     shape_values = Hash.new
 	  shape_values["shape_id"] = shape_id
+	  shape_values["shape_name"] = nil
 	  shape_values["parent_id"] = nil
 	  shape_values["value"] = I18n.t('app.msgs.no_data')
 	  shape_values["color"] = nil
@@ -1064,6 +1067,72 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 		end
 		return data.flatten(1)
 	end
+
+  # returns:
+  # [ [ header ], [shape name, winner, 2nd, total turnout # total turnout %], etc ]
+  def self.get_table_data_summary(event_id, data_set_id, shape_type_id, shape_id, indicator_type_id, data_type)
+		start = Time.now
+		table = []
+
+    if event_id.present? && data_set_id.present? && shape_type_id.present? && shape_id.present? && 
+        indicator_type_id.present? && data_type.present?
+        
+      shape_type_name = ShapeTypeTranslation.select('name_singular')
+        .where(:locale => I18n.locale, :shape_type_id => shape_type_id)
+        
+      if shape_type_name.present?
+      
+        # header
+        header = []
+        table << header
+        header << I18n.t('models.datum.header.map_level_name').gsub("[Level]", shape_type_name.first.name_singular)
+        header << I18n.t('app.common.winner')
+        header << I18n.t('app.common.second_place')
+        header << 'total turnout (#)'
+        header << 'total turnout (%)'
+        
+    		row = nil
+        json = build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit=2)
+        if json.present?
+          json["shape_data"].each do |d|
+            row = []
+            table << row
+            row << d[0]["shape_values"]["shape_name"]
+            if d.length > 1 && d[1].has_key?("summary_data")
+              row << d[1]["summary_data"]["data"][0][:indicator_name] # winner
+              row << d[1]["summary_data"]["data"][1][:indicator_name] # 2nd place
+            else
+              row << nil
+              row << nil
+            end
+            
+            # total turnout #
+            tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 15}
+            if tt_num.present?
+              cell = tt_num.first["data_item"][:formatted_value]
+              cell << tt_num.first["data_item"][:number_format] if tt_num.first["data_item"][:number_format].present? 
+              row << cell
+            else
+              row << nil
+            end
+            
+            # total turnout %
+            tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 16}
+            if tt_num.present?
+              cell = tt_num.first["data_item"][:formatted_value]
+              cell << tt_num.first["data_item"][:number_format] if tt_num.first["data_item"][:number_format].present? 
+              row << cell
+            else
+              row << nil
+            end
+          end
+        end
+      end
+    end
+    
+		puts "/////// total time = #{Time.now-start} seconds"
+    return table
+  end
 
   # returns: 
   #  {data => [table data], indicator_types => [ {id name has_summary indicators => [{id name desc}, {}, {}, ...], {}, ...   ] }
