@@ -1069,10 +1069,10 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 	end
 
   # returns:
-  # [ [ header ], [shape name, winner, 2nd, total turnout # total turnout %], etc ]
+  # [ {shape, winner_name, winner_value, second_name, second_value, total_turnout_number, total_turnout_percent} ]
   def self.get_table_data_summary(event_id, data_set_id, shape_type_id, shape_id, indicator_type_id, data_type)
 		start = Time.now
-		table = []
+		data = []
 
     if event_id.present? && data_set_id.present? && shape_type_id.present? && shape_id.present? && 
         indicator_type_id.present? && data_type.present?
@@ -1082,48 +1082,49 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
         
       if shape_type_name.present?
       
-        # header
-        header = []
-        table << header
-        header << I18n.t('models.datum.header.map_level_name').gsub("[Level]", shape_type_name.first.name_singular)
-        header << I18n.t('app.common.winner')
-        header << I18n.t('app.common.second_place')
-        header << 'total turnout (#)'
-        header << 'total turnout (%)'
-        
     		row = nil
         json = build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit=2)
         if json.present?
           json["shape_data"].each do |d|
-            row = []
-            table << row
-            row << d[0]["shape_values"]["shape_name"]
-            if d.length > 1 && d[1].has_key?("summary_data")
-              row << d[1]["summary_data"]["data"][0][:indicator_name] # winner
-              row << d[1]["summary_data"]["data"][1][:indicator_name] # 2nd place
-            else
-              row << nil
-              row << nil
-            end
-            
-            # total turnout #
-            tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 15}
-            if tt_num.present?
-              cell = tt_num.first["data_item"][:formatted_value]
-              cell << tt_num.first["data_item"][:number_format] if tt_num.first["data_item"][:number_format].present? 
-              row << cell
-            else
-              row << nil
-            end
-            
-            # total turnout %
-            tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 16}
-            if tt_num.present?
-              cell = tt_num.first["data_item"][:formatted_value]
-              cell << tt_num.first["data_item"][:number_format] if tt_num.first["data_item"][:number_format].present? 
-              row << cell
-            else
-              row << nil
+            if d[0]["shape_values"]["shape_name"].present?
+              row = Hash.new
+              data << row
+              row[:shape] = d[0]["shape_values"]["shape_name"]
+              row[:winner_name] = nil
+              row[:winner_value] = nil
+              row[:second_name] = nil
+              row[:second_value] = nil
+              row[:total_turnout_number] = nil
+              row[:total_turnout_percent] = nil
+
+              if d.length > 1 && d[1].has_key?("summary_data")
+                # winner
+                row[:winner_name] = d[1]["summary_data"]["data"][0][:indicator_name] 
+                cell = d[1]["summary_data"]["data"][0][:formatted_value]
+                cell << d[1]["summary_data"]["data"][0][:number_format] if d[1]["summary_data"]["data"][0][:number_format].present? 
+                row[:winner_value] = cell
+                # 2nd place
+                row[:second_name] = d[1]["summary_data"]["data"][1][:indicator_name] 
+                cell = d[1]["summary_data"]["data"][1][:formatted_value]
+                cell << d[1]["summary_data"]["data"][1][:number_format] if d[1]["summary_data"]["data"][1][:number_format].present? 
+                row[:second_value] = cell
+              end
+              
+              # total turnout #
+              tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 15}
+              if tt_num.present?
+                cell = tt_num.first["data_item"][:formatted_value]
+                cell << tt_num.first["data_item"][:number_format] if tt_num.first["data_item"][:number_format].present? 
+                row[:total_turnout_number] = cell
+              end
+              
+              # total turnout %
+              tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 16}
+              if tt_num.present?
+                cell = tt_num.first["data_item"][:formatted_value]
+                cell << tt_num.first["data_item"][:number_format] if tt_num.first["data_item"][:number_format].present? 
+                row[:total_turnout_percent] = cell
+              end
             end
           end
         end
@@ -1131,7 +1132,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
     end
     
 		puts "/////// total time = #{Time.now-start} seconds"
-    return table
+    return data
   end
 
   # returns: 

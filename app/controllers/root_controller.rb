@@ -48,7 +48,6 @@ logger.debug "////////////// getting current event for event type #{params[:even
 			# save the event name
 			@event_name = event.name
 			@event_description = event.description
-			@event_has_summary_indicator = event.has_summary_indicator?
 
       # save event custom shape nav
       @event_custom_shape_nav = event.custom_shape_navigations
@@ -339,27 +338,7 @@ logger.debug "//////////////////////////////////////////////////////// done with
 		end
 	end
 
-  # get the data for the summary data table
-  def data_table_summary
-    params[:custom_view] = params[:custom_view].blank? ? false : params[:custom_view]
-
-		# if data type is live, the dataset must also be provided
-		params_ok = true
-		if params[:data_type] == Datum::DATA_TYPE[:live] && params[:data_set_id].blank?
-			params_ok = false
-		end
-  
-		if params_ok
-			# get the data
-		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:child_shape_type_id], params[:shape_id], params[:shape_type_id])
-
-			if get_data.present? && get_data[:data].present?
-
-      end
-    end
-
-  end
-  
+  # get the detailed and summary (if needed) table data
   def data_table
     params[:custom_view] = params[:custom_view].blank? ? false : params[:custom_view]
 
@@ -370,7 +349,22 @@ logger.debug "//////////////////////////////////////////////////////// done with
 		end
   
 		if params_ok
-			# get the data
+		  # get summary data
+			@summary_data = nil
+      if params[:indicator_type_id].present?
+        @summary_data = Datum.get_table_data_summary(params[:event_id], 
+          params[:data_set_id], 
+          params[:child_shape_type_id], 
+          params[:shape_id], 
+          params[:indicator_type_id],
+          params[:data_type])
+          
+Rails.logger.debug "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+Rails.logger.debug @summary_data          
+      end
+		
+		
+			# get the detailed data
 		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:child_shape_type_id], params[:shape_id], params[:shape_type_id])
 
 			if get_data.present? && get_data[:data].present?
@@ -717,18 +711,6 @@ logger.debug " - no matching event found!"
 			:data_type => params[:data_type], :data_set_id => params[:data_set_id],
 			:indicator_type_id => itid
 		)
-		
-		# create gon variable for summary data table if needed
-		if @event_has_summary_indicator
-		  gon.data_table_summary_path = data_table_summary_path(:event_type_id => params[:event_type_id],
-			  :event_id => params[:event_id], :shape_id => params[:shape_id],
-			  :shape_type_id => params[:shape_type_id], :indicator_id => iid,
-			  :custom_view => params[:custom_view], :child_shape_type_id => @child_shape_type_id,
-			  :view_type => vt, :summary_view_type_name => @summary_view_type_name,
-			  :data_type => params[:data_type], :data_set_id => params[:data_set_id],
-			  :indicator_type_id => itid
-		  )
-		end
 
 		gon.dt_highlight_shape = (params[:highlight_shape].nil? ? false : params[:highlight_shape])
 
