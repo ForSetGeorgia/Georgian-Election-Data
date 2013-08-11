@@ -1,3 +1,58 @@
+<% if @summary_data.present? %>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>
+          district
+        </th>
+        <th>
+          winner
+        </th>
+        <th>
+          second
+        </th>
+        <th>
+          total turnout (#)
+        </th>
+        <th>
+          total turnout (%)
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @summary_data.each do |data| %>
+        <tr>
+          <td>
+            <%= data[:shape] %>
+          </td>    
+          <td>
+            <%= data[:winner_name] %>
+            <br />
+            <%= data[:winner_value] %>
+          </td>    
+          <td>
+            <%= data[:second_name] %>
+            <br />
+            <%= data[:second_value] %>
+          </td>    
+          <td>
+            <%= data[:total_turnout_number] %>
+          </td>    
+          <td>
+            <%= data[:total_turnout_percent] %>
+          </td>    
+        </tr>   
+      <% end %>  
+    </tbody>
+  </table>
+  
+  <br />
+  <br />
+  <br />
+  <br />
+<% end %>
+
 <% if @table_data.present? && @indicator_types.present? %>
 
     <% 

@@ -1083,7 +1083,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
       if shape_type_name.present?
       
     		row = nil
-        json = build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit=2)
+        json = build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, 2)
         if json.present?
           json["shape_data"].each do |d|
             if d[0]["shape_values"]["shape_name"].present?
