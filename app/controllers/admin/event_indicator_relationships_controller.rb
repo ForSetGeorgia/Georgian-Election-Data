@@ -10,7 +10,7 @@ class Admin::EventIndicatorRelationshipsController < ApplicationController
 		load_form_variables
 		if params[:type]
 			render :json => {
-		    :html => (render_to_string :partial => "event_indicator_relationships/#{params[:type]}.html")
+		    :html => (render_to_string :partial => "admin/event_indicator_relationships/#{params[:type]}.html")
 		  }
 		end
   end
@@ -187,6 +187,7 @@ logger.debug "++++++++++ error = relationship.errors.inspect"
 			.delete_if{|x| !existing_indicator_type_relationships.collect(&:indicator_type_id).index(x.id).nil?}
 
 		gon.load_js_event_indicator_relationship_form = true
+logger.debug "/////////////////////////////////////////"
 logger.debug "unused inds = #{@unused_indicators}"
 logger.debug "unused ind types = #{@unused_indicator_types}"
 	end

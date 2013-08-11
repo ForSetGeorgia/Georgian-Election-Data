@@ -21,7 +21,7 @@ $(document).ready(function() {
 
 function load_custom_shape_types(event_id, input_id, shape_type_id){
 	$.getJSON(
-		'/' + I18n.locale + '/shape_types/event/' + event_id + '.json',
+		'/' + I18n.locale + '/admin/shape_types/event/' + event_id + '.json',
 		function(response) {
 			var options = '';
 		  for (var i = 0; i < response.length; i++) {

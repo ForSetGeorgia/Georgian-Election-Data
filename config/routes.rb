@@ -30,6 +30,12 @@ ElectionMap::Application.routes.draw do
 		  match '/shape_text', :to => 'shape_text#index', :via => :get
 		  match '/shape_text/:id/edit', :to => 'shape_text#edit', :as => 'edit_shape_text', :via => [:get,:post]
 
+      # js routes
+		  match '/shape_types/event/:event_id', :to => 'shape_types#by_event', :as => :shape_types_by_event, :via => :get, :defaults => {:format => 'json'}
+		  match '/indicators/event/:event_id/shape_type/:shape_type_id', :to => 'indicators#by_event_shape_type', :as => :indicators_by_event_shape_type, :via => :get, :defaults => {:format => 'json'}
+		  match '/event_indicator_relationships/render_js_blocks/:id/:type/:counter', :to => 'event_indicator_relationships#render_js_blocks', :via => :get, :defaults => {:format => 'json'}
+
+
 	    resources :core_indicators do
 	      collection do
 	        get :colors
@@ -104,9 +110,7 @@ ElectionMap::Application.routes.draw do
 		match '/contact' => 'messages#new', :as => 'contact', :via => :get
 		match '/contact' => 'messages#create', :as => 'contact', :via => :post
 		match '/contact_success' => 'messages#success', :as => 'contact_success', :via => :get
-		match '/shape_types/event/:event_id', :to => 'shape_types#by_event', :as => :shape_types_by_event, :via => :get, :defaults => {:format => 'json'}
-		match '/indicators/event/:event_id/shape_type/:shape_type_id', :to => 'indicators#by_event_shape_type', :as => :indicators_by_event_shape_type, :via => :get, :defaults => {:format => 'json'}
-		match '/event_indicator_relationships/render_js_blocks/:id/:type/:counter', :to => 'event_indicator_relationships#render_js_blocks', :via => :get, :defaults => {:format => 'json'}
+
 
     # routes to root#index
 		match '/event_type/:event_type_id' => 'root#index', :as => 'event_type_map', :via => :get
@@ -114,6 +118,7 @@ ElectionMap::Application.routes.draw do
 		match '/event_type/:event_type_id/event/:event_id/indicator/:indicator_id/change_shape/:change_shape_type/parent_clickable/:parent_shape_clickable(/shape/:shape_id(/shape_type/:shape_type_id(/custom_view/:custom_view)))' => 'root#index', :as => 'shape_level_map', :via => :get
 		match '/event_type/:event_type_id/event/:event_id/shape_type/:shape_type_id/shape/:shape_id/indicator_type/:indicator_type_id/view_type/:view_type(/custom_view/:custom_view(/highlight_shape/:highlight_shape))' => 'root#index', :as => 'summary_map', :via => :get
 		match '/event_type/:event_type_id/event/:event_id/indicator_type/:indicator_type_id/view_type/:view_type/change_shape/:change_shape_type/parent_clickable/:parent_shape_clickable(/shape/:shape_id(/shape_type/:shape_type_id(/custom_view/:custom_view)))' => 'root#index', :as => 'summary_shape_level_map', :via => :get
+
 
     # other
     match '/data_archives', :to => 'other#data_archives', :as => :data_archives, :via => :get
@@ -181,7 +186,10 @@ ElectionMap::Application.routes.draw do
 			:as => :cache_summary_data, :via => [:get, :post]
 =end
 
+    # data table
 		match '/data_table/event_type/:event_type_id/event/:event_id/shape/:shape_id/shape_type/:shape_type_id/child_shape_type/:child_shape_type_id/indicator/:indicator_id/view_type/:view_type/summary_view_type/:summary_view_type_name(/custom_view/:custom_view)', :to => 'root#data_table', :as => :data_table, :via => :get
+		match '/data_table_summary/event_type/:event_type_id/event/:event_id/shape/:shape_id/shape_type/:shape_type_id/child_shape_type/:child_shape_type_id/indicator/:indicator_id/view_type/:view_type/summary_view_type/:summary_view_type_name(/custom_view/:custom_view)', :to => 'root#data_table_summary', :as => :data_table_summary, :via => :get
+
 
 		root :to => 'root#index'
 

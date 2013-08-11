@@ -42,59 +42,64 @@ function build_popup_footer(json){
 function build_popup_table_summary_data(json){
   html = "";
 
-  for(var i=0;i<json.length;i++){
-    html += "<tr>";
+  if (json.visible){
+    for(var i=0;i<json.data.length;i++){
+      html += "<tr>";
 
-    html += "<td class='map_popup_table_cell1' style='background-color: " + json[i].color + "'>&nbsp;</td>";
+      html += "<td class='map_popup_table_cell1' style='background-color: " + json.data[i].color + "'>&nbsp;</td>";
 
-    html += "<td class='map_popup_table_cell2 ";
+      html += "<td class='map_popup_table_cell2 ";
 
-    if (popup_table_row_highlight !== null && json[i].indicator_name == popup_table_row_highlight){
-      html += "highlight";
+      if (popup_table_row_highlight !== null && json.data[i].indicator_name == popup_table_row_highlight){
+        html += "highlight";
+      }
+      html += "'>" + json.data[i].indicator_name + "</td>";
+
+      html += "<td class='map_popup_table_cell3 "; 
+      if (popup_table_row_highlight !== null && json.data[i].indicator_name == popup_table_row_highlight){
+        html += "highlight";
+      }
+      html += "'>" + json.data[i].formatted_value+(json.data[i].number_format === null ? '' : json.data[i].number_format) + "</td>";
+
+      html += "<td class='map_popup_table_cell4'>";
+      if (!isNaN(json.data[i].value)){
+        html += "<div style='width: " + Number(json.data[i].value) + "%;'>&nbsp;</div>";
+      }
+      html += "</td>";
+
+      html += "</tr>";
     }
-    html += "'>" + json[i].indicator_name + "</td>";
-
-    html += "<td class='map_popup_table_cell3 "; 
-    if (popup_table_row_highlight !== null && json[i].indicator_name == popup_table_row_highlight){
-      html += "highlight";
-    }
-    html += "'>" + json[i].formatted_value+(json[i].number_format === null ? '' : json[i].number_format) + "</td>";
-
-    html += "<td class='map_popup_table_cell4'>";
-    if (!isNaN(json[i].value)){
-      html += "<div style='width: " + Number(json[i].value) + "%;'>&nbsp;</div>";
-    }
-    html += "</td>";
-
-    html += "</tr>";
   }
-
   return html;
 }
 
 function build_popup_table_data_item(json){
   html = "";
 
-    html += "<tr>";
+    if (json.visible){
 
-    html += "<td class='map_popup_table_cell1'></td>";
+      html += "<tr>";
 
-    html += "<td class='map_popup_table_cell2 ";
-    if (popup_table_row_highlight !== null && json.indicator_name == popup_table_row_highlight){
-      html += "highlight";
+      html += "<td class='map_popup_table_cell1'></td>";
+
+      html += "<td class='map_popup_table_cell2 ";
+      if (popup_table_row_highlight !== null && json.indicator_name == popup_table_row_highlight){
+        html += "highlight";
+      }
+      html += "'>" + json.indicator_name + "</td>";
+
+      html += "<td class='map_popup_table_cell3 ";
+      if (popup_table_row_highlight !== null && json.indicator_name == popup_table_row_highlight){
+        html += "highlight";
+      }
+      html += "'>" + json.formatted_value+(json.number_format === null ? '' : json.number_format) + "</td>";
+
+      html += "<td class='map_popup_table_cell4'></td>";
+
+      html += "</tr>";
+
     }
-    html += "'>" + json.indicator_name + "</td>";
-
-    html += "<td class='map_popup_table_cell3 ";
-    if (popup_table_row_highlight !== null && json.indicator_name == popup_table_row_highlight){
-      html += "highlight";
-    }
-    html += "'>" + json.formatted_value+(json.number_format === null ? '' : json.number_format) + "</td>";
-
-    html += "<td class='map_popup_table_cell4'></td>";
-
-    html += "</tr>";
-
+    
   return html;
 }
 
@@ -115,7 +120,7 @@ function build_popup_table(json){
         html += build_popup_table_top();
         started_table = true;
       }
-      html += build_popup_table_summary_data(json[index].summary_data.data);
+      html += build_popup_table_summary_data(json[index].summary_data);
       has_summary = true;
     }
     else if (json[index].hasOwnProperty("data_item"))

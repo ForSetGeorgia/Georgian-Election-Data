@@ -161,4 +161,10 @@ class Event < ActiveRecord::Base
       end
     end
   end
+  
+  # determine if this event contains a summary indicator type
+  def has_summary_indicator?
+    types = IndicatorType.select(' distinct has_summary').joins(:indicators => :event).where('events.id = ?', self.id)
+    return types.present? && types.map{|x| x.has_summary}.index(true).present? ? true : false
+  end
 end

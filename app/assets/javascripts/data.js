@@ -27,7 +27,7 @@ $(document).ready(function() {
 
 function load_indicators(event_id, shape_type_id, indicator_id){
 	$.getJSON(
-		'/' + I18n.locale + '/indicators/event/' + event_id + '/shape_type/' + shape_type_id + '.json',
+		'/' + I18n.locale + '/admin/indicators/event/' + event_id + '/shape_type/' + shape_type_id + '.json',
 		function(response) {
 			var options = '<option value="0"></option>';
 		  for (var i = 0; i < response.length; i++) {
