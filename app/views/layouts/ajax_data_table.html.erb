@@ -1,279 +1,294 @@
-<% if @summary_data.present? %>
-
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>
-          district
-        </th>
-        <th>
-          winner
-        </th>
-        <th>
-          second
-        </th>
-        <th>
-          total turnout (#)
-        </th>
-        <th>
-          total turnout (%)
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @summary_data.each do |data| %>
-        <tr>
-          <td>
-            <%= data[:shape] %>
-          </td>    
-          <td>
-            <%= data[:winner_name] %>
-            <br />
-            <%= data[:winner_value] %>
-          </td>    
-          <td>
-            <%= data[:second_name] %>
-            <br />
-            <%= data[:second_value] %>
-          </td>    
-          <td>
-            <%= data[:total_turnout_number] %>
-          </td>    
-          <td>
-            <%= data[:total_turnout_percent] %>
-          </td>    
-        </tr>   
-      <% end %>  
-    </tbody>
-  </table>
-  
-  <br />
-  <br />
-  <br />
-  <br />
-<% end %>
-
-<% if @table_data.present? && @indicator_types.present? %>
-
-    <% 
-      ind_ids = [] 
-      ind_desc = []
-      has_summary = false
-    %>
-
-    <div id="data_table_filter_container">
-      <select id="data_table_filter" class="event_filter_select chzn-select" multiple>
-        <% option_index = 0 %>
-        <% @indicator_types.each_with_index do |type, i| %>
-          <optgroup label="<%= type[:name] %>">
-            <% if type[:has_summary] %>
-              <% has_summary = true %>
-              <%
-	              selected = ''
-	              if @table_selected_id.to_s == "ind_type_#{type[:id]}" || option_index < @default_cols_show
-	                selected << 'selected="selected"'
-	              end
-              %>
-    			    <option <%= selected %> data-id="ind_type_<%= type[:id] %>" value="<%= option_index %>" title="<%= type[:summary_name] %>"><%= type[:summary_name] %></option>
-    			    <% 
-    			      option_index += 1 
-    			      ind_ids << "ind_type_#{type[:id]}"
-    			      ind_desc << type[:summary_name]
-    			    %>
-            <% end %>
-
-            <% type[:indicators].each_with_index do |ind, j| %>
-	            <%
-	              selected = ''
-	              if @table_selected_id.to_s == ind[:id].to_s || option_index < @default_cols_show
-	                selected << 'selected="selected"'
-	              end
-	            %>
-			        <option <%= selected %> data-id="<%= ind[:id] %>" value="<%= option_index %>" title="<%= ind[:descritpion] %>"><%= ind[:name] %></option>
-    			    <% 
-    			      option_index += 1 
-    			      ind_ids << ind[:id]
-    			      ind_desc << ind[:description]
-    			    %>
-            <% end %>
-          </optgroup>
-        <% end %>
-      </select>
-    </div>
-
-		<table id="map_data_table" class="table table-striped">
-		 <thead>
-		  <tr>
-		    <% @table_data[0].each_with_index do |value, i| %>
-	        <%
-	          cls = ''
-	          if i > 0 && @table_selected_id.to_s == ind_ids[i-1].to_s
-	            cls << 'highlighted '
-	          end
-	          if i > @default_cols_show && cls.empty?
-#	            cls << 'hidden '
-	          end
-
-            dataid = 'first_col'
-	          if i > 0
-	            dataid = ind_ids[i-1]
-	          end
-	          
-	          title = ''
-	          if i > 1
-	            title = ind_desc[i-1]
-	          end
-	        %>
-		      <th data-id="<%= dataid %>" <%= cls.present? ? "class=#{cls}" : '' %> >
-		        <span <%= title.present? ? "title='#{title}'".html_safe : '' %>><%= value %></span>
-		      </th>
-		    <% end %>
-		  </tr>
-		 </thead>
-
-		 <tbody>
-		  <% @table_data[1..(@table_data.length - 1)].each do |row| %>
-		    <tr>
-		      <% row.each_with_index do |value, i| %>
-	          <%
-	            cls = ''
-	            if i > 0 && @table_selected_id.to_s == ind_ids[i-1].to_s
-	              cls << 'highlighted '
-	            end
-	            if i > @default_cols_show && cls.empty?
-#	              cls << 'hidden '
-	            end
-		          # if this is winner, highlight it
-		          if has_summary && row[1] == @table_data[0][i]
-		            cls << 'winner '
-		          end
-
-              dataid = 'first_col'
-	            if i > 0
-	              dataid = ind_ids[i-1]
-	            end
-	          %>
-		        <td data-id="<%= dataid %>" <%= cls.present? ? "class='#{cls}'".html_safe : '' %>>
-		          <% if i == 0 %>
-		            <span><%= value %></span>
-		          <% elsif i == 1 && has_summary%>
-		            <%= link_to value, summary_map_path(:event_type_id => params[:event_type_id],
-										:event_id => params[:event_id], :shape_type_id => params[:shape_type_id],
-										:shape_id => params[:shape_id], :indicator_type_id => dataid.to_s.gsub('ind_type_', ''),
-										:view_type => @summary_view_type_name, :custom_view => params[:custom_view],
-										:data_type => params[:data_type], :data_set_id => params[:data_set_id],
-										:highlight_shape => row[0], :indicator_id => nil) %>
-		          <% else %>
-		            <%= link_to(value, indicator_map_path(:event_type_id => params[:event_type_id],
-										:event_id => params[:event_id], :shape_id => params[:shape_id],
-										:shape_type_id => params[:shape_type_id], :indicator_id => dataid,
-										:custom_view => params[:custom_view], :highlight_shape => row[0],
-										:data_type => params[:data_type], :data_set_id => params[:data_set_id], 
-                    :indicator_type_id => nil)) %>
-		          <% end %>
-		        </td>
-		      <% end %>
-		    </tr>
-		  <% end %>
-		 </tbody>
-		</table>
-
-
-  <div id="table_color_legend_content">
-    <div>
-      <span id="table_color_legend_indicator">&nbsp;</span> <%= t('.color_legend_indicator') %>
-    </div>
-    <% if has_summary %>
-      <div>
-        <span id="table_color_legend_winner">&nbsp;</span> <%= t('.color_legend_winner') %>
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    <% if @summary_data.present? %>
+      <li class="active">
+        <%= link_to "summary view", "#tab_summary", :'data-toggle' => 'tab' %>
+      </li>
+    <% end %>
+    <li class="<%= @summary_data.present? ? '' : 'active' %>">
+      <%= link_to "detailed view", "#tab_detail", :'data-toggle' => 'tab' %>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <% if @summary_data.present? %>
+      <div class="tab-pane active" id="tab_summary">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>
+                district
+              </th>
+              <th>
+                winner
+              </th>
+              <th>
+                second
+              </th>
+              <th>
+                total turnout (#)
+              </th>
+              <th>
+                total turnout (%)
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @summary_data.each do |data| %>
+              <tr>
+                <td>
+                  <%= data[:shape] %>
+                </td>    
+                <td>
+                  <%= data[:winner_name] %>
+                  <br />
+                  <%= data[:winner_value] %>
+                </td>    
+                <td>
+                  <%= data[:second_name] %>
+                  <br />
+                  <%= data[:second_value] %>
+                </td>    
+                <td>
+                  <%= data[:total_turnout_number] %>
+                </td>    
+                <td>
+                  <%= data[:total_turnout_percent] %>
+                </td>    
+              </tr>   
+            <% end %>  
+          </tbody>
+        </table>
       </div>
     <% end %>
-  </div>
 
-	<script type="text/javascript">
+    <div class="tab-pane <%= @summary_data.present? ? '' : 'active'%>" id="tab_detail">
+      <% if @table_data.present? && @indicator_types.present? %>
 
-    $(document).ready(function(){
-      // create local variables
-      var default_cols_show = <%= @default_cols_show %>;
-      var has_summary = <%= has_summary %>;
-      var current_ind_id = <%= params[:indicator_id] %>;
-      table_ind_ids = <%= raw ind_ids.as_json %>; // this is a global variable
+          <% 
+            ind_ids = [] 
+            ind_desc = []
+            has_summary = false
+          %>
 
-      // create file name for downloads
-      var file_name = $('.navmenu-select p').html();
+          <div id="data_table_filter_container">
+            <select id="data_table_filter" class="event_filter_select chzn-select" multiple>
+              <% option_index = 0 %>
+              <% @indicator_types.each_with_index do |type, i| %>
+                <optgroup label="<%= type[:name] %>">
+                  <% if type[:has_summary] %>
+                    <% has_summary = true %>
+                    <%
+                      selected = ''
+                      if @table_selected_id.to_s == "ind_type_#{type[:id]}" || option_index < @default_cols_show
+                        selected << 'selected="selected"'
+                      end
+                    %>
+          			    <option <%= selected %> data-id="ind_type_<%= type[:id] %>" value="<%= option_index %>" title="<%= type[:summary_name] %>"><%= type[:summary_name] %></option>
+          			    <% 
+          			      option_index += 1 
+          			      ind_ids << "ind_type_#{type[:id]}"
+          			      ind_desc << type[:summary_name]
+          			    %>
+                  <% end %>
 
-      // to be able to sort the jquery datatable build in the function below
-      jQuery.fn.dataTableExt.oSort['formatted-num-html-asc'] = function ( a1, b1 ) {
-        // the text coming in is a link so get text of link
-        var a = $(a1).text();
-        var b = $(b1).text();
-        // if string starts with -, keep it, else remove -
-        var x = a.match(/\d/) ? a.match(/^\-/) ? a.replace( /[^\d\-\.]/g, "" ) : a.replace( /[^\d\.]/g, "" ) : 0;
-        var y = b.match(/\d/) ? b.match(/^\-/) ? b.replace( /[^\d\-\.]/g, "" ) : b.replace( /[^\d\.]/g, "" ) : 0;
-        return parseFloat(x) - parseFloat(y);
-      };
+                  <% type[:indicators].each_with_index do |ind, j| %>
+                    <%
+                      selected = ''
+                      if @table_selected_id.to_s == ind[:id].to_s || option_index < @default_cols_show
+                        selected << 'selected="selected"'
+                      end
+                    %>
+		                <option <%= selected %> data-id="<%= ind[:id] %>" value="<%= option_index %>" title="<%= ind[:descritpion] %>"><%= ind[:name] %></option>
+          			    <% 
+          			      option_index += 1 
+          			      ind_ids << ind[:id]
+          			      ind_desc << ind[:description]
+          			    %>
+                  <% end %>
+                </optgroup>
+              <% end %>
+            </select>
+          </div>
 
-	    jQuery.fn.dataTableExt.oSort['formatted-num-html-desc'] = function ( a1, b1 ) {
-        // the text coming in is a link so get text of link
-        var a = $(a1).text();
-        var b = $(b1).text();
-        // if string starts with -, keep it, else remove -
-        var x = a.match(/\d/) ? a.match(/^\-/) ? a.replace( /[^\d\-\.]/g, "" ) : a.replace( /[^\d\.]/g, "" ) : 0;
-        var y = b.match(/\d/) ? b.match(/^\-/) ? b.replace( /[^\d\-\.]/g, "" ) : b.replace( /[^\d\.]/g, "" ) : 0;
-        return parseFloat(y) - parseFloat(x);
-      };
+	        <table id="map_data_table" class="table table-striped">
+	         <thead>
+	          <tr>
+	            <% @table_data[0].each_with_index do |value, i| %>
+                <%
+                  cls = ''
+                  if i > 0 && @table_selected_id.to_s == ind_ids[i-1].to_s
+                    cls << 'highlighted '
+                  end
+                  if i > @default_cols_show && cls.empty?
+      #	            cls << 'hidden '
+                  end
+
+                  dataid = 'first_col'
+                  if i > 0
+                    dataid = ind_ids[i-1]
+                  end
+                  
+                  title = ''
+                  if i > 1
+                    title = ind_desc[i-1]
+                  end
+                %>
+	              <th data-id="<%= dataid %>" <%= cls.present? ? "class=#{cls}" : '' %> >
+	                <span <%= title.present? ? "title='#{title}'".html_safe : '' %>><%= value %></span>
+	              </th>
+	            <% end %>
+	          </tr>
+	         </thead>
+
+	         <tbody>
+	          <% @table_data[1..(@table_data.length - 1)].each do |row| %>
+	            <tr>
+	              <% row.each_with_index do |value, i| %>
+                  <%
+                    cls = ''
+                    if i > 0 && @table_selected_id.to_s == ind_ids[i-1].to_s
+                      cls << 'highlighted '
+                    end
+                    if i > @default_cols_show && cls.empty?
+      #	              cls << 'hidden '
+                    end
+	                  # if this is winner, highlight it
+	                  if has_summary && row[1] == @table_data[0][i]
+	                    cls << 'winner '
+	                  end
+
+                    dataid = 'first_col'
+                    if i > 0
+                      dataid = ind_ids[i-1]
+                    end
+                  %>
+	                <td data-id="<%= dataid %>" <%= cls.present? ? "class='#{cls}'".html_safe : '' %>>
+	                  <% if i == 0 %>
+	                    <span><%= value %></span>
+	                  <% elsif i == 1 && has_summary%>
+	                    <%= link_to value, summary_map_path(:event_type_id => params[:event_type_id],
+									        :event_id => params[:event_id], :shape_type_id => params[:shape_type_id],
+									        :shape_id => params[:shape_id], :indicator_type_id => dataid.to_s.gsub('ind_type_', ''),
+									        :view_type => @summary_view_type_name, :custom_view => params[:custom_view],
+									        :data_type => params[:data_type], :data_set_id => params[:data_set_id],
+									        :highlight_shape => row[0], :indicator_id => nil) %>
+	                  <% else %>
+	                    <%= link_to(value, indicator_map_path(:event_type_id => params[:event_type_id],
+									        :event_id => params[:event_id], :shape_id => params[:shape_id],
+									        :shape_type_id => params[:shape_type_id], :indicator_id => dataid,
+									        :custom_view => params[:custom_view], :highlight_shape => row[0],
+									        :data_type => params[:data_type], :data_set_id => params[:data_set_id], 
+                          :indicator_type_id => nil)) %>
+	                  <% end %>
+	                </td>
+	              <% end %>
+	            </tr>
+	          <% end %>
+	         </tbody>
+	        </table>
 
 
-      // build col sorting array so formatted numbers are sorted properly
-      // and only show the first default_cols_show cols
-      // or the col for the currently selected indicator
-      col_sort = new Array($('#map_data_table th').length);
-      // if first col contains numbers, apply formatted sort to it
-      var is_numeric = $('#map_data_table tbody tr:first td:first').text().match(/\d/);
-      var text_index = has_summary ? 2 : 1;
-      for(var i=0;i<col_sort.length;i++){
-        if (i < text_index && is_numeric == null){
-          col_sort[i] = { "bVisible": true };
-        }else if (i < default_cols_show+1 || $($('#map_data_table thead tr:first th')[i]).data('id') == current_ind_id){
-          col_sort[i] = { "sType": "formatted-num-html", "bVisible": true };
-        }else {
-          col_sort[i] = { "sType": "formatted-num-html", "bVisible": false };
-        }
-      }
+        <div id="table_color_legend_content">
+          <div>
+            <span id="table_color_legend_indicator">&nbsp;</span> <%= t('.color_legend_indicator') %>
+          </div>
+          <% if has_summary %>
+            <div>
+              <span id="table_color_legend_winner">&nbsp;</span> <%= t('.color_legend_winner') %>
+            </div>
+          <% end %>
+        </div>
 
-      // apply jquery datatable
-	    $('#map_data_table').dataTable({
-        "sDom": "<'row-fluid'<'span4'f><'span4'<'table_color_legend'>><'span4'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
-        "sPaginationType": "bootstrap",
-        "bJQueryUI": false,
-        "bProcessing": true,
-/*        "bStateSave": true,*/
-        "bAutoWidth": false,
-        "oLanguage": {
-          "sUrl": gon.datatable_i18n_url
-        },
-        "aoColumns": col_sort,
-        "iDisplayLength": 20,
-        "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]],
-        "oTableTools": {
-			    "aButtons": [
-            {
-              "sExtends": "csv",
-              "sTitle": file_name + " - csv"
-            },
-            {
-              "sExtends": "xls",
-              "sTitle": file_name + " - xls"
+        <script type="text/javascript">
+
+          $(document).ready(function(){
+            // create local variables
+            var default_cols_show = <%= @default_cols_show %>;
+            var has_summary = <%= has_summary %>;
+            var current_ind_id = <%= params[:indicator_id] %>;
+            table_ind_ids = <%= raw ind_ids.as_json %>; // this is a global variable
+
+            // create file name for downloads
+            var file_name = $('.navmenu-select p').html();
+
+            // to be able to sort the jquery datatable build in the function below
+            jQuery.fn.dataTableExt.oSort['formatted-num-html-asc'] = function ( a1, b1 ) {
+              // the text coming in is a link so get text of link
+              var a = $(a1).text();
+              var b = $(b1).text();
+              // if string starts with -, keep it, else remove -
+              var x = a.match(/\d/) ? a.match(/^\-/) ? a.replace( /[^\d\-\.]/g, "" ) : a.replace( /[^\d\.]/g, "" ) : 0;
+              var y = b.match(/\d/) ? b.match(/^\-/) ? b.replace( /[^\d\-\.]/g, "" ) : b.replace( /[^\d\.]/g, "" ) : 0;
+              return parseFloat(x) - parseFloat(y);
+            };
+
+            jQuery.fn.dataTableExt.oSort['formatted-num-html-desc'] = function ( a1, b1 ) {
+              // the text coming in is a link so get text of link
+              var a = $(a1).text();
+              var b = $(b1).text();
+              // if string starts with -, keep it, else remove -
+              var x = a.match(/\d/) ? a.match(/^\-/) ? a.replace( /[^\d\-\.]/g, "" ) : a.replace( /[^\d\.]/g, "" ) : 0;
+              var y = b.match(/\d/) ? b.match(/^\-/) ? b.replace( /[^\d\-\.]/g, "" ) : b.replace( /[^\d\.]/g, "" ) : 0;
+              return parseFloat(y) - parseFloat(x);
+            };
+
+
+            // build col sorting array so formatted numbers are sorted properly
+            // and only show the first default_cols_show cols
+            // or the col for the currently selected indicator
+            col_sort = new Array($('#map_data_table th').length);
+            // if first col contains numbers, apply formatted sort to it
+            var is_numeric = $('#map_data_table tbody tr:first td:first').text().match(/\d/);
+            var text_index = has_summary ? 2 : 1;
+            for(var i=0;i<col_sort.length;i++){
+              if (i < text_index && is_numeric == null){
+                col_sort[i] = { "bVisible": true };
+              }else if (i < default_cols_show+1 || $($('#map_data_table thead tr:first th')[i]).data('id') == current_ind_id){
+                col_sort[i] = { "sType": "formatted-num-html", "bVisible": true };
+              }else {
+                col_sort[i] = { "sType": "formatted-num-html", "bVisible": false };
+              }
             }
-			    ]
-		    }
-      });
-      
-      // give it time to load georgian characters
-      setTimeout(function(){$('div.table_color_legend').html($('#table_color_legend_content').html())}, 100);
-    });
-    
 
-	</script>
-	<script type="text/javascript" src="/assets/data_table.js"></script>
-<% end %>
+            // apply jquery datatable
+            $('#map_data_table').dataTable({
+              "sDom": "<'row-fluid'<'span4'f><'span4'<'table_color_legend'>><'span4'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
+              "sPaginationType": "bootstrap",
+              "bJQueryUI": false,
+              "bProcessing": true,
+      /*        "bStateSave": true,*/
+              "bAutoWidth": false,
+              "oLanguage": {
+                "sUrl": gon.datatable_i18n_url
+              },
+              "aoColumns": col_sort,
+              "iDisplayLength": 20,
+              "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]],
+              "oTableTools": {
+		            "aButtons": [
+                  {
+                    "sExtends": "csv",
+                    "sTitle": file_name + " - csv"
+                  },
+                  {
+                    "sExtends": "xls",
+                    "sTitle": file_name + " - xls"
+                  }
+		            ]
+	            }
+            });
+            
+            // give it time to load georgian characters
+            setTimeout(function(){$('div.table_color_legend').html($('#table_color_legend_content').html())}, 100);
+          });
+          
+
+        </script>
+        <script type="text/javascript" src="/assets/data_table.js"></script>
+      <% end %>
+    </div>
+  </div>        
+
+
+
+
