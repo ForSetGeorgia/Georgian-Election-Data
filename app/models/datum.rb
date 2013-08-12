@@ -1092,8 +1092,10 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
               row[:shape] = d[0]["shape_values"]["shape_name"]
               row[:winner_name] = nil
               row[:winner_value] = nil
+              row[:winner_color] = nil
               row[:second_name] = nil
               row[:second_value] = nil
+              row[:second_color] = nil
               row[:total_turnout_number] = nil
               row[:total_turnout_percent] = nil
 
@@ -1103,11 +1105,13 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
                 cell = d[1]["summary_data"]["data"][0][:formatted_value]
                 cell << d[1]["summary_data"]["data"][0][:number_format] if d[1]["summary_data"]["data"][0][:number_format].present? 
                 row[:winner_value] = cell
+                row[:winner_color] = d[1]["summary_data"]["data"][0][:color] 
                 # 2nd place
                 row[:second_name] = d[1]["summary_data"]["data"][1][:indicator_name] 
                 cell = d[1]["summary_data"]["data"][1][:formatted_value]
                 cell << d[1]["summary_data"]["data"][1][:number_format] if d[1]["summary_data"]["data"][1][:number_format].present? 
                 row[:second_value] = cell
+                row[:second_color] = d[1]["summary_data"]["data"][1][:color] 
               end
               
               # total turnout #

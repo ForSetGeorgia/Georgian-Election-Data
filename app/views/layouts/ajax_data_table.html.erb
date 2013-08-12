@@ -12,23 +12,23 @@
   <div class="tab-content">
     <% if @summary_data.present? %>
       <div class="tab-pane active" id="tab_summary">
-        <table class="table table-striped">
+        <table id="map_data_table_summary" class="table table-striped">
           <thead>
             <tr>
               <th>
-                district
+                <span>district</span>
               </th>
               <th>
-                winner
+                <span>winner</span>
               </th>
               <th>
-                second
+                <span>second</span>
               </th>
               <th>
-                total turnout (#)
+                <span>total turnout (#)</span>
               </th>
               <th>
-                total turnout (%)
+                <span>total turnout (%)</span>
               </th>
             </tr>
           </thead>
@@ -36,23 +36,32 @@
             <% @summary_data.each do |data| %>
               <tr>
                 <td>
-                  <%= data[:shape] %>
+                  <span><%= data[:shape] %></span>
                 </td>    
                 <td>
-                  <%= data[:winner_name] %>
-                  <br />
-                  <%= data[:winner_value] %>
+                  <div class="color_bar">
+                    <div class="left_border" style="background-color: <%= data[:winner_color] %>">&nbsp;</div>
+                    <span>
+                      <%= data[:winner_name] %>
+                      <br />
+                      <%= data[:winner_value] %>
+                    </span>
+                  </div>
                 </td>    
                 <td>
-                  <%= data[:second_name] %>
-                  <br />
-                  <%= data[:second_value] %>
+                  <div class="color_bar">
+                    <div class="left_border" style="background-color: <%= data[:second_color] %>">&nbsp;</div>
+                    <span>
+                      <%= data[:second_name] %>
+                      <br />
+                      <%= data[:second_value] %>
+                    </span>
                 </td>    
                 <td>
-                  <%= data[:total_turnout_number] %>
+                  <span><%= data[:total_turnout_number] %></span>
                 </td>    
                 <td>
-                  <%= data[:total_turnout_percent] %>
+                  <span><%= data[:total_turnout_percent] %></span>
                 </td>    
               </tr>   
             <% end %>  
@@ -198,97 +207,128 @@
             </div>
           <% end %>
         </div>
-
-        <script type="text/javascript">
-
-          $(document).ready(function(){
-            // create local variables
-            var default_cols_show = <%= @default_cols_show %>;
-            var has_summary = <%= has_summary %>;
-            var current_ind_id = <%= params[:indicator_id] %>;
-            table_ind_ids = <%= raw ind_ids.as_json %>; // this is a global variable
-
-            // create file name for downloads
-            var file_name = $('.navmenu-select p').html();
-
-            // to be able to sort the jquery datatable build in the function below
-            jQuery.fn.dataTableExt.oSort['formatted-num-html-asc'] = function ( a1, b1 ) {
-              // the text coming in is a link so get text of link
-              var a = $(a1).text();
-              var b = $(b1).text();
-              // if string starts with -, keep it, else remove -
-              var x = a.match(/\d/) ? a.match(/^\-/) ? a.replace( /[^\d\-\.]/g, "" ) : a.replace( /[^\d\.]/g, "" ) : 0;
-              var y = b.match(/\d/) ? b.match(/^\-/) ? b.replace( /[^\d\-\.]/g, "" ) : b.replace( /[^\d\.]/g, "" ) : 0;
-              return parseFloat(x) - parseFloat(y);
-            };
-
-            jQuery.fn.dataTableExt.oSort['formatted-num-html-desc'] = function ( a1, b1 ) {
-              // the text coming in is a link so get text of link
-              var a = $(a1).text();
-              var b = $(b1).text();
-              // if string starts with -, keep it, else remove -
-              var x = a.match(/\d/) ? a.match(/^\-/) ? a.replace( /[^\d\-\.]/g, "" ) : a.replace( /[^\d\.]/g, "" ) : 0;
-              var y = b.match(/\d/) ? b.match(/^\-/) ? b.replace( /[^\d\-\.]/g, "" ) : b.replace( /[^\d\.]/g, "" ) : 0;
-              return parseFloat(y) - parseFloat(x);
-            };
-
-
-            // build col sorting array so formatted numbers are sorted properly
-            // and only show the first default_cols_show cols
-            // or the col for the currently selected indicator
-            col_sort = new Array($('#map_data_table th').length);
-            // if first col contains numbers, apply formatted sort to it
-            var is_numeric = $('#map_data_table tbody tr:first td:first').text().match(/\d/);
-            var text_index = has_summary ? 2 : 1;
-            for(var i=0;i<col_sort.length;i++){
-              if (i < text_index && is_numeric == null){
-                col_sort[i] = { "bVisible": true };
-              }else if (i < default_cols_show+1 || $($('#map_data_table thead tr:first th')[i]).data('id') == current_ind_id){
-                col_sort[i] = { "sType": "formatted-num-html", "bVisible": true };
-              }else {
-                col_sort[i] = { "sType": "formatted-num-html", "bVisible": false };
-              }
-            }
-
-            // apply jquery datatable
-            $('#map_data_table').dataTable({
-              "sDom": "<'row-fluid'<'span4'f><'span4'<'table_color_legend'>><'span4'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
-              "sPaginationType": "bootstrap",
-              "bJQueryUI": false,
-              "bProcessing": true,
-      /*        "bStateSave": true,*/
-              "bAutoWidth": false,
-              "oLanguage": {
-                "sUrl": gon.datatable_i18n_url
-              },
-              "aoColumns": col_sort,
-              "iDisplayLength": 20,
-              "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]],
-              "oTableTools": {
-		            "aButtons": [
-                  {
-                    "sExtends": "csv",
-                    "sTitle": file_name + " - csv"
-                  },
-                  {
-                    "sExtends": "xls",
-                    "sTitle": file_name + " - xls"
-                  }
-		            ]
-	            }
-            });
-            
-            // give it time to load georgian characters
-            setTimeout(function(){$('div.table_color_legend').html($('#table_color_legend_content').html())}, 100);
-          });
-          
-
-        </script>
-        <script type="text/javascript" src="/assets/data_table.js"></script>
       <% end %>
     </div>
   </div>        
 
+  <script type="text/javascript">
 
+    $(document).ready(function(){
+    
+      // create local variables
+      var default_cols_show = <%= @default_cols_show %>;
+      var has_summary = <%= has_summary %>;
+      var current_ind_id = <%= params[:indicator_id] %>;
+      table_ind_ids = <%= raw ind_ids.as_json %>; // this is a global variable
+
+      // create file name for downloads
+      var file_name = $('.navmenu-select p').html();
+
+      // to be able to sort the jquery datatable build in the function below
+      jQuery.fn.dataTableExt.oSort['formatted-num-html-asc'] = function ( a1, b1 ) {
+        // the text coming in is a link so get text of link
+        var a = $(a1).text();
+        var b = $(b1).text();
+        // if string starts with -, keep it, else remove -
+        var x = a.match(/\d/) ? a.match(/^\-/) ? a.replace( /[^\d\-\.]/g, "" ) : a.replace( /[^\d\.]/g, "" ) : 0;
+        var y = b.match(/\d/) ? b.match(/^\-/) ? b.replace( /[^\d\-\.]/g, "" ) : b.replace( /[^\d\.]/g, "" ) : 0;
+        return parseFloat(x) - parseFloat(y);
+      };
+
+      jQuery.fn.dataTableExt.oSort['formatted-num-html-desc'] = function ( a1, b1 ) {
+        // the text coming in is a link so get text of link
+        var a = $(a1).text();
+        var b = $(b1).text();
+        // if string starts with -, keep it, else remove -
+        var x = a.match(/\d/) ? a.match(/^\-/) ? a.replace( /[^\d\-\.]/g, "" ) : a.replace( /[^\d\.]/g, "" ) : 0;
+        var y = b.match(/\d/) ? b.match(/^\-/) ? b.replace( /[^\d\-\.]/g, "" ) : b.replace( /[^\d\.]/g, "" ) : 0;
+        return parseFloat(y) - parseFloat(x);
+      };
+
+
+      /////////////////////////////
+      // summary table
+      /////////////////////////////
+      // build col sorting array so formatted numbers are sorted properly
+      col_sort = new Array(1);
+      // if first col contains numbers, apply formatted sort to it
+      var is_numeric = $('#map_data_table_summary tbody tr:first td:first').text().match(/\d/);
+      if (is_numeric == null){
+        col_sort[0] = { "bVisible": true };
+      }else {
+        col_sort[0] = { "sType": "formatted-num-html", "bVisible": true };
+      }
+/*      
+      // apply jquery datatable
+      $('#map_data_table_summary').dataTable({
+        "sDom": "<'row-fluid'<'span6'f>><'span6'>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
+        "sPaginationType": "bootstrap",
+        "bJQueryUI": false,
+        "bProcessing": true,
+        "bAutoWidth": false,
+        "oLanguage": {
+          "sUrl": gon.datatable_i18n_url
+        },
+        "aoColumns": col_sort,
+        "iDisplayLength": 20,
+        "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]]
+      });
+*/          
+    
+      /////////////////////////////
+      // detailed table
+      /////////////////////////////
+      // build col sorting array so formatted numbers are sorted properly
+      // and only show the first default_cols_show cols
+      // or the col for the currently selected indicator
+      col_sort = new Array($('#map_data_table th').length);
+      // if first col contains numbers, apply formatted sort to it
+      var is_numeric = $('#map_data_table tbody tr:first td:first').text().match(/\d/);
+      var text_index = has_summary ? 2 : 1;
+      for(var i=0;i<col_sort.length;i++){
+        if (i < text_index && is_numeric == null){
+          col_sort[i] = { "bVisible": true };
+        }else if (i < default_cols_show+1 || $($('#map_data_table thead tr:first th')[i]).data('id') == current_ind_id){
+          col_sort[i] = { "sType": "formatted-num-html", "bVisible": true };
+        }else {
+          col_sort[i] = { "sType": "formatted-num-html", "bVisible": false };
+        }
+      }
+
+      // apply jquery datatable
+      $('#map_data_table').dataTable({
+        "sDom": "<'row-fluid'<'span4'f><'span4'<'table_color_legend'>><'span4'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
+        "sPaginationType": "bootstrap",
+        "bJQueryUI": false,
+        "bProcessing": true,
+/*        "bStateSave": true,*/
+        "bAutoWidth": false,
+        "oLanguage": {
+          "sUrl": gon.datatable_i18n_url
+        },
+        "aoColumns": col_sort,
+        "iDisplayLength": 20,
+        "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]],
+        "oTableTools": {
+          "aButtons": [
+            {
+              "sExtends": "csv",
+              "sTitle": file_name + " - csv"
+            },
+            {
+              "sExtends": "xls",
+              "sTitle": file_name + " - xls"
+            }
+          ]
+        }
+      });
+      
+      // give it time to load georgian characters
+      setTimeout(function(){$('div.table_color_legend').html($('#table_color_legend_content').html())}, 100);
+    });
+    
+
+  </script>
+  <script type="text/javascript" src="/assets/data_table.js"></script>
 
 
