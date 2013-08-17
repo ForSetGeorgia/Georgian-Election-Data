@@ -1,16 +1,17 @@
+<% has_summary_data = @summary_data.present? && @summary_data.length > 1 %>
 <div class="tabbable">
   <ul class="nav nav-tabs">
-    <% if @summary_data.present? %>
+    <% if has_summary_data %>
       <li class="active">
         <%= link_to t('.tab_summary'), "#tab_summary", :'data-toggle' => 'tab' %>
       </li>
     <% end %>
-    <li class="<%= @summary_data.present? ? '' : 'active' %>">
+    <li class="<%= has_summary_data ? '' : 'active' %>">
       <%= link_to t('.tab_details'), "#tab_detail", :'data-toggle' => 'tab' %>
     </li>
   </ul>
   <div class="tab-content">
-    <% if @summary_data.present? %>
+    <% if has_summary_data %>
       <div class="tab-pane active" id="tab_summary">
         <table id="map_data_table_summary" class="table table-striped">
           <thead>
@@ -80,7 +81,7 @@
       </div>
     <% end %>
 
-    <div class="tab-pane <%= @summary_data.present? ? '' : 'active'%>" id="tab_detail">
+    <div class="tab-pane <%= has_summary_data ? '' : 'active'%>" id="tab_detail">
       <% if @table_data.present? && @indicator_types.present? %>
 
           <% 

@@ -360,6 +360,8 @@ logger.debug "//////////////////////////////////////////////////////// done with
           params[:data_type])
       end
 		
+Rails.logger.debug "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+Rails.logger.debug @summary_data
 		
 			# get the detailed data
 		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:child_shape_type_id], params[:shape_id], params[:shape_type_id])
@@ -698,8 +700,8 @@ logger.debug " - no matching event found!"
 
 		# data table
     iid = (params[:indicator_id].nil? ? 'null' : params[:indicator_id])
-    itid= (params[:indicator_type_id].nil? ? 'null' : params[:indicator_type_id])
     vt = (params[:view_type].nil? ? 'null' : params[:view_type])
+    itid= (params[:indicator_type_id].nil? && params[:view_type] != @summary_view_type_name ? 'null' : params[:indicator_type_id])
 		gon.data_table_path = data_table_path(:event_type_id => params[:event_type_id],
 			:event_id => params[:event_id], :shape_id => params[:shape_id],
 			:shape_type_id => params[:shape_type_id], :indicator_id => iid,
