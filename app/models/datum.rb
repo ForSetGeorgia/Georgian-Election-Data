@@ -10,7 +10,7 @@
   validates :indicator_id, :data_set_id, :presence => true
 
   attr_accessor :number_format, :shape_id, :shape_type_name, :color,
-		:indicator_name, :indicator_name_abbrv, :indicator_description,
+		:indicator_name, :indicator_name_unformatted, :indicator_name_abbrv, :indicator_description,
 		:indicator_type_id, :indicator_type_name, :core_indicator_id, :num_precincts,
 		:visible, :rank
 
@@ -89,6 +89,7 @@
 			"indicator_type_name" => self[:indicator_type_name],
 			"core_indicator_id" => self[:core_indicator_id],
 			"indicator_id" => self[:indicator_id],
+			"indicator_name_unformatted" => self[:indicator_name_unformatted],
 			"indicator_name" => self[:indicator_name],
 			"indicator_name_abbrv" => self[:indicator_name_abbrv],
 			"has_openlayers_rule_value" => false,
@@ -138,7 +139,7 @@
     x = nil
 		if !shape_id.nil? && !core_indicator_id.nil? && !event_id.nil? && !shape_type_id.nil? && !data_set_id.nil?
 			sql = "SELECT s.id as shape_id, i.id as indicator_id, i.core_indicator_id, ci.indicator_type_id, "
-			sql << "d.id, d.value, ci.number_format as number_format, "
+			sql << "d.id, d.value, ci.number_format as number_format, cit.name as indicator_name_unformatted, "
 			sql << "if (ci.ancestry is null, cit.name, concat(cit.name, ' (', cit_parent.name_abbrv, ')')) as indicator_name, "
 			sql << "if (ci.ancestry is null, cit.name_abbrv, concat(cit.name_abbrv, ' (', cit_parent.name_abbrv, ')')) as indicator_name_abbrv "
 			sql << "FROM data as d  "
@@ -172,7 +173,7 @@
 	    limit = limit.to_i if !limit.nil? && limit.class == String
 
 			sql = "SELECT s.id as shape_id, i.id as indicator_id, i.core_indicator_id, ci.indicator_type_id, itt.name as indicator_type_name, "
-			sql << "d.id, d.value, ci.number_format as number_format, "
+			sql << "d.id, d.value, ci.number_format as number_format, cit.name as indicator_name_unformatted, "
 			sql << "if (ci.ancestry is null, cit.name, concat(cit.name, ' (', cit_parent.name_abbrv, ')')) as indicator_name, "
 			sql << "if (ci.ancestry is null, cit.name_abbrv, concat(cit.name_abbrv, ' (', cit_parent.name_abbrv, ')')) as indicator_name_abbrv, "
 			sql << "if(ci.ancestry is null OR (ci.ancestry is not null AND (ci.color is not null AND length(ci.color)>0)),ci.color,ci_parent.color) as color "
@@ -626,12 +627,12 @@
             if parent_shape_type_id.present? && json.has_key?('summary_data') && 
                 json['summary_data'].has_key?('data') && json['summary_data']['data'].present?
                 
-              sorted_cols = json["summary_data"]["data"].map{|x| x["indicator_name"]}
+              sorted_cols = json["summary_data"]["data"].map{|x| x["indicator_name_unformatted"]}
               sorted_col_ids = json["summary_data"]["data"].map{|x| x["core_indicator_id"]}
               core_ind_names << sorted_cols
               core_ind_names.flatten!
-					    s[:col_start_index] = core_ind_names.index(json["summary_data"]["data"].first["indicator_name"])-1
-					    s[:col_end_index] = core_ind_names.index(json["summary_data"]["data"].last["indicator_name"])-1
+					    s[:col_start_index] = core_ind_names.index(json["summary_data"]["data"].first["indicator_name_unformatted"])-1
+					    s[:col_end_index] = core_ind_names.index(json["summary_data"]["data"].last["indicator_name_unformatted"])-1
 
               h = Hash.new
               indicator_data << h
