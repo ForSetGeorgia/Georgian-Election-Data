@@ -2,11 +2,11 @@
   <ul class="nav nav-tabs">
     <% if @summary_data.present? %>
       <li class="active">
-        <%= link_to "summary view", "#tab_summary", :'data-toggle' => 'tab' %>
+        <%= link_to t('.tab_summary'), "#tab_summary", :'data-toggle' => 'tab' %>
       </li>
     <% end %>
     <li class="<%= @summary_data.present? ? '' : 'active' %>">
-      <%= link_to "detailed view", "#tab_detail", :'data-toggle' => 'tab' %>
+      <%= link_to t('.tab_details'), "#tab_detail", :'data-toggle' => 'tab' %>
     </li>
   </ul>
   <div class="tab-content">
@@ -16,24 +16,34 @@
           <thead>
             <tr>
               <th>
-                <span>district</span>
+                <span>
+                  <%= @summary_data[0][:shape] %>
+                </span>
               </th>
               <th>
-                <span>winner</span>
+                <span>
+                  <%= @summary_data[0][:winner_name] %>
+                </span>
               </th>
               <th>
-                <span>second</span>
+                <span>
+                  <%= @summary_data[0][:second_name] %>
+                </span>
               </th>
               <th>
-                <span>total turnout (#)</span>
+                <span>
+                  <%= @summary_data[0][:total_turnout_number] %>
+                </span>
               </th>
               <th>
-                <span>total turnout (%)</span>
+                <span>
+                  <%= @summary_data[0][:total_turnout_percent] %>
+                </span>
               </th>
             </tr>
           </thead>
           <tbody>
-            <% @summary_data.each do |data| %>
+            <% @summary_data[1..-1].each do |data| %>
               <tr>
                 <td>
                   <span><%= data[:shape] %></span>

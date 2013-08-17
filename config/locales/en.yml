@@ -253,6 +253,8 @@ en:
       summary: Summary
       added_on: "Added on: %{date}" 
       district: District
+      total_turnout_num: "Total Turnout (#)"
+      total_turnout_perc: "Total Turnout (%)"
   highcharts:
     downloadPNG: "Download PNG image"
     downloadJPEG: "Download JPEG image"
@@ -292,6 +294,8 @@ en:
       sorting: Sort multiple columns simultaneously by holding down the SHIFT key and selecting each column header you would like to sort.
       color_legend_indicator: Indicator in Map
       color_legend_winner: Winner
+      tab_summary: Summary
+      tab_details: Details
     application:
       title: Georgia Election Data
       ndi_alt: National Democratic Institute

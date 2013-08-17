@@ -253,6 +253,8 @@ ka:
       summary: Summary
       added_on: "Added on: %{date}" 
       district: District
+      total_turnout_num: "Total Turnout (#)"
+      total_turnout_perc: "Total Turnout (%)"
   highcharts:
     downloadPNG: "ჩამოტვირთე PNG გამოსახულება"
     downloadJPEG: "ჩამოტვირთე JPEG გამოსახულება"
@@ -292,6 +294,8 @@ ka:
       sorting: "ერთდროულად რამდენიმე სვეტის სორტირებისთვის გეჭიროთ ღილაკი \"SHIFT\" და აირჩიეთ შესაბამისი სვეტების სათაურები"
       color_legend_indicator:  მაჩვენებელი რუკაზე
       color_legend_winner: გამარჯვებული
+      tab_summary: Summary
+      tab_details: Details
     application:
       title: საქართველოს საარჩევნო მონაცემები
       ndi_alt: ეროვნული დემოკრატიული ინსტიტუტი

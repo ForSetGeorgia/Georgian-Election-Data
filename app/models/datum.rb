@@ -1085,6 +1085,31 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
     		row = nil
         json = build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, 2)
         if json.present?
+          # create header
+          row = Hash.new
+          data << row
+          row[:shape] = I18n.t('models.datum.header.map_level_name').gsub('[Level]', shape_type_name.first.name_singular)
+          row[:winner_name] = I18n.t('app.common.winner')
+          row[:winner_value] = nil
+          row[:winner_color] = nil
+          row[:second_name] = I18n.t('app.common.second_place')
+          row[:second_value] = nil
+          row[:second_color] = nil
+          tt_num = json["shape_data"].first.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 15}
+Rails.logger.debug "+++++++++++++++++++++++++++++++++++++++"
+Rails.logger.debug tt_num.inspect
+          if tt_num.present?
+            row[:total_turnout_number] = tt_num.first["data_item"][:indicator_name]
+          else
+            row[:total_turnout_number] = I18n.t('app.common.total_turnout_num')
+          end
+          tt_num = json["shape_data"].first.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 16}
+          if tt_num.present?
+            row[:total_turnout_percent] = tt_num.first["data_item"][:indicator_name]
+          else
+            row[:total_turnout_percent] = I18n.t('app.common.total_turnout_perc')
+          end
+
           json["shape_data"].each do |d|
             if d[0]["shape_values"]["shape_name"].present?
               row = Hash.new
