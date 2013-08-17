@@ -79,20 +79,20 @@
 
 	def to_hash
 		{
-			:id => self.id,
-			:value => self.value,
-			:formatted_value => self.formatted_value,
-			:number_format => self.number_format,
-      :rank => self.rank,
-			:color => self[:color],
-			:indicator_type_id => self[:indicator_type_id],
-			:indicator_type_name => self[:indicator_type_name],
-			:core_indicator_id => self[:core_indicator_id],
-			:indicator_id => self[:indicator_id],
-			:indicator_name => self[:indicator_name],
-			:indicator_name_abbrv => self[:indicator_name_abbrv],
-			:has_openlayers_rule_value => false,
-			:visible => true
+			"id" => self.id,
+			"value" => self.value,
+			"formatted_value" => self.formatted_value,
+			"number_format" => self.number_format,
+      "rank" => self.rank,
+			"color" => self[:color],
+			"indicator_type_id" => self[:indicator_type_id],
+			"indicator_type_name" => self[:indicator_type_name],
+			"core_indicator_id" => self[:core_indicator_id],
+			"indicator_id" => self[:indicator_id],
+			"indicator_name" => self[:indicator_name],
+			"indicator_name_abbrv" => self[:indicator_name_abbrv],
+			"has_openlayers_rule_value" => false,
+			"visible" => true
 		}
 	end
 
@@ -626,12 +626,12 @@
             if parent_shape_type_id.present? && json.has_key?('summary_data') && 
                 json['summary_data'].has_key?('data') && json['summary_data']['data'].present?
                 
-              sorted_cols = json["summary_data"]["data"].map{|x| x[:indicator_name]}
-              sorted_col_ids = json["summary_data"]["data"].map{|x| x[:core_indicator_id]}
+              sorted_cols = json["summary_data"]["data"].map{|x| x["indicator_name"]}
+              sorted_col_ids = json["summary_data"]["data"].map{|x| x["core_indicator_id"]}
               core_ind_names << sorted_cols
               core_ind_names.flatten!
-					    s[:col_start_index] = core_ind_names.index(json["summary_data"]["data"].first[:indicator_name])-1
-					    s[:col_end_index] = core_ind_names.index(json["summary_data"]["data"].last[:indicator_name])-1
+					    s[:col_start_index] = core_ind_names.index(json["summary_data"]["data"].first["indicator_name"])-1
+					    s[:col_end_index] = core_ind_names.index(json["summary_data"]["data"].last["indicator_name"])-1
 
               h = Hash.new
               indicator_data << h
@@ -952,17 +952,17 @@ Rails.logger.debug("************* shape type is precinct = '#{shape_type.is_prec
       	  data = build_related_indicator_json(shape.id, shape_type_id, shape_type.is_precinct, event_id, data_set_id, data_type,
       	    event.event_indicator_relationships.where(:indicator_type_id => indicator_type_id), limit)
           summary = data.select{|x| x.has_key?("summary_data") && x["summary_data"].present? &&
-                      x["summary_data"]["data"][0][:indicator_type_id].to_s == indicator_type_id.to_s &&
-    									x["summary_data"]["data"][0][:formatted_value] != I18n.t('app.msgs.no_data')}
+                      x["summary_data"]["data"][0]["indicator_type_id"].to_s == indicator_type_id.to_s &&
+    									x["summary_data"]["data"][0]["formatted_value"] != I18n.t('app.msgs.no_data')}
           if summary.present?
             shape_values = data.select{|x| x.has_key?("shape_values") && x["shape_values"].present?}
             if shape_values.present?
 Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
               shape_values.first["shape_values"]["parent_id"] = shape.parent_id
               shape_values.first["shape_values"]["shape_name"] = shape.common_name
-              shape_values.first["shape_values"]["value"] = summary.first["summary_data"]["data"].first[:indicator_name_abbrv]
-              shape_values.first["shape_values"]["color"] = summary.first["summary_data"]["data"].first[:color]
-              shape_values.first["shape_values"]["title"] = summary.first["summary_data"]["data"].first[:indicator_type_name]
+              shape_values.first["shape_values"]["value"] = summary.first["summary_data"]["data"].first["indicator_name_abbrv"]
+              shape_values.first["shape_values"]["color"] = summary.first["summary_data"]["data"].first["color"]
+              shape_values.first["shape_values"]["title"] = summary.first["summary_data"]["data"].first["indicator_type_name"]
             end
           end
           # save the data
@@ -1028,20 +1028,22 @@ Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
       	  # get all of the related json data for this indicator
       	  data = build_related_indicator_json(shape.id, shape_type_id, shape_type.is_precinct, event.id, data_set_id, data_type,
       	    event.event_indicator_relationships.where(:core_indicator_id => indicator.core_indicator_id))
-
+Rails.logger.debug "======================================================"
+Rails.logger.debug "======================================================"
+Rails.logger.debug data
       	  # find the data item with the indicator_id and use it's values to set the shape_values hash
           data_item = data.select{|x| x.has_key?("data_item") && x["data_item"].present? &&
-                        x["data_item"][:indicator_id].to_s == indicator_id.to_s}
+                        x["data_item"]["indicator_id"].to_s == indicator_id.to_s}
           if data_item.present?
             shape_values = data.select{|x| x.has_key?("shape_values") && x["shape_values"].present?}
             if shape_values.present?
 Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
               shape_values.first["shape_values"]["parent_id"] = shape.parent_id
               shape_values.first["shape_values"]["shape_name"] = shape.common_name
-              shape_values.first["shape_values"]["value"] = data_item.first["data_item"][:value]
-              shape_values.first["shape_values"]["number_format"] = data_item.first["data_item"][:number_format]
-              shape_values.first["shape_values"]["title"] = data_item.first["data_item"][:indicator_name]
-              shape_values.first["shape_values"]["title_abbrv"] = data_item.first["data_item"][:indicator_name_abbrv]
+              shape_values.first["shape_values"]["value"] = data_item.first["data_item"]["value"]
+              shape_values.first["shape_values"]["number_format"] = data_item.first["data_item"]["number_format"]
+              shape_values.first["shape_values"]["title"] = data_item.first["data_item"]["indicator_name"]
+              shape_values.first["shape_values"]["title_abbrv"] = data_item.first["data_item"]["indicator_name_abbrv"]
             end
           end
 
@@ -1108,26 +1110,26 @@ Rails.logger.debug("*********************** - found data, adding it to results")
   					data = build_summary_data_json(shape_id, shape_type_id, event_id, core.indicator_type_id, data_set_id)
   					if data.present? && data["summary_data"].present? && data["summary_data"]["data"].present?
               # add the data item for the provided indicator
-              index = data["summary_data"]["data"].index{|x| x[:core_indicator_id] == rel.related_core_indicator_id}
+              index = data["summary_data"]["data"].index{|x| x["core_indicator_id"] == rel.related_core_indicator_id}
               if index
     						data_hash = Hash.new
     						data_hash["data_item"] = data["summary_data"]["data"][index]
-								data_hash["data_item"][:visible] = rel.visible
-								data_hash["data_item"][:has_openlayers_rule_value] = rel.has_openlayers_rule_value
+								data_hash["data_item"]["visible"] = rel.visible
+								data_hash["data_item"]["has_openlayers_rule_value"] = rel.has_openlayers_rule_value
     	        	results << data_hash
 
                 # add the placement of this indicator
 								# if value != no data
 								# if there are duplicate values (e.g., a tie) fix the rank accordingly
-								if data["summary_data"]["data"][index][:value] != I18n.t('app.msgs.no_data')
-								  #&& data["summary_data"][index][:value] != "0"
+								if data["summary_data"]["data"][index]["value"] != I18n.t('app.msgs.no_data')
+								  #&& data["summary_data"][index]["value"] != "0"
 
                   has_duplicates = data["summary_data"]["has_duplicates"]
 		              rank = Datum.new
-		              rank.value = data["summary_data"]["data"][index][:rank].to_s
+		              rank.value = data["summary_data"]["data"][index]["rank"].to_s
 		              rank["number_format"] = " / #{data["summary_data"]["total_ranks"]}"
 		              rank["number_format"] += " *" if has_duplicates
-		              rank["indicator_type_name"] = data["summary_data"]["data"][index][:indicator_type_name]
+		              rank["indicator_type_name"] = data["summary_data"]["data"][index]["indicator_type_name"]
 		              rank["indicator_name"] = I18n.t('app.common.overall_placement')
 		              rank["indicator_name_abbrv"] = I18n.t('app.common.overall_placement')
 		  						data_hash = Hash.new
@@ -1148,11 +1150,11 @@ Rails.logger.debug("*********************** - found data, adding it to results")
 
               # add the winner if this record is not it and if value != no data or 0
 							if index > 0 &&
-									data["summary_data"]["data"][0][:value] != "0" &&
-									data["summary_data"]["data"][0][:value] != I18n.t('app.msgs.no_data')
+									data["summary_data"]["data"][0]["value"] != "0" &&
+									data["summary_data"]["data"][0]["value"] != I18n.t('app.msgs.no_data')
 
-                data["summary_data"]["data"][0][:indicator_name].insert(0, "#{I18n.t('app.common.winner')}: ")
-                data["summary_data"]["data"][0][:indicator_name_abbrv].insert(0, "#{I18n.t('app.common.winner')}: ")
+                data["summary_data"]["data"][0]["indicator_name"].insert(0, "#{I18n.t('app.common.winner')}: ")
+                data["summary_data"]["data"][0]["indicator_name_abbrv"].insert(0, "#{I18n.t('app.common.winner')}: ")
     						data_hash = Hash.new
     						data_hash["data_item"] = data["summary_data"]["data"][0]
     	        	results << data_hash
@@ -1165,8 +1167,8 @@ Rails.logger.debug("*********************** - found data, adding it to results")
   					if data && !data.empty?
   						data_hash = Hash.new
   						data_hash["data_item"] = data.first.to_hash
-							data_hash["data_item"][:visible] = rel.visible
-							data_hash["data_item"][:has_openlayers_rule_value] = rel.has_openlayers_rule_value
+							data_hash["data_item"]["visible"] = rel.visible
+							data_hash["data_item"]["has_openlayers_rule_value"] = rel.has_openlayers_rule_value
   	        	results << data_hash
   					end
           end
@@ -1273,9 +1275,9 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
       # add summary data
       # if limit provided, limit the number of records returned
       if limit.present? && limit > 0
-  			results["summary_data"]["data"] = json['data'].map{|x| x.symbolize_keys}[0..limit-1]
+  			results["summary_data"]["data"] = json['data'][0..limit-1]
       else
-  			results["summary_data"]["data"] = json['data'].map{|x| x.symbolize_keys}
+  			results["summary_data"]["data"] = json['data']
       end
     end
 #		puts "******* time to get_related_indicator_type_data: #{Time.now-start} seconds for event #{event_id}"
