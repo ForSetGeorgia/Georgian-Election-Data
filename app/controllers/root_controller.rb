@@ -358,9 +358,6 @@ logger.debug "//////////////////////////////////////////////////////// done with
           params[:shape_id], 
           params[:indicator_type_id],
           params[:data_type])
-          
-Rails.logger.debug "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-Rails.logger.debug @summary_data          
       end
 		
 		

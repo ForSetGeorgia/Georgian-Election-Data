@@ -1177,8 +1177,10 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 						s[:summary_name] = type.indicator_type_translations[0].summary_name
 
             # get names in rank order if parent shape type provided
-            if parent_shape_type_id.present?
-              json = build_summary_data_json(shape_id, parent_shape_type_id, event_id, type.id, data_set_id)
+            json = build_summary_data_json(shape_id, parent_shape_type_id, event_id, type.id, data_set_id)
+            if parent_shape_type_id.present? && json.has_key?('summary_data') && 
+                json['summary_data'].has_key?('data') && json['summary_data']['data'].present?
+                
               sorted_cols = json["summary_data"]["data"].map{|x| x[:indicator_name]}
               sorted_col_ids = json["summary_data"]["data"].map{|x| x[:core_indicator_id]}
               core_ind_names << sorted_cols
