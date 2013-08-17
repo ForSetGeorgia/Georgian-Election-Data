@@ -33,11 +33,11 @@
               </th>
               <th>
                 <span>
-                  <%= @summary_data[0][:total_turnout_number] %>
                 </span>
               </th>
               <th>
                 <span>
+                  <%= @summary_data[0][:total_turnout_number] %> /
                   <%= @summary_data[0][:total_turnout_percent] %>
                 </span>
               </th>
@@ -49,30 +49,40 @@
                 <td>
                   <span><%= data[:shape] %></span>
                 </td>    
-                <td>
-                  <div class="color_bar">
-                    <div class="left_border" style="background-color: <%= data[:winner_color] %>">&nbsp;</div>
-                    <span>
-                      <%= data[:winner_name] %>
-                      <br />
+                <td class="summary_text_container" style="background-color: <%= data[:winner_color] %>;">
+                  <span style="color: <%= data[:winner_color] %>;">
+                    <%= data[:winner_name] %>
+                    <br />
+                    <%= data[:winner_value] %>
+                  </span>
+                </td>    
+                <td class="summary_text_container" style="background-color: <%= data[:second_color] %>;">
+                  <span style="color: <%= data[:second_color] %>;">
+                    <%= data[:second_name] %>
+                    <br />
+                    <%= data[:second_value] %>
+                  </span>
+                </td>    
+                <td class="summary_bar_chart_container"> 
+                  <div style="color: <%= data[:winner_color] %>;">
                       <%= data[:winner_value] %>
-                    </span>
+                  </div>
+                  <div class="summary_bar_chart" style="height: <%= data[:winner_value]%>; background-color: <%= data[:winner_color] %>"
+                    title="<%= data[:winner_name] %>">
+                  </div>
+                  <div class="summary_bar_chart" style="height: <%= data[:second_value]%>; background-color: <%= data[:second_color] %>"
+                    title="<%= data[:second_name] %>">
+                  </div>
+                  <div style="color: <%= data[:second_color] %>;">
+                      <%= data[:second_value] %>
                   </div>
                 </td>    
                 <td>
-                  <div class="color_bar">
-                    <div class="left_border" style="background-color: <%= data[:second_color] %>">&nbsp;</div>
-                    <span>
-                      <%= data[:second_name] %>
-                      <br />
-                      <%= data[:second_value] %>
-                    </span>
-                </td>    
-                <td>
-                  <span><%= data[:total_turnout_number] %></span>
-                </td>    
-                <td>
-                  <span><%= data[:total_turnout_percent] %></span>
+                  <span>
+                    <%= data[:total_turnout_number] %>
+                    <br />
+                    <%= data[:total_turnout_percent] %>
+                  </span>
                 </td>    
               </tr>   
             <% end %>  

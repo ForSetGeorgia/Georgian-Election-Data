@@ -308,6 +308,33 @@ td.highlighted > a {
   }
 }
 
+#map_data_table_summary{
+  th, td{
+    a, span{
+      padding: 10px 20px;
+    }   
+  }
+  td{
+    &.summary_text_container{
+      padding: 10px;
+      span {
+        background-color: #fff;
+      }
+    }  
+    &.summary_bar_chart_container{
+      vertical-align: bottom;
+      height: 100%;
+      padding-top: 5px;
+      & > div{
+        display: inline-block;
+        &.summary_bar_chart {
+          width: 10px;
+        }
+      }
+    }
+  }
+}
+
 #map_data_table{
   th, td{
     &.highlighted{
