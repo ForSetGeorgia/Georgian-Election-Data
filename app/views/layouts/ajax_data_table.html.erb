@@ -250,18 +250,20 @@
       // summary table
       /////////////////////////////
       // build col sorting array so formatted numbers are sorted properly
-      col_sort = new Array(1);
+      col_sort = new Array($('#map_data_table_summary th').length);
       // if first col contains numbers, apply formatted sort to it
       var is_numeric = $('#map_data_table_summary tbody tr:first td:first').text().match(/\d/);
-      if (is_numeric == null){
-        col_sort[0] = { "bVisible": true };
-      }else {
-        col_sort[0] = { "sType": "formatted-num-html", "bVisible": true };
+      for(var i=0;i<col_sort.length;i++){
+        if (i == 0 && is_numeric != null){
+          col_sort[i] = { "sType": "formatted-num-html", "bVisible": true };
+        }else {
+          col_sort[i] = null;
+        }
       }
-/*      
+
       // apply jquery datatable
       $('#map_data_table_summary').dataTable({
-        "sDom": "<'row-fluid'<'span6'f>><'span6'>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
+        "sDom": "<'row-fluid'<'span6'f><'span6'>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
         "sPaginationType": "bootstrap",
         "bJQueryUI": false,
         "bProcessing": true,
@@ -273,7 +275,7 @@
         "iDisplayLength": 20,
         "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]]
       });
-*/          
+
     
       /////////////////////////////
       // detailed table
