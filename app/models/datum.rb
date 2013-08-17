@@ -1,4 +1,4 @@
-class Datum < ActiveRecord::Base
+  class Datum < ActiveRecord::Base
 	require 'json_cache'
 	require 'json'
 
@@ -18,7 +18,17 @@ class Datum < ActiveRecord::Base
 	PRECINCTS_REPORTED = {:number => 'Precincts Reported (#)', :percent => 'Precincts Reported (%)'}
 	FILE_CACHE_KEY_SUMMARY_DATA =
 		"event_[event_id]/data_set_[data_set_id]/[locale]/summary_data/indicator_type_[indicator_type_id]/shape_type_[shape_type_id]/shape_[shape_id]"
-#  	"summary_data/data_set_[data_set_id]/[locale]/indicator_type_[indicator_type_id]/shape_type_[shape_type_id]/shape_[shape_id]"
+
+	MEMORY_CACHE_KEY_CHILDREN_DATA =
+		"event_[event_id]/data_set_[data_set_id]/[locale]/children_data/shape_[parent_id]/shape_type_[shape_type_id]/indicator_[indicator_id]/parent_clickable_[parent_shape_clickable]"
+	MEMORY_CACHE_KEY_SUMMARY_CHILDREN_DATA =
+		"event_[event_id]/data_set_[data_set_id]/[locale]/summary_children_data/shape_[parent_id]/shape_type_[shape_type_id]/indicator_type[indicator_type_id]/parent_clickable_[parent_shape_clickable]"
+
+	FILE_CACHE_KEY_CUSTOM_CHILDREN_DATA =
+		"event_[event_id]/data_set_[data_set_id]/[locale]/custom_children_data/shape_type_[shape_type_id]/shape_[parent_id]_indicator_[indicator_id]"
+	FILE_CACHE_KEY_SUMMARY_CUSTOM_CHILDREN_DATA =
+		"event_[event_id]/data_set_[data_set_id]/[locale]/summary_custom_children_data/shape_type_[shape_type_id]/shape_[parent_id]_indicator_type_[indicator_type_id]"
+
 
 
 	###################################
@@ -209,644 +219,55 @@ class Datum < ActiveRecord::Base
 		return hash
 	end
 
-	def self.build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit=nil)
+  # get summmary data for json use
+  # if use_cache = false, the data will be pulled from db
+	def self.build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit=nil, use_cache=true)
 		start = Time.now
-    results = Hash.new
+    data = Hash.new
 		if shape_id.present? && shape_type_id.present? && event_id.present? && indicator_type_id.present? &&
 		      data_set_id.present? && data_type.present?
-      # get the shapes
-		  shapes = Shape.get_shapes_by_type(shape_id, shape_type_id, false)
-		  
-		  # get the shape type
-		  shape_type = ShapeType.find_by_id(shape_type_id)
-Rails.logger.debug("************* shape type is precinct = '#{shape_type.is_precinct}'")
 
-  	  # get the event
-  	  event = Event.find(event_id)
-
-  	  # get indicator type
-  	  indicator_type = IndicatorType.find(indicator_type_id)
-
-      # add info about this data
-  	  # add the indicator info
-  	  results["indicator"] = Hash.new
-      results["indicator"]["name"] = nil
-			results["indicator"]["name_abbrv"] = indicator_type.nil? ? nil : indicator_type.summary_name
-			results["indicator"]["description"] = indicator_type.nil? ? nil : indicator_type.summary_name
-			results["indicator"]["number_format"] = nil
-      results["indicator"]["scales"] = [{:name => IndicatorScale.no_data_text, :color => IndicatorScale::NO_DATA_COLOR }]
-			results["indicator"]["scale_colors"] = [IndicatorScale::NO_DATA_COLOR]
-			results["indicator"]["switcher_indicator_id"] = nil
-
-      # indicate this is summary data
-      results["view_type"] = "summary"
-
-      # add the data
-      results["shape_data"] = []
-
-      if shapes.present? && event.present? && shape_type.present?
-        shapes.each do |shape|
-      	  # get all of the related json data for this indicator type
-      	  data = build_related_indicator_json(shape.id, shape_type_id, shape_type.is_precinct, event_id, data_set_id, data_type,
-      	    event.event_indicator_relationships.where(:indicator_type_id => indicator_type_id), limit)
-          summary = data.select{|x| x.has_key?("summary_data") && x["summary_data"].present? &&
-                      x["summary_data"]["data"][0][:indicator_type_id].to_s == indicator_type_id.to_s &&
-    									x["summary_data"]["data"][0][:formatted_value] != I18n.t('app.msgs.no_data')}
-          if summary.present?
-            shape_values = data.select{|x| x.has_key?("shape_values") && x["shape_values"].present?}
-            if shape_values.present?
-Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
-              shape_values.first["shape_values"]["parent_id"] = shape.parent_id
-              shape_values.first["shape_values"]["shape_name"] = shape.common_name
-              shape_values.first["shape_values"]["value"] = summary.first["summary_data"]["data"].first[:indicator_name_abbrv]
-              shape_values.first["shape_values"]["color"] = summary.first["summary_data"]["data"].first[:color]
-              shape_values.first["shape_values"]["title"] = summary.first["summary_data"]["data"].first[:indicator_type_name]
-            end
-          end
-          # save the data
-      	  results["shape_data"] << data
-  	    end
-  	  end
-    end
-#		puts "******* time to get_related_indicator_type_data: #{Time.now-start} seconds for event #{event_id}"
-    return results
-  end
-
-	def self.build_json(shape_id, shape_type_id, indicator_id, data_set_id, data_type)
-		start = Time.new
-    results = Hash.new
-		if shape_id.present? && shape_type_id.present? && indicator_id.present? && data_set_id.present? && data_type.present?
-      # get the shapes
-		  shapes = Shape.get_shapes_by_type(shape_id, shape_type_id, false)
-
-		  # get the shape type
-		  shape_type = ShapeType.find_by_id(shape_type_id)
-
-			# get the indicator
-			indicator = Indicator.find(indicator_id)
-
-      # add info about this data
-  	  # add the indicator info
-  	  results["indicator"] = Hash.new
-      results["indicator"]["name"] = indicator.name
-			results["indicator"]["name_abbrv"] = indicator.name_abbrv_w_parent
-			results["indicator"]["description"] = indicator.description_w_parent
-			results["indicator"]["number_format"] = indicator.number_format.nil? ? "" : indicator.number_format
-      results["indicator"]["scales"] = IndicatorScale.for_indicator(indicator.id)
-			results["indicator"]["scale_colors"] = IndicatorScale.get_colors(indicator.id)
-			results["indicator"]["switcher_indicator_id"] = nil
-
-			# if this event has a custom view at this level, get indicator id for other shape live
-			new_indicator = nil
-			custom_view = indicator.event.event_custom_views.where(:shape_type_id => shape_type_id)
-			if custom_view.present?
-				new_indicator = Indicator.find_new_id(indicator_id, custom_view.first.descendant_shape_type_id)
-			else
-				custom_view = indicator.event.event_custom_views.where(:descendant_shape_type_id => shape_type_id)
-  			if custom_view.present?
-					new_indicator = Indicator.find_new_id(indicator_id, custom_view.first.shape_type.child_ids.first)
-				end
-			end
-			if new_indicator
-				# is custom view, update switcher indicator id
-				results["indicator"]["switcher_indicator_id"] = new_indicator.id
-			end
-
-      # indicate this is not summary data
-      results["view_type"] = "normal"
-
-      # add the data
-      results["shape_data"] = []
-
-      if shapes.present? && indicator.present? && shape_type.present?
-  			event = indicator.event
-        shapes.each do |shape|
-      	  # get all of the related json data for this indicator
-      	  data = build_related_indicator_json(shape.id, shape_type_id, shape_type.is_precinct, event.id, data_set_id, data_type,
-      	    event.event_indicator_relationships.where(:core_indicator_id => indicator.core_indicator_id))
-
-      	  # find the data item with the indicator_id and use it's values to set the shape_values hash
-          data_item = data.select{|x| x.has_key?("data_item") && x["data_item"].present? &&
-                        x["data_item"][:indicator_id].to_s == indicator_id.to_s}
-          if data_item.present?
-            shape_values = data.select{|x| x.has_key?("shape_values") && x["shape_values"].present?}
-            if shape_values.present?
-Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
-              shape_values.first["shape_values"]["parent_id"] = shape.parent_id
-              shape_values.first["shape_values"]["shape_name"] = shape.common_name
-              shape_values.first["shape_values"]["value"] = data_item.first["data_item"][:value]
-              shape_values.first["shape_values"]["number_format"] = data_item.first["data_item"][:number_format]
-              shape_values.first["shape_values"]["title"] = data_item.first["data_item"][:indicator_name]
-              shape_values.first["shape_values"]["title_abbrv"] = data_item.first["data_item"][:indicator_name_abbrv]
-            end
-          end
-
-          # save the data
-      	  results["shape_data"] << data
-        end
-      end
-    end
-#		puts "******* time to get_related_indicator_data: #{Time.now-start} seconds for indicator #{indicator_id}"
-    return results
-  end
-
-  # build the json string for the provided indicator relationships
-  # [
-  #    {shape_values => {}}
-  #    {"summary_data" => []}
-  #    {"data_item" => {}}
-  #    {"footnote" => {}}
-  # ]
-	def self.build_related_indicator_json(shape_id, shape_type_id, is_precinct, event_id, data_set_id, data_type, relationships, limit=nil)
-    results = []
-
-    # create empty shape_values hash
-    # - these values will be pushed into the shape json file so they
-    #    can be color coded by openlayers
-    # - will be populated with real value by the method that called this method
-    shape_values = Hash.new
-	  shape_values["shape_id"] = shape_id
-	  shape_values["shape_name"] = nil
-	  shape_values["parent_id"] = nil
-	  shape_values["value"] = I18n.t('app.msgs.no_data')
-	  shape_values["color"] = nil
-	  shape_values["number_format"] = nil
-	  shape_values["precincts_completed_precent"] = nil
-	  shape_values["title"] = I18n.t('app.msgs.no_data')
-	  shape_values["title_abbrv"] = nil
-	  shape_values["title_location"] = nil
-	  shape_values["title_precincts_completed"] = nil
-    data_hash = Hash.new
-		data_hash["shape_values"] = shape_values
-	  results << data_hash
-
-Rails.logger.debug("*********************** building related indicator")
-	  if shape_id.present? && event_id.present? && shape_type_id.present? && data_set_id.present? && 
-	        data_type.present? && relationships.present?
-Rails.logger.debug("*********************** all data provided!")
-      has_duplicates = false
-	    relationships.each do |rel|
-	      if rel.related_indicator_type_id.present?
-Rails.logger.debug("*********************** getting summary data for ind type #{rel.related_indicator_type_id}")
-	        # get the summary for this indciator type
-					data = build_summary_data_json(shape_id, shape_type_id, event_id, rel.related_indicator_type_id, data_set_id, limit)
-					if data.present? && data["summary_data"].present? && data["summary_data"]["data"].present?
-Rails.logger.debug("*********************** - found data, adding it to results")
-	        	results << data
-					end
-        elsif rel.related_core_indicator_id.present?
-          # see if indicator is part of indicator type that has summary
-          # if so, get the summary info so can assign the overall placement and overall winner
-          core = CoreIndicator.get_indicator_type_with_summary(rel.related_core_indicator_id)
-          if core.present?
-            # get summary data
-  					data = build_summary_data_json(shape_id, shape_type_id, event_id, core.indicator_type_id, data_set_id)
-  					if data.present? && data["summary_data"].present? && data["summary_data"]["data"].present?
-              # add the data item for the provided indicator
-              index = data["summary_data"]["data"].index{|x| x[:core_indicator_id] == rel.related_core_indicator_id}
-              if index
-    						data_hash = Hash.new
-    						data_hash["data_item"] = data["summary_data"]["data"][index]
-								data_hash["data_item"][:visible] = rel.visible
-								data_hash["data_item"][:has_openlayers_rule_value] = rel.has_openlayers_rule_value
-    	        	results << data_hash
-
-                # add the placement of this indicator
-								# if value != no data
-								# if there are duplicate values (e.g., a tie) fix the rank accordingly
-								if data["summary_data"]["data"][index][:value] != I18n.t('app.msgs.no_data')
-								  #&& data["summary_data"][index][:value] != "0"
-
-                  has_duplicates = data["summary_data"]["has_duplicates"]
-		              rank = Datum.new
-		              rank.value = data["summary_data"]["data"][index][:rank].to_s
-		              rank["number_format"] = " / #{data["summary_data"]["total_ranks"]}"
-		              rank["number_format"] += " *" if has_duplicates
-		              rank["indicator_type_name"] = data["summary_data"]["data"][index][:indicator_type_name]
-		              rank["indicator_name"] = I18n.t('app.common.overall_placement')
-		              rank["indicator_name_abbrv"] = I18n.t('app.common.overall_placement')
-		  						data_hash = Hash.new
-		  						data_hash["data_item"] = rank.to_hash
-		  	        	results << data_hash
-								end
-
-	              # add total # of indicators in the summary
-	              rank = Datum.new
-	              rank.value = data["summary_data"]["data"].length
-	              rank["indicator_type_name"] = data["summary_data"]["data"][index]["indicator_type_name"]
-	              rank["indicator_name"] = I18n.t('app.common.total_participants')
-	              rank["indicator_name_abbrv"] = I18n.t('app.common.total_participants')
-	  						data_hash = Hash.new
-	  						data_hash["data_item"] = rank.to_hash
-	  	        	results << data_hash
-              end
-
-              # add the winner if this record is not it and if value != no data or 0
-							if index > 0 &&
-									data["summary_data"]["data"][0][:value] != "0" &&
-									data["summary_data"]["data"][0][:value] != I18n.t('app.msgs.no_data')
-
-                data["summary_data"]["data"][0][:indicator_name].insert(0, "#{I18n.t('app.common.winner')}: ")
-                data["summary_data"]["data"][0][:indicator_name_abbrv].insert(0, "#{I18n.t('app.common.winner')}: ")
-    						data_hash = Hash.new
-    						data_hash["data_item"] = data["summary_data"]["data"][0]
-    	        	results << data_hash
-              end
-  					end
-          else
-            # indicator type does not have summary
-            # get the data item for this indciator
-  					data = get_data_for_shape_core_indicator(shape_id, event_id, shape_type_id, rel.related_core_indicator_id, data_set_id)
-  					if data && !data.empty?
-  						data_hash = Hash.new
-  						data_hash["data_item"] = data.first.to_hash
-							data_hash["data_item"][:visible] = rel.visible
-							data_hash["data_item"][:has_openlayers_rule_value] = rel.has_openlayers_rule_value
-  	        	results << data_hash
-  					end
-          end
-        end
-      end
-
-			# if this is live data and not a precinct, add the precincts reported numbers
-			if data_type == Datum::DATA_TYPE[:live] && !is_precinct
-				precincts_reporting = Datum.get_precincts_reported(shape_id, event_id, data_set_id)
-				if precincts_reporting.present?
-					# save the value so the shapes can be marked different if not complete
-					shape_values["precincts_completed_precent"] = precincts_reporting[:completed_percent].gsub("%","").to_f
-					# create the title for the popup
-#							title["precincts_completed"] =
-#										I18n.t('app.common.live_event_status', :completed => precincts_reporting[:completed_number],
-#                        :total => precincts_reporting[:num_precincts],
-#                        :percentage => precincts_reporting[:completed_percent])
-
-					shape_values["title_precincts_completed"] =
-								I18n.t('app.common.live_event_status_no_percent', :completed => precincts_reporting[:completed_number])
-
-				end
-			end
-
-      # add duplicate footnote if needed
-      if has_duplicates
-        footnote = Datum.new
-        footnote["indicator_name"] = "* #{I18n.t('app.common.footnote_duplicates')}"
-        footnote["indicator_name_abbrv"] = "* #{I18n.t('app.common.footnote_duplicates')}"
-				data_hash = Hash.new
-				data_hash["footnote"] = footnote.to_hash
-      	results << data_hash
-      end
-    end
-	  return results
-  end
-=begin
-##############################
-############################## old start
-##############################
-	def self.get_related_indicator_type_data(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id)
-		start = Time.now
-    results = nil
-		if !shape_id.nil? && !shape_type_id.nil? && !event_id.nil? && !indicator_type_id.nil? && !data_set_id.nil?
-
-  	  # get the event
-  	  event = Event.find(event_id)
-  	  # get the relationships for this indicator type
-  	  results = build_related_indicator_json(shape_id, shape_type_id, event_id, data_set_id,
-  	    event.event_indicator_relationships.where(:indicator_type_id => indicator_type_id))
-    end
-		#logger.debug "******* time to get_related_indicator_type_data: #{Time.now-start} seconds for event #{event_id}"
-    return results
-  end
-
-	def self.get_related_indicator_data(shape_id, indicator_id, data_set_id)
-		start = Time.new
-    results = nil
-		if !shape_id.nil? && !indicator_id.nil? && !data_set_id.nil?
-			# get the indicator
-			indicator = Indicator.find(indicator_id)
-			event = indicator.event
-
-  	  # get the relationships for this indicator
-  	  results = build_related_indicator_json(shape_id, indicator.shape_type_id, event.id, data_set_id,
-  	    event.event_indicator_relationships.where(:core_indicator_id => indicator.core_indicator_id))
-    end
-		#logger.debug "******* time to get_related_indicator_data: #{Time.now-start} seconds for indicator #{indicator_id}"
-    return results
-  end
-
-	def self.get_related_core_indicator_data(shape_id, shape_type_id, event_id, core_indicator_id, data_set_id)
-		start = Time.now
-    results = nil
-		if !shape_id.nil? && !shape_type_id.nil? && !event_id.nil? && !core_indicator_id.nil? && !data_set_id.nil?
-  	  # get the event
-  	  event = Event.find(event_id)
-
-  	  # get the relationships for this indicator
-  	  results = build_related_indicator_json(shape_id, shape_type_id, event_id, data_set_id,
-  	    event.event_indicator_relationships.where(:core_indicator_id => core_indicator_id))
-    end
-		#logger.debug "****************** time to get_related_core_indicator_data: #{Time.now-start} seconds for event #{event_id} and core indicator #{core_indicator_id}"
-    return results
-  end
-
-  # build the json string for the provided indicator relationships
-	def self.build_related_indicator_json(shape_id, shape_type_id, event_id, data_set_id, relationships)
-    results = []
-	  if !shape_id.nil? && !event_id.nil? && !shape_type_id.nil? && !data_set_id.nil? &&
-	        !relationships.nil? && !relationships.empty?
-      has_duplicates = false
-	    relationships.each do |rel|
-	      if !rel.related_indicator_type_id.nil?
-	        # get the summary for this indciator type
-					data = get_indicator_type_data(shape_id, shape_type_id, event_id, rel.related_indicator_type_id, data_set_id)
-					if data && !data["summary_data"].empty? && !data["summary_data"]["data"].empty?
-	        	results << data
-					end
-        elsif !rel.related_core_indicator_id.nil?
-          # see if indicator is part of indicator type that has summary
-          # if so, get the summary info so can assign the overall placement and overall winner
-          core = CoreIndicator.get_indicator_type_with_summary(rel.related_core_indicator_id)
-          if core
-            # get summary data
-  					data = get_indicator_type_data(shape_id, shape_type_id, event_id, core.indicator_type_id, data_set_id)
-  					if data && !data["summary_data"].empty? && !data["summary_data"]["data"].empty?
-              # add the data item for the provided indicator
-              index = data["summary_data"]["data"].index{|x| x[:core_indicator_id] == rel.related_core_indicator_id}
-              if index
-    						data_hash = Hash.new
-    						data_hash["data_item"] = data["summary_data"]["data"][index]
-								data_hash["data_item"][:visible] = rel.visible
-								data_hash["data_item"][:has_openlayers_rule_value] = rel.has_openlayers_rule_value
-    	        	results << data_hash
-
-                # add the placement of this indicator
-								# if value != no data
-								# if there are duplicate values (e.g., a tie) fix the rank accordingly
-								if data["summary_data"]["data"][index][:value] != I18n.t('app.msgs.no_data')
-								  #&& data["summary_data"][index][:value] != "0"
-
-                  # returns {:rank, :total, :has_duplicates}
-                  h = compute_placement(data["summary_data"]["data"], data["summary_data"]["data"][index][:value])
-                  has_duplicates = h[:has_duplicates]
-                  if !h.nil? && !h.empty?
-  		              rank = Datum.new
-  		              rank.value = h[:rank].to_s
-  		              rank["number_format"] = " / #{h[:total]}"
-  		              rank["number_format"] += " *" if h[:has_duplicates]
-  		              rank["indicator_type_name"] = data["summary_data"]["data"][index][:indicator_type_name]
-  		              rank["indicator_name"] = I18n.t('app.common.overall_placement')
-  		              rank["indicator_name_abbrv"] = I18n.t('app.common.overall_placement')
-  		  						data_hash = Hash.new
-  		  						data_hash["data_item"] = rank.to_hash
-  		  	        	results << data_hash
-                  end
-								end
-
-	              # add total # of indicators in the summary
-	              rank = Datum.new
-	              rank.value = data["summary_data"]["data"].length
-	              rank["indicator_type_name"] = data["summary_data"]["data"][index]["indicator_type_name"]
-	              rank["indicator_name"] = I18n.t('app.common.total_participants')
-	              rank["indicator_name_abbrv"] = I18n.t('app.common.total_participants')
-	  						data_hash = Hash.new
-	  						data_hash["data_item"] = rank.to_hash
-	  	        	results << data_hash
-              end
-
-              # add the winner if this record is not it and if value != no data or 0
-							if index > 0 &&
-									data["summary_data"]["data"][0][:value] != "0" &&
-									data["summary_data"]["data"][0][:value] != I18n.t('app.msgs.no_data')
-
-                data["summary_data"]["data"][0][:indicator_name].insert(0, "#{I18n.t('app.common.winner')}: ")
-                data["summary_data"]["data"][0][:indicator_name_abbrv].insert(0, "#{I18n.t('app.common.winner')}: ")
-    						data_hash = Hash.new
-    						data_hash["data_item"] = data["summary_data"]["data"][0]
-    	        	results << data_hash
-              end
-  					end
-          else
-            # indicator type does not have summary
-            # get the data item for this indciator
-  					data = get_data_for_shape_core_indicator(shape_id, event_id, shape_type_id, rel.related_core_indicator_id, data_set_id)
-  					if data && !data.empty?
-  						data_hash = Hash.new
-  						data_hash["data_item"] = data.first.to_hash
-							data_hash["data_item"][:visible] = rel.visible
-							data_hash["data_item"][:has_openlayers_rule_value] = rel.has_openlayers_rule_value
-  	        	results << data_hash
-  					end
-          end
-        end
-      end
-
-      # add duplicate footnote if needed
-      if has_duplicates
-        footnote = Datum.new
-        footnote["indicator_name"] = "* #{I18n.t('app.common.footnote_duplicates')}"
-        footnote["indicator_name_abbrv"] = "* #{I18n.t('app.common.footnote_duplicates')}"
-				data_hash = Hash.new
-				data_hash["footnote"] = footnote.to_hash
-      	results << data_hash
-      end
-    end
-	  return results
-  end
-
-##############################
-############################## old end
-##############################
-=end
-
-  # get the summary data for an indicator type in an event for a shape
-	def self.build_summary_data_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, limit=nil)
-		start = Time.now
-		results = Hash.new
-		results["summary_data"] = Hash.new
-		results["summary_data"]["data"] = []
-		results["summary_data"]["visible"] = true
-		results["summary_data"]["has_openlayers_rule_value"] = false
-		results["summary_data"]["total_ranks"] = nil
-		results["summary_data"]["has_duplicates"] = false
-
-		if shape_id.present? && shape_type_id.present? && event_id.present? && indicator_type_id.present? && data_set_id.present?
-			json = []
-  		key = FILE_CACHE_KEY_SUMMARY_DATA.gsub("[shape_id]", shape_id.to_s)
-					.gsub("[locale]", I18n.locale.to_s)
-		      .gsub("[event_id]", event_id.to_s)
-		      .gsub("[indicator_type_id]", indicator_type_id.to_s)
-		      .gsub("[shape_type_id]", shape_type_id.to_s)
-		      .gsub("[data_set_id]", data_set_id.to_s)
-
-  		json = JSON.parse(JsonCache.fetch_data(key) {
-				relationship = EventIndicatorRelationship.where(:event_id => event_id,
-					:indicator_type_id => indicator_type_id,
-					:related_indicator_type_id => indicator_type_id)
-  			data = get_summary_data_for_shape(shape_id, event_id, shape_type_id, indicator_type_id, data_set_id)
-        hash = Hash.new()
-        hash["data"] = []
-        hash["visible"] = true
-        hash["has_openlayers_rule_value"] = false
-		    hash["total_ranks"] = nil
-		    hash["has_duplicates"] = false
-
-  			if data.present?
-logger.debug "************* getting summary data relationship params ****************"
-					if relationship.present?
-logger.debug "************* - visible = #{relationship.first.visible}"
-logger.debug "************* - has_openlayers_rule_value = #{relationship.first.has_openlayers_rule_value}"
-            hash["visible"] = relationship.first.visible
-            hash["has_openlayers_rule_value"] = relationship.first.has_openlayers_rule_value
-					end
-
-          # add the ranking of each item
-          d_index = 0
-          while d_index < data.length do 
-            h = compute_placement(data, data[d_index][:value])
-		        data[d_index].rank = h[:rank]
-            if d_index == 0
-		          hash["total_ranks"] = h[:total]
-		          hash["has_duplicates"] = h[:has_duplicates]
-            end
-            d_index += 1
-          end
-
-  				hash["data"] = data.collect{|x|	x.to_hash}
-  			end
-logger.debug "*****************************"
-				hash.to_json
-  		})
-
-      # update summary data flags
-logger.debug "************* visible flag from cache = #{json['visible']}"
-logger.debug "************* has_openlayers_rule_value flag from cache = #{json['has_openlayers_rule_value']}"
-			results["summary_data"]["visible"] = json['visible']
-			results["summary_data"]["has_openlayers_rule_value"] = json['has_openlayers_rule_value']
-			results["summary_data"]["total_ranks"] = json['total_ranks']
-			results["summary_data"]["has_duplicates"] = json['has_duplicates']
-      # add summary data
-      # if limit provided, limit the number of records returned
-      if limit.present? && limit > 0
-  			results["summary_data"]["data"] = json['data'].map{|x| x.symbolize_keys}[0..limit-1]
+      if use_cache
+		    key = FILE_CACHE_KEY_SUMMARY_CUSTOM_CHILDREN_DATA.gsub("[parent_id]", shape_id.to_s)
+					    .gsub("[locale]", I18n.locale.to_s)
+		          .gsub("[event_id]", event_id.to_s)
+		          .gsub("[indicator_type_id]", indicator_type_id.to_s)
+		          .gsub("[shape_type_id]", shape_type_id.to_s)
+				      .gsub("[data_set_id]", data_set_id.to_s)
+		    data = JSON.parse(JsonCache.fetch_data(key) {
+		      build_summary_from_db(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit).to_json
+		    })
       else
-  			results["summary_data"]["data"] = json['data'].map{|x| x.symbolize_keys}
+        data = build_summary_from_db(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit)        
       end
     end
-#		puts "******* time to get_related_indicator_type_data: #{Time.now-start} seconds for event #{event_id}"
-    return results
+    return data
   end
-=begin
-##############################
-############################## old start
-##############################
-  # get the summary data for an indicator type in an event for a shape
-	def self.get_indicator_type_data(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id)
+  
+  # get data for json use
+  # if use_cache = false, the data will be pulled from db
+	def self.build_json(shape_id, shape_type_id, event_id, indicator_id, data_set_id, data_type, use_cache=true)
 		start = Time.now
-		results = Hash.new
-		results["summary_data"] = Hash.new
-		results["summary_data"]["data"] = []
-		results["summary_data"]["visible"] = true
-		results["summary_data"]["has_openlayers_rule_value"] = false
+    data = Hash.new
+		if shape_id.present? && shape_type_id.present? && event_id.present? && indicator_id.present? && data_set_id.present? && data_type.present?
 
-		if !shape_id.nil? && !shape_type_id.nil? && !event_id.nil? && !indicator_type_id.nil? && !data_set_id.nil?
-			json = []
-  		key = "summary_data/data_set_#{data_set_id}/#{I18n.locale}/indicator_type_#{indicator_type_id}/shape_type_#{shape_type_id}/shape_#{shape_id}"
-
-  		json = JSON.parse(JsonCache.fetch(event_id, key) {
-				relationship = EventIndicatorRelationship.where(:event_id => event_id,
-					:indicator_type_id => indicator_type_id,
-					:related_indicator_type_id => indicator_type_id)
-  			data = get_summary_data_for_shape(shape_id, event_id, shape_type_id, indicator_type_id, data_set_id)
-        hash = Hash.new()
-        hash["data"] = []
-        hash["visible"] = true
-        hash["has_openlayers_rule_value"] = false
-
-  			if !data.blank?
-logger.debug "************* getting summary data relationship params ****************"
-					if !relationship.blank?
-logger.debug "************* - visible = #{relationship.first.visible}"
-logger.debug "************* - has_openlayers_rule_value = #{relationship.first.has_openlayers_rule_value}"
-            hash["visible"] = relationship.first.visible
-            hash["has_openlayers_rule_value"] = relationship.first.has_openlayers_rule_value
-					end
-
-  				hash["data"] = data.collect{|x|	x.to_hash}
-  			end
-logger.debug "*****************************"
-				hash.to_json
-  		})
-
-      # update summary data flags
-logger.debug "************* json keys = #{json.keys}"
-logger.debug "************* visible flag from cache = #{json['visible']}"
-logger.debug "************* has_openlayers_rule_value flag from cache = #{json['has_openlayers_rule_value']}"
-			results["summary_data"]["visible"] = json['visible']
-			results["summary_data"]["has_openlayers_rule_value"] = json['has_openlayers_rule_value']
-      # add summary data
-			results["summary_data"]["data"] = json['data'].map{|x| x.symbolize_keys}
+      if use_cache
+        key = FILE_CACHE_KEY_CUSTOM_CHILDREN_DATA.gsub("[parent_id]", shape_id.to_s)
+			        .gsub("[locale]", I18n.locale.to_s)
+              .gsub("[event_id]", event_id.to_s)
+			        .gsub("[indicator_id]", indicator_id.to_s)
+              .gsub("[shape_type_id]", shape_type_id.to_s)
+		          .gsub("[data_set_id]", data_set_id.to_s)
+		    data = JSON.parse(JsonCache.fetch_data(key) {
+		      build_from_db(shape_id, shape_type_id, indicator_id, data_set_id, data_type).to_json
+		    })
+      else
+        data = build_from_db(shape_id, shape_type_id, indicator_id, data_set_id, data_type)        
+      end
     end
-#		puts "******* time to get_related_indicator_type_data: #{Time.now-start} seconds for event #{event_id}"
-    return results
+    return data
   end
-##############################
-############################## old end
-##############################
-=end
-	# determine overall placement of value in array
-	# assume array is already sorted in desired order
-	# if tie, the rank will be adjusted:
-	# if array 4,3,3,2,1,1
-	#  - passing in value of 3 will return 2
-	#  - passing in value of 2 will return 4
-	#  - passing in value of 1 will return 5
-	# returns hash {rank, total, has_duplicates}
-	def self.compute_placement(data_ary, value)
-		rank = nil
-		total = nil
-		has_duplicates = false
-
-		if data_ary && !data_ary.empty? && value
-			# find value in array
-			index = data_ary.index{|x| x[:value] == value}
-
-			if !index.nil?
-				# get unique values and count of how many of each value in array
-				unique = Hash.new(0)
-				data_ary.each do |x|
-					unique.store(x[:value], unique[x[:value]]+1)
-				end
-				# if unique length = data array length, no dups and can return placement
-				if unique.length == data_ary.length
-					rank = index+1
-					total = data_ary.length
-				else
-					# duplicates exist
-					has_duplicates = true
-					rank = 0
-					unique.each do |k,v|
-						if k == value
-							rank += 1
-							break
-						else
-							rank += v
-						end
-					end
-					# now determine the total records
-					# if the last item is a duplicate, the total will be length - # of dups + 1
-					if unique.to_a.last[1] > 1
-						total = data_ary.length-unique.to_a.last[1] + 1
-					else
-						total = data_ary.length
-					end
-				end
-			end
-		end
-		h = Hash.new()
-		h[:rank] = rank
-		h[:total] = total
-		h[:has_duplicates] = has_duplicates
-		return h
-	end
+  
 
 	###################################
 	## load from csv
@@ -1085,6 +506,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
     		row = nil
         json = build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, 2)
         if json.present?
+
           # create header
           row = Hash.new
           data << row
@@ -1095,17 +517,15 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
           row[:second_name] = I18n.t('app.common.second_place')
           row[:second_value] = nil
           row[:second_color] = nil
-          tt_num = json["shape_data"].first.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 15}
-Rails.logger.debug "+++++++++++++++++++++++++++++++++++++++"
-Rails.logger.debug tt_num.inspect
+          tt_num = json["shape_data"].first.select{|x| x.has_key?("data_item") && x["data_item"]["core_indicator_id"] == 15}
           if tt_num.present?
-            row[:total_turnout_number] = tt_num.first["data_item"][:indicator_name]
+            row[:total_turnout_number] = tt_num.first["data_item"]["indicator_name"]
           else
             row[:total_turnout_number] = I18n.t('app.common.total_turnout_num')
           end
-          tt_num = json["shape_data"].first.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 16}
+          tt_num = json["shape_data"].first.select{|x| x.has_key?("data_item") && x["data_item"]["core_indicator_id"] == 16}
           if tt_num.present?
-            row[:total_turnout_percent] = tt_num.first["data_item"][:indicator_name]
+            row[:total_turnout_percent] = tt_num.first["data_item"]["indicator_name"]
           else
             row[:total_turnout_percent] = I18n.t('app.common.total_turnout_perc')
           end
@@ -1126,32 +546,32 @@ Rails.logger.debug tt_num.inspect
 
               if d.length > 1 && d[1].has_key?("summary_data")
                 # winner
-                row[:winner_name] = d[1]["summary_data"]["data"][0][:indicator_name] 
-                cell = d[1]["summary_data"]["data"][0][:formatted_value]
-                cell << d[1]["summary_data"]["data"][0][:number_format] if d[1]["summary_data"]["data"][0][:number_format].present? 
+                row[:winner_name] = d[1]["summary_data"]["data"][0]["indicator_name"] 
+                cell = d[1]["summary_data"]["data"][0]["formatted_value"]
+                cell << d[1]["summary_data"]["data"][0]["number_format"] if d[1]["summary_data"]["data"][0]["number_format"].present? 
                 row[:winner_value] = cell
-                row[:winner_color] = d[1]["summary_data"]["data"][0][:color] 
+                row[:winner_color] = d[1]["summary_data"]["data"][0]["color"] 
                 # 2nd place
-                row[:second_name] = d[1]["summary_data"]["data"][1][:indicator_name] 
-                cell = d[1]["summary_data"]["data"][1][:formatted_value]
-                cell << d[1]["summary_data"]["data"][1][:number_format] if d[1]["summary_data"]["data"][1][:number_format].present? 
+                row[:second_name] = d[1]["summary_data"]["data"][1]["indicator_name"] 
+                cell = d[1]["summary_data"]["data"][1]["formatted_value"]
+                cell << d[1]["summary_data"]["data"][1]["number_format"] if d[1]["summary_data"]["data"][1]["number_format"].present? 
                 row[:second_value] = cell
-                row[:second_color] = d[1]["summary_data"]["data"][1][:color] 
+                row[:second_color] = d[1]["summary_data"]["data"][1]["color"] 
               end
               
               # total turnout #
-              tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 15}
+              tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"]["core_indicator_id"] == 15}
               if tt_num.present?
-                cell = tt_num.first["data_item"][:formatted_value]
-                cell << tt_num.first["data_item"][:number_format] if tt_num.first["data_item"][:number_format].present? 
+                cell = tt_num.first["data_item"]["formatted_value"]
+                cell << tt_num.first["data_item"]["number_format"] if tt_num.first["data_item"]["number_format"].present? 
                 row[:total_turnout_number] = cell
               end
               
               # total turnout %
-              tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"][:core_indicator_id] == 16}
+              tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"]["core_indicator_id"] == 16}
               if tt_num.present?
-                cell = tt_num.first["data_item"][:formatted_value]
-                cell << tt_num.first["data_item"][:number_format] if tt_num.first["data_item"][:number_format].present? 
+                cell = tt_num.first["data_item"]["formatted_value"]
+                cell << tt_num.first["data_item"]["number_format"] if tt_num.first["data_item"]["number_format"].present? 
                 row[:total_turnout_percent] = cell
               end
             end
@@ -1488,4 +908,436 @@ protected
 		end
 	end
 
+
+  # get summmary data for json use by pulling data from database
+	def self.build_summary_from_db(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit=nil)
+		start = Time.now
+    results = Hash.new
+		if shape_id.present? && shape_type_id.present? && event_id.present? && indicator_type_id.present? &&
+		      data_set_id.present? && data_type.present?
+
+      # get the shapes
+	    shapes = Shape.get_shapes_by_type(shape_id, shape_type_id, false)
+	    
+	    # get the shape type
+	    shape_type = ShapeType.find_by_id(shape_type_id)
+Rails.logger.debug("************* shape type is precinct = '#{shape_type.is_precinct}'")
+
+  	  # get the event
+  	  event = Event.find(event_id)
+
+  	  # get indicator type
+  	  indicator_type = IndicatorType.find(indicator_type_id)
+
+      # add info about this data
+  	  # add the indicator info
+  	  results["indicator"] = Hash.new
+      results["indicator"]["name"] = nil
+		  results["indicator"]["name_abbrv"] = indicator_type.nil? ? nil : indicator_type.summary_name
+		  results["indicator"]["description"] = indicator_type.nil? ? nil : indicator_type.summary_name
+		  results["indicator"]["number_format"] = nil
+      results["indicator"]["scales"] = [{:name => IndicatorScale.no_data_text, :color => IndicatorScale::NO_DATA_COLOR }]
+		  results["indicator"]["scale_colors"] = [IndicatorScale::NO_DATA_COLOR]
+		  results["indicator"]["switcher_indicator_id"] = nil
+
+      # indicate this is summary data
+      results["view_type"] = "summary"
+
+      # add the data
+      results["shape_data"] = []
+
+      if shapes.present? && event.present? && shape_type.present?
+        shapes.each do |shape|
+      	  # get all of the related json data for this indicator type
+      	  data = build_related_indicator_json(shape.id, shape_type_id, shape_type.is_precinct, event_id, data_set_id, data_type,
+      	    event.event_indicator_relationships.where(:indicator_type_id => indicator_type_id), limit)
+          summary = data.select{|x| x.has_key?("summary_data") && x["summary_data"].present? &&
+                      x["summary_data"]["data"][0][:indicator_type_id].to_s == indicator_type_id.to_s &&
+    									x["summary_data"]["data"][0][:formatted_value] != I18n.t('app.msgs.no_data')}
+          if summary.present?
+            shape_values = data.select{|x| x.has_key?("shape_values") && x["shape_values"].present?}
+            if shape_values.present?
+Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
+              shape_values.first["shape_values"]["parent_id"] = shape.parent_id
+              shape_values.first["shape_values"]["shape_name"] = shape.common_name
+              shape_values.first["shape_values"]["value"] = summary.first["summary_data"]["data"].first[:indicator_name_abbrv]
+              shape_values.first["shape_values"]["color"] = summary.first["summary_data"]["data"].first[:color]
+              shape_values.first["shape_values"]["title"] = summary.first["summary_data"]["data"].first[:indicator_type_name]
+            end
+          end
+          # save the data
+      	  results["shape_data"] << data
+  	    end
+  	  end
+    end
+#		puts "******* time to get_related_indicator_type_data: #{Time.now-start} seconds for event #{event_id}"
+    return results
+  end
+
+
+  # get data from database
+	def self.build_from_db(shape_id, shape_type_id, indicator_id, data_set_id, data_type)
+		start = Time.new
+    results = Hash.new
+		if shape_id.present? && shape_type_id.present? && indicator_id.present? && data_set_id.present? && data_type.present?
+      # get the shapes
+		  shapes = Shape.get_shapes_by_type(shape_id, shape_type_id, false)
+
+		  # get the shape type
+		  shape_type = ShapeType.find_by_id(shape_type_id)
+
+			# get the indicator
+			indicator = Indicator.find(indicator_id)
+
+      # add info about this data
+  	  # add the indicator info
+  	  results["indicator"] = Hash.new
+      results["indicator"]["name"] = indicator.name
+			results["indicator"]["name_abbrv"] = indicator.name_abbrv_w_parent
+			results["indicator"]["description"] = indicator.description_w_parent
+			results["indicator"]["number_format"] = indicator.number_format.nil? ? "" : indicator.number_format
+      results["indicator"]["scales"] = IndicatorScale.for_indicator(indicator.id)
+			results["indicator"]["scale_colors"] = IndicatorScale.get_colors(indicator.id)
+			results["indicator"]["switcher_indicator_id"] = nil
+
+			# if this event has a custom view at this level, get indicator id for other shape live
+			new_indicator = nil
+			custom_view = indicator.event.event_custom_views.where(:shape_type_id => shape_type_id)
+			if custom_view.present?
+				new_indicator = Indicator.find_new_id(indicator_id, custom_view.first.descendant_shape_type_id)
+			else
+				custom_view = indicator.event.event_custom_views.where(:descendant_shape_type_id => shape_type_id)
+  			if custom_view.present?
+					new_indicator = Indicator.find_new_id(indicator_id, custom_view.first.shape_type.child_ids.first)
+				end
+			end
+			if new_indicator
+				# is custom view, update switcher indicator id
+				results["indicator"]["switcher_indicator_id"] = new_indicator.id
+			end
+
+      # indicate this is not summary data
+      results["view_type"] = "normal"
+
+      # add the data
+      results["shape_data"] = []
+
+      if shapes.present? && indicator.present? && shape_type.present?
+  			event = indicator.event
+        shapes.each do |shape|
+      	  # get all of the related json data for this indicator
+      	  data = build_related_indicator_json(shape.id, shape_type_id, shape_type.is_precinct, event.id, data_set_id, data_type,
+      	    event.event_indicator_relationships.where(:core_indicator_id => indicator.core_indicator_id))
+
+      	  # find the data item with the indicator_id and use it's values to set the shape_values hash
+          data_item = data.select{|x| x.has_key?("data_item") && x["data_item"].present? &&
+                        x["data_item"][:indicator_id].to_s == indicator_id.to_s}
+          if data_item.present?
+            shape_values = data.select{|x| x.has_key?("shape_values") && x["shape_values"].present?}
+            if shape_values.present?
+Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
+              shape_values.first["shape_values"]["parent_id"] = shape.parent_id
+              shape_values.first["shape_values"]["shape_name"] = shape.common_name
+              shape_values.first["shape_values"]["value"] = data_item.first["data_item"][:value]
+              shape_values.first["shape_values"]["number_format"] = data_item.first["data_item"][:number_format]
+              shape_values.first["shape_values"]["title"] = data_item.first["data_item"][:indicator_name]
+              shape_values.first["shape_values"]["title_abbrv"] = data_item.first["data_item"][:indicator_name_abbrv]
+            end
+          end
+
+          # save the data
+      	  results["shape_data"] << data
+        end
+      end
+    end
+#		puts "******* time to get_related_indicator_data: #{Time.now-start} seconds for indicator #{indicator_id}"
+    return results
+  end
+
+
+  # build the json string for the provided indicator relationships
+  # [
+  #    {shape_values => {}}
+  #    {"summary_data" => []}
+  #    {"data_item" => {}}
+  #    {"footnote" => {}}
+  # ]
+	def self.build_related_indicator_json(shape_id, shape_type_id, is_precinct, event_id, data_set_id, data_type, relationships, limit=nil)
+    results = []
+
+    # create empty shape_values hash
+    # - these values will be pushed into the shape json file so they
+    #    can be color coded by openlayers
+    # - will be populated with real value by the method that called this method
+    shape_values = Hash.new
+	  shape_values["shape_id"] = shape_id
+	  shape_values["shape_name"] = nil
+	  shape_values["parent_id"] = nil
+	  shape_values["value"] = I18n.t('app.msgs.no_data')
+	  shape_values["color"] = nil
+	  shape_values["number_format"] = nil
+	  shape_values["precincts_completed_precent"] = nil
+	  shape_values["title"] = I18n.t('app.msgs.no_data')
+	  shape_values["title_abbrv"] = nil
+	  shape_values["title_location"] = nil
+	  shape_values["title_precincts_completed"] = nil
+    data_hash = Hash.new
+		data_hash["shape_values"] = shape_values
+	  results << data_hash
+
+Rails.logger.debug("*********************** building related indicator")
+	  if shape_id.present? && event_id.present? && shape_type_id.present? && data_set_id.present? && 
+	        data_type.present? && relationships.present?
+Rails.logger.debug("*********************** all data provided!")
+      has_duplicates = false
+	    relationships.each do |rel|
+	      if rel.related_indicator_type_id.present?
+Rails.logger.debug("*********************** getting summary data for ind type #{rel.related_indicator_type_id}")
+	        # get the summary for this indciator type
+					data = build_summary_data_json(shape_id, shape_type_id, event_id, rel.related_indicator_type_id, data_set_id, limit)
+					if data.present? && data["summary_data"].present? && data["summary_data"]["data"].present?
+Rails.logger.debug("*********************** - found data, adding it to results")
+	        	results << data
+					end
+        elsif rel.related_core_indicator_id.present?
+          # see if indicator is part of indicator type that has summary
+          # if so, get the summary info so can assign the overall placement and overall winner
+          core = CoreIndicator.get_indicator_type_with_summary(rel.related_core_indicator_id)
+          if core.present?
+            # get summary data
+  					data = build_summary_data_json(shape_id, shape_type_id, event_id, core.indicator_type_id, data_set_id)
+  					if data.present? && data["summary_data"].present? && data["summary_data"]["data"].present?
+              # add the data item for the provided indicator
+              index = data["summary_data"]["data"].index{|x| x[:core_indicator_id] == rel.related_core_indicator_id}
+              if index
+    						data_hash = Hash.new
+    						data_hash["data_item"] = data["summary_data"]["data"][index]
+								data_hash["data_item"][:visible] = rel.visible
+								data_hash["data_item"][:has_openlayers_rule_value] = rel.has_openlayers_rule_value
+    	        	results << data_hash
+
+                # add the placement of this indicator
+								# if value != no data
+								# if there are duplicate values (e.g., a tie) fix the rank accordingly
+								if data["summary_data"]["data"][index][:value] != I18n.t('app.msgs.no_data')
+								  #&& data["summary_data"][index][:value] != "0"
+
+                  has_duplicates = data["summary_data"]["has_duplicates"]
+		              rank = Datum.new
+		              rank.value = data["summary_data"]["data"][index][:rank].to_s
+		              rank["number_format"] = " / #{data["summary_data"]["total_ranks"]}"
+		              rank["number_format"] += " *" if has_duplicates
+		              rank["indicator_type_name"] = data["summary_data"]["data"][index][:indicator_type_name]
+		              rank["indicator_name"] = I18n.t('app.common.overall_placement')
+		              rank["indicator_name_abbrv"] = I18n.t('app.common.overall_placement')
+		  						data_hash = Hash.new
+		  						data_hash["data_item"] = rank.to_hash
+		  	        	results << data_hash
+								end
+
+	              # add total # of indicators in the summary
+	              rank = Datum.new
+	              rank.value = data["summary_data"]["data"].length
+	              rank["indicator_type_name"] = data["summary_data"]["data"][index]["indicator_type_name"]
+	              rank["indicator_name"] = I18n.t('app.common.total_participants')
+	              rank["indicator_name_abbrv"] = I18n.t('app.common.total_participants')
+	  						data_hash = Hash.new
+	  						data_hash["data_item"] = rank.to_hash
+	  	        	results << data_hash
+              end
+
+              # add the winner if this record is not it and if value != no data or 0
+							if index > 0 &&
+									data["summary_data"]["data"][0][:value] != "0" &&
+									data["summary_data"]["data"][0][:value] != I18n.t('app.msgs.no_data')
+
+                data["summary_data"]["data"][0][:indicator_name].insert(0, "#{I18n.t('app.common.winner')}: ")
+                data["summary_data"]["data"][0][:indicator_name_abbrv].insert(0, "#{I18n.t('app.common.winner')}: ")
+    						data_hash = Hash.new
+    						data_hash["data_item"] = data["summary_data"]["data"][0]
+    	        	results << data_hash
+              end
+  					end
+          else
+            # indicator type does not have summary
+            # get the data item for this indciator
+  					data = get_data_for_shape_core_indicator(shape_id, event_id, shape_type_id, rel.related_core_indicator_id, data_set_id)
+  					if data && !data.empty?
+  						data_hash = Hash.new
+  						data_hash["data_item"] = data.first.to_hash
+							data_hash["data_item"][:visible] = rel.visible
+							data_hash["data_item"][:has_openlayers_rule_value] = rel.has_openlayers_rule_value
+  	        	results << data_hash
+  					end
+          end
+        end
+      end
+
+			# if this is live data and not a precinct, add the precincts reported numbers
+			if data_type == Datum::DATA_TYPE[:live] && !is_precinct
+				precincts_reporting = Datum.get_precincts_reported(shape_id, event_id, data_set_id)
+				if precincts_reporting.present?
+					# save the value so the shapes can be marked different if not complete
+					shape_values["precincts_completed_precent"] = precincts_reporting[:completed_percent].gsub("%","").to_f
+					# create the title for the popup
+#							title["precincts_completed"] =
+#										I18n.t('app.common.live_event_status', :completed => precincts_reporting[:completed_number],
+#                        :total => precincts_reporting[:num_precincts],
+#                        :percentage => precincts_reporting[:completed_percent])
+
+					shape_values["title_precincts_completed"] =
+								I18n.t('app.common.live_event_status_no_percent', :completed => precincts_reporting[:completed_number])
+
+				end
+			end
+
+      # add duplicate footnote if needed
+      if has_duplicates
+        footnote = Datum.new
+        footnote["indicator_name"] = "* #{I18n.t('app.common.footnote_duplicates')}"
+        footnote["indicator_name_abbrv"] = "* #{I18n.t('app.common.footnote_duplicates')}"
+				data_hash = Hash.new
+				data_hash["footnote"] = footnote.to_hash
+      	results << data_hash
+      end
+    end
+	  return results
+  end
+  
+  # get the summary data for an indicator type in an event for a shape
+	def self.build_summary_data_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, limit=nil)
+		start = Time.now
+		results = Hash.new
+		results["summary_data"] = Hash.new
+		results["summary_data"]["data"] = []
+		results["summary_data"]["visible"] = true
+		results["summary_data"]["has_openlayers_rule_value"] = false
+		results["summary_data"]["total_ranks"] = nil
+		results["summary_data"]["has_duplicates"] = false
+
+		if shape_id.present? && shape_type_id.present? && event_id.present? && indicator_type_id.present? && data_set_id.present?
+			json = []
+  		key = FILE_CACHE_KEY_SUMMARY_DATA.gsub("[shape_id]", shape_id.to_s)
+					.gsub("[locale]", I18n.locale.to_s)
+		      .gsub("[event_id]", event_id.to_s)
+		      .gsub("[indicator_type_id]", indicator_type_id.to_s)
+		      .gsub("[shape_type_id]", shape_type_id.to_s)
+		      .gsub("[data_set_id]", data_set_id.to_s)
+
+  		json = JSON.parse(JsonCache.fetch_data(key) {
+				relationship = EventIndicatorRelationship.where(:event_id => event_id,
+					:indicator_type_id => indicator_type_id,
+					:related_indicator_type_id => indicator_type_id)
+  			data = get_summary_data_for_shape(shape_id, event_id, shape_type_id, indicator_type_id, data_set_id)
+        hash = Hash.new()
+        hash["data"] = []
+        hash["visible"] = true
+        hash["has_openlayers_rule_value"] = false
+		    hash["total_ranks"] = nil
+		    hash["has_duplicates"] = false
+
+  			if data.present?
+logger.debug "************* getting summary data relationship params ****************"
+					if relationship.present?
+logger.debug "************* - visible = #{relationship.first.visible}"
+logger.debug "************* - has_openlayers_rule_value = #{relationship.first.has_openlayers_rule_value}"
+            hash["visible"] = relationship.first.visible
+            hash["has_openlayers_rule_value"] = relationship.first.has_openlayers_rule_value
+					end
+
+          # add the ranking of each item
+          d_index = 0
+          while d_index < data.length do 
+            h = compute_placement(data, data[d_index][:value])
+		        data[d_index].rank = h[:rank]
+            if d_index == 0
+		          hash["total_ranks"] = h[:total]
+		          hash["has_duplicates"] = h[:has_duplicates]
+            end
+            d_index += 1
+          end
+
+  				hash["data"] = data.collect{|x|	x.to_hash}
+  			end
+logger.debug "*****************************"
+				hash.to_json
+  		})
+
+      # update summary data flags
+logger.debug "************* visible flag from cache = #{json['visible']}"
+logger.debug "************* has_openlayers_rule_value flag from cache = #{json['has_openlayers_rule_value']}"
+			results["summary_data"]["visible"] = json['visible']
+			results["summary_data"]["has_openlayers_rule_value"] = json['has_openlayers_rule_value']
+			results["summary_data"]["total_ranks"] = json['total_ranks']
+			results["summary_data"]["has_duplicates"] = json['has_duplicates']
+      # add summary data
+      # if limit provided, limit the number of records returned
+      if limit.present? && limit > 0
+  			results["summary_data"]["data"] = json['data'].map{|x| x.symbolize_keys}[0..limit-1]
+      else
+  			results["summary_data"]["data"] = json['data'].map{|x| x.symbolize_keys}
+      end
+    end
+#		puts "******* time to get_related_indicator_type_data: #{Time.now-start} seconds for event #{event_id}"
+    return results
+  end  
+  
+  
+	# determine overall placement of value in array
+	# assume array is already sorted in desired order
+	# if tie, the rank will be adjusted:
+	# if array 4,3,3,2,1,1
+	#  - passing in value of 3 will return 2
+	#  - passing in value of 2 will return 4
+	#  - passing in value of 1 will return 5
+	# returns hash {rank, total, has_duplicates}
+	def self.compute_placement(data_ary, value)
+		rank = nil
+		total = nil
+		has_duplicates = false
+
+		if data_ary && !data_ary.empty? && value
+			# find value in array
+			index = data_ary.index{|x| x[:value] == value}
+
+			if !index.nil?
+				# get unique values and count of how many of each value in array
+				unique = Hash.new(0)
+				data_ary.each do |x|
+					unique.store(x[:value], unique[x[:value]]+1)
+				end
+				# if unique length = data array length, no dups and can return placement
+				if unique.length == data_ary.length
+					rank = index+1
+					total = data_ary.length
+				else
+					# duplicates exist
+					has_duplicates = true
+					rank = 0
+					unique.each do |k,v|
+						if k == value
+							rank += 1
+							break
+						else
+							rank += v
+						end
+					end
+					# now determine the total records
+					# if the last item is a duplicate, the total will be length - # of dups + 1
+					if unique.to_a.last[1] > 1
+						total = data_ary.length-unique.to_a.last[1] + 1
+					else
+						total = data_ary.length
+					end
+				end
+			end
+		end
+		h = Hash.new()
+		h[:rank] = rank
+		h[:total] = total
+		h[:has_duplicates] = has_duplicates
+		return h
+	end
+
+  
 end
