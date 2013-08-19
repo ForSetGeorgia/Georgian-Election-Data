@@ -605,6 +605,7 @@
 
 #      ind_ids = []
 			core_ind_names = []
+		  sorted_ranks = nil
 #			core_ind_desc = []
 			if ind_types.present?
 				# pull out the core indicator names and desc
@@ -629,6 +630,7 @@
                 
               sorted_cols = json["summary_data"]["data"].map{|x| x["indicator_name_unformatted"]}
               sorted_col_ids = json["summary_data"]["data"].map{|x| x["core_indicator_id"]}
+              sorted_ranks = json["summary_data"]["data"].map{|x| x["rank"]}
               core_ind_names << sorted_cols
               core_ind_names.flatten!
 					    s[:col_start_index] = core_ind_names.index(json["summary_data"]["data"].first["indicator_name_unformatted"])-1
@@ -641,7 +643,7 @@
               h[:summary_name] = type.indicator_type_translations[0].summary_name
               h[:has_summary] = type.has_summary
               h[:indicators] = []
-              sorted_col_ids.each do |core_id|
+              sorted_col_ids.each_with_index do |core_id, i|
                 # get the indicator
                 ind = type.core_indicators.select{|x| x.id == core_id}.first
                 if ind.present?
@@ -650,6 +652,7 @@
                   ind_h[:id] = ind.indicators.map{|x| x.id}.first
                   ind_h[:name] = ind.core_indicator_translations[0].name
                   ind_h[:description] = ind.core_indicator_translations[0].description
+                  ind_h[:rank] = sorted_ranks[i]
                 else
 Rails.logger.debug "********************"                
 Rails.logger.debug "********************"                
@@ -768,8 +771,14 @@ Rails.logger.debug "********************"
 				  header_starter = download_header.join("||").gsub("[Level]", data.first.attributes["shape_type"]).split("||")
           header << header_starter
 #				  core_ind_desc.each do |core|
-				  core_ind_names.each do |core|
-				    header << core
+				  core_ind_names.each_with_index do |core, j|
+				    # if ranks exist, add to name
+				    # the summary col has been added to core names but does not exist in sorted ranks
+				    if sorted_ranks.present? && sorted_ranks[j].present? && j > 0
+  				    header << "##{sorted_ranks[j-1]} - #{core}"
+  				  else
+  				    header << core
+  				  end
 				  end
 					table << header.flatten
 
