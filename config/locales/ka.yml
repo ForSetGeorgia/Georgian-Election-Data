@@ -217,7 +217,7 @@ ka:
       indicator_relationship: Indicator with Relationship
       indicator_type_relationship: Indicator Group with Relationship
       winner: გამარჯვებული
-      second_place: 2nd Place
+      second_place: მე-2 ადგილი
       overall_placement: დაკავებული ადგილი
       total_participants: სუბიექტთა რაოდენობა
       footnote_duplicates: სულ მცირე ორი სუბიექტის შედეგები მიახლოებულია
@@ -294,8 +294,8 @@ ka:
       sorting: "ერთდროულად რამდენიმე სვეტის სორტირებისთვის გეჭიროთ ღილაკი \"SHIFT\" და აირჩიეთ შესაბამისი სვეტების სათაურები"
       color_legend_indicator:  მაჩვენებელი რუკაზე
       color_legend_winner: გამარჯვებული
-      tab_summary: Summary
-      tab_details: Details
+      tab_summary: რეზიუმე
+      tab_details: დეტალები
     application:
       title: საქართველოს საარჩევნო მონაცემები
       ndi_alt: ეროვნული დემოკრატიული ინსტიტუტი
