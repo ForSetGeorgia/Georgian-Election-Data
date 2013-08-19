@@ -253,8 +253,9 @@ ka:
       summary: Summary
       added_on: "Added on: %{date}" 
       district: District
-      total_turnout_num: "Total Turnout (#)"
-      total_turnout_perc: "Total Turnout (%)"
+      total_turnout: "აქტივობა"
+      total_turnout_num: "აქტივობა (#)"
+      total_turnout_perc: "აქტივობა (%)"
   highcharts:
     downloadPNG: "ჩამოტვირთე PNG გამოსახულება"
     downloadJPEG: "ჩამოტვირთე JPEG გამოსახულება"

@@ -253,6 +253,7 @@ en:
       summary: Summary
       added_on: "Added on: %{date}" 
       district: District
+      total_turnout: "Total Turnout"
       total_turnout_num: "Total Turnout (#)"
       total_turnout_perc: "Total Turnout (%)"
   highcharts:

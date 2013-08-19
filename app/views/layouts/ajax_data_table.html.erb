@@ -37,8 +37,7 @@
               </th>
               <th>
                 <span>
-                  <%= @summary_data[0][:total_turnout_number] %> /
-                  <%= @summary_data[0][:total_turnout_percent] %>
+                  <%= t('app.common.total_turnout') %>
                 </span>
               </th>
             </tr>
@@ -54,22 +53,13 @@
                     <%= data[:winner_name] %>
                   </span>
                 </td>   
-                <!--td class="summary_text_container" style="background-color: <%= data[:winner_color] %>;">
-                  <span style="color: <%= data[:winner_color] %>;">
-                    <%= data[:winner_name] %>
-                    <br />
-                    <%= data[:winner_value] %>
-                  </span>
-                </td--> 
                 <td class="summary_bar_chart_container"> 
                   <div style="color: <%= data[:winner_color] %>;">
                       <%= data[:winner_value] %>
                   </div>
-                  <div class="summary_bar_chart" style="height: <%= data[:winner_value]%>; background-color: <%= data[:winner_color] %>"
-                    title="<%= data[:winner_name] %>">
+                  <div class="summary_bar_chart" style="height: <%= data[:winner_value]%>; background-color: <%= data[:winner_color] %>" title="<%= data[:winner_name] %>">
                   </div>
-                  <div class="summary_bar_chart" style="height: <%= data[:second_value]%>; background-color: <%= data[:second_color] %>"
-                    title="<%= data[:second_name] %>">
+                  <div class="summary_bar_chart" style="height: <%= data[:second_value]%>; background-color: <%= data[:second_color] %>" title="<%= data[:second_name] %>">
                   </div>
                   <div style="color: <%= data[:second_color] %>;">
                       <%= data[:second_value] %>
@@ -80,20 +70,28 @@
                     <%= data[:second_name] %>
                   </span>
                 </td>   
-                <!--td class="summary_text_container" style="background-color: <%= data[:second_color] %>;">
-                  <span style="color: <%= data[:second_color] %>;">
-                    <%= data[:second_name] %>
-                    <br />
-                    <%= data[:second_value] %>
-                  </span>
-                </td-->    
-                <td>
-                  <span>
-                    <%= data[:total_turnout_number] %>
-                    <br />
-                    <%= data[:total_turnout_percent] %>
-                  </span>
-                </td>    
+                <td class="summary_total_turnout">
+                  <div class="half_circle hold">
+                    <div class="pie"></div>
+                  </div>
+                  <% 
+                    perc = data[:total_turnout_percent].gsub('%','').to_f
+                    ang = (180 * perc / 100)
+                  %>
+                  <div class="tt_percent_circle hold">
+                    <div class="pie"  
+                      style="-moz-transform:rotate(<%= ang%>deg); -webkit-transform:rotate(<%= ang%>deg); -o-transform:rotate(<%= ang%>deg);	transform:rotate(<%= ang%>deg);">
+                    </div>
+                  </div>
+                  <div class="tt_number_circle_text">
+                      <%= t('app.common.total_turnout') %>:
+                      <br />
+                      <%= data[:total_turnout_number] %>
+                  </div>
+                  <div class="tt_percent_circle_text">
+                      <%= data[:total_turnout_percent] %>
+                  </div>
+                </td>
               </tr>   
             <% end %>  
           </tbody>
@@ -307,6 +305,8 @@
         "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]]
       });
 
+      // adjust width of bottom filter bar to match that of summary table
+      $('#map_data_table_summary + div.row-fluid').width($('#map_data_table_summary').width());
     
       /////////////////////////////
       // detailed table

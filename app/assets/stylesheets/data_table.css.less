@@ -1,3 +1,21 @@
+.nav-tabs > li > a {
+  font-size: 16px;
+  color: #666;
+  &:hover{
+    background-color: #AEC9DC;
+  }
+}
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+  font-size: 18px;
+  color: #000;
+  background-color: #D6E6F5;
+}
+
+.tab-content > .tab-pane{
+  overflow-y:hidden;
+}
+
 #data-table-container {
   font-family: arial;
   display: block;
@@ -309,7 +327,9 @@ td.highlighted > a {
 }
 
 #map_data_table_summary{
+  width: auto;
   th, td{
+    min-width: 225px;
     a, span{
       padding: 10px 20px;
     }   
@@ -337,6 +357,69 @@ td.highlighted > a {
         &.summary_bar_chart {
           width: 10px;
         }
+      }
+    }
+    &.summary_total_turnout{
+      vertical-align: top;
+      height: 110px;
+      width: 300px;
+      position: relative;
+      .hold{
+	      width:200px;
+	      height:200px;
+	      clip:rect(0px,200px,200px,100px);
+	      position:absolute;
+	      top: 10px;
+	      left: 80px;
+      }
+      .pie {
+	      position:absolute;
+	      width:200px;
+	      height:200px;
+	      clip:rect(0px,100px,200px,0px);
+	      -moz-border-radius:100px;
+	      -webkit-border-radius:100px; 
+	      border-radius:100px; 
+      }
+      .half_circle {
+	      -moz-transform:rotate(-90deg);
+	      -webkit-transform:rotate(-90deg);
+	      -o-transform:rotate(-90deg);
+	      transform:rotate(-90deg);
+	      & > .pie {
+	        background-color:#c2c2c2;
+	        border-color:#c2c2c2;
+	        -moz-transform:rotate(180deg);
+	        -webkit-transform:rotate(180deg);
+	        -o-transform:rotate(180deg);
+	        transform:rotate(180deg);
+        }
+      }
+      .tt_percent_circle {
+        z-index: 100;
+	      -moz-transform:rotate(-90deg);
+	      -webkit-transform:rotate(-90deg);
+	      -o-transform:rotate(-90deg);
+	      transform:rotate(-90deg);
+        & > .pie {
+	        background-color:#eaa471;
+	        border-color:#eaa471;
+        }
+      }
+      .tt_percent_circle_text{
+          position: absolute;
+          left: 115px;
+          top: 65px;
+          color: #000;
+          z-index:200;
+      }
+      .tt_number_circle_text{
+          position: absolute;
+          left: 20px;
+          top: 10px;
+          color: #000;
+          z-index:200;
+          text-align: left;
       }
     }
   }
