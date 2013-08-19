@@ -71,26 +71,28 @@
                   </span>
                 </td>   
                 <td class="summary_total_turnout">
-                  <div class="half_circle hold">
-                    <div class="pie"></div>
-                  </div>
-                  <% 
-                    perc = data[:total_turnout_percent].gsub('%','').to_f
-                    ang = (180 * perc / 100)
-                  %>
-                  <div class="tt_percent_circle hold">
-                    <div class="pie"  
-                      style="-moz-transform:rotate(<%= ang%>deg); -webkit-transform:rotate(<%= ang%>deg); -o-transform:rotate(<%= ang%>deg);	transform:rotate(<%= ang%>deg);">
+                  <% if data[:total_turnout_percent].present? && data[:total_turnout_percent].index('%').present? %>
+                    <div class="half_circle hold">
+                      <div class="pie"></div>
                     </div>
-                  </div>
-                  <div class="tt_number_circle_text">
-                      <%= t('app.common.total_turnout') %>:
-                      <br />
-                      <%= data[:total_turnout_number] %>
-                  </div>
-                  <div class="tt_percent_circle_text">
-                      <%= data[:total_turnout_percent] %>
-                  </div>
+                    <% 
+                      perc = data[:total_turnout_percent].gsub('%','').to_f
+                      ang = (180 * perc / 100)
+                    %>
+                    <div class="tt_percent_circle hold">
+                      <div class="pie"  
+                        style="-moz-transform:rotate(<%= ang%>deg); -webkit-transform:rotate(<%= ang%>deg); -o-transform:rotate(<%= ang%>deg);	transform:rotate(<%= ang%>deg);">
+                      </div>
+                    </div>
+                    <div class="tt_number_circle_text">
+                        <%= t('app.common.total_turnout') %>:
+                        <br />
+                        <%= data[:total_turnout_number] %>
+                    </div>
+                    <div class="tt_percent_circle_text">
+                        <%= data[:total_turnout_percent] %>
+                    </div>
+                  <% end %>
                 </td>
               </tr>   
             <% end %>  
