@@ -151,7 +151,7 @@
                         selected << 'selected="selected"'
                       end
                       
-                      text = ind[:name]
+                      text = ind[:name].clone
                       if ind.has_key?(:rank) && ind[:rank].present?
                         text.insert(0,"##{ind[:rank]} - ")
                       end
@@ -203,6 +203,7 @@
 
 	         <tbody>
 	          <% @table_data[1..-1].each do |row| %>
+
 	            <tr>
 	              <% row.each_with_index do |value, i| %>
                   <% if i != 1 %>
@@ -232,6 +233,7 @@
                     end
                   %>
 	                <td data-id="<%= dataid %>" <%= cls.present? ? "class='#{cls}'".html_safe : '' %> <%= style.present? ? "style='#{style}'".html_safe : '' %>>
+
 	                  <% if i == 0 %>
 	                    <span><%= value %></span>
 	                  <% elsif i == 1 && has_summary%>

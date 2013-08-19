@@ -601,7 +601,9 @@
 		if event_id && shape_type_id && shape_id && data_set_id
 
 			# get all of the indicators for this event at this shape type
-			ind_types = IndicatorType.find_by_event_shape_type(event_id, shape_type_id)
+#			ind_types = IndicatorType.find_by_event_shape_type(event_id, shape_type_id)
+			ind_types = IndicatorType.with_summary_rank(shape_id, shape_type_id, event_id, data_set_id, parent_shape_type_id)
+			
 
 #      ind_ids = []
 			core_ind_names = []
@@ -618,76 +620,33 @@
 					if type.has_summary
             # add summary name first
 						core_ind_names << type.indicator_type_translations[0].summary_name
+            sorted_ranks = type.core_indicators.map{|x| x.rank}
 
 						s = Hash.new
 						s[:indicator_type_id] = type.id
 						s[:summary_name] = type.indicator_type_translations[0].summary_name
 
-            # get names in rank order if parent shape type provided
-            json = build_summary_data_json(shape_id, parent_shape_type_id, event_id, type.id, data_set_id)
-            if parent_shape_type_id.present? && json.has_key?('summary_data') && 
-                json['summary_data'].has_key?('data') && json['summary_data']['data'].present?
-                
-              sorted_cols = json["summary_data"]["data"].map{|x| x["indicator_name_unformatted"]}
-              sorted_col_ids = json["summary_data"]["data"].map{|x| x["core_indicator_id"]}
-              sorted_ranks = json["summary_data"]["data"].map{|x| x["rank"]}
-              core_ind_names << sorted_cols
-              core_ind_names.flatten!
-					    s[:col_start_index] = core_ind_names.index(json["summary_data"]["data"].first["indicator_name_unformatted"])-1
-					    s[:col_end_index] = core_ind_names.index(json["summary_data"]["data"].last["indicator_name_unformatted"])-1
+    				core_ind_names << type.core_indicators.map{|y| y.core_indicator_translations[0].name}
+            core_ind_names.flatten!
+					  s[:col_start_index] = core_ind_names.index(type.core_indicators.first.core_indicator_translations[0].name)-1
+					  s[:col_end_index] = core_ind_names.index(type.core_indicators.last.core_indicator_translations[0].name)-1
 
-              h = Hash.new
-              indicator_data << h
-              h[:id] = type.id
-              h[:name] = type.indicator_type_translations[0].name
-              h[:summary_name] = type.indicator_type_translations[0].summary_name
-              h[:has_summary] = type.has_summary
-              h[:indicators] = []
-              sorted_col_ids.each_with_index do |core_id, i|
-                # get the indicator
-                ind = type.core_indicators.select{|x| x.id == core_id}.first
-                if ind.present?
-                  ind_h = Hash.new
-                  h[:indicators] << ind_h
-                  ind_h[:id] = ind.indicators.map{|x| x.id}.first
-                  ind_h[:name] = ind.core_indicator_translations[0].name
-                  ind_h[:description] = ind.core_indicator_translations[0].description
-                  ind_h[:rank] = sorted_ranks[i]
-                  ind_h[:color] = ind.color.present? ? ind.color : ind.parent_id.present? ? ind.parent.color : nil
-                else
-Rails.logger.debug "********************"                
-Rails.logger.debug "********************"                
-Rails.logger.debug "********************"                
-Rails.logger.debug "********************"                
-Rails.logger.debug "could not find core ind from sorted col ids"                
-Rails.logger.debug "********************"                
-Rails.logger.debug "********************"                
-Rails.logger.debug "********************"                
-Rails.logger.debug "********************"                
-                end
-              end
-            else
-      				core_ind_names << type.core_indicators.map{|y| y.core_indicator_translations[0].name}
-              core_ind_names.flatten!
-						  s[:col_start_index] = core_ind_names.index(type.core_indicators.first.core_indicator_translations[0].name)-1
-						  s[:col_end_index] = core_ind_names.index(type.core_indicators.last.core_indicator_translations[0].name)-1
-
-              h = Hash.new
-              indicator_data << h
-              h[:id] = type.id
-              h[:name] = type.indicator_type_translations[0].name
-              h[:summary_name] = type.indicator_type_translations[0].summary_name
-              h[:has_summary] = type.has_summary
-              h[:indicators] = []
-              type.core_indicators.each do |ind|
-                ind_h = Hash.new
-                h[:indicators] << ind_h
-                ind_h[:id] = ind.indicators.map{|x| x.id}.first
-                ind_h[:name] = ind.core_indicator_translations[0].name
-                ind_h[:description] = ind.core_indicator_translations[0].description
-                ind_h[:color] = ind.color.present? ? ind.color : ind.parent_id.present? ? ind.parent.color : nil
-              end          
-            end
+            h = Hash.new
+            indicator_data << h
+            h[:id] = type.id
+            h[:name] = type.indicator_type_translations[0].name
+            h[:summary_name] = type.indicator_type_translations[0].summary_name
+            h[:has_summary] = type.has_summary
+            h[:indicators] = []
+            type.core_indicators.each do |ind|
+              ind_h = Hash.new
+              h[:indicators] << ind_h
+              ind_h[:id] = ind.indicators.map{|x| x.id}.first
+              ind_h[:name] = ind.core_indicator_translations[0].name
+              ind_h[:description] = ind.core_indicator_translations[0].description
+              ind_h[:rank] = ind.rank
+              ind_h[:color] = ind.color
+            end          
 
 						summary << s
 
@@ -716,7 +675,7 @@ Rails.logger.debug "********************"
               ind_h[:id] = ind.indicators.map{|x| x.id}.first
               ind_h[:name] = ind.core_indicator_translations[0].name
               ind_h[:description] = ind.core_indicator_translations[0].description
-              ind_h[:color] = ind.color.present? ? ind.color : ind.parent_id.present? ? ind.parent.color : nil
+              ind_h[:color] = ind.color
             end          
 					end
 				end
@@ -777,7 +736,7 @@ Rails.logger.debug "********************"
 				  core_ind_names.each_with_index do |core, j|
 				    # if ranks exist, add to name
 				    # the summary col has been added to core names but does not exist in sorted ranks
-				    if sorted_ranks.present? && sorted_ranks[j].present? && j > 0
+				    if j > 0 && sorted_ranks.present? && sorted_ranks[j-1].present?
   				    header << "##{sorted_ranks[j-1]} - #{core}"
   				  else
   				    header << core
@@ -838,7 +797,10 @@ Rails.logger.debug "********************"
 
 		indicator_data = {:ids => ind_ids, :names => core_ind_names, :desc => core_ind_desc}
 =end
-
+Rails.logger.debug "333333333333333333333333333"
+Rails.logger.debug table
+Rails.logger.debug "333333333333333333333333333"
+Rails.logger.debug indicator_data
 		puts "/////// total time = #{Time.now-start} seconds"
 #    return {:data => table, :indicators => indicator_data, :indicator_type_ids => indicator_type_ids}
     return {:data => table, :indicator_types => indicator_data}

@@ -379,6 +379,8 @@ logger.debug "//////////////////////////////////////////////////////// done with
 				@table_data.each_with_index do |val, i|
 				  @table_data[i] = @table_data[i][cols_skip..- 1]
 				end
+Rails.logger.debug "333333333333333333333333333"
+Rails.logger.debug @table_data
 
 				# selected indicator id
 				if params[:indicator_id].blank? || params[:indicator_id] == 'null'

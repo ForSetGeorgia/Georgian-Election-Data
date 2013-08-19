@@ -16,6 +16,43 @@ class IndicatorType < ActiveRecord::Base
     with_translations(I18n.locale).order("indicator_types.sort_order, indicator_type_translations.name")
   end
 
+  # get all indicators 
+  # if summary exists, sort indicators by rank in summary
+  # - rank will also be included in the core_indicator object
+  # - color value will also be updated from summary so that if ind is child, it will have parent color
+	def self.with_summary_rank(shape_id, shape_type_id, event_id, data_set_id, parent_shape_type_id)
+    # get all indicator info for this event, shape type
+    ind_types = find_by_event_shape_type(event_id, shape_type_id)
+
+    if ind_types.present?
+      # see if summary exists for this event
+      summaries = ind_types.select{|x| x.has_summary == true}
+      
+      if summaries.present?
+        summaries.each do |type|
+          # summary exists, get it for parent shape
+          json = Datum.build_summary_data_json(shape_id, parent_shape_type_id, event_id, type.id, data_set_id)
+          if json.present?
+            # re-order the type core indicators to match that of json
+            json["summary_data"]["data"].map{|x| x["core_indicator_id"]}.each_with_index do |id, i|
+              ind_index = type.core_indicators.index{|z| z.id == id}
+              if ind_index.present?
+                # save rank and color
+                # - color because somd inds are children and color will not exist in the core indciator
+                type.core_indicators[ind_index].color = json["summary_data"]["data"][i]["color"]
+                type.core_indicators[ind_index].rank = json["summary_data"]["data"][i]["rank"]
+                type.core_indicators.insert(i,type.core_indicators.delete_at(ind_index))
+              end
+            end
+          end
+        end
+      end
+    end
+    
+    return ind_types
+  end  
+
+
 	# get all indicators by type for an event and shape type
 	def self.find_by_event_shape_type(event_id, shape_type_id)
 		if event_id.present? && shape_type_id.present?
