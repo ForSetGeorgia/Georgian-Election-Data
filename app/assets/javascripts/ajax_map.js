@@ -305,9 +305,9 @@ $(function(){
 
 					// reset the column to highlight
 					$('table#map_data_table th').removeClass('highlighted');
-					$('table#map_data_table td').removeClass('highlighted');
+//					$('table#map_data_table td').removeClass('highlighted');
 					$('table#map_data_table th[data-id="' + dataid + '"]').addClass('highlighted');
-					$('table#map_data_table td[data-id="' + dataid + '"]').addClass('highlighted');
+//					$('table#map_data_table td[data-id="' + dataid + '"]').addClass('highlighted');
 					
 				
 				}

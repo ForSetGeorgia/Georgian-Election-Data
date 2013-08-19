@@ -653,6 +653,7 @@
                   ind_h[:name] = ind.core_indicator_translations[0].name
                   ind_h[:description] = ind.core_indicator_translations[0].description
                   ind_h[:rank] = sorted_ranks[i]
+                  ind_h[:color] = ind.color.present? ? ind.color : ind.parent_id.present? ? ind.parent.color : nil
                 else
 Rails.logger.debug "********************"                
 Rails.logger.debug "********************"                
@@ -684,6 +685,7 @@ Rails.logger.debug "********************"
                 ind_h[:id] = ind.indicators.map{|x| x.id}.first
                 ind_h[:name] = ind.core_indicator_translations[0].name
                 ind_h[:description] = ind.core_indicator_translations[0].description
+                ind_h[:color] = ind.color.present? ? ind.color : ind.parent_id.present? ? ind.parent.color : nil
               end          
             end
 
@@ -714,6 +716,7 @@ Rails.logger.debug "********************"
               ind_h[:id] = ind.indicators.map{|x| x.id}.first
               ind_h[:name] = ind.core_indicator_translations[0].name
               ind_h[:description] = ind.core_indicator_translations[0].description
+              ind_h[:color] = ind.color.present? ? ind.color : ind.parent_id.present? ? ind.parent.color : nil
             end          
 					end
 				end

@@ -161,11 +161,14 @@ logger.debug "////////////// getting current event for event type #{params[:even
   							end
   						end
   						@map_title = nil
+  						@data_table_ind_order_explanation = nil
   						# set the map title
   						if parent_shape_type.id == child_shape_type.id
   							@map_title = @parent_shape_type_name_singular + ": " + @shape.common_name
+    						@data_table_ind_order_explanation = @parent_shape_type_name_singular + ": " + @shape.common_name
   						else
   							@map_title = @parent_shape_type_name_singular + ": " + @shape.common_name + " - " + @child_shape_type_name_plural
+    						@data_table_ind_order_explanation = @parent_shape_type_name_singular + ": " + @shape.common_name
   						end
 							# if this is live data, add the precincts reported numbers
 							if params[:data_type] == Datum::DATA_TYPE[:live]
@@ -359,9 +362,6 @@ logger.debug "//////////////////////////////////////////////////////// done with
           params[:indicator_type_id],
           params[:data_type])
       end
-		
-Rails.logger.debug "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-Rails.logger.debug @summary_data
 		
 			# get the detailed data
 		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:child_shape_type_id], params[:shape_id], params[:shape_type_id])
@@ -708,7 +708,7 @@ logger.debug " - no matching event found!"
 			:custom_view => params[:custom_view], :child_shape_type_id => @child_shape_type_id,
 			:view_type => vt, :summary_view_type_name => @summary_view_type_name,
 			:data_type => params[:data_type], :data_set_id => params[:data_set_id],
-			:indicator_type_id => itid
+			:indicator_type_id => itid, :ind_order_explanation => @data_table_ind_order_explanation
 		)
 
 		gon.dt_highlight_shape = (params[:highlight_shape].nil? ? false : params[:highlight_shape])

@@ -293,10 +293,12 @@ en:
     ajax_data_table:
       links: Click on a data point to view it on the map.
       sorting: Sort multiple columns simultaneously by holding down the SHIFT key and selecting each column header you would like to sort.
-      color_legend_indicator: Indicator in Map
+      color_legend_indicator: Selected Indicator in Map
       color_legend_winner: Winner
+      color_legend_winner_colors: Table cells that are colored in indicate who won in that row.
       tab_summary: Summary
       tab_details: Details
+      data_table_ind_order_explanation: The '%{name}' Indicators are in the order of who won '%{place}'.
     application:
       title: Georgia Election Data
       ndi_alt: National Democratic Institute

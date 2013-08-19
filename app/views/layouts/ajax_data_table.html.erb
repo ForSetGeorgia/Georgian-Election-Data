@@ -107,8 +107,21 @@
           <% 
             ind_ids = [] 
             ind_desc = []
+            ind_colors = []
             has_summary = false
+            ind_type_name = nil
+            it_index = @indicator_types.index{|x| x[:has_summary] == true}
+            if it_index.present?
+              has_summary = true
+              ind_type_name = @indicator_types[it_index][:name]
+            end
           %>
+
+          <% if has_summary %>
+            <div id="data_table_ind_order_explanation">
+              <%= t('.data_table_ind_order_explanation', :name => ind_type_name, :place => params[:ind_order_explanation]) %>
+            </div>
+          <% end %>
 
           <div id="data_table_filter_container">
             <select id="data_table_filter" class="event_filter_select chzn-select" multiple>
@@ -116,7 +129,7 @@
               <% @indicator_types.each_with_index do |type, i| %>
                 <optgroup label="<%= type[:name] %>">
                   <% if type[:has_summary] %>
-                    <% has_summary = true %>
+                    <%# has_summary = true %>
                     <%
                       selected = ''
                       if @table_selected_id.to_s == "ind_type_#{type[:id]}" || option_index < @default_cols_show
@@ -148,6 +161,7 @@
           			      option_index += 1 
           			      ind_ids << ind[:id]
           			      ind_desc << ind[:description]
+          			      ind_colors << ind[:color]
           			    %>
                   <% end %>
                 </optgroup>
@@ -165,9 +179,6 @@
 #                  if i > 0 && @table_selected_id.to_s == ind_ids[i-1].to_s
                   if i > 0 && @table_selected_id.to_s == ind_ids[i-2].to_s
                     cls << 'highlighted '
-                  end
-                  if i > @default_cols_show && cls.empty?
-      #	            cls << 'hidden '
                   end
 
                   dataid = 'first_col'
@@ -197,12 +208,10 @@
                   <% if i != 1 %>
                   <%
                     cls = ''
+                    style = ''
 #                    if i > 0 && @table_selected_id.to_s == ind_ids[i-1].to_s
                     if i > 0 && @table_selected_id.to_s == ind_ids[i-2].to_s
-                      cls << 'highlighted '
-                    end
-                    if i > @default_cols_show && cls.empty?
-      #	              cls << 'hidden '
+#                      cls << 'highlighted '
                     end
 	                  # if this is winner, highlight it
                     ind_name = @table_data[0][i]
@@ -210,10 +219,10 @@
 	                  if index.present?
 	                    ind_name = ind_name.split(' - ')[1]
 	                  end
-	                  
-#	                  if has_summary && row[1] == ind_name
+#	                  if has_summary && row[1] == @table_data[0][i]
 	                  if has_summary && row[1] == ind_name
 	                    cls << 'winner '
+                      style << "background-color: #{ind_colors[i-2]};"
 	                  end
 
                     dataid = 'first_col'
@@ -222,7 +231,7 @@
                       dataid = ind_ids[i-2]
                     end
                   %>
-	                <td data-id="<%= dataid %>" <%= cls.present? ? "class='#{cls}'".html_safe : '' %>>
+	                <td data-id="<%= dataid %>" <%= cls.present? ? "class='#{cls}'".html_safe : '' %> <%= style.present? ? "style='#{style}'".html_safe : '' %>>
 	                  <% if i == 0 %>
 	                    <span><%= value %></span>
 	                  <% elsif i == 1 && has_summary%>
@@ -250,12 +259,9 @@
 
 
         <div id="table_color_legend_content">
-          <div>
-            <span id="table_color_legend_indicator">&nbsp;</span> <%= t('.color_legend_indicator') %>
-          </div>
           <% if has_summary %>
             <div>
-              <span id="table_color_legend_winner">&nbsp;</span> <%= t('.color_legend_winner') %>
+              <%= t('.color_legend_winner_colors') %>
             </div>
           <% end %>
         </div>
