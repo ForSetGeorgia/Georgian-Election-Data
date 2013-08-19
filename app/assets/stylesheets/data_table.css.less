@@ -315,14 +315,21 @@ td.highlighted > a {
     }   
   }
   td{
+    padding: 0 10px 10px;
+    vertical-align: bottom;
     &.summary_text_container{
-      padding: 10px;
       span {
         background-color: #fff;
       }
     }  
+    &.summary_text_container2{
+      span {
+        border-bottom-width: 5px;
+        border-bottom-style: solid;
+        border-bottom-color: transparent;
+      }
+    }  
     &.summary_bar_chart_container{
-      vertical-align: bottom;
       height: 100%;
       padding-top: 5px;
       & > div{

@@ -49,13 +49,18 @@
                 <td>
                   <span><%= data[:shape] %></span>
                 </td>    
-                <td class="summary_text_container" style="background-color: <%= data[:winner_color] %>;">
+                <td class="summary_text_container2">
+                  <span style="border-bottom-color: <%= data[:winner_color] %>; color: <%= data[:winner_color] %>;">
+                    <%= data[:winner_name] %>
+                  </span>
+                </td>   
+                <!--td class="summary_text_container" style="background-color: <%= data[:winner_color] %>;">
                   <span style="color: <%= data[:winner_color] %>;">
                     <%= data[:winner_name] %>
                     <br />
                     <%= data[:winner_value] %>
                   </span>
-                </td>    
+                </td--> 
                 <td class="summary_bar_chart_container"> 
                   <div style="color: <%= data[:winner_color] %>;">
                       <%= data[:winner_value] %>
@@ -70,13 +75,18 @@
                       <%= data[:second_value] %>
                   </div>
                 </td>    
-                <td class="summary_text_container" style="background-color: <%= data[:second_color] %>;">
+                <td class="summary_text_container2">
+                  <span style="border-bottom-color: <%= data[:second_color] %>; color: <%= data[:second_color] %>;">
+                    <%= data[:second_name] %>
+                  </span>
+                </td>   
+                <!--td class="summary_text_container" style="background-color: <%= data[:second_color] %>;">
                   <span style="color: <%= data[:second_color] %>;">
                     <%= data[:second_name] %>
                     <br />
                     <%= data[:second_value] %>
                   </span>
-                </td>    
+                </td-->    
                 <td>
                   <span>
                     <%= data[:total_turnout_number] %>
