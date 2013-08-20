@@ -35,6 +35,28 @@
 		<% end %>
   </div>
 <% else %>
+  <% if @parent_summary_data.present? %>
+    <div id="summary_data_above_map">
+      <h3><%= t('.summary_data_above_map.parent_header', :shape => @parent_summary_data[1][:shape]) %></h3>
+      <div class="row-fluid">
+        <div class="span1">
+          <%= @parent_summary_data[1][:winner_name] %>
+        </div>
+        <div class="span3">
+          <%= @parent_summary_data[1][:winner_value] %>
+        </div>
+      </div>
+      <div class="row-fluid">
+        <div class="span1">
+          <%= @parent_summary_data[1][:second_name] %>
+        </div>
+        <div class="span3">
+          <%= @parent_summary_data[1][:second_value] %>
+        </div>
+      </div>
+    </div>  
+  <% end %>
+
   <div id="shape_nav_social_links" class="row-fluid">
   	<div id="shape_layer_navigation" class="span9">
       <%= render "root/shape_nav" %>

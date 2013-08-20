@@ -364,6 +364,8 @@ en:
       new_data_available_link: View the new data.
       delay: "We regret to inform you that the release of the official election results has been delayed. We will post the results as soon as they are available, but nothing is certain right now.	We apologize for the delay."
       follow: "You can follow future updates on Twitter at #gvote or @jsgeorgia or on Facebook at http://www.facebook.com/JumpStartGeorgia."
+      summary_data_above_map:
+        parent_header: "%{shape} Results"
     indicator_menu_scales:
       indicator_header: Indicators
       view_indicator: view indicator

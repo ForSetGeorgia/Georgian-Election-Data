@@ -797,10 +797,6 @@
 
 		indicator_data = {:ids => ind_ids, :names => core_ind_names, :desc => core_ind_desc}
 =end
-Rails.logger.debug "333333333333333333333333333"
-Rails.logger.debug table
-Rails.logger.debug "333333333333333333333333333"
-Rails.logger.debug indicator_data
 		puts "/////// total time = #{Time.now-start} seconds"
 #    return {:data => table, :indicators => indicator_data, :indicator_type_ids => indicator_type_ids}
     return {:data => table, :indicator_types => indicator_data}

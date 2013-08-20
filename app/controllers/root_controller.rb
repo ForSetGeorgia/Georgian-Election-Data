@@ -329,9 +329,19 @@ logger.debug "////////////// - no default found"
 		# reset the parameter that indicates if the shape type changed
 		params[:change_shape_type] = nil
 
+    # get the summary data
+    if !flag_redirect && params[:indicator_type_id].present?
+      # get parent shape data
+      @parent_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], @parent_shape_type, 
+        params[:shape_id], params[:indicator_type_id], params[:data_type])
+    
+    end
+
 		# set js variables
 logger.debug "////////////// setting gon variables"
     set_gon_variables if !flag_redirect && !@live_event_with_no_data
+    
+    
 
 logger.debug "//////////////////////////////////////////////////////// done with index action"
 
