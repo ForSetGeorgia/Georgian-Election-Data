@@ -293,12 +293,12 @@ ka:
     ajax_data_table:
       links: რუკის სანახავად დააჭირეთ მონაცემების ღილაკს.
       sorting: "ერთდროულად რამდენიმე სვეტის სორტირებისთვის გეჭიროთ ღილაკი \"SHIFT\" და აირჩიეთ შესაბამისი სვეტების სათაურები"
-      color_legend_indicator:  Selected Indicator in Map
+      color_legend_indicator:  რუკაზე არჩეული მაჩვენებელი
       color_legend_winner: გამარჯვებული
       color_legend_winner_colors: Table cells that are colored in indicate who won in that row.
       tab_summary: რეზიუმე
       tab_details: დეტალები
-      data_table_ind_order_explanation: The '%{name}' Indicators are in the order of who won '%{place}'.
+      data_table_ind_order_explanation: '%{name}' მაჩვენებლები დაწყობილია იმის მიხედვით, თუ ვინ მოიგო  '%{place}'.
     application:
       title: საქართველოს საარჩევნო მონაცემები
       ndi_alt: ეროვნული დემოკრატიული ინსტიტუტი
