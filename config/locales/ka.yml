@@ -298,7 +298,7 @@ ka:
       color_legend_winner_colors: Table cells that are colored in indicate who won in that row.
       tab_summary: რეზიუმე
       tab_details: დეტალები
-      data_table_ind_order_explanation: '%{name}' მაჩვენებლები დაწყობილია იმის მიხედვით, თუ ვინ მოიგო  '%{place}'.
+      data_table_ind_order_explanation: "'%{name}' მაჩვენებლები დაწყობილია იმის მიხედვით, თუ ვინ მოიგო  '%{place}'."
     application:
       title: საქართველოს საარჩევნო მონაცემები
       ndi_alt: ეროვნული დემოკრატიული ინსტიტუტი
