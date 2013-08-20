@@ -619,51 +619,9 @@ if (gon.openlayers){
 	}
 
 
-	/*  Feature popup functions  */
-	// Remove feature popups
-	function removeFeaturePopups()
-	{
-		$(".olPopup").each(function(){
-		    $(this).remove();
-		});
-	}
-
-	var max_X, max_X_lat, max_Y, max_Y_lon, min_X, min_X_lat, min_Y, min_Y_lon;
-
-   function getLimits(feature_vertices)
-   {
-      max_X = 0;
-      max_Y = 0;
-      min_X = 99999999;
-      min_Y = 99999999;
-
-      for (var i=0;i<feature_vertices.length;i++)
-      {
-         if (feature_vertices[i].x > max_X)
-         {
-            max_X = feature_vertices[i].x;
-            max_X_lat = feature_vertices[i].y;
-         }
-
-         if (feature_vertices[i].y > max_Y)
-         {
-            max_Y = feature_vertices[i].y;
-            max_Y_lon = feature_vertices[i].x;
-         }
-
-         if (feature_vertices[i].x < min_X)
-         {
-            min_X = feature_vertices[i].x;
-            min_X_lat = feature_vertices[i].y;
-         }
-
-         if (feature_vertices[i].y < min_Y)
-         {
-            min_Y = feature_vertices[i].y;
-            min_Y_lon = feature_vertices[i].x;
-         }
-      }
-   }
+    //////////////////////////////////////////
+    /// popup functions
+    //////////////////////////////////////////
 
    function getShapeData(feature_data)
    {
@@ -675,78 +633,6 @@ if (gon.openlayers){
          }
       }
    }
-
-	// Create the popup for the feature
-	var popup;
-	function makeFeaturePopup(feature_data, stright, close_button, close_button_func, disable_move)
-	{
-		if (typeof(stright) === "undefined")
-		  stright = false;
-		if (stright && $(".olPopupCloseBox:first").length !== 0)
-		  return ;
-
-      // remove all popups
-			removeFeaturePopups();
-  	  map.events.un({'mousemove': updatePopUpPosition});
-
-      // create popup
-      var feature = feature_data,
-          feature_vertices = feature.geometry.getVertices(),
-          feature_center = feature_data.geometry.bounds.getCenterLonLat();
-
-
-      getLimits(feature_vertices);
-
-      var y = max_Y-min_Y;
-      var x = max_X-min_X;
-
-
-	   $("#popup_svg").empty();
-	   var data = getShapeData(feature_data);
-      new MapPopup().processJSON(document.getElementById("popup_svg"), data, {
-                limit: 5
-      });
-      popup = new OpenLayers.Popup.FramedCloud("Feature Popup",
-		//new OpenLayers.LonLat(max_Y_lon, max_Y),
-		feature_center,
-//		new OpenLayers.LonLat(min_X+x/100*50, min_Y+y/100*70),
-		null,
-		$("#popup_svg").html(),
-		null,
-		true);
-      popup.autoSize = true;
-
-			// always have the popup above the mouse
-      popup.calculateRelativePosition = function(){
-         return "tr";
-      };
-
-	   map.addPopup(popup);
-
-     // pass in center of feature as starting point
-	   PopupIndicatorCheckPosition(map.getViewPortPxFromLonLat(feature_center));
-
-		// when mouse moves, also move the popup
-		if (typeof(disable_move) === "undefined"){
-  		map.events.register('mousemove', map, updatePopUpPosition);
-    } else {
-    	map.events.un({'mousemove': updatePopUpPosition});
-    }
-
-    // close button
-		if (close_button)
-		{
-		  var popup_close = $(".olPopupCloseBox:first");
-		  popup_close.css({
-		    "width": "30px",
-		    "height": "30px",
-		    "background-image": "url('/assets/popup-close.png')",
-		    "background-position": "right top",
-				"background-repeat": "no-repeat",
-		    "cursor": "pointer"
-		  }).click(close_button_func);
-		}
-	}
 
   // generate the popup for the selected feature
   function create_popup(feature){
@@ -764,6 +650,71 @@ if (gon.openlayers){
     }
     // make sure the popup is visible
     $('#map_popup_container').show();
+  }
+
+	// Remove feature popups
+	function removeFeaturePopups()
+	{
+		$(".olPopup").each(function(){
+		    $(this).remove();
+		});
+	}
+  // highlight a shape on the map and show its name in popup
+  function highlight_shape_popup(feature_data, stright, close_button, close_button_func, disable_move){
+		if (typeof(stright) === "undefined")
+		  stright = false;
+		if (stright && $(".olPopupCloseBox:first").length !== 0)
+		  return ;
+
+    // remove all popups
+    removeFeaturePopups();
+
+    // get center
+    var feature_center = feature_data.geometry.bounds.getCenterLonLat();
+
+
+    var json = getShapeData(feature_data);
+    var popup_text = '';
+    // get shape name
+    for(var index=0;index<json.length;index++){
+      if (json[index].hasOwnProperty("shape_values"))
+      {
+        popup_text = '<div style="padding: 10px; font-size: 15px; font-weight: bold;">' + json[index].shape_values.title_location + '</div>';
+      }
+    }    
+
+    popup = new OpenLayers.Popup.FramedCloud("Feature Popup",
+		  feature_center,
+		  null,
+		  popup_text,
+		  null,
+		  true);
+
+    popup.autoSize = true;
+
+    // always have the popup above the mouse
+    popup.calculateRelativePosition = function(){
+       return "tr";
+    };
+
+    map.addPopup(popup);
+
+    // close button
+		if (close_button)
+		{
+		  var popup_close = $(".olPopupCloseBox:first");
+		  popup_close.css({
+		    "width": "30px",
+		    "height": "30px",
+		    "background-image": "url('/assets/popup-close.png')",
+		    "background-position": "right top",
+				"background-repeat": "no-repeat",
+		    "cursor": "pointer"
+		  }).click(close_button_func);
+		}
+		
+		// turn on main popup
+		create_popup(feature_data);
   }
 
 	// show the popups

@@ -156,3 +156,31 @@ function build_popup(json){
 
   return html;
 }
+
+
+
+function unhighlight_shape(feature, redraw_layer)
+{
+	if (feature !== undefined && f_style_backup !== undefined){
+		feature.style = f_style_backup;
+		if (redraw_layer !== undefined && redraw_layer) {
+			feature.layer.redraw();
+		}
+	}
+}
+
+function close_popup(feature){
+  map.controls[1].activate();
+  removeFeaturePopups();
+  unhighlight_shape(feature, true);
+}
+
+function mapFreeze(feature)
+{
+  map.controls[1].deactivate();
+  highlight_shape_popup(feature, true, true, function(){
+    close_popup(feature);
+  }, true);
+}
+
+
