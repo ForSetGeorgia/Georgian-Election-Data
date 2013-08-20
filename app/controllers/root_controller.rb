@@ -196,7 +196,8 @@ logger.debug "////////////// getting current event for event type #{params[:even
   				else
   logger.debug "////////////// getting indicators"
   					# get the indicators for the children shape_type
-  					@indicator_types = IndicatorType.find_by_event_shape_type(params[:event_id], @child_shape_type_id)
+#  					@indicator_types = IndicatorType.find_by_event_shape_type(params[:event_id], @child_shape_type_id)
+  					@indicator_types = IndicatorType.with_summary_rank(params[:shape_id], @child_shape_type_id, params[:event_id], params[:data_set_id], @parent_shape_type)
 
   					if @indicator_types.nil? || @indicator_types.empty?
   						# no indicators exist for this event and shape type

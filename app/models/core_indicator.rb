@@ -22,7 +22,7 @@ class CoreIndicator < ActiveRecord::Base
 	def reset_ancestry
 		self.ancestry = nil if self.ancestry && self.ancestry.empty?
 	end
-
+	
   def self.order_by_type_name(include_ancestry = false)
     sort = "core_indicators.indicator_type_id ASC, core_indicator_translations.name ASC"  
     if include_ancestry
@@ -40,6 +40,27 @@ class CoreIndicator < ActiveRecord::Base
   def description_w_parent
     parent_name = self.ancestry.nil? ? "" : " (#{self.parent.name})"
     "#{self.description}#{parent_name}"
+  end
+
+	# return the name with the rank
+	def rank_name
+    CoreIndicator.generate_rank_name(self.name, self.rank)
+	end
+
+  def rank_name_abbrv_w_parent
+    parent_abbrv = self.ancestry.nil? ? "" : " (#{self.parent.name_abbrv})"
+    CoreIndicator.generate_rank_name("#{self.name_abbrv}#{parent_abbrv}", self.rank)
+  end
+
+
+  # public method so pages that have this data can generate the rank name
+  # - for example, json data that is not in model object form
+  def self.generate_rank_name(name, rank)
+    if rank.present?
+      "##{rank} - #{name}"
+    else 
+      name
+    end
   end
 
 	# if this is a child and no color exist, see if the parent has a color

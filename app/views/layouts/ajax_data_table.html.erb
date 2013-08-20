@@ -1,3 +1,4 @@
+<% ci = CoreIndicator %>
 <% has_summary_data = @summary_data.present? && @summary_data.length > 1 %>
 <div class="tabbable">
   <ul class="nav nav-tabs">
@@ -151,10 +152,7 @@
                         selected << 'selected="selected"'
                       end
                       
-                      text = ind[:name].clone
-                      if ind.has_key?(:rank) && ind[:rank].present?
-                        text.insert(0,"##{ind[:rank]} - ")
-                      end
+                      text = ci.generate_rank_name(ind[:name], ind[:rank])
                     %>
 		                <option <%= selected %> data-id="<%= ind[:id] %>" value="<%= option_index %>" title="<%= ind[:descritpion] %>"><%= text %></option>
           			    <% 

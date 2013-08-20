@@ -31,7 +31,7 @@
 									<% if indicator.visible? %>
 										<% is_active = indicator.id.to_s == params[:indicator_id].to_s ? "menu_list_link  active" : "menu_list_link  not_active" %>
 										<li>
-											<%= link_to core.name_abbrv_w_parent, indicator_map_path(params.merge(:indicator_id => indicator.id,
+											<%= link_to core.rank_name_abbrv_w_parent, indicator_map_path(params.merge(:indicator_id => indicator.id,
 												:view_type => nil, :indicator_type_id => nil, :highlight_shape => nil)),
 												:"data-id" => indicator.id,
 												:title => core.description_w_parent, :class => is_active %>
