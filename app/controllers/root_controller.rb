@@ -335,6 +335,14 @@ logger.debug "////////////// - no default found"
       @parent_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], @parent_shape_type, 
         params[:shape_id], params[:indicator_type_id], params[:data_type])
     
+      # if this is not the default event shape, get the default event shape data too
+      if event.shape_id.to_s != params[:shape_id].to_s
+        root_shape = Shape.select('shape_type_id').find_by_id(event.shape_id)
+        if root_shape.present?
+          @root_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], root_shape.shape_type_id, 
+            event.shape_id, params[:indicator_type_id], params[:data_type])
+        end
+      end
     end
 
 		# set js variables
@@ -390,8 +398,6 @@ logger.debug "//////////////////////////////////////////////////////// done with
 				@table_data.each_with_index do |val, i|
 				  @table_data[i] = @table_data[i][cols_skip..- 1]
 				end
-Rails.logger.debug "333333333333333333333333333"
-Rails.logger.debug @table_data
 
 				# selected indicator id
 				if params[:indicator_id].blank? || params[:indicator_id] == 'null'

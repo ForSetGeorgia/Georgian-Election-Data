@@ -1,14 +1,82 @@
 #summary_data_above_map{
   background-color: #fff;
-  padding: 10px;
+  padding: 10px 10px 0;
   margin-top: -10px;
   margin-bottom: 5px;
   h3{
     margin-top: 0;
   }
-  div.row-fluid{
+  div.row-fluid div.row-fluid{
     & > div:first-of-type{
       text-align: right;
+    }
+  }
+
+  #summary_total_turnout{
+    vertical-align: top;
+    height: 75px;
+    width: 225px;
+    position: relative;
+    display: block;
+    .hold{
+      width:150px;
+      height:150px;
+      clip:rect(0px,150px,150px,75px);
+      position:absolute;
+      top: 0;
+      left: 90px;
+    }
+    .pie {
+      position:absolute;
+      width:150px;
+      height:150px;
+      clip:rect(0px,75px,150px,0px);
+      -moz-border-radius:75px;
+      -webkit-border-radius:75px; 
+      border-radius:75px; 
+    }
+    .half_circle {
+      -ms-transform:rotate(-90deg);
+      -moz-transform:rotate(-90deg);
+      -webkit-transform:rotate(-90deg);
+      -o-transform:rotate(-90deg);
+      transform:rotate(-90deg);
+      & > .pie {
+        background-color:#c2c2c2;
+        border-color:#c2c2c2;
+        -ms-transform:rotate(180deg);
+        -moz-transform:rotate(180deg);
+        -webkit-transform:rotate(180deg);
+        -o-transform:rotate(180deg);
+        transform:rotate(180deg);
+      }
+    }
+    .tt_percent_circle {
+      z-index: 100;
+      -ms-transform:rotate(-90deg);
+      -moz-transform:rotate(-90deg);
+      -webkit-transform:rotate(-90deg);
+      -o-transform:rotate(-90deg);
+      transform:rotate(-90deg);
+      & > .pie {
+        background-color:#eaa471;
+        border-color:#eaa471;
+      }
+    }
+    .tt_percent_circle_text{
+        position: absolute;
+        left: 110px;
+        top: 40px;
+        color: #000;
+        z-index:200;
+    }
+    .tt_number_circle_text{
+        position: absolute;
+        left: 20px;
+        top: 0;
+        color: #000;
+        z-index:200;
+        text-align: left;
     }
   }
 }
