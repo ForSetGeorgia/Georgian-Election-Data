@@ -330,7 +330,8 @@ logger.debug "////////////// - no default found"
 		params[:change_shape_type] = nil
 
     # get the summary data
-    if !flag_redirect && params[:indicator_type_id].present?
+    if !flag_redirect && params[:indicator_type_id].present? && params[:view_type] == @summary_view_type_name
+logger.debug "////////////// getting summary data for ind type id #{params[:indicator_type_id]}"
       # get parent shape data
       @parent_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], @parent_shape_type, 
         params[:shape_id], params[:indicator_type_id], params[:data_type])
