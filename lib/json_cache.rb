@@ -36,7 +36,15 @@ module JsonCache
 		end
 		return json
 	end
-
+	
+	def self.write_data(filename, &block)
+		json = nil
+		if filename
+			json = fetch(JSON_DATA_PATH + "/#{filename}.json") {yield if block_given?}
+		end
+		return json
+	end
+	
 	###########################################
 	### clear cache
 	###########################################
@@ -350,6 +358,19 @@ protected
 			json = File.open(file_path, "r") {|f| f.read()}
 		end
 		return json
+	end
+
+	def self.write(file_path, &block)
+		json = nil
+		if file_path.present?
+			# get the json data
+			json = yield if block_given?
+
+			# create the directory tree if it does not exist
+			create_directory(File.dirname(file_path))
+
+			File.open(file_path, 'w') {|f| f.write(json)}
+		end
 	end
 
 	def self.fetch(file_path, &block)

@@ -107,6 +107,10 @@ ElectionMap::Application.routes.draw do
 		match '/download/csv/event/:event_id/shape_type/:shape_type_id/shape/:shape_id(/event_name/:event_name(/map_title/:map_title(/indicator/:indicator_id)))', :to => 'root#download', :as => :download_data_csv, :via => :get, :defaults => {:format => 'csv'}
 		match '/download/xls/event/:event_id/shape_type/:shape_type_id/shape/:shape_id(/event_name/:event_name(/map_title/:map_title(/indicator/:indicator_id)))', :to => 'root#download', :as => :download_data_xls, :via => :get, :defaults => {:format => 'xls'}
 		match '/archive', :to => 'root#archive', :as => :archive, :via => :get
+		match '/save_map_images', :to => 'root#save_map_images', :as => :save_map_images, :via => :post
+
+
+    # contact form
 		match '/contact' => 'messages#new', :as => 'contact', :via => :get
 		match '/contact' => 'messages#create', :as => 'contact', :via => :post
 		match '/contact_success' => 'messages#success', :as => 'contact_success', :via => :get

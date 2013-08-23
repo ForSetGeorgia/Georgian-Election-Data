@@ -38,7 +38,24 @@
   <% if @parent_summary_data.present? %>
     <div id="summary_data_above_map">
       <div class="row-fluid">
-        <div class="span6">
+        <div class="span2">
+          <% if @parent_summary_img_parent.present? && @parent_summary_img_child.present? %>
+            <% 
+             style_parent = ''
+             style_child = ''
+              if @parent_summary_img_json.present? 
+                 img_left = @parent_summary_img_json['left'].present? ? "left: #{@parent_summary_img_json['left']}px; " : ''
+                 img_width = @parent_summary_img_json['width'].present? ? "width: #{@parent_summary_img_json['width']}px; " : ''
+                 img_height = @parent_summary_img_json['height'].present? ? "height: #{@parent_summary_img_json['height']}px; " : ''
+                 style_parent = img_width + img_height
+                 style_child = img_left + img_width + img_height
+               end
+             %>
+            <%= image_tag(@parent_summary_img_parent, :style => style_parent) %>
+            <%= image_tag(@parent_summary_img_child, :style => style_child) %>
+          <% end %>
+        </div>
+        <div class="span4">
           <h3><%= t('.summary_data_above_map.parent_header', :shape => @parent_summary_data[1][:shape]) %></h3>
           <div class="row-fluid" style="color: <%= @parent_summary_data[1][:winner_color]%>;">
             <div class="span3">
@@ -64,7 +81,24 @@
           </div>
         </div>  
         <% if @root_summary_data.present? %>
-          <div class="span6">
+          <div class="span2">
+            <% if @root_summary_img_parent.present? && @root_summary_img_child.present? %>
+              <% 
+               style_parent = ''
+               style_child = ''
+                if @root_summary_img_json.present? 
+                   img_left = @root_summary_img_json['left'].present? ? "left: #{@root_summary_img_json['left']}px; " : ''
+                   img_width = @root_summary_img_json['width'].present? ? "width: #{@root_summary_img_json['width']}px; " : ''
+                   img_height = @root_summary_img_json['height'].present? ? "height: #{@root_summary_img_json['height']}px; " : ''
+                   style_parent = img_width + img_height
+                   style_child = img_left + img_width + img_height
+                end
+               %>
+              <%= image_tag(@root_summary_img_parent, :style => style_parent) %>
+              <%= image_tag(@root_summary_img_child, :style => style_child) %>
+            <% end %>
+          </div>
+          <div class="span4">
             <h3><%= t('.summary_data_above_map.parent_header', :shape => @root_summary_data[1][:shape]) %></h3>
             <div class="row-fluid" style="color: <%= @root_summary_data[1][:winner_color]%>;">
               <div class="span3">
@@ -255,7 +289,7 @@
   	<%=	hidden_field_tag "hidden_form_datetime" %>
   	<%=	hidden_field_tag "hidden_form_opacity" %>
   <% end %>
-  <span id="hidden_span_width"></span>
-	<div id="popup_svg" style="display: none"></div>
 
+  <canvas id="svg_to_png1" style="display: none;"></canvas>
+  <canvas id="svg_to_png2" style="display: none;"></canvas>
 <% end %>

@@ -1,3 +1,9 @@
+// this is set to true in 'after_vector_layers_loaded' function if images were generated
+// - in data_table_loader.js, after the table is loaded, if this is true
+//   save_generated_map_images() from utilities.js is called to save the images
+var generated_map_images = false;
+
+
 if (gon.openlayers){
 	// Define global variables which can be used in all functions
 	var map, vector_parent, vector_child, vector_live_data, json_data;
@@ -341,6 +347,47 @@ if (gon.openlayers){
 		      console.log('highlight_shape function not found, check the script that loads it');
 		    }
 			}
+			
+			// load svg into canvas so can convert to img
+////////////////////
+//TODO - only do this if loading a summary and image does not already exist
+////////////////////			
+      // copy path from child shapes into parent shapes
+      // and then spit out as png
+      if ($('#summary_data_above_map .row-fluid .span2:first-of-type img').length == 0 && gon.view_type == gon.summary_view_type_name)
+      {
+        var svg1 = $("#map").find("svg:eq(0)").parent().clone();
+        var svg2 = $("#map").find("svg:eq(1)").parent().clone();
+        var svg_child_offset = $(svg2).css('left').replace('px', '');
+        var svg_child_width = $(svg2).find('svg').attr('width');
+        var svg_child_height = $(svg2).find('svg').attr('height');
+        var img_height = 93;
+        // compute scaled offset
+        var img_width = svg_child_width * img_height / svg_child_height;
+        var offset_scale = img_height / svg_child_height * svg_child_offset;
+  /*  
+
+  var svg = "<div><svg><g></g></svg></div>";
+  //$(svg).find('g').append($(svg1).find('svg > g > g:first-of-type')).append($(svg2).find('svg > g > g:first-of-type'));
+  $(svg1).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
+  $(svg2).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
+  console.log(svg);
+  xxx = svg;
+  */
+        
+        canvg('svg_to_png1', svg1.html());
+        var canvas = document.getElementById("svg_to_png1");
+        var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' />";
+        $('#summary_data_above_map .row-fluid .span2:first-of-type').append(img_PNG);
+
+
+        canvg('svg_to_png2', svg2.html());
+        canvas = document.getElementById("svg_to_png2");
+        img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px; left:" + offset_scale + "px;' src='" + canvas.toDataURL() + "' />";
+        $('#summary_data_above_map .row-fluid .span2:first-of-type').append(img_PNG);
+        
+        generated_map_images = true;
+      }
 		}
 	}
 

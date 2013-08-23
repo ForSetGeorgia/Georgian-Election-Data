@@ -7,28 +7,22 @@ function reset_data_table ()
   // reset the data table to the loading state
   $('#data-table-container #loading_image').delay(500).css('display', 'block');
   $('#data-table-container #blur_table_image').delay(500).css('display', 'block');
-//  $('#dt_ajax_replace').delay(500).empty();
 }
 
 function load_data_table ()
 {
-	//$('head').append('<link href="/assets/data_table/style.css" media="screen" rel="stylesheet" type="text/css" />');
-
   $.get(gon.data_table_path, function (data)
   {
     container.css({height: 'auto'});
     $('#loading_image').hide();
     $('#blur_table_image').hide();
     $('#dt_ajax_replace').html(data);
-//    dt.clean();
-//    dt.init();
-/* old
-    container.css({height: 'auto'});
-    container.html(data);
-*/
-  });
 
-  //$('body').append('<script src="/assets/data_table.js" type="text/javascript"></script>');
+    // if the map images were created, send them to the server to be saved
+    if (generated_map_images){
+      save_generated_map_images();
+    }
+  });
 }
 
 

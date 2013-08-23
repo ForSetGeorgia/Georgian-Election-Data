@@ -7,4 +7,7 @@
 //= require highcharts
 //= require highcharts-exporting
 //= require chosen.jquery.min
+//= require rgbcolor
+//= require StackBlur
+//= require canvg
 
