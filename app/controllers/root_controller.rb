@@ -349,27 +349,12 @@ logger.debug "////////////// - no default found"
               .gsub('[locale]', I18n.locale.to_s)
               .gsub('[data_set_id]', params[:data_set_id].to_s)
               .gsub('[parent_id]', params[:shape_id].to_s)
-      file_path = "#{Rails.root}/public/system/json/data/#{key}"
-      url_path = "/system/json/data/#{key}"
-      file_path_parent = "#{file_path.gsub('[type]', 'parent')}.png"
-      url_path_parent = "#{url_path.gsub('[type]', 'parent')}.png"
-      if File.exists?(file_path_parent)
-        @parent_summary_img_parent = url_path_parent
-      end                    
-      file_path_child = "#{file_path.gsub('[type]', 'child')}.png"
-      url_path_child = "#{url_path.gsub('[type]', 'child')}.png"
-      if File.exists?(file_path_parent)
-        @parent_summary_img_child = url_path_child
-      end  
-      path_json = "#{key.gsub('[type]', 'json')}"
-      @parent_summary_img_json = JsonCache.read_data(path_json)
+
+      @parent_summary_img_parent = JsonCache.get_image_path(key.gsub('[type]', 'parent'), 'png')
+      @parent_summary_img_child = JsonCache.get_image_path(key.gsub('[type]', 'child'), 'png')
+      @parent_summary_img_json = JsonCache.read_data(key.gsub('[type]', 'json'))
       @parent_summary_img_json = JSON.parse(@parent_summary_img_json) if @parent_summary_img_json.present?
       
-Rails.logger.debug "//////////////////////////*****************************"      
-Rails.logger.debug "//////////////////////////*****************************"      
-Rails.logger.debug "//////////////////////////*****************************"      
-Rails.logger.debug path_json
-Rails.logger.debug @parent_summary_img_json
       # if this is not the default event shape, get the default event shape data too
       if event.shape_id.to_s != params[:shape_id].to_s
         root_shape = Shape.select('shape_type_id').find_by_id(event.shape_id)
@@ -380,21 +365,10 @@ Rails.logger.debug @parent_summary_img_json
                   .gsub('[locale]', I18n.locale.to_s)
                   .gsub('[data_set_id]', params[:data_set_id].to_s)
                   .gsub('[parent_id]', event.shape_id.to_s)
-          file_path = "#{Rails.root}/public/system/json/data/#{key}"
-          url_path = "/system/json/data/#{key}"
-          file_path_parent = "#{file_path.gsub('[type]', 'parent')}.png"
-          url_path_parent = "#{url_path.gsub('[type]', 'parent')}.png"
-          if File.exists?(file_path_parent)
-            @root_summary_img_parent = url_path_parent
-          end                    
-          file_path_child = "#{file_path.gsub('[type]', 'child')}.png"
-          url_path_child = "#{url_path.gsub('[type]', 'child')}.png"
-          if File.exists?(file_path_parent)
-            @root_summary_img_child = url_path_child
-          end                    
 
-          path_json = "#{key.gsub('[type]', 'json')}"
-          @root_summary_img_json = JsonCache.read_data(path_json)
+          @root_summary_img_parent = JsonCache.get_image_path(key.gsub('[type]', 'parent'), 'png')
+          @root_summary_img_child = JsonCache.get_image_path(key.gsub('[type]', 'child'), 'png')
+          @root_summary_img_json = JsonCache.read_data(key.gsub('[type]', 'json'))
           @root_summary_img_json = JSON.parse(@root_summary_img_json) if @root_summary_img_json.present?
         end
       end
@@ -546,24 +520,15 @@ logger.debug ">>>>>>>>>>>>>>>> format = xls"
               .gsub('[locale]', I18n.locale.to_s)
               .gsub('[data_set_id]', params[:data_set_id])
               .gsub('[parent_id]', params[:parent_shape_id])
-      # create folders if not exist
-      file_path = "#{Rails.root}/public/system/json/data/#{key}"
-      FileUtils.mkpath(File.dirname(file_path))
-      # save the files if not exist
-      file_path_parent = "#{file_path.gsub('[type]', 'parent')}.png"
-      if !File.exists?(file_path_parent)
-        File.open(file_path_parent, 'wb') do |f|
-          f.write(params[:img_parent].read)
-        end
-      end
-      
-      file_path_child = "#{file_path.gsub('[type]', 'child')}.png"
-      if !File.exists?(file_path_child)
-        File.open(file_path_child, 'wb') do |f|
-          f.write(params[:img_child].read)
-        end
-      end
-      
+
+      JsonCache.write_image(key.gsub('[type]', 'parent'), 'png'){
+        params[:img_parent]
+      }
+
+      JsonCache.write_image(key.gsub('[type]', 'child'), 'png'){
+        params[:img_child]
+      }
+
       # create json file that contains properties for width, height and left positioning
       file_path_json = "#{key.gsub('[type]', 'json')}"
       JsonCache.write_data(file_path_json) {

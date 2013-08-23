@@ -2,9 +2,11 @@ module JsonCache
 	require 'fileutils'
 	require 'net/http'
 
+	URL_PATH = "/system/json"
 	JSON_ROOT_PATH = "#{Rails.root}/public/system/json"
 	JSON_SHAPE_PATH = "#{JSON_ROOT_PATH}/shapes"
 	JSON_DATA_PATH = "#{JSON_ROOT_PATH}/data"
+	URL_DATA_PATH = "#{URL_PATH}/data"
 
 	###########################################
 	### manage files
@@ -38,11 +40,23 @@ module JsonCache
 	end
 	
 	def self.write_data(filename, &block)
-		json = nil
 		if filename
-			json = fetch(JSON_DATA_PATH + "/#{filename}.json") {yield if block_given?}
+			json = write(JSON_DATA_PATH + "/#{filename}.json") {yield if block_given?}
 		end
-		return json
+	end
+	
+	def self.write_image(filename, file_ext, &block)
+		if filename && file_ext
+			write_img(JSON_DATA_PATH + "/#{filename}.#{file_ext}") {yield if block_given?}
+		end
+	end
+	
+	def self.get_image_path(filename, file_ext)
+    img_path = nil
+		if filename && file_ext && File.exists?(JSON_DATA_PATH + "/#{filename}.#{file_ext}")
+      img_path = URL_DATA_PATH + "/#{filename}.#{file_ext}"
+		end
+		img_path
 	end
 	
 	###########################################
@@ -370,6 +384,19 @@ protected
 			create_directory(File.dirname(file_path))
 
 			File.open(file_path, 'w') {|f| f.write(json)}
+		end
+	end
+
+	def self.write_img(file_path, &block)
+		img = nil
+		if file_path.present?
+			# get the img
+			img = yield if block_given?
+
+			# create the directory tree if it does not exist
+			create_directory(File.dirname(file_path))
+
+			File.open(file_path, 'wb') {|f| f.write(img.read)}
 		end
 	end
 
