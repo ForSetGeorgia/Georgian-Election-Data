@@ -35,7 +35,7 @@
 		<% end %>
   </div>
 <% else %>
-  <% if @parent_summary_data.present? %>
+  <% if @parent_summary_data.present? && @parent_summary_data.length > 1 %>
     <div id="summary_data_above_map">
       <div class="row-fluid">
         <div class="span2">
@@ -80,7 +80,7 @@
             </div>
           </div>
         </div>  
-        <% if @root_summary_data.present? %>
+        <% if @root_summary_data.present? && @root_summary_data.length > 1 %>
           <div class="span2">
             <% if @root_summary_img_parent.present? && @root_summary_img_child.present? %>
               <% 

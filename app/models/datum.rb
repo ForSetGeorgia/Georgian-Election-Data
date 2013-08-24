@@ -530,9 +530,17 @@
           else
             row[:total_turnout_percent] = I18n.t('app.common.total_turnout_perc')
           end
+Rails.logger.debug ")))))))))))))))))))))))))))))))))))))))))))))"
+Rails.logger.debug ")))))))))))))))))))))))))))))))))))))))))))))"
+Rails.logger.debug json["shape_data"]
 
           json["shape_data"].each do |d|
+Rails.logger.debug ")))))))))))))))))))))))))))))))))))))))))))))"
+Rails.logger.debug "- json has shape data"
+
             if d[0]["shape_values"]["shape_name"].present?
+Rails.logger.debug ")))))))))))))))))))))))))))))))))))))))))))))"
+Rails.logger.debug "- shape value has shape name"
               row = Hash.new
               data << row
               row[:shape] = d[0]["shape_values"]["shape_name"]
