@@ -197,6 +197,7 @@ console.log('need to save map images!');
   fd.append("img_width", $('#summary_data_above_map .row-fluid .span2:first-of-type img:last-of-type').css('width').replace('px', ''));
   fd.append("img_height", $('#summary_data_above_map .row-fluid .span2:first-of-type img:last-of-type').css('height').replace('px', ''));
   fd.append("img_left", $('#summary_data_above_map .row-fluid .span2:first-of-type img:last-of-type').css('left').replace('px', ''));
+  fd.append("screen_size", $(window).width());
   // And send it
   $.ajax({
      url: "/" + I18n.locale + "/save_map_images",

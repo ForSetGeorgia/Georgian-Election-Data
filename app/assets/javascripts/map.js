@@ -52,6 +52,40 @@ if (gon.openlayers){
     $('#map').css('height', mapHeight);
   }
 
+  // if summary images exist, make sure they are scaled properly
+  function adjust_summary_image_offset(){
+console.log('************************************');
+    if ($('#summary_data_above_map > div > div:nth-child(1) img').length == 2){
+console.log('scaling parent left offset to match screen size');
+      var orig_screen_size = $('#summary_data_above_map > div > div:nth-child(1) img:nth-child(1)').data('screen-size');
+console.log('orig screen size = ' + orig_screen_size + '; current size = ' + $(window).width());      
+      if (orig_screen_size != undefined && orig_screen_size != $(window).width()){
+console.log('orig screen size is not same as current, adjusting');      
+        var left_offset = $('#summary_data_above_map > div > div:nth-child(1) img:nth-child(2)').data('left');
+        if (left_offset != undefined){
+          var new_left_offset = ($(window).width() * left_offset) / orig_screen_size;
+console.log('left was ' + left_offset + '; now ' + new_left_offset);
+          $('#summary_data_above_map > div > div:nth-child(1) img:nth-child(2)').css('left', new_left_offset.toString() + 'px');
+        }
+      }    
+    }
+    
+    if ($('#summary_data_above_map > div > div:nth-child(3) img').length == 2){
+console.log('scaling root left offset to match screen size');
+      var orig_screen_size = $('#summary_data_above_map > div > div:nth-child(3) img:nth-child(1)').data('screen-size');
+console.log('orig screen size = ' + orig_screen_size + '; current size = ' + $(window).width());      
+      if (orig_screen_size != undefined && orig_screen_size != $(window).width()){
+console.log('orig screen size is not same as current, adjusting');      
+        var left_offset = $('#summary_data_above_map > div > div:nth-child(3) img:nth-child(2)').data('left');
+        if (left_offset != undefined){
+          var new_left_offset = ($(window).width() * left_offset) / orig_screen_size;
+console.log('left was ' + left_offset + '; now ' + new_left_offset);
+          $('#summary_data_above_map > div > div:nth-child(3) img:nth-child(2)').css('left', new_left_offset.toString() + 'px');
+        }
+      }    
+    }
+  }
+
 	// Function called from body tag
 	function map_init(){
 		var options = {
@@ -66,6 +100,7 @@ if (gon.openlayers){
 		  controls: []
 		};
 
+
 		var vectorBaseStyle = new OpenLayers.StyleMap({
 		    "default": new OpenLayers.Style({
 		        fillColor: "#bfbe8d",
@@ -76,8 +111,13 @@ if (gon.openlayers){
 		});
 
 
-    /* ADJUSTING MAP HEIGHT */
+
+    // adjust map height
     resize_map();
+    
+    // adjust summary image offset if necessary    
+    adjust_summary_image_offset();
+
 
 		map = new OpenLayers.Map('map', options);
 
@@ -349,9 +389,6 @@ if (gon.openlayers){
 			}
 			
 			// load svg into canvas so can convert to img
-////////////////////
-//TODO - only do this if loading a summary and image does not already exist
-////////////////////			
       // copy path from child shapes into parent shapes
       // and then spit out as png
       if ($('#summary_data_above_map .row-fluid .span2:first-of-type img').length == 0 && gon.view_type == gon.summary_view_type_name)
@@ -365,6 +402,7 @@ if (gon.openlayers){
         // compute scaled offset
         var img_width = svg_child_width * img_height / svg_child_height;
         var offset_scale = img_height / svg_child_height * svg_child_offset;
+        var screen_size = $(window).width();
   /*  
 
   var svg = "<div><svg><g></g></svg></div>";
@@ -377,13 +415,13 @@ if (gon.openlayers){
         
         canvg('svg_to_png1', svg1.html());
         var canvas = document.getElementById("svg_to_png1");
-        var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' />";
+        var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' data-screen-size='" + screen_size + "' />";
         $('#summary_data_above_map .row-fluid .span2:first-of-type').append(img_PNG);
 
 
         canvg('svg_to_png2', svg2.html());
         canvas = document.getElementById("svg_to_png2");
-        img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px; left:" + offset_scale + "px;' src='" + canvas.toDataURL() + "' />";
+        img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px; left:" + offset_scale + "px;' src='" + canvas.toDataURL() + "' data-screen-size='" + screen_size + "' data-left='" + offset_scale + "' />";
         $('#summary_data_above_map .row-fluid .span2:first-of-type').append(img_PNG);
         
         generated_map_images = true;
@@ -956,6 +994,7 @@ if (gon.openlayers){
   window.onresize = function()
   {
     resize_map();
+    adjust_summary_image_offset();
 		setTimeout(set_map_extent, 1);
   }
 }

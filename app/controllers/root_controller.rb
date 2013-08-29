@@ -535,6 +535,7 @@ logger.debug ">>>>>>>>>>>>>>>> format = xls"
         h[:width] = params[:img_width]
         h[:height] = params[:img_height]
         h[:left] = params[:img_left]
+        h[:screen_size] = params[:screen_size]
         h.to_json
       }
       
