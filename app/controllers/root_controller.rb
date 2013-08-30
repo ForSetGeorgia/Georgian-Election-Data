@@ -343,33 +343,35 @@ logger.debug "////////////// - no default found"
       # get parent shape data
       @parent_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], @parent_shape_type, 
         params[:shape_id], ind_type_id, params[:data_type])
-Rails.logger.debug ")))))))))))))))))))))))))))))))))))))))))))))"
-Rails.logger.debug ")))))))))))))))))))))))))))))))))))))))))))))"
-Rails.logger.debug @parent_summary_data        
-      # get path to map images if exist
-      key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
-              .gsub('[data_set_id]', params[:data_set_id].to_s)
-              .gsub('[parent_id]', params[:shape_id].to_s)
 
-      @parent_summary_img_parent = JsonCache.get_image_path(key.gsub('[type]', 'parent'), 'png')
-      @parent_summary_img_child = JsonCache.get_image_path(key.gsub('[type]', 'child'), 'png')
-      @parent_summary_img_json = JsonCache.read_data(key.gsub('[type]', 'json'))
-      @parent_summary_img_json = JSON.parse(@parent_summary_img_json) if @parent_summary_img_json.present?
-      
-      # if this is not the default event shape, get the default event shape data too
-      if event.shape_id.to_s != params[:shape_id].to_s
-        root_shape = Shape.select('shape_type_id').find_by_id(event.shape_id)
-        if root_shape.present?
-          @root_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], root_shape.shape_type_id, 
-            event.shape_id, ind_type_id, params[:data_type])
-          key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
-                  .gsub('[data_set_id]', params[:data_set_id].to_s)
-                  .gsub('[parent_id]', event.shape_id.to_s)
+      if @parent_summary_data.present?
+        # get path to map images if exist
+        key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
+                .gsub('[data_set_id]', params[:data_set_id].to_s)
+                .gsub('[parent_id]', params[:shape_id].to_s)
 
-          @root_summary_img_parent = JsonCache.get_image_path(key.gsub('[type]', 'parent'), 'png')
-          @root_summary_img_child = JsonCache.get_image_path(key.gsub('[type]', 'child'), 'png')
-          @root_summary_img_json = JsonCache.read_data(key.gsub('[type]', 'json'))
-          @root_summary_img_json = JSON.parse(@root_summary_img_json) if @root_summary_img_json.present?
+        @parent_summary_img_parent = JsonCache.get_image_path(key.gsub('[type]', 'parent'), 'png')
+        @parent_summary_img_child = JsonCache.get_image_path(key.gsub('[type]', 'child'), 'png')
+        @parent_summary_img_json = JsonCache.read_data(key.gsub('[type]', 'json'))
+        @parent_summary_img_json = JSON.parse(@parent_summary_img_json) if @parent_summary_img_json.present?
+        
+        # if this is not the default event shape, get the default event shape data too
+        if event.shape_id.to_s != params[:shape_id].to_s
+          root_shape = Shape.select('shape_type_id').find_by_id(event.shape_id)
+          if root_shape.present?
+            @root_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], root_shape.shape_type_id, 
+              event.shape_id, ind_type_id, params[:data_type])
+            if @root_summary_data.present?
+              key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
+                      .gsub('[data_set_id]', params[:data_set_id].to_s)
+                      .gsub('[parent_id]', event.shape_id.to_s)
+
+              @root_summary_img_parent = JsonCache.get_image_path(key.gsub('[type]', 'parent'), 'png')
+              @root_summary_img_child = JsonCache.get_image_path(key.gsub('[type]', 'child'), 'png')
+              @root_summary_img_json = JsonCache.read_data(key.gsub('[type]', 'json'))
+              @root_summary_img_json = JSON.parse(@root_summary_img_json) if @root_summary_img_json.present?
+            end
+          end
         end
       end
     end
@@ -535,7 +537,6 @@ logger.debug ">>>>>>>>>>>>>>>> format = xls"
         h[:width] = params[:img_width]
         h[:height] = params[:img_height]
         h[:left] = params[:img_left]
-        h[:screen_size] = params[:screen_size]
         h.to_json
       }
       

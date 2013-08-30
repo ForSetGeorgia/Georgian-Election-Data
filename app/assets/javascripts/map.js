@@ -51,39 +51,48 @@ if (gon.openlayers){
     }
     $('#map').css('height', mapHeight);
   }
+  
+  function apply_summary_image_scales(el){
+    if ($(el).find('img').length == 2){
+      var screen_scale = 1;
+      var div_scale = 1;
+      var img_width = $(el).find('img:nth-child(1)').data('width');
+      var img_height = $(el).find('img:nth-child(1)').data('height');
+      var img_offset = $(el).find('img:nth-child(2)').data('left');
 
-  // if summary images exist, make sure they are scaled properly
-  function adjust_summary_image_offset(){
+      if (img_width != undefined && img_height != undefined && img_offset != undefined){
+        // if the containing div is smaller than the img, compute the scale to to adjust width and height
+        var div_width = $(el).width();
+        if (div_width != undefined && img_width != div_width){
+          div_scale = div_width / img_width;
+        }
+
+
+        // adjust img dimensions
+        var new_height = img_height * div_scale;
+        var new_width = img_width * div_scale;
+        var new_offset = img_offset * div_scale;
+
+        $(el).find('img:nth-child(1)')
+          .css('width', new_width.toString() + 'px')
+          .css('height', new_height.toString() + 'px');
+
+        $(el).find('img:nth-child(2)')
+          .css('width', new_width.toString() + 'px')
+          .css('height', new_height.toString() + 'px')
+          .css('left', new_offset.toString() + 'px');
+      }
+    }
+  }
+
+  // if summary images exist, make sure they are scaled properly to fit in the space
+  function adjust_summary_images(){
 console.log('************************************');
-    if ($('#summary_data_above_map > div > div:nth-child(1) img').length == 2){
-console.log('scaling parent left offset to match screen size');
-      var orig_screen_size = $('#summary_data_above_map > div > div:nth-child(1) img:nth-child(1)').data('screen-size');
-console.log('orig screen size = ' + orig_screen_size + '; current size = ' + $(window).width());      
-      if (orig_screen_size != undefined && orig_screen_size != $(window).width()){
-console.log('orig screen size is not same as current, adjusting');      
-        var left_offset = $('#summary_data_above_map > div > div:nth-child(1) img:nth-child(2)').data('left');
-        if (left_offset != undefined){
-          var new_left_offset = ($(window).width() * left_offset) / orig_screen_size;
-console.log('left was ' + left_offset + '; now ' + new_left_offset);
-          $('#summary_data_above_map > div > div:nth-child(1) img:nth-child(2)').css('left', new_left_offset.toString() + 'px');
-        }
-      }    
-    }
-    
-    if ($('#summary_data_above_map > div > div:nth-child(3) img').length == 2){
-console.log('scaling root left offset to match screen size');
-      var orig_screen_size = $('#summary_data_above_map > div > div:nth-child(3) img:nth-child(1)').data('screen-size');
-console.log('orig screen size = ' + orig_screen_size + '; current size = ' + $(window).width());      
-      if (orig_screen_size != undefined && orig_screen_size != $(window).width()){
-console.log('orig screen size is not same as current, adjusting');      
-        var left_offset = $('#summary_data_above_map > div > div:nth-child(3) img:nth-child(2)').data('left');
-        if (left_offset != undefined){
-          var new_left_offset = ($(window).width() * left_offset) / orig_screen_size;
-console.log('left was ' + left_offset + '; now ' + new_left_offset);
-          $('#summary_data_above_map > div > div:nth-child(3) img:nth-child(2)').css('left', new_left_offset.toString() + 'px');
-        }
-      }    
-    }
+console.log('scaling parent summary images');
+    apply_summary_image_scales('#summary_data_above_map > div > div:nth-child(1)');
+console.log('scaling root summary images');
+    apply_summary_image_scales('#summary_data_above_map > div > div:nth-child(3)');
+      
   }
 
 	// Function called from body tag
@@ -116,7 +125,7 @@ console.log('left was ' + left_offset + '; now ' + new_left_offset);
     resize_map();
     
     // adjust summary image offset if necessary    
-    adjust_summary_image_offset();
+    adjust_summary_images();
 
 
 		map = new OpenLayers.Map('map', options);
@@ -402,7 +411,6 @@ console.log('left was ' + left_offset + '; now ' + new_left_offset);
         // compute scaled offset
         var img_width = svg_child_width * img_height / svg_child_height;
         var offset_scale = img_height / svg_child_height * svg_child_offset;
-        var screen_size = $(window).width();
   /*  
 
   var svg = "<div><svg><g></g></svg></div>";
@@ -415,16 +423,20 @@ console.log('left was ' + left_offset + '; now ' + new_left_offset);
         
         canvg('svg_to_png1', svg1.html());
         var canvas = document.getElementById("svg_to_png1");
-        var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' data-screen-size='" + screen_size + "' />";
+        var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
         $('#summary_data_above_map .row-fluid .span2:first-of-type').append(img_PNG);
 
 
         canvg('svg_to_png2', svg2.html());
         canvas = document.getElementById("svg_to_png2");
-        img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px; left:" + offset_scale + "px;' src='" + canvas.toDataURL() + "' data-screen-size='" + screen_size + "' data-left='" + offset_scale + "' />";
+        img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px; left:" + offset_scale + "px;' src='" + canvas.toDataURL() + "' data-left='" + offset_scale + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
         $('#summary_data_above_map .row-fluid .span2:first-of-type').append(img_PNG);
         
+        // set flag so images are saved
         generated_map_images = true;
+        
+        // adjust the images to fit in space
+        adjust_summary_images();
       }
 		}
 	}
@@ -994,7 +1006,7 @@ console.log('left was ' + left_offset + '; now ' + new_left_offset);
   window.onresize = function()
   {
     resize_map();
-    adjust_summary_image_offset();
+    adjust_summary_images();
 		setTimeout(set_map_extent, 1);
   }
 }
