@@ -583,3 +583,6 @@ select 'Tbilisi Precinct' AS `shape`,
 `2013 election bi maj - tbilisi precincts`.`Roman Robakidze vote share` AS `Roman Robakidze`,
 `2013 election bi maj - tbilisi precincts`.`Zurab Mskhvilidze vote share` AS `Zurab Mskhvilidze`
 from `2013 election bi maj - tbilisi precincts`;
+
+
+

@@ -1,6 +1,6 @@
 use election_data-elections;
 
-# first truncate staging and raw tables
+# first truncate raw tables
 truncate table `2012 election parl major - raw`;
 
 # load data from the csv file
