@@ -1,6 +1,4 @@
 # encoding: UTF-8
-class AddMissingBallotInd < ActiveRecord::Migration
-  def up
     total_ind_id = 15
     event_names = ['2012 Parliamentary - Party List', '2012 Parliamentary - Majoritarian']
     events = Event.includes(:event_translations).where(:event_translations => {:name => event_names, :locale => 'en'})
@@ -82,13 +80,3 @@ class AddMissingBallotInd < ActiveRecord::Migration
         end
       end
     end
-  end
-
-  def down
-    ind_names = ['Precincts with Missing Ballots (%)', 'Precincts with Missing Ballots (#)', 'Average Number of Missing Ballots', 'Number of Missing Ballots']
-    inds = CoreIndicatorTranslations.where(:name => ind_names)
-    if inds.present?
-      CoreIndicator.where(:id => inds.map{|x| x.id}).delete_all
-    end
-  end
-end
