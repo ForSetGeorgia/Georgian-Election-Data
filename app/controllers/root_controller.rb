@@ -6,7 +6,7 @@ class RootController < ApplicationController
 
 
 	FILE_CACHE_KEY_MAP_IMAGE =
-		"event_[event_id]/data_set_[data_set_id]/map_images/shape_[parent_id]_[type]"
+		"event_[event_id]/data_set_[data_set_id]/map_images/shape_[parent_id]"
 
 
   # GET /
@@ -350,9 +350,8 @@ logger.debug "////////////// - no default found"
                 .gsub('[data_set_id]', params[:data_set_id].to_s)
                 .gsub('[parent_id]', params[:shape_id].to_s)
 
-        @parent_summary_img_parent = JsonCache.get_image_path(key.gsub('[type]', 'parent'), 'png')
-        @parent_summary_img_child = JsonCache.get_image_path(key.gsub('[type]', 'child'), 'png')
-        @parent_summary_img_json = JsonCache.read_data(key.gsub('[type]', 'json'))
+        @parent_summary_img = JsonCache.get_image_path(key, 'png')
+        @parent_summary_img_json = JsonCache.read_data(key)
         @parent_summary_img_json = JSON.parse(@parent_summary_img_json) if @parent_summary_img_json.present?
         
         # if this is not the default event shape, get the default event shape data too
@@ -366,9 +365,8 @@ logger.debug "////////////// - no default found"
                       .gsub('[data_set_id]', params[:data_set_id].to_s)
                       .gsub('[parent_id]', event.shape_id.to_s)
 
-              @root_summary_img_parent = JsonCache.get_image_path(key.gsub('[type]', 'parent'), 'png')
-              @root_summary_img_child = JsonCache.get_image_path(key.gsub('[type]', 'child'), 'png')
-              @root_summary_img_json = JsonCache.read_data(key.gsub('[type]', 'json'))
+              @root_summary_img = JsonCache.get_image_path(key, 'png')
+              @root_summary_img_json = JsonCache.read_data(key)
               @root_summary_img_json = JSON.parse(@root_summary_img_json) if @root_summary_img_json.present?
             end
           end
@@ -513,21 +511,16 @@ logger.debug ">>>>>>>>>>>>>>>> format = xls"
 		render_not_found(nil)
 	end
 
-
+  # save the png images rendered from the map svg
   def save_map_images
-    if request.xhr? && params[:img_parent].present? && params[:img_child].present? &&
-        params[:event_id].present? && params[:data_set_id].present? && params[:parent_shape_id].present?
+    if request.xhr? && params[:img].present? && params[:event_id].present? && params[:data_set_id].present? && params[:parent_shape_id].present?
         
       key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id])
               .gsub('[data_set_id]', params[:data_set_id])
               .gsub('[parent_id]', params[:parent_shape_id])
 
-      JsonCache.write_image(key.gsub('[type]', 'parent'), 'png'){
-        params[:img_parent]
-      }
-
-      JsonCache.write_image(key.gsub('[type]', 'child'), 'png'){
-        params[:img_child]
+      JsonCache.write_image(key, 'png'){
+        params[:img]
       }
 
       # create json file that contains properties for width, height and left positioning
@@ -536,7 +529,6 @@ logger.debug ">>>>>>>>>>>>>>>> format = xls"
         h = Hash.new
         h[:width] = params[:img_width]
         h[:height] = params[:img_height]
-        h[:left] = params[:img_left]
         h.to_json
       }
       

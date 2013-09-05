@@ -39,25 +39,20 @@
     <div id="summary_data_above_map">
       <div class="row-fluid">
         <div class="span2">
-          <% if @parent_summary_img_parent.present? && @parent_summary_img_child.present? %>
+          <% if @parent_summary_img.present? %>
             <% 
              style_parent = ''
              style_child = ''
               if @parent_summary_img_json.present? 
-                 orig_left = @parent_summary_img_json['left'].present? ? @parent_summary_img_json['left'] : '0'
                  orig_width = @parent_summary_img_json['width'].present? ? @parent_summary_img_json['width'] : '0'
                  orig_height = @parent_summary_img_json['height'].present? ? @parent_summary_img_json['height'] : '0'
-                 style_left = orig_left > '0' ? "left: #{orig_left}px; " : ''
                  style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
                  style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
-                 style_parent = style_width + style_height
-                 style_child = style_left + style_width + style_height
+                 style_img = style_width + style_height
                end
              %>
-            <%= image_tag(@parent_summary_img_parent, :style => style_parent, 
+            <%= image_tag(@parent_summary_img, :style => style_img, 
                 :'data-width' => orig_width, :'data-height' => orig_height) %>
-            <%= image_tag(@parent_summary_img_child, :style => style_child, 
-                :'data-width' => orig_width, :'data-height' => orig_height, :'data-left' => orig_left) %>
             
           <% end %>
         </div>
@@ -88,25 +83,20 @@
         </div>  
         <% if @root_summary_data.present? && @root_summary_data.length > 1 %>
           <div class="span2">
-            <% if @root_summary_img_parent.present? && @root_summary_img_child.present? %>
+            <% if @root_summary_img.present? %>
               <% 
                style_parent = ''
                style_child = ''
                 if @root_summary_img_json.present? 
-                 orig_left = @root_summary_img_json['left'].present? ? @root_summary_img_json['left'] : '0'
                  orig_width = @root_summary_img_json['width'].present? ? @root_summary_img_json['width'] : '0'
                  orig_height = @root_summary_img_json['height'].present? ? @root_summary_img_json['height'] : '0'
-                 style_left = orig_left > '0' ? "left: #{orig_left}px; " : ''
                  style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
                  style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
-                 style_parent = style_width + style_height
-                 style_child = style_left + style_width + style_height
+                 style_img = style_width + style_height
                end
              %>
-              <%= image_tag(@root_summary_img_parent, :style => style_parent, 
+              <%= image_tag(@root_summary_img, :style => style_img, 
                   :'data-width' => orig_width, :'data-height' => orig_height) %>
-              <%= image_tag(@root_summary_img_child, :style => style_child, 
-                  :'data-width' => orig_width, :'data-height' => orig_height, :'data-left' => orig_left) %>
             <% end %>
           </div>
           <div class="span4">
@@ -303,4 +293,11 @@
 
   <canvas id="svg_to_png1" style="display: none;"></canvas>
   <canvas id="svg_to_png2" style="display: none;"></canvas>
+  
+  <div id="svg_test" style="display:none;">
+    <svg>
+      <g>
+      </g>
+    </svg>
+  </div>
 <% end %>

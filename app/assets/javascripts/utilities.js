@@ -180,23 +180,19 @@ function dataURLtoBlob(dataURL) {
 function save_generated_map_images(){
 console.log('need to save map images!');
   
-  var img1 = document.getElementById("svg_to_png1");
-  var img2 = document.getElementById("svg_to_png2");
+  var img = document.getElementById("svg_to_png1");
       
-  // Get images
-  var file1 = dataURLtoBlob(img1.toDataURL('image/png'));
-  var file2 = dataURLtoBlob(img2.toDataURL('image/png'));
+  // Get image
+  var file = dataURLtoBlob(img.toDataURL('image/png'));
   // Create new form data
   var fd = new FormData();
   // Append our Canvas image file to the form data
   fd.append("event_id", gon.event_id);
   fd.append("data_set_id", gon.data_set_id);
   fd.append("parent_shape_id", gon.parent_shape_id);
-  fd.append("img_parent", file1);
-  fd.append("img_child", file2);
+  fd.append("img", file);
   fd.append("img_width", $('#summary_data_above_map .row-fluid .span2:first-of-type img:last-of-type').data('width'));
   fd.append("img_height", $('#summary_data_above_map .row-fluid .span2:first-of-type img:last-of-type').data('height'));
-  fd.append("img_left", $('#summary_data_above_map .row-fluid .span2:first-of-type img:last-of-type').data('left'));
   // And send it
   $.ajax({
      url: "/" + I18n.locale + "/save_map_images",

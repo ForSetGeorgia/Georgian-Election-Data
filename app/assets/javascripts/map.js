@@ -52,47 +52,43 @@ if (gon.openlayers){
     $('#map').css('height', mapHeight);
   }
   
+  // the container of the img may be less than the img width, so adjust the img size
   function apply_summary_image_scales(el){
-    if ($(el).find('img').length == 2){
-      var screen_scale = 1;
+    if ($(el).find('img').length == 1){
+console.log('---------------------');
       var div_scale = 1;
-      var img_width = $(el).find('img:nth-child(1)').data('width');
-      var img_height = $(el).find('img:nth-child(1)').data('height');
-      var img_offset = $(el).find('img:nth-child(2)').data('left');
+      var img_width = $(el).find('img').data('width');
+      var img_height = $(el).find('img').data('height');
 
-      if (img_width != undefined && img_height != undefined && img_offset != undefined){
+      if (img_width != undefined && img_height != undefined){
         // if the containing div is smaller than the img, compute the scale to to adjust width and height
-        var div_width = $(el).width();
-        if (div_width != undefined && img_width != div_width){
-          div_scale = div_width / img_width;
+        var div_height = $(el).height();
+        if (div_height != undefined && img_height != div_height){
+          div_scale = div_height / img_height;
         }
-
+console.log('div height = ' + div_height + '; img height = ' + img_height + '; div scale = ' + div_scale);
 
         // adjust img dimensions
         var new_height = img_height * div_scale;
         var new_width = img_width * div_scale;
-        var new_offset = img_offset * div_scale;
+console.log('new width = ' + new_width + '; new height = ' + new_height);
 
-        $(el).find('img:nth-child(1)')
+        $(el).find('img')
           .css('width', new_width.toString() + 'px')
           .css('height', new_height.toString() + 'px');
-
-        $(el).find('img:nth-child(2)')
-          .css('width', new_width.toString() + 'px')
-          .css('height', new_height.toString() + 'px')
-          .css('left', new_offset.toString() + 'px');
       }
     }
   }
 
   // if summary images exist, make sure they are scaled properly to fit in the space
   function adjust_summary_images(){
+/*
 console.log('************************************');
 console.log('scaling parent summary images');
     apply_summary_image_scales('#summary_data_above_map > div > div:nth-child(1)');
 console.log('scaling root summary images');
     apply_summary_image_scales('#summary_data_above_map > div > div:nth-child(3)');
-      
+*/      
   }
 
 	// Function called from body tag
@@ -402,7 +398,8 @@ console.log('scaling root summary images');
       // and then spit out as png
       if ($('#summary_data_above_map .row-fluid .span2:first-of-type img').length == 0 && gon.view_type == gon.summary_view_type_name)
       {
-        var svg1 = $("#map").find("svg:eq(0)").parent().clone();
+/*
+        var svg1 = $("#map").find("svg:eq(0)").parent() .clone();
         var svg2 = $("#map").find("svg:eq(1)").parent().clone();
         var svg_child_offset = $(svg2).css('left').replace('px', '');
         var svg_child_width = $(svg2).find('svg').attr('width');
@@ -411,16 +408,8 @@ console.log('scaling root summary images');
         // compute scaled offset
         var img_width = svg_child_width * img_height / svg_child_height;
         var offset_scale = img_height / svg_child_height * svg_child_offset;
-  /*  
 
-  var svg = "<div><svg><g></g></svg></div>";
-  //$(svg).find('g').append($(svg1).find('svg > g > g:first-of-type')).append($(svg2).find('svg > g > g:first-of-type'));
-  $(svg1).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
-  $(svg2).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
-  console.log(svg);
-  xxx = svg;
-  */
-        
+
         canvg('svg_to_png1', svg1.html());
         var canvas = document.getElementById("svg_to_png1");
         var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
@@ -431,6 +420,39 @@ console.log('scaling root summary images');
         canvas = document.getElementById("svg_to_png2");
         img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px; left:" + offset_scale + "px;' src='" + canvas.toDataURL() + "' data-left='" + offset_scale + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
         $('#summary_data_above_map .row-fluid .span2:first-of-type').append(img_PNG);
+*/
+
+        // get copy of shape svgs
+        var svg1 = $("#map").find("svg:eq(0)").parent() .clone();
+        var svg2 = $("#map").find("svg:eq(1)").parent().clone();
+        // get how much child shapes are offset
+        var svg_child_offset = $(svg2).css('left').replace('px', '');
+
+        var svg = $('#svg_test');
+        $(svg1).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
+        $(svg2).find('svg > g > g:first-of-type').attr('transform', 'translate(' + svg_child_offset + ')');
+        $(svg2).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
+        // set svg height/width and shift by bounding box x/y values
+        var bbox = $("#map").find("svg:eq(0) g:eq(1)")[0].getBBox();
+        $(svg).find('g:eq(0)').attr('transform', 'translate(-' + bbox.x + ', -' + bbox.y + ')');
+        $(svg).find('svg').width(bbox.width);
+        $(svg).find('svg').height(bbox.height);
+
+        // load svg into canvas        
+        canvg('svg_to_png1', $.trim(svg.html()));
+        var canvas = document.getElementById("svg_to_png1");
+
+console.log('*************');
+console.log('row height = ' + $('#summary_data_above_map > div.row-fluid').height());
+        
+        // scale image to fit in summary bar
+        var img_height = $('#summary_data_above_map > div.row-fluid').height();
+        var img_width = bbox.width * img_height / bbox.height;
+
+        // create img object
+        var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
+        $('#summary_data_above_map .row-fluid .span2:first-of-type').append(img_PNG);
+
         
         // set flag so images are saved
         generated_map_images = true;
