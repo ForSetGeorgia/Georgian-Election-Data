@@ -38,7 +38,7 @@
   <% if @parent_summary_data.present? && @parent_summary_data.length > 1 %>
     <div id="summary_data_above_map">
       <div class="row-fluid">
-        <div class="span2">
+        <div class="span2" id="summary_map_img">
           <% if @parent_summary_img.present? %>
             <% 
              style_parent = ''
@@ -141,7 +141,6 @@
               </div>
               <div class="tt_number_circle_text">
                   <%= t('app.common.total_turnout') %>:
-                  <br />
                   <%= @parent_summary_data[1][:total_turnout_number] %>
               </div>
               <div class="tt_percent_circle_text">

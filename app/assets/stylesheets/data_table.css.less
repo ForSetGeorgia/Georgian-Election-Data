@@ -83,6 +83,7 @@
   th, td{
     padding: 0;
     text-align: center;
+    font-family: Tahoma, Geneva, sans-serif;
     a, span{
       padding: 15px 22px 16px;
       display: block;
@@ -95,7 +96,12 @@
     }
   }
   td {
+    border-top: 1px dashed #dddddd;
     background-color: #fff;
+    &:first-of-type{
+      border-top: 1px solid #dddddd;
+      background-color: #f7f7f7;
+    }
     div.color_bar{
       text-align: left;
       padding: 0;
@@ -115,18 +121,12 @@
   th{
     border-bottom: 1px solid #dad8d9;
     font-size: 12px;
-    background-color: #aec9dc;
-  }
-  tbody tr:nth-child(even) td {
-    background-color: #F4F6F5;
-  }
-  tbody tr:hover td {
-    background: #d6e6f5;
+    background-color: #b6cadc;
   }
 }
 
 #map_data_table_summary{
-  width: auto;
+  width: 100%;
   th, td{
     min-width: 200px;
     a, span{
@@ -134,8 +134,48 @@
     }   
   }
   td{
-    padding: 0 10px 10px;
-    vertical-align: bottom;
+    background-color: #fff;
+    padding: 5px 10px;
+    vertical-align: middle;
+    &.summary_shape_name{
+      background-color: #f7f7f7;
+      width: 135px;
+    }
+    &.summary_bar_chart_container2{
+      & > .summary_bar_chart_container2a{
+        text-align: left;
+        overflow: hidden; /* clear the float */
+        & > div{
+          float: left;
+          padding: 5px 10px;
+        }
+        & > .summary_bar_chart_name{
+          width: 250px;
+        }
+        & > .summary_bar_chart_number{
+          width: 50px;
+        }
+        & > .summary_bar_chart_charts{
+          position: relative;
+          float: none;
+          overflow: hidden;
+          height: 20px; 
+          & > div{
+            position: absolute;
+            height: 12px;
+          }
+          & > .summary_bar_chart_bg{
+            width: 100%;
+            background-color: #eeefef;
+          }
+          & > .summary_bar_chart{
+            height: 12px;
+          }
+        }
+      }
+    }
+    
+    
     &.summary_text_container{
       span {
         background-color: #fff;
@@ -159,80 +199,87 @@
         }
       }
     }
-    &.summary_total_turnout{
-      vertical-align: top;
-      height: 85px;
-      width: 225px;
-      position: relative;
-      display: block;
-      .hold{
-	      width:150px;
-	      height:150px;
-	      clip:rect(0px,150px,150px,75px);
-	      position:absolute;
-	      top: 10px;
-	      left: 80px;
-      }
-      .pie {
-	      position:absolute;
-	      width:150px;
-	      height:150px;
-	      clip:rect(0px,75px,150px,0px);
-	      -moz-border-radius:75px;
-	      -webkit-border-radius:75px; 
-	      border-radius:75px; 
-      }
-      .half_circle {
-        -ms-transform:rotate(-90deg);
-	      -moz-transform:rotate(-90deg);
-	      -webkit-transform:rotate(-90deg);
-	      -o-transform:rotate(-90deg);
-	      transform:rotate(-90deg);
-	      & > .pie {
-	        background-color:#c2c2c2;
-	        border-color:#c2c2c2;
-          -ms-transform:rotate(180deg);
-	        -moz-transform:rotate(180deg);
-	        -webkit-transform:rotate(180deg);
-	        -o-transform:rotate(180deg);
-	        transform:rotate(180deg);
+    &.summary_total_turnout {
+      width: 135px;
+      & > div{
+        vertical-align: top;
+        height: 85px;
+        width: 135px;
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        .hold{
+	        width:120px;
+	        height:120px;
+	        clip:rect(0px,120px,120px,60px);
+	        position:absolute;
+	        top: 10px;
         }
-      }
-      .tt_percent_circle {
-        z-index: 100;
-        -ms-transform:rotate(-90deg);
-	      -moz-transform:rotate(-90deg);
-	      -webkit-transform:rotate(-90deg);
-	      -o-transform:rotate(-90deg);
-	      transform:rotate(-90deg);
-        & > .pie {
-	        background-color:#eaa471;
-	        border-color:#eaa471;
+        .pie {
+	        position:absolute;
+	        width:120px;
+	        height:120px;
+	        clip:rect(0px,60px,120px,0px);
+	        -moz-border-radius:60px;
+	        -webkit-border-radius:60px; 
+	        border-radius:60px; 
         }
-      }
-      .tt_percent_circle_text{
-          position: absolute;
-          left: 100px;
-          top: 50px;
-          color: #000;
-          z-index:200;
-      }
-      .tt_number_circle_text{
-          position: absolute;
-          left: 20px;
-          top: 10px;
-          color: #000;
-          z-index:200;
-          text-align: left;
+        .half_circle {
+          -ms-transform:rotate(-90deg);
+	        -moz-transform:rotate(-90deg);
+	        -webkit-transform:rotate(-90deg);
+	        -o-transform:rotate(-90deg);
+	        transform:rotate(-90deg);
+	        & > .pie {
+	          background-color:#eeefef;
+	          border-color:#eeefef;
+            -ms-transform:rotate(180deg);
+	          -moz-transform:rotate(180deg);
+	          -webkit-transform:rotate(180deg);
+	          -o-transform:rotate(180deg);
+	          transform:rotate(180deg);
+          }
+        }
+        .tt_percent_circle {
+          z-index: 100;
+          -ms-transform:rotate(-90deg);
+	        -moz-transform:rotate(-90deg);
+	        -webkit-transform:rotate(-90deg);
+	        -o-transform:rotate(-90deg);
+	        transform:rotate(-90deg);
+          & > .pie {
+	          background-color:#aecee6;
+	          border-color:#aecee6;
+          }
+        }
+        .tt_percent_circle_text{
+            position: absolute;
+            left: 11px;
+            top: 50px;
+            color: #fff;
+            z-index:200;
+        }
+        .tt_number_circle_text{
+            position: absolute;
+            top: 70px;
+            color: #7799b3;
+            z-index:200;
+            text-align: left;
+            font-weight: bold;
+            font-size: 10px;
+        }
       }
     }
+  }
+  tbody tr:hover td {
+    background: #d6e6f5;
   }
 }
 
 #map_data_table{
   th, td{
     &.highlighted{
-      background-color: #d6e6f5 !important;
+      background-color: #a8bcce !important;
       border-top: solid 1px #fff;
     }
     &.winner{
@@ -244,6 +291,12 @@
   th.highlighted{
     border-top: solid 1px #fff;
     border-bottom: solid 1px #fff;
+  }
+  tbody tr:nth-child(even) td {
+    background-color: #F4F6F5;
+  }
+  tbody tr:hover td {
+    background: #d6e6f5;
   }
 }
 

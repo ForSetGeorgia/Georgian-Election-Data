@@ -24,16 +24,6 @@
               </th>
               <th>
                 <span>
-                  <%= @summary_data[0][:winner_name] %>
-                </span>
-              </th>
-              <th>
-                <span>
-                </span>
-              </th>
-              <th>
-                <span>
-                  <%= @summary_data[0][:second_name] %>
                 </span>
               </th>
               <th>
@@ -46,9 +36,44 @@
           <tbody>
             <% @summary_data[1..-1].each do |data| %>
               <tr>
-                <td>
+                <td class="summary_shape_name">
                   <span><%= data[:shape] %></span>
                 </td>    
+                <td class="summary_bar_chart_container2">
+                  <div class="summary_bar_chart_container2a">
+                    <div class="summary_bar_chart_name" style="color: <%= data[:winner_color] %>;">
+                      <%= data[:winner_name] %>
+                    </div>
+                    <div class="summary_bar_chart_number" style="color: <%= data[:winner_color] %>;">
+                      <%= data[:winner_value] %>
+                    </div>
+                    <div class="summary_bar_chart_charts">
+                      <div class="summary_bar_chart_bg">
+                      </div>
+                      <div class="summary_bar_chart" style="width: <%= data[:winner_value]%>; background-color: <%= data[:winner_color] %>" 
+                          title="<%= "#{data[:winner_name]} - #{data[:winner_value]}" %>">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="summary_bar_chart_container2a">
+                    <div class="summary_bar_chart_name" style="color: <%= data[:second_color] %>;">
+                      <%= data[:second_name] %>
+                    </div>
+                    <div class="summary_bar_chart_number" style="color: <%= data[:second_color] %>;">
+                      <%= data[:second_value] %>
+                    </div>
+                    <div class="summary_bar_chart_charts">
+                      <div class="summary_bar_chart_bg">
+                        &nbsp;
+                      </div>
+                      <div class="summary_bar_chart" style="width: <%= data[:second_value]%>; background-color: <%= data[:second_color] %>" 
+                          title="<%= "#{data[:second_name]} - #{data[:second_value]}" %>">
+                        &nbsp;
+                      </div>
+                    </div>
+                  </div>
+                </td>
+<!--                
                 <td class="summary_text_container2">
                   <span style="border-bottom-color: <%= data[:winner_color] %>; color: <%= data[:winner_color] %>;">
                     <%= data[:winner_name] %>
@@ -73,29 +98,31 @@
                     <%= data[:second_name] %>
                   </span>
                 </td>   
+-->                
                 <td class="summary_total_turnout">
-                  <% if data[:total_turnout_percent].present? && data[:total_turnout_percent].index('%').present? %>
-                    <div class="half_circle hold">
-                      <div class="pie"></div>
-                    </div>
-                    <% 
-                      perc = data[:total_turnout_percent].gsub('%','').to_f
-                      ang = (180 * perc / 100)
-                    %>
-                    <div class="tt_percent_circle hold">
-                      <div class="pie"  
-                        style="-ms-transform:rotate(<%= ang%>deg); -moz-transform:rotate(<%= ang%>deg); -webkit-transform:rotate(<%= ang%>deg); -o-transform:rotate(<%= ang%>deg);	transform:rotate(<%= ang%>deg);">
+                  <div>
+                    <% if data[:total_turnout_percent].present? && data[:total_turnout_percent].index('%').present? %>
+                      <div class="half_circle hold">
+                        <div class="pie"></div>
                       </div>
-                    </div>
-                    <div class="tt_number_circle_text">
-                        <%= t('app.common.total_turnout') %>:
-                        <br />
-                        <%= data[:total_turnout_number] %>
-                    </div>
-                    <div class="tt_percent_circle_text">
-                        <%= data[:total_turnout_percent] %>
-                    </div>
-                  <% end %>
+                      <% 
+                        perc = data[:total_turnout_percent].gsub('%','').to_f
+                        ang = (180 * perc / 100)
+                      %>
+                      <div class="tt_percent_circle hold">
+                        <div class="pie"  
+                          style="-ms-transform:rotate(<%= ang%>deg); -moz-transform:rotate(<%= ang%>deg); -webkit-transform:rotate(<%= ang%>deg); -o-transform:rotate(<%= ang%>deg);	transform:rotate(<%= ang%>deg);">
+                        </div>
+                      </div>
+                      <div class="tt_number_circle_text">
+                          <%= t('app.common.total_turnout') %>:
+                          <%= data[:total_turnout_number] %>
+                      </div>
+                      <div class="tt_percent_circle_text">
+                          <%= data[:total_turnout_percent] %>
+                      </div>
+                    <% end %>
+                  </div>
                 </td>
               </tr>   
             <% end %>  

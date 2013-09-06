@@ -1,43 +1,50 @@
 #summary_data_above_map{
+  font-family: Tahoma, Geneva, sans-serif;
   background-color: #fff;
   padding: 10px 10px 0;
   margin-top: -10px;
   margin-bottom: 5px;
   h3{
     margin-top: 0;
+    text-transform: uppercase;
+    font-size: 16px;
   }
 
   & > div.row-fluid{
-/*    height: 93px;*/
+    height: 147px;
     & div.row-fluid{
       & > div:first-of-type{
         text-align: right;
       }
     }
+    & #summary_map_img{
+/*      margin-top: 25px;*/
+    }
   }
 
   #summary_total_turnout{
     vertical-align: top;
-    height: 75px;
+    height: 110px;
     width: 225px;
+    margin-top: 20px;
     position: relative;
     display: block;
     .hold{
-      width:150px;
-      height:150px;
-      clip:rect(0px,150px,150px,75px);
+      width:176px;
+      height:176px;
+      clip:rect(0px,176px,176px,88px);
       position:absolute;
       top: 0;
       left: 90px;
     }
     .pie {
       position:absolute;
-      width:150px;
-      height:150px;
-      clip:rect(0px,75px,150px,0px);
-      -moz-border-radius:75px;
-      -webkit-border-radius:75px; 
-      border-radius:75px; 
+      width:176px;
+      height:176px;
+      clip:rect(0px,88px,176px,0px);
+      -moz-border-radius:88px;
+      -webkit-border-radius:88px; 
+      border-radius:88px; 
     }
     .half_circle {
       -ms-transform:rotate(-90deg);
@@ -46,8 +53,8 @@
       -o-transform:rotate(-90deg);
       transform:rotate(-90deg);
       & > .pie {
-        background-color:#c2c2c2;
-        border-color:#c2c2c2;
+        background-color:#eeefef;
+        border-color:#eeefef;
         -ms-transform:rotate(180deg);
         -moz-transform:rotate(180deg);
         -webkit-transform:rotate(180deg);
@@ -63,24 +70,28 @@
       -o-transform:rotate(-90deg);
       transform:rotate(-90deg);
       & > .pie {
-        background-color:#eaa471;
-        border-color:#eaa471;
+        background-color:#aecee6;
+        border-color:#aecee6;
       }
     }
     .tt_percent_circle_text{
         position: absolute;
         left: 110px;
-        top: 40px;
-        color: #000;
+        top: 62px;
+        color: #fff;
         z-index:200;
+        font-size: 14px;
     }
     .tt_number_circle_text{
         position: absolute;
-        left: 20px;
-        top: 0;
-        color: #000;
+        left: 90px;
+        top: 88px;
+        color: #7799b3;
         z-index:200;
         text-align: left;
+        font-weight: bold;
+        font-size: 14px;
+        width: 178px;
     }
   }
 }
