@@ -85,9 +85,9 @@ console.log('new width = ' + new_width + '; new height = ' + new_height);
 /*
 console.log('************************************');
 console.log('scaling parent summary images');
-    apply_summary_image_scales('#summary_data_above_map > div > div:nth-child(1)');
+    apply_summary_image_scales('#summary_data_above_map .map_image:nth-child(1)');
 console.log('scaling root summary images');
-    apply_summary_image_scales('#summary_data_above_map > div > div:nth-child(3)');
+    apply_summary_image_scales('#summary_data_above_map .map_image:nth-child(3)');
 */      
   }
 
@@ -396,31 +396,8 @@ console.log('scaling root summary images');
 			// load svg into canvas so can convert to img
       // copy path from child shapes into parent shapes
       // and then spit out as png
-      if ($('#summary_data_above_map .row-fluid .span2:first-of-type img').length == 0 && gon.view_type == gon.summary_view_type_name)
+      if ($('#summary_data_above_map div.span6:first-of-type .map_image img').length == 0 && gon.view_type == gon.summary_view_type_name)
       {
-/*
-        var svg1 = $("#map").find("svg:eq(0)").parent() .clone();
-        var svg2 = $("#map").find("svg:eq(1)").parent().clone();
-        var svg_child_offset = $(svg2).css('left').replace('px', '');
-        var svg_child_width = $(svg2).find('svg').attr('width');
-        var svg_child_height = $(svg2).find('svg').attr('height');
-        var img_height = 93;
-        // compute scaled offset
-        var img_width = svg_child_width * img_height / svg_child_height;
-        var offset_scale = img_height / svg_child_height * svg_child_offset;
-
-
-        canvg('svg_to_png1', svg1.html());
-        var canvas = document.getElementById("svg_to_png1");
-        var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
-        $('#summary_data_above_map .row-fluid .span2:first-of-type').append(img_PNG);
-
-
-        canvg('svg_to_png2', svg2.html());
-        canvas = document.getElementById("svg_to_png2");
-        img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px; left:" + offset_scale + "px;' src='" + canvas.toDataURL() + "' data-left='" + offset_scale + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
-        $('#summary_data_above_map .row-fluid .span2:first-of-type').append(img_PNG);
-*/
 
         // get copy of shape svgs
         var svg1 = $("#map").find("svg:eq(0)").parent() .clone();
@@ -442,16 +419,24 @@ console.log('scaling root summary images');
         canvg('svg_to_png1', $.trim(svg.html()));
         var canvas = document.getElementById("svg_to_png1");
 
-console.log('*************');
-console.log('row height = ' + $('#summary_data_above_map > div.row-fluid').height());
-        
         // scale image to fit in summary bar
-        var img_height = $('#summary_data_above_map > div.row-fluid').height();
-        var img_width = bbox.width * img_height / bbox.height;
+        // - scale by the dimension that is the largest
+        var img_width;
+        var img_height;
+        if (bbox.width > bbox.height){
+          img_width = $('#summary_data_above_map div.span6:first-of-type .map_image').width();
+          img_height = bbox.height * img_width / bbox.width;
+        } else{
+          img_height = $('#summary_data_above_map div.span6:first-of-type .map_image').height();
+          img_width = bbox.width * img_height / bbox.height;
+        }
+
+//        var img_height = $('#summary_data_above_map div.span6:first-of-type').height();
+//        var img_width = bbox.width * img_height / bbox.height;
 
         // create img object
         var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
-        $('#summary_data_above_map .row-fluid .span2:first-of-type').append(img_PNG);
+        $('#summary_data_above_map div.span6:first-of-type .map_image').append(img_PNG);
 
         
         // set flag so images are saved

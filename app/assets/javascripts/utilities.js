@@ -191,8 +191,8 @@ console.log('need to save map images!');
   fd.append("data_set_id", gon.data_set_id);
   fd.append("parent_shape_id", gon.parent_shape_id);
   fd.append("img", file);
-  fd.append("img_width", $('#summary_data_above_map .row-fluid .span2:first-of-type img:last-of-type').data('width'));
-  fd.append("img_height", $('#summary_data_above_map .row-fluid .span2:first-of-type img:last-of-type').data('height'));
+  fd.append("img_width", $('#summary_data_above_map .row-fluid .span6:first-of-type img').data('width'));
+  fd.append("img_height", $('#summary_data_above_map .row-fluid .span6:first-of-type img').data('height'));
   // And send it
   $.ajax({
      url: "/" + I18n.locale + "/save_map_images",

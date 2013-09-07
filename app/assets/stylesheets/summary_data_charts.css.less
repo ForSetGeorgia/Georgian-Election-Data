@@ -4,94 +4,143 @@
   padding: 10px 10px 0;
   margin-top: -10px;
   margin-bottom: 5px;
-  h3{
-    margin-top: 0;
-    text-transform: uppercase;
-    font-size: 16px;
-  }
 
-  & > div.row-fluid{
-    height: 147px;
-    & div.row-fluid{
-      & > div:first-of-type{
-        text-align: right;
-      }
-    }
-    & #summary_map_img{
-/*      margin-top: 25px;*/
-    }
-  }
-
-  #summary_total_turnout{
-    vertical-align: top;
-    height: 110px;
-    width: 225px;
-    margin-top: 20px;
-    position: relative;
-    display: block;
-    .hold{
-      width:176px;
-      height:176px;
-      clip:rect(0px,176px,176px,88px);
-      position:absolute;
-      top: 0;
-      left: 90px;
-    }
-    .pie {
-      position:absolute;
-      width:176px;
-      height:176px;
-      clip:rect(0px,88px,176px,0px);
-      -moz-border-radius:88px;
-      -webkit-border-radius:88px; 
-      border-radius:88px; 
-    }
-    .half_circle {
-      -ms-transform:rotate(-90deg);
-      -moz-transform:rotate(-90deg);
-      -webkit-transform:rotate(-90deg);
-      -o-transform:rotate(-90deg);
-      transform:rotate(-90deg);
-      & > .pie {
-        background-color:#eeefef;
-        border-color:#eeefef;
-        -ms-transform:rotate(180deg);
-        -moz-transform:rotate(180deg);
-        -webkit-transform:rotate(180deg);
-        -o-transform:rotate(180deg);
-        transform:rotate(180deg);
-      }
-    }
-    .tt_percent_circle {
-      z-index: 100;
-      -ms-transform:rotate(-90deg);
-      -moz-transform:rotate(-90deg);
-      -webkit-transform:rotate(-90deg);
-      -o-transform:rotate(-90deg);
-      transform:rotate(-90deg);
-      & > .pie {
-        background-color:#aecee6;
-        border-color:#aecee6;
-      }
-    }
-    .tt_percent_circle_text{
+  & > div.row-fluid .span6{
+    overflow: hidden; /* clear the float */
+    padding: 10px;
+    .map_image{
+      width: 130px;
+      height: 130px;
+      padding: 0;
+      float: left;
+      position: relative;
+      img{
         position: absolute;
-        left: 110px;
-        top: 62px;
-        color: #fff;
-        z-index:200;
-        font-size: 14px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+      }
     }
-    .tt_number_circle_text{
-        position: absolute;
-        left: 90px;
-        top: 88px;
-        color: #7799b3;
-        z-index:200;
+    .bar_items{
+      overflow: hidden;
+      padding-top: 32px;
+      padding-left: 10px;
+      & > h3{
+        font-family: Tahoma, Geneva, sans-serif;
+        margin-top: 0;
+        text-transform: uppercase;
+        font-size: 16px;
+        padding-left: 3px;
+        margin-bottom: 0;
+      }
+      & > .bar_item{
         text-align: left;
-        font-weight: bold;
-        font-size: 14px;
-        width: 178px;
+        overflow: hidden; /* clear the float */
+        & > div{
+          float: left;
+          padding: 3px 5px;
+        }
+        & > .bar_item_name{
+          width: 250px;
+        }
+        & > .bar_item_number{
+          width: 50px;
+        }
+        & > .bar_item_charts{
+          position: relative;
+          float: none;
+          overflow: hidden;
+          height: 15px; 
+          padding-top: 6px;
+          & > div{
+            position: absolute;
+            height: 12px;
+          }
+          & > .bar_item_chart_bg{
+            width: 100%;
+            background-color: #eeefef;
+          }
+          & > .bar_item_chart{
+            height: 12px;
+          }
+        }
+      }
     }
+    
+    #summary_total_turnout{
+      vertical-align: top;
+      #summary_total_turnout_container{
+        height: 110px;
+        width: 176px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .hold{
+        width:176px;
+        height:176px;
+        clip:rect(0px,176px,176px,88px);
+        position:absolute;
+        top: 0;
+        left: 0;
+      }
+      .pie {
+        position:absolute;
+        width:176px;
+        height:176px;
+        clip:rect(0px,88px,176px,0px);
+        -moz-border-radius:88px;
+        -webkit-border-radius:88px; 
+        border-radius:88px; 
+      }
+      .half_circle {
+        -ms-transform:rotate(-90deg);
+        -moz-transform:rotate(-90deg);
+        -webkit-transform:rotate(-90deg);
+        -o-transform:rotate(-90deg);
+        transform:rotate(-90deg);
+        & > .pie {
+          background-color:#eeefef;
+          border-color:#eeefef;
+          -ms-transform:rotate(180deg);
+          -moz-transform:rotate(180deg);
+          -webkit-transform:rotate(180deg);
+          -o-transform:rotate(180deg);
+          transform:rotate(180deg);
+        }
+      }
+      .tt_percent_circle {
+        z-index: 100;
+        -ms-transform:rotate(-90deg);
+        -moz-transform:rotate(-90deg);
+        -webkit-transform:rotate(-90deg);
+        -o-transform:rotate(-90deg);
+        transform:rotate(-90deg);
+        & > .pie {
+          background-color:#aecee6;
+          border-color:#aecee6;
+        }
+      }
+      .tt_percent_circle_text{
+          position: absolute;
+          left: 20px;
+          top: 62px;
+          color: #fff;
+          z-index:200;
+          font-size: 14px;
+      }
+      .tt_number_circle_text{
+          position: absolute;
+          left: 0px;
+          top: 88px;
+          color: #7799b3;
+          z-index:200;
+          text-align: left;
+          font-weight: bold;
+          font-size: 14px;
+          width: 178px;
+      }
+    }    
   }
 }
