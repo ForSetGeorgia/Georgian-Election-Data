@@ -4,7 +4,7 @@
 
   <% if @district["summary"].present? %>
     <div id="district_summary">
-      <%= simple_format(@district["summary"]) %>
+      <%= simple_format_no_tags(@district["summary"]) %>
       <hr />
     </div>
   <% end %>
