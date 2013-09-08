@@ -11,9 +11,18 @@ class LoadIndProfiles < ActiveRecord::Migration
       csv.each_with_index do |row, i|
         if row[0].present? && row[1].present? && row[2].present?
           # find record for this indicator
+          # - indicator name is in english for both languages 
+          #   so if Georgian, use english to find record and then get geo recrod
           indicator = CoreIndicatorTranslation
-                      .where(:locale => row[0] == "Georgian" ? 'ka' : 'en', :name => row[1].strip)
+                      .where(:locale => 'en', :name => row[1].strip)
                       .readonly(false)
+
+          if indicator.present? && row[0] == "Georgian"
+            indicator = CoreIndicatorTranslation
+                      .where(:locale => 'ka', :core_indicator_id => indicator.first.core_indicator_id)
+                      .readonly(false)
+          end
+
           if indicator.present?
             indicator.first.summary = row[2]
             indicator.first.save      
