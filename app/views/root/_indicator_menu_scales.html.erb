@@ -37,7 +37,7 @@
 												:title => core.description_w_parent, :class => is_active %>
                       <% if @shape_type_ids_for_ind_profile.index(@child_shape_type_id).present? %>
                         <div class="profile_link">
-                          <%= link_to(indicator_profile_path(:id => core.id, :event_type_id => params[:event_type_id]), :target => :blank, :title => t('.view_indicator')) do %>
+                          <%= link_to(indicator_profile_path(:id => core.parent_id.present? ? core.parent_id : core.id, :event_type_id => params[:event_type_id]), :target => :blank, :title => t('.view_indicator')) do %>
                             <%= image_tag('magnifier.png') %>
                             <span><%= t('.view_indicator') %></span>
                           <% end %>
