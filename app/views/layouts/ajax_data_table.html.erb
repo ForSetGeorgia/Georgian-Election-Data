@@ -24,6 +24,7 @@
               </th>
               <th>
                 <span>
+                  <%= t('.bar_chart_header') %>
                 </span>
               </th>
               <th>
@@ -333,6 +334,9 @@
           "sUrl": gon.datatable_i18n_url
         },
         "aoColumns": col_sort,
+        "aoColumnDefs": [
+          { 'bSortable': false, 'aTargets': [ 1, 2 ] }
+        ],
         "iDisplayLength": 20,
         "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]]
       });

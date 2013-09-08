@@ -296,6 +296,7 @@ en:
       color_legend_indicator: Selected Indicator in Map
       color_legend_winner: Winner
       color_legend_winner_colors: Table cells that are colored in indicate who won in that row.
+      bar_chart_header: Top Two Winners
       tab_summary: Summary
       tab_details: Details
       data_table_ind_order_explanation: The '%{name}' Indicators are in the order of who won '%{place}'.
