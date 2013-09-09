@@ -9,10 +9,9 @@
 
 require 'csv'
 
-language = ARGV[0]
-input_csv = ARGV[1]
+input_csv = ARGV[0]
 date = Time.now.strftime("%Y%m%d-%H%M")
-output_csv = "dist_prof_#{language}_pars2html_#{date}.csv"
+output_csv = "district_profiles_#{date}.csv"
 output_html = "output.html"
 
 def lastN(n)
@@ -21,19 +20,25 @@ end
 
 CSV.open(output_csv, "wb") do |ocsv|
 
-  CSV.foreach(input_csv) do |icsv|
+  CSV.foreach(input_csv, :encoding => 'utf-8') do |icsv|
     if icsv[1].downcase == 'english'
       district = icsv[2]
       p1 = icsv[3].sub("Tbilisi", "<span>Tbilisi</span>").sub("#{district} Municipality", "<span>#{district} Municipality</span>")
       p2 = icsv[4]
-      p3 = icsv[5].sub("Population of Tbilisi (total)", "<span>Population of Tbilisi (total)</span>")
-      p4 = icsv[6].sub("Population of Tbilisi according to gender:", "<span>Population of Tbilisi according to gender:</span")
-      p5 = icsv[7].sub("Population of Tbilisi according to residence:", "<span>Population of Tbilisi according to residence:</span>")
-      p6 = icsv[8].sub("Population of Tbilisi according to ethnicity:", "<span>Population of Tbilisi according to ethnicity:</span>")
-      p7 = icsv[9].sub("Size of the Tbilisi territory", "<span>Size of the Tbilisi territory</span>").sub("km2", "km<sup>2</sup>")
-      p8 = icsv[10].sub("*the numbers are indicated according to the 2002 nation-wide census. The information about administrational-territorial division was provided by the Ministry of Regional Development and Infrastructure of Georgia on July 17, 2013.", "<span>*the numbers are indicated according to the 2002 nation-wide census. The information about administrational-territorial division was provided by the Ministry of Regional Development and Infrastructure of Georgia on July 17, 2013.</span>")
+      p3 = icsv[5].sub("Population of Tbilisi (total)", "<span>Population of Tbilisi (total)</span>") if icsv[12] == "Yes"
+      p3 = icsv[5].sub("Population (total)", "<span>Population (total)</span>") if icsv[12] != "Yes"
+      p4 = icsv[6].sub("Population of Tbilisi according to gender:", "<span>Population of Tbilisi according to gender:</span") if icsv[12] == "Yes"
+      p4 = icsv[6].sub("Population according to gender:", "<span>Population according to gender:</span>") if icsv[12] != "Yes"
+      p5 = icsv[7].sub("Population of Tbilisi according to residence:", "<span>Population of Tbilisi according to residence:</span>") if icsv[12] == "Yes"
+      p5 = icsv[7].sub("Population according to residence:", "<span>Population according to residence:</span>") if icsv[12] != "Yes"
+      p6 = icsv[8].sub("Population of Tbilisi according to ethnicity:", "<span>Population of Tbilisi according to ethnicity:</span>") if icsv[12] == "Yes"
+      p6 = icsv[8].sub("Population according to ethnicity:", "<span>Population according to ethnicity:</span>") if icsv[12] != "Yes"
+      p7 = icsv[9].sub("Size of the Tbilisi territory", "<span>Size of the Tbilisi territory</span>").sub("km2", "km<sup>2</sup>") if icsv[12] == "Yes"
+      p7 = icsv[9].sub("Size of the territory", "<span>Size of the territory</span>").sub("km2", "km<sup>2</sup>") if icsv[12] != "Yes"
+      p8 = icsv[10]
+      
       if icsv[13] == "Yes"
-        p9 = "  <p>The following villages in <span>#{district}</span> are occupied:\n  <ul>\n"
+        p9 = "  <p>The following villages in <span>#{district}</span> are occupied:\n  <ul class=\"occupied_villages\">\n"
         villages = icsv[15].split("\n")
         
         villages.each do |village|
@@ -43,10 +48,12 @@ CSV.open(output_csv, "wb") do |ocsv|
         p9 << "  </ul>"
         
       end
+      p10 = "<p>#{icsv[11]}</p>"
 
 html = <<eos
 <p>#{p1}</p>
 <p>#{p2}</p>
+#{p10 unless p10.nil?}
 <ul>
   <li>#{p3}</li>
   <li>#{p4}</li>
@@ -55,14 +62,14 @@ html = <<eos
   <li>#{p7}</li>
 </ul>
 #{p9 if p9}
-<p>#{p8}</p>
+<p class="summary_footer">#{p8}</p>
 eos
 
       File.open(output_html, 'a') { |file| file.write(html) }   
       ocsv << [icsv[1], icsv[2], html]
       
     elsif icsv[1].downcase == 'georgian'
-      district = icsv[2]
+      district = icsv[2].clone()
       
       def self.genativize(word)
         if word[-1] == 'ა' or word[-1] == 'ი' or word[-1] == 'ე'
@@ -101,7 +108,7 @@ eos
       p8 = icsv[10]
       
       if icsv[13] == "Yes"
-        p9 = "  <p>შემდეგი სოფლები <span>#{sheize(district)}</span> ოკუპირებულია:</p>\n  <ul>\n"
+        p9 = "  <p>შემდეგი სოფლები <span>#{sheize(district)}</span> ოკუპირებულია:</p>\n  <ul class=\"occupied_villages\">\n"
         villages = icsv[15].split("\n")
         
         villages.each do |village|
@@ -123,7 +130,7 @@ html = <<eos
   <li>#{p7}</li>
 </ul>
 #{p9 if p9}
-<p>#{p8}</p>
+<p class="summary_footer">#{p8}</p>
 eos
 
       File.open(output_html, 'a') { |file| file.write(html) }   
