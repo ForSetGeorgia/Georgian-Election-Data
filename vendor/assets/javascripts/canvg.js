@@ -316,7 +316,7 @@
 				return f;
 			}
 		});
-		
+/*		
 		// points and paths
 		svg.ToNumberArray = function(s) {
 			var a = svg.trim(svg.compressSpaces((s || '').replace(/,/g, ' '))).split(' ');
@@ -325,6 +325,20 @@
 			}
 			return a;
 		}		
+*/		
+    // from: https://code.google.com/p/canvg/issues/detail?id=238
+    svg.ToNumberArray = function(s) {
+			var a = svg.trim(svg.compressSpaces((s || '').replace(/,/g, ' '))).split(' ');
+      var result = [];  // added code
+			for (var i=0; i<a.length; i++) {
+				a[i] = parseFloat(a[i]);
+        if (!isNaN(a[i])) {  // added code
+            result.push(a[i]);  // added code
+        }  // added code
+			}
+			return result;  // it was 'return a;'
+		}		
+		
 		svg.Point = function(x, y) {
 			this.x = x;
 			this.y = y;
