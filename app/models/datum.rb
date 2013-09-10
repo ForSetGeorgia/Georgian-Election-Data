@@ -240,11 +240,15 @@
 		    })
 
         # if limit passed in, filter out the data		    
-        if limit.present? && limit > 0 && data.present? && data.has_key?('shape_data') && data["shape_data"].first.present?
-          summary_data = data["shape_data"].first.select{|x| x.has_key?('summary_data')}
-        
-          if summary_data.present? && summary_data.first.has_key?('data') && summary_data.first["data"].length > limit
-            summary_data.first = summary_data.first["data"][0..limit-1]
+        if limit.present? && limit > 0 && data.present? && data.has_key?('shape_data') && data["shape_data"]
+          data["shape_data"].each do |shape|
+            summary_data = nil
+            summary_index = shape.index{|x| x.has_key?('summary_data')} 
+            summary_data = shape[summary_index] if summary_index.present?
+          
+            if summary_data.present? && summary_data["summary_data"].has_key?('data') && summary_data["summary_data"]["data"].length > limit
+              summary_data["summary_data"]["data"] = summary_data["summary_data"]["data"][0..limit-1]
+            end
           end
     	  end
       else
@@ -540,17 +544,10 @@
           else
             row[:total_turnout_percent] = I18n.t('app.common.total_turnout_perc')
           end
-Rails.logger.debug ")))))))))))))))))))))))))))))))))))))))))))))"
-Rails.logger.debug ")))))))))))))))))))))))))))))))))))))))))))))"
-Rails.logger.debug json["shape_data"]
 
           json["shape_data"].each do |d|
-Rails.logger.debug ")))))))))))))))))))))))))))))))))))))))))))))"
-Rails.logger.debug "- json has shape data"
 
             if d[0]["shape_values"]["shape_name"].present?
-Rails.logger.debug ")))))))))))))))))))))))))))))))))))))))))))))"
-Rails.logger.debug "- shape value has shape name"
               row = Hash.new
               data << row
               row[:shape] = d[0]["shape_values"]["shape_name"]
