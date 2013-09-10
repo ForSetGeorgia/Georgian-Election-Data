@@ -32,6 +32,7 @@ en:
         map_level: Map Level
         map_level_id: "[Level] ID"
         map_level_name: "[Level] Name"
+        map_level_summary: "Top Results In [Level]"
       msgs:
         no_event_db: The event was not found in the database.
         indicator_not_found: Indicator %{name} could not be found.
@@ -300,6 +301,7 @@ en:
       tab_summary: Summary
       tab_details: Details
       data_table_ind_order_explanation: The '%{name}' Indicators are in the order of who won '%{place}'.
+      data_table_filter_explanation: Use the indicator filter list to determine which columns appear in the proceeding table. By default, the first five indicators are shown. If there are less than five indicators for this election, the filter list will not show any more items.
     application:
       title: Georgia Election Data
       ndi_alt: National Democratic Institute

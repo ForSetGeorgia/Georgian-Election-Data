@@ -1,13 +1,11 @@
 <% ci = CoreIndicator %>
 <% has_summary_data = @summary_data.present? && @summary_data.length > 1 %>
 <div class="tabbable">
-  <ul class="nav nav-tabs">
-    <% if has_summary_data %>
-      <li class="active">
-        <%= link_to t('.tab_summary'), "#tab_summary", :'data-toggle' => 'tab' %>
-      </li>
-    <% end %>
-    <li class="<%= has_summary_data ? '' : 'active' %>">
+  <ul class="nav nav-tabs" >
+    <li class="active" style="<%= has_summary_data == true ? '' : 'display:none;' %>">
+      <%= link_to t('.tab_summary'), "#tab_summary", :'data-toggle' => 'tab' %>
+    </li>
+    <li class="<%= has_summary_data ? '' : 'active' %>" style="<%= has_summary_data == true ? '' : 'display:none;' %>">
       <%= link_to t('.tab_details'), "#tab_detail", :'data-toggle' => 'tab' %>
     </li>
   </ul>
@@ -24,7 +22,7 @@
               </th>
               <th>
                 <span>
-                  <%= t('.bar_chart_header') %>
+                  <%= t('models.datum.header.map_level_summary').gsub('[Level]', @summary_data[0][:shape_type]) %>
                 </span>
               </th>
               <th>
@@ -121,6 +119,10 @@
               ind_type_name = @indicator_types[it_index][:name]
             end
           %>
+
+          <div id="data_table_filter_explanation">
+            <%= t('.data_table_filter_explanation') %>
+          </div>
 
           <% if has_summary %>
             <div id="data_table_ind_order_explanation">

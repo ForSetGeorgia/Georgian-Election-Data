@@ -511,6 +511,7 @@
           # create header
           row = Hash.new
           data << row
+          row[:shape_type] = shape_type_name.first.name_singular
           row[:shape] = I18n.t('models.datum.header.map_level_name').gsub('[Level]', shape_type_name.first.name_singular)
           row[:winner_name] = I18n.t('app.common.winner')
           row[:winner_value] = nil

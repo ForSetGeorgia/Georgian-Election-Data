@@ -32,6 +32,7 @@ ka:
         map_level: რუქის დონე
         map_level_id: "[Level] საიდენტიფიკაციო ნომერი"
         map_level_name: "[Level] დასახელება"
+        map_level_summary: "Top Results In [Level]"
       msgs:
         no_event_db: მონაცემთა ბაზაში მოვლენა არ მოიძებნა.
         indicator_not_found: მაჩვენებელი %{name} არ მოიძებნა.
@@ -300,6 +301,7 @@ ka:
       tab_summary: რეზიუმე
       tab_details: დეტალები
       data_table_ind_order_explanation: "'%{name}' მაჩვენებლები დაწყობილია იმის მიხედვით, თუ ვინ მოიგო  '%{place}'."
+      data_table_filter_explanation: Use the indicator filter list to determine which columns appear in the proceeding table. By default, the first five indicators are shown. If there are less than five indicators for this election, the filter list will not show any more items.
     application:
       title: საქართველოს საარჩევნო მონაცემები
       ndi_alt: ეროვნული დემოკრატიული ინსტიტუტი
