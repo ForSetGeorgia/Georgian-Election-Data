@@ -175,7 +175,7 @@
 	         <thead>
 	          <tr>
 	            <% @table_data[0].each_with_index do |value, i| %>
-                <% if i != 1 %>
+                <% if !(i == 1 && has_summary) %>
                 <%
                   cls = ''
 #                  if i > 0 && @table_selected_id.to_s == ind_ids[i-1].to_s
@@ -208,7 +208,7 @@
 
 	            <tr>
 	              <% row.each_with_index do |value, i| %>
-                  <% if i != 1 %>
+                <% if !(i == 1 && has_summary) %>
                   <%
                     cls = ''
                     style = ''
