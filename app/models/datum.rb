@@ -236,8 +236,17 @@
 		          .gsub("[shape_type_id]", shape_type_id.to_s)
 				      .gsub("[data_set_id]", data_set_id.to_s)
 		    data = JSON.parse(JsonCache.fetch_data(key) {
-		      build_summary_from_db(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit).to_json
+		      build_summary_from_db(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type).to_json
 		    })
+
+        # if limit passed in, filter out the data		    
+        if limit.present? && limit > 0 && data.present? && data.has_key?('shape_data') && data["shape_data"].first.present?
+          summary_data = data["shape_data"].first.select{|x| x.has_key?('summary_data')}
+        
+          if summary_data.present? && summary_data.first.has_key?('data') && summary_data.first["data"].length > limit
+            summary_data.first = summary_data.first["data"][0..limit-1]
+          end
+    	  end
       else
         data = build_summary_from_db(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit)        
       end
