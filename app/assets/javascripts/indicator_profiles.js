@@ -221,6 +221,8 @@ function build_indicator_profile_table(json_data){
 
           if (rows[i][j] !== undefined){
             html += rows[i][j];
+          }else{
+            html += gon.profile_table_no_data;
           }
           html += "</td>";
         }
@@ -228,13 +230,16 @@ function build_indicator_profile_table(json_data){
         html += "</tr>";
       }
 
-      if (footnote !== undefined){
-        var colspan = 4;
-        if (rows[0].length < 4){
-          colspan = rows[0].length;
-        }
-        html += "<tfoot><tr><td colspan='" + colspan + "'>" + footnote + "</td></tr></tfoot>";
+      var colspan = 4;
+      if (rows[0].length < 4){
+        colspan = rows[0].length;
       }
+      html += "<tfoot><tr><td colspan='" + colspan + "'>";
+      html += gon.profile_table_no_data_footnote;
+      if (footnote !== undefined){
+        html += "<br />" + footnote;
+      }
+      html += "</td></tr></tfoot>";
 
       html += "</tbody></table>";
       

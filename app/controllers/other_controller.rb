@@ -123,6 +123,8 @@ class OtherController < ApplicationController
       gon.summary_chart_rest = I18n.t('charts.indicator_profile.summary.rest')
       gon.chart_no_data = I18n.t('charts.no_data')
       gon.profile_table_indicator_header = I18n.t('app.common.indicator')
+      gon.profile_table_no_data = I18n.t('app.msgs.profile_table_no_data').html_safe
+      gon.profile_table_no_data_footnote = I18n.t('app.msgs.profile_table_no_data_footnote')
 
       # text for print and export buttons in highcharts
       gon.highcharts_downloadPNG = t('highcharts.downloadPNG')
@@ -189,6 +191,8 @@ class OtherController < ApplicationController
       gon.summary_chart_rest = I18n.t('charts.indicator_profile.summary.rest')
       gon.chart_no_data = I18n.t('charts.no_data')
       gon.profile_table_indicator_header = I18n.t('app.common.indicator')
+      gon.profile_table_no_data = I18n.t('app.msgs.profile_table_no_data').html_safe
+      gon.profile_table_no_data_footnote = I18n.t('app.msgs.profile_table_no_data_footnote')
 
       # text for print and export buttons in highcharts
       gon.highcharts_downloadPNG = t('highcharts.downloadPNG')

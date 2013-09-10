@@ -170,6 +170,8 @@ en:
       dataset_cache_files_created: The default cache files for the dataset were successfully created.
       dataset_cache_files_failed: An error occurred while creating the default cache files for the dataset.
       event_indicator_relationships_missing_params: Please provide all parameters to edit a record.
+      profile_table_no_data: "N/A<sup>†</sup>"
+      profile_table_no_data_footnote: "† - The indicator does not exist for this election."
     common:
       app_name: Georgia Election Data
       yes: Yes
