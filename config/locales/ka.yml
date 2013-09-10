@@ -170,8 +170,8 @@ ka:
       dataset_cache_files_created: სტანდარტული ქეშ მეხსიერების ფაილი წარმატებით შეიქმნა მონაცემთა ნაკრებისთვის.
       dataset_cache_files_failed: შეცდომა მოხდა მონაცემთა ნაკრებისთვის სტანდარტული ქეშ მეხსიერების ფაილის შექმნისას.
       event_indicator_relationships_missing_params: გთხოვთ უზრუნველყოთ ყველა პარამეტრი ჩანაწერის რედაქტირებისთვის.
-      profile_table_no_data: "N/A<sup>†</sup>"
-      profile_table_no_data_footnote: "† - The indicator does not exist for this election."
+      profile_table_no_data: "არ შეესაბამება მოთხოვნას<sup>†</sup>"
+      profile_table_no_data_footnote: "† - ამ არჩევნებისთვის ინდიკატორი არ არსებობს."
     common:
       app_name: საქართველოს საარჩევნო მონაცემები
       yes: დიახ

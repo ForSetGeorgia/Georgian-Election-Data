@@ -356,7 +356,12 @@
   		    </div>
   		  </div>
   		  <div id="export">
-  			   <p><a href="javascript:;" id="export-map" title="<%= t('app.buttons.download_map') %>">Download SVG</a></p>
+  			   <p>
+  			      <a href="javascript:;" id="export-map" title="<%= t('app.buttons.download_map') %>">Download SVG</a>
+              <%= link_to("?",
+  					  export_help_path(:layout => "fancybox"),
+  						  :class => "fancybox", :id=> 'export-map-help', :title => t('app.buttons.download_help')) %>  			      
+  			   </p>
 
   			  
 
