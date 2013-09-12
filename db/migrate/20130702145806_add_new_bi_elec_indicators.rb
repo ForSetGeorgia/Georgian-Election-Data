@@ -13,7 +13,7 @@ class AddNewBiElecIndicators < ActiveRecord::Migration
     init_grp_id = core.id
 
     # Ioseb Manjavidze
-    core = CoreIndicator.create(:indicator_type_id => 2, :number_format => '%')
+    core = CoreIndicator.new(:indicator_type_id => 2, :number_format => '%')
     core.parent_id = init_grp_id
     core.save
     core.core_indicator_translations.create(:locale => 'en', :name => 'Ioseb Manjavidze',
@@ -22,7 +22,7 @@ class AddNewBiElecIndicators < ActiveRecord::Migration
       :name_abbrv => 'მანჯავიძე', :description => 'ხმების გადანაწილება, იოსებ მანჯავიძე (%)')
 
     # Zviad Chitishvili
-    core = CoreIndicator.create(:indicator_type_id => 2, :number_format => '%')
+    core = CoreIndicator.new(:indicator_type_id => 2, :number_format => '%')
     core.parent_id = init_grp_id
     core.save
     core.core_indicator_translations.create(:locale => 'en', :name => 'Zviad Chitishvili',
@@ -31,7 +31,7 @@ class AddNewBiElecIndicators < ActiveRecord::Migration
       :name_abbrv => 'ჩიტიშვილი', :description => 'ხმების გადანაწილება, ზვიად ჩიტიშვილი (%)')
 
     # Roman Robakidze	
-    core = CoreIndicator.create(:indicator_type_id => 2, :number_format => '%')
+    core = CoreIndicator.new(:indicator_type_id => 2, :number_format => '%')
     core.parent_id = init_grp_id
     core.save
     core.core_indicator_translations.create(:locale => 'en', :name => 'Roman Robakidze',
@@ -40,7 +40,7 @@ class AddNewBiElecIndicators < ActiveRecord::Migration
       :name_abbrv => 'რობაქიძე', :description => 'ხმების გადანაწილება, რომან რობაქიძე (%)')
 
     # Zurab Mskhvilidze
-    core = CoreIndicator.create(:indicator_type_id => 2, :number_format => '%')
+    core = CoreIndicator.new(:indicator_type_id => 2, :number_format => '%')
     core.parent_id = init_grp_id
     core.save
     core.core_indicator_translations.create(:locale => 'en', :name => 'Zurab Mskhvilidze',

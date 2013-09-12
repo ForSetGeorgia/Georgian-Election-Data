@@ -1,6 +1,6 @@
 atom_feed do |feed|
 
-	feed.title t '.title_feed', :app_name => (t'app.common.app_name')
+	feed.title t '.title_feed'
 
   feed.updated @news.maximum(:date_posted)
 

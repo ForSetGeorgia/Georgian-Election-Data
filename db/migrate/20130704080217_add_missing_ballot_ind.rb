@@ -86,7 +86,7 @@ class AddMissingBallotInd < ActiveRecord::Migration
 
   def down
     ind_names = ['Precincts with Missing Ballots (%)', 'Precincts with Missing Ballots (#)', 'Average Number of Missing Ballots', 'Number of Missing Ballots']
-    inds = CoreIndicatorTranslations.where(:name => ind_names)
+    inds = CoreIndicatorTranslation.where(:name => ind_names)
     if inds.present?
       CoreIndicator.where(:id => inds.map{|x| x.id}).delete_all
     end
