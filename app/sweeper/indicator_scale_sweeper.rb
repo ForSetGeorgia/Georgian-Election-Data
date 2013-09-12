@@ -27,5 +27,4 @@ Rails.logger.debug "............... clearing all cache for events that have this
       end
     end
   end
-  end
 end
