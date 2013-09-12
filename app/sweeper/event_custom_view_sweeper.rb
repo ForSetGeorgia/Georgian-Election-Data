@@ -18,7 +18,8 @@ class EventCustomViewSweeper < ActionController::Caching::Sweeper
 
   private
   def expire_cache_for(event)
-Rails.logger.debug "............... clearing all cache because of change to event custom view"
-		JsonCache.clear_all
+## do not need to clear cache when custom view is added/changed
+#Rails.logger.debug "............... clearing all cache for the event of this custom view"
+#		JsonCache.clear_all
   end
 end

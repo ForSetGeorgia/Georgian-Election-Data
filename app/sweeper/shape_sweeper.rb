@@ -3,7 +3,7 @@ class ShapeSweeper < ActionController::Caching::Sweeper
 
   # If our sweeper detects that a Shape was created call this
   def after_create(shape)
-    expire_cache_for(shape)
+#    expire_cache_for(shape)
   end
 
   # If our sweeper detects that a Shape was updated call this
@@ -18,7 +18,8 @@ class ShapeSweeper < ActionController::Caching::Sweeper
 
   private
   def expire_cache_for(shape)
-Rails.logger.debug "............... clearing all cache because of change to shapes"
-		JsonCache.clear_all
+Rails.logger.debug "............... clearing all shape file cache using this shape"
+
+		JsonCache.clear_shape_files_by_id(shape.id)
   end
 end

@@ -195,9 +195,15 @@
                 <% end %>
 
 
-								<% if !(params[:controller] == "root" && params[:action] == "index") %>
+								<% if (params[:controller] == "other" && params[:action] == "news") %>
+								  <div id="news_header">
+                    <h1><%= yield(:title) %></h1>
+                    <%= link_to(image_tag('rss.png', :alt => 'RSS'), news_path(:format => :atom), :title => t('.feed-title') ) %>
+                  </div>
+								<% elsif !(params[:controller] == "root" && params[:action] == "index") %>
                    <h1><%= yield(:title) %></h1>
                 <% end %>
+
 
 								<%= yield %>
 		          </div>

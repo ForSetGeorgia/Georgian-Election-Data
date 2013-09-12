@@ -18,7 +18,12 @@ class UniqueShapeNameSweeper < ActionController::Caching::Sweeper
 
   private
   def expire_cache_for(unique_shape_name)
-Rails.logger.debug "............... clearing all cache because of change to unique shape name"
-		JsonCache.clear_all
+Rails.logger.debug "............... clearing shape profile cache because of change to unique shape name"
+		
+    I18n.available_locales.each do |locale|
+  		JsonCache.clear_data_file("profiles/district_events_#{locale}")
+  		JsonCache.clear_data_file("profiles/district_events_table_#{locale}")
+    end
+		
   end
 end

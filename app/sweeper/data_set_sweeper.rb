@@ -18,7 +18,8 @@ class DataSetSweeper < ActionController::Caching::Sweeper
 
   private
   def expire_cache_for(date_set)
-Rails.logger.debug "............... clearing all cache because of change to core indicator"
-		JsonCache.clear_all
+## - don't need since each dataset gets their own unique cache folder
+#Rails.logger.debug "............... clearing all cache because of change to dataset"
+#		JsonCache.clear_all
   end
 end

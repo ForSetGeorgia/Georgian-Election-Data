@@ -22,7 +22,7 @@
 	MEMORY_CACHE_KEY_CHILDREN_DATA =
 		"event_[event_id]/data_set_[data_set_id]/[locale]/children_data/shape_[parent_id]/shape_type_[shape_type_id]/indicator_[indicator_id]/parent_clickable_[parent_shape_clickable]"
 	MEMORY_CACHE_KEY_SUMMARY_CHILDREN_DATA =
-		"event_[event_id]/data_set_[data_set_id]/[locale]/summary_children_data/shape_[parent_id]/shape_type_[shape_type_id]/indicator_type[indicator_type_id]/parent_clickable_[parent_shape_clickable]"
+		"event_[event_id]/data_set_[data_set_id]/[locale]/summary_children_data/shape_[parent_id]/shape_type_[shape_type_id]/indicator_type_[indicator_type_id]/parent_clickable_[parent_shape_clickable]"
 
 	FILE_CACHE_KEY_CUSTOM_CHILDREN_DATA =
 		"event_[event_id]/data_set_[data_set_id]/[locale]/custom_children_data/shape_type_[shape_type_id]/shape_[parent_id]_indicator_[indicator_id]"

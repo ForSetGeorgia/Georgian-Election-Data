@@ -7,6 +7,7 @@ module JsonCache
 	JSON_SHAPE_PATH = "#{JSON_ROOT_PATH}/shapes"
 	JSON_DATA_PATH = "#{JSON_ROOT_PATH}/data"
 	URL_DATA_PATH = "#{URL_PATH}/data"
+	JSON_DATA_EVENT_PATH = "#{JSON_ROOT_PATH}/data/event_[event_id]"
 
 	###########################################
 	### manage files
@@ -76,6 +77,7 @@ module JsonCache
 
 	def self.clear_all_data(event_id = nil)
 		Rails.logger.debug "################## - clearing all data and memory cache"
+		Rails.logger.debug "################## -> event id provided, so only for event #{event_id}" if event_id.present?
 		clear_memory_cache
 		clear_data_files(event_id)
 	end
@@ -96,12 +98,30 @@ module JsonCache
 		FileUtils.rm_rf(JSON_SHAPE_PATH)
 	end
 
+	def self.clear_shape_files_by_id(shape_id)
+		Rails.logger.debug "################## - clearing all shape cache files with shape_id = #{shape_id}"
+		FileUtils.rm_rf(Dir.glob(JSON_SHAPE_PATH + "/**/shape_#{shape_id}.json"))
+	end
+
+	def self.clear_shape_files_by_type(shape_type_id)
+		Rails.logger.debug "################## - clearing all shape cache files with shape_type_id = #{shape_type_id}"
+		FileUtils.rm_rf(Dir.glob(JSON_SHAPE_PATH + "/**/shape_type_#{shape_type_id}"))
+	end
+
 	def self.clear_data_files(event_id=nil)
 		Rails.logger.debug "################## - clearing data cache files"
+		Rails.logger.debug "################## -> event id provided, so only for event #{event_id}" if event_id.present?
 		if event_id
-			FileUtils.rm_rf(JSON_DATA_PATH.gsub("[event_id]", event_id.to_s))
+			FileUtils.rm_rf(JSON_DATA_EVENT_PATH.gsub("[event_id]", event_id.to_s))
 		else
 			FileUtils.rm_rf(JSON_DATA_PATH)
+		end
+	end
+
+	def self.clear_data_file(key)
+		Rails.logger.debug "################## - clearing data cache file for key = #{key}"
+		if key.present?
+			FileUtils.rm_rf(JSON_DATA_PATH + "/" + key + ".json")
 		end
 	end
 
