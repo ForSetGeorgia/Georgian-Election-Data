@@ -305,9 +305,9 @@ logger.debug "---********----- shape type cache"
 		archives = DataArchive.get_archives
 		news = News.data_archives
 
-		if archives && !archives.empty?
+		if archives.present?
 			# now determine which archives have a news story
-			if news && !news.empty?
+			if news.present?
 				# news items with archives, determine which ones have news story
 				archives.each do |archive|
 					index = news.index{|n| n.data_archive_folder == archive["folder"]}

@@ -67,11 +67,12 @@ class OtherController < ApplicationController
   end
 
   def data_archives
-		@archives = available_archives.paginate(:page => params[:page])
+		@archives = available_archives
+		@archives = @archives.paginate(:page => params[:page]) if @archives.present?
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @news }
+      format.json { render json: @archives }
     end
   end
 
@@ -85,7 +86,7 @@ class OtherController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @news }
+      format.json { render json: @archive }
     end
   end
 
