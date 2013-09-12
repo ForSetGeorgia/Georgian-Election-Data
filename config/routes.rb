@@ -128,6 +128,7 @@ ElectionMap::Application.routes.draw do
     match '/data_archives', :to => 'other#data_archives', :as => :data_archives, :via => :get
     match '/data_archives/:data_archive_folder', :to => 'other#data_archive', :as => :data_archive, :via => :get
     match '/news', :to => 'other#news', :as => :news, :via => :get
+    match '/news/:id', :to => 'other#news_show', :as => :news_show, :via => :get
     match '/about', :to => 'other#about', :as => :about, :via => :get
     match '/data_source', :to => 'other#data_source', :as => :data_source, :via => :get
     match '/export_help', :to => 'other#export_help', :as => :export_help, :via => :get

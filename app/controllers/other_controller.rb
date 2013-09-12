@@ -58,10 +58,20 @@ class OtherController < ApplicationController
   end
 
   def news
-    @news = News.recent.with_translations(I18n.locale).paginate(:page => params[:page])
+    @news = News.recent.with_translations(I18n.locale)
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { @news = @news.paginate(:page => params[:page]) }
+      format.json { render json: @news }
+      format.atom { @news }
+    end
+  end
+
+  def news_show
+    @news = News.find(params[:id])
+
+    respond_to do |format|
+      format.html 
       format.json { render json: @news }
     end
   end

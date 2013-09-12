@@ -376,9 +376,13 @@ ka:
       view_indicator: მაჩვენებლის ნახვა
   other:
     news:
+      title_feed: "%{app_name} სიახლეები"
       title: სიახლეები
       data_archives_link: მონაცემთა არქივის ნახვა
       no_news: ვწუხვართ, მაგრამ ამ დროისთვის ახალი ინფორმაცია არ მოიპოვება.
+    news_show:
+      title: სიახლეები
+      data_archives_link: მონაცემთა არქივის ნახვა
     data_archives:
       title: მონაცემთა არქივი
       no_archives: ვწუხვართ, მაგრამ ამ დროისთვის მონაცემთა არქივი არ მოიპოვება.

@@ -376,9 +376,13 @@ en:
       view_indicator: view indicator
   other:
     news:
+      title_feed: "%{app_name} News"
       title: News
       data_archives_link: View Data Archive
       no_news: I am sorry, but at this time we do not have any news.
+    news_show:
+      title: News
+      data_archives_link: View Data Archive
     data_archives:
       title: Data Archives
       no_archives: I am sorry, but at this time we do not have any data archives.
