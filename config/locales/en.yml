@@ -84,6 +84,7 @@ en:
         root_shape_not_found: Row %{row_num} - The root shape for this event was not found.
         root_already_exists: Row %{row_num} - The root record already exists.
         parent_shape_not_found: Row %{row_num} - The parent shape could not be found.
+        shape_geometry_cutoff: Row %{row_num} - The shape geometry is cutoff and does not end properly.
         parent_shape_type_not_found: Row %{row_num} - The parent shape type could not be found.
         not_valid: Row %{row_num} is not valid.
         already_exists: Row %{row_num} already exists in the database.

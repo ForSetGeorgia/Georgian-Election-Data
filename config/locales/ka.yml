@@ -84,6 +84,7 @@ ka:
         root_shape_not_found: რიგი %{row_num} - ამ მოვლენის მთავარი ფორმა (shape) არ მოიძებნა.
         root_already_exists: რიგი %{row_num} - მთავარი ჩანაწერი უკვე არსებობს.
         parent_shape_not_found: რიგი %{row_num} - მთავარი ფორმა (shape) არ მოიძებნა.
+        shape_geometry_cutoff: Row %{row_num} - The shape geometry is cutoff and does not end properly.
         parent_shape_type_not_found: რიგი %{row_num} - მთავარი ფორმის (shape) ტიპი არ მოიძებნა.
         not_valid: რიგი %{row_num} არასწორია.
         already_exists: რიგი %{row_num} უკვე არსებობს მონაცემთა ბაზაში.

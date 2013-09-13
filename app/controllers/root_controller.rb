@@ -518,7 +518,7 @@ logger.debug ">>>>>>>>>>>>>>>> format = xls"
       key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id])
               .gsub('[data_set_id]', params[:data_set_id])
               .gsub('[parent_id]', params[:parent_shape_id])
-
+      
       JsonCache.write_image(key, 'png'){
         params[:img]
       }
