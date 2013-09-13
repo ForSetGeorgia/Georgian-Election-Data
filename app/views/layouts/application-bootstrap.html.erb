@@ -216,10 +216,11 @@
 
     <footer class="container-fluid">
 		  <div class="row-fluid">
-				<div class="ndi-logo span2">
-					<%= link_to(image_tag("ndi-logo.png"), "http://www.ndi.org", :target => "_blank") %>
+				<div class="ndi-logo span4">
+					<%= link_to(image_tag("election_portal.jpg"), "http://electionportal.ge/", :target => "_blank") %>
+					<%= link_to(image_tag("ndi-logo.png", :style => 'height: 37px;'), "http://www.ndi.org", :target => "_blank") %>
 				</div>
-				<div class="footer-nav span8">
+				<div class="footer-nav span4">
 	        <a id="footer_collapsed_menu" class="btn btn-navbar" data-target=".footer-nav-collapse" data-toggle="collapse">
 						<%= image_tag("footer_collapsed_menu.png") %>
 					</a>
@@ -236,27 +237,11 @@
 							<li>
 								<%= link_to t('.contact'), contact_path %>
 							</li>
-							<li class="spacer">|</li>
-							<li>
-								<%= link_to t(".news"), news_path %>
-							</li>
-							<li class="spacer">|</li>
-							<li>
-								<%= link_to t(".data_archives"), data_archives_path %>
-							</li>
 						</ul>
 					</div>
 				</div>
-       <div class="js-logo span2">
-					<ul>
-						<li id="left">
-							<%= t(".js_link_text") %>:
-						</li>
-						<li id="right">
-							<%= link_to(image_tag("jumpstart-logo.png"), "http://www.jumpstart.ge", :target => "_blank") %>
-						</li>
-					</ul>
-				</div>
+       <div class="js-logo span4">
+		    <%= link_to(image_tag("jumpstart-logo.png"), "http://www.jumpstart.ge", :target => "_blank", :title => t('.js_slogan')) %>
 	    </div><!--/row-->
     </footer>
 
