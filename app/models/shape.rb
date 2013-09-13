@@ -82,7 +82,7 @@ class Shape < ActiveRecord::Base
       json["features"] = Array.new(shapes.length) {Hash.new}
 
 			shapes.each_with_index do |shape, i|
-Rails.logger.debug "============================ building shape index #{i}; name = #{shape.common_name}"
+Rails.logger.debug "============================ building shape index #{i}; id = #{shape.id}; name = #{shape.common_name}"
 				json["features"][i]["type"] = "Feature"
 				# have to parse it for the geo is already in json format and
 				# transforming it to json again escapes the "" and breaks openlayers

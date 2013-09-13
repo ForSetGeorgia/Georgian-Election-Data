@@ -1014,9 +1014,6 @@ Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
       	  # get all of the related json data for this indicator
       	  data = build_related_indicator_json(shape.id, shape_type_id, shape_type.is_precinct, event.id, data_set_id, data_type,
       	    event.event_indicator_relationships.where(:core_indicator_id => indicator.core_indicator_id))
-Rails.logger.debug "======================================================"
-Rails.logger.debug "======================================================"
-Rails.logger.debug data
       	  # find the data item with the indicator_id and use it's values to set the shape_values hash
           data_item = data.select{|x| x.has_key?("data_item") && x["data_item"].present? &&
                         x["data_item"]["indicator_id"].to_s == indicator_id.to_s}
