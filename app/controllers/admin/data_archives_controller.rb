@@ -28,8 +28,8 @@ class Admin::DataArchivesController < ApplicationController
 		if request.post?
 			start = Time.now
 			DataArchive.create_files
-			flash[:notice] = I18n.t('data_archives.new.created')
-			send_status_update(I18n.t('data_archives.new.created'), Time.now-start)
+			flash[:notice] = I18n.t('admin.data_archives.new.created')
+			send_status_update(I18n.t('admin.data_archives.new.created'), Time.now-start)
 		end
 	end
 
