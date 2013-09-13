@@ -1,5 +1,7 @@
 # encoding: utf-8
 class OtherController < ApplicationController
+  require 'will_paginate/array'
+
   def about
     @page = Page.with_translations(I18n.locale).find_by_name("about")
 

@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
    protect_from_forgery
 	require 'ostruct'
 	require 'utf8_converter'
+  require 'data_archive'
 
    layout "application-bootstrap"
 

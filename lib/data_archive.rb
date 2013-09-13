@@ -8,7 +8,7 @@ module DataArchive
 	### - format = [ { "folder" => "folder_name" , "date" => "date", "files" => [  {  "url", "file_size", "locale", "file_type"  }  ]  }  ]
 	###########################################
   def self.get_archives
-		Rails.cache.fetch(cache_key) {
+#		Rails.cache.fetch(cache_key) {
 	    files = []
 
 			# get all archive directories in desc order
@@ -49,7 +49,7 @@ module DataArchive
 			  end
 			end
     	files
-		}
+#		}
   end
 
 
@@ -136,12 +136,13 @@ module DataArchive
 
 		logs << ">>>>>>>>>>> total time to create zip files was #{Time.now - start_time} seconds"
 
+=begin
 		# delete the cache of data_archives
 		I18n.available_locales.each do |locale|
 			I18n.locale = locale
 			Rails.cache.delete(cache_key)
 		end
-
+=end
 		# reset the locale
 		I18n.locale = original_locale
 
