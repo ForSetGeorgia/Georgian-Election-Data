@@ -519,7 +519,7 @@
       
     		row = nil
         json = build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, 2)
-        if json.present?
+        if json.present? && json["shape_data"].present?
 
           # create header
           row = Hash.new
