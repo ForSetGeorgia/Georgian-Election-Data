@@ -5,6 +5,10 @@
 		<%= t('.no_archives') %>
 	</p>
 <% else %>
+  <p>
+		<%= t('.explanation') %>
+  </p>
+
 	<% @archives.each do |archive| %>
 		<div id="archive_item">
 			<h3><%= archive["date"] %></h3>
