@@ -45,26 +45,44 @@ class DataSet < ActiveRecord::Base
 	################################
   # - if show to pulic is true, turn on the has_xxx_data for this event
   # - if show public is false, and no other datasets for this event are true, turn off flag
+  # - if data type = official and is public, turn off all existing live datasets 
   def update_data_flag
-    if self.show_to_public
-      self.event.has_live_data = true if self.data_type == Datum::DATA_TYPE[:live]
-      self.event.has_official_data = true if self.data_type == Datum::DATA_TYPE[:official]
-      self.event.save
-    else
-      datasets = DataSet.where(:event_id => self.event_id)
-      if datasets && !datasets.empty?
-        has_live_data = datasets.select{|x| x.show_to_public && x.data_type == Datum::DATA_TYPE[:live]}
-        has_official_data = datasets.select{|x| x.show_to_public && x.data_type == Datum::DATA_TYPE[:official]}
-        if !has_live_data || has_live_data.empty?
-				  self.event.has_live_data = false
-          self.event.save
+    DataSet.transaction do 
+      if self.show_to_public
+        self.event.has_live_data = true if self.data_type == Datum::DATA_TYPE[:live]
+        self.event.has_official_data = true if self.data_type == Datum::DATA_TYPE[:official]
+        self.event.save
+
+        # if this is official and live events existed, turn them off
+        if self.data_type == Datum::DATA_TYPE[:official]
+          live_sets = DataSet.where(:event_id => self.event_id, :data_type => Datum::DATA_TYPE[:live], :show_to_public => true)
+          if live_sets.present?
+            live_sets.each do |set|
+              set.show_to_public = false
+              set.save
+            end
+            # turn off event has_live_data flag
+			      self.event.has_live_data = false
+            self.event.save
+          end
         end
-        if !has_official_data || has_official_data.empty?
-				  self.event.has_official_data = false
-          self.event.save
+      else
+        datasets = DataSet.where(:event_id => self.event_id)
+        if datasets && !datasets.empty?
+          has_live_data = datasets.select{|x| x.show_to_public && x.data_type == Datum::DATA_TYPE[:live]}
+          has_official_data = datasets.select{|x| x.show_to_public && x.data_type == Datum::DATA_TYPE[:official]}
+          if !has_live_data || has_live_data.empty?
+				    self.event.has_live_data = false
+            self.event.save
+          end
+          if !has_official_data || has_official_data.empty?
+				    self.event.has_official_data = false
+            self.event.save
+          end
         end
       end
     end
+        
     # clear the menu cache
     I18n.available_locales.each do |locale|
       Rails.cache.delete("live_event_menu_json_#{locale}")
