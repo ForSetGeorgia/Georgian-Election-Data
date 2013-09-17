@@ -64,13 +64,16 @@
                 <%= @parent_summary_data[1][:winner_name] %>
               </div>
               <div class="bar_item_number" style="color: <%= @parent_summary_data[1][:winner_color] %>;">
-                <%= @parent_summary_data[1][:winner_value] %>
+                <%= @parent_summary_data[1][:winner_number] %>
               </div>
               <div class="bar_item_charts">
                 <div class="bar_item_chart_bg">
                 </div>
-                <div class="bar_item_chart" style="width: <%= @parent_summary_data[1][:winner_value]%>; background-color: <%= @parent_summary_data[1][:winner_color] %>" 
-                    title="<%= "#{@parent_summary_data[1][:winner_name]} - #{@parent_summary_data[1][:winner_value]}" %>">
+                <div class="bar_item_chart" style="width: <%= @parent_summary_data[1][:winner_percent]%>; background-color: <%= @parent_summary_data[1][:winner_color] %>" 
+                    title="<%= "#{@parent_summary_data[1][:winner_name]} - #{@parent_summary_data[1][:winner_percent]}" %>">
+                </div>
+                <div class="bar_item_chart_percent" style="left: <%= @parent_summary_data[1][:winner_percent]%>; color: <%= @parent_summary_data[1][:winner_color] %>">
+                  <%= @parent_summary_data[1][:winner_percent] %>
                 </div>
               </div>
             </div>
@@ -79,13 +82,16 @@
                 <%= @parent_summary_data[1][:second_name] %>
               </div>
               <div class="bar_item_number" style="color: <%= @parent_summary_data[1][:second_color] %>;">
-                <%= @parent_summary_data[1][:second_value] %>
+                <%= @parent_summary_data[1][:second_number] %>
               </div>
               <div class="bar_item_charts">
                 <div class="bar_item_chart_bg">
                 </div>
-                <div class="bar_item_chart" style="width: <%= @parent_summary_data[1][:second_value]%>; background-color: <%= @parent_summary_data[1][:second_color] %>" 
-                    title="<%= "#{@parent_summary_data[1][:second_name]} - #{@parent_summary_data[1][:second_value]}" %>">
+                <div class="bar_item_chart" style="width: <%= @parent_summary_data[1][:second_percent]%>; background-color: <%= @parent_summary_data[1][:second_color] %>" 
+                    title="<%= "#{@parent_summary_data[1][:second_name]} - #{@parent_summary_data[1][:second_percent]}" %>">
+                </div>
+                <div class="bar_item_chart_percent" style="left: <%= @parent_summary_data[1][:second_percent]%>; color: <%= @parent_summary_data[1][:second_color] %>">
+                  <%= @parent_summary_data[1][:second_percent] %>
                 </div>
               </div>
             </div>
@@ -118,13 +124,16 @@
                 <%= @root_summary_data[1][:winner_name] %>
               </div>
               <div class="bar_item_number" style="color: <%= @root_summary_data[1][:winner_color] %>;">
-                <%= @root_summary_data[1][:winner_value] %>
+                <%= @root_summary_data[1][:winner_number] %>
               </div>
               <div class="bar_item_charts">
                 <div class="bar_item_chart_bg">
                 </div>
-                <div class="bar_item_chart" style="width: <%= @root_summary_data[1][:winner_value]%>; background-color: <%= @root_summary_data[1][:winner_color] %>" 
-                    title="<%= "#{@root_summary_data[1][:winner_name]} - #{@root_summary_data[1][:winner_value]}" %>">
+                <div class="bar_item_chart" style="width: <%= @root_summary_data[1][:winner_percent]%>; background-color: <%= @root_summary_data[1][:winner_color] %>" 
+                    title="<%= "#{@root_summary_data[1][:winner_name]} - #{@root_summary_data[1][:winner_percent]}" %>">
+                </div>
+                <div class="bar_item_chart_percent" style="left: <%= @root_summary_data[1][:winner_percent]%>; color: <%= @root_summary_data[1][:winner_color] %>">
+                  <%= @root_summary_data[1][:winner_percent] %>
                 </div>
               </div>
             </div>
@@ -133,13 +142,16 @@
                 <%= @root_summary_data[1][:second_name] %>
               </div>
               <div class="bar_item_number" style="color: <%= @root_summary_data[1][:second_color] %>;">
-                <%= @root_summary_data[1][:second_value] %>
+                <%= @root_summary_data[1][:second_number] %>
               </div>
               <div class="bar_item_charts">
                 <div class="bar_item_chart_bg">
                 </div>
-                <div class="bar_item_chart" style="width: <%= @root_summary_data[1][:second_value]%>; background-color: <%= @root_summary_data[1][:second_color] %>" 
-                    title="<%= "#{@root_summary_data[1][:second_name]} - #{@root_summary_data[1][:second_value]}" %>">
+                <div class="bar_item_chart" style="width: <%= @root_summary_data[1][:second_percent]%>; background-color: <%= @root_summary_data[1][:second_color] %>" 
+                    title="<%= "#{@root_summary_data[1][:second_name]} - #{@root_summary_data[1][:second_percent]}" %>">
+                </div>
+                <div class="bar_item_chart_percent" style="left: <%= @root_summary_data[1][:second_percent]%>; color: <%= @root_summary_data[1][:second_color] %>">
+                  <%= @root_summary_data[1][:second_percent] %>
                 </div>
               </div>
             </div>
@@ -176,130 +188,6 @@
         </div>
       </div>
     </div>
-      
-      
-      
-      
-      
-<!--      
-      
-      
-      
-      
-        <div class="span2" id="summary_map_img">
-          <% if @parent_summary_img.present? %>
-            <% 
-             style_parent = ''
-             style_child = ''
-              if @parent_summary_img_json.present? 
-                 orig_width = @parent_summary_img_json['width'].present? ? @parent_summary_img_json['width'] : '0'
-                 orig_height = @parent_summary_img_json['height'].present? ? @parent_summary_img_json['height'] : '0'
-                 style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
-                 style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
-                 style_img = style_width + style_height
-               end
-             %>
-            <%= image_tag(@parent_summary_img, :style => style_img, 
-                :'data-width' => orig_width, :'data-height' => orig_height) %>
-            
-          <% end %>
-        </div>
-        <div class="span4">
-          <h3><%= t('.summary_data_above_map.parent_header', :shape => @parent_summary_data[1][:shape]) %></h3>
-          <div class="row-fluid" style="color: <%= @parent_summary_data[1][:winner_color]%>;">
-            <div class="span3">
-              <%= @parent_summary_data[1][:winner_name] %>
-            </div>
-            <div class="span1">
-              <%= @parent_summary_data[1][:winner_value] %>
-            </div>
-            <div class="span8">
-              <div style="width: <%= @parent_summary_data[1][:winner_value]%>; background-color: <%= @parent_summary_data[1][:winner_color]%>;">&nbsp;</div>
-            </div>
-          </div>
-          <div class="row-fluid" style="color: <%= @parent_summary_data[1][:second_color]%>;">
-            <div class="span3">
-              <%= @parent_summary_data[1][:second_name] %>
-            </div>
-            <div class="span1">
-              <%= @parent_summary_data[1][:second_value] %>
-            </div>
-            <div class="span8">
-              <div style="width: <%= @parent_summary_data[1][:second_value]%>; background-color: <%= @parent_summary_data[1][:second_color]%>;">&nbsp;</div>
-            </div>
-          </div>
-        </div>  
-        <% if @root_summary_data.present? && @root_summary_data.length > 1 %>
-          <div class="span2">
-            <% if @root_summary_img.present? %>
-              <% 
-               style_parent = ''
-               style_child = ''
-                if @root_summary_img_json.present? 
-                 orig_width = @root_summary_img_json['width'].present? ? @root_summary_img_json['width'] : '0'
-                 orig_height = @root_summary_img_json['height'].present? ? @root_summary_img_json['height'] : '0'
-                 style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
-                 style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
-                 style_img = style_width + style_height
-               end
-             %>
-              <%= image_tag(@root_summary_img, :style => style_img, 
-                  :'data-width' => orig_width, :'data-height' => orig_height) %>
-            <% end %>
-          </div>
-          <div class="span4">
-            <h3><%= t('.summary_data_above_map.parent_header', :shape => @root_summary_data[1][:shape]) %></h3>
-            <div class="row-fluid" style="color: <%= @root_summary_data[1][:winner_color]%>;">
-              <div class="span3">
-                <%= @root_summary_data[1][:winner_name] %>
-              </div>
-              <div class="span1">
-                <%= @root_summary_data[1][:winner_value] %>
-              </div>
-              <div class="span8">
-                <div style="width: <%= @root_summary_data[1][:winner_value]%>; background-color: <%= @root_summary_data[1][:winner_color]%>;">&nbsp;</div>
-              </div>
-            </div>
-            <div class="row-fluid" style="color: <%= @root_summary_data[1][:second_color]%>;">
-              <div class="span3">
-                <%= @root_summary_data[1][:second_name] %>
-              </div>
-              <div class="span1">
-                <%= @root_summary_data[1][:second_value] %>
-              </div>
-              <div class="span8">
-                <div style="width: <%= @root_summary_data[1][:second_value]%>; background-color: <%= @root_summary_data[1][:second_color]%>;">&nbsp;</div>
-              </div>
-            </div>
-          </div>  
-        <% else %>
-          <div class="span6">
-            <div id="summary_total_turnout">
-              <div class="half_circle hold">
-                <div class="pie"></div>
-              </div>
-              <% 
-                perc = @parent_summary_data[1][:total_turnout_percent].gsub('%','').to_f
-                ang = (180 * perc / 100)
-              %>
-              <div class="tt_percent_circle hold">
-                <div class="pie"  
-                  style="-ms-transform:rotate(<%= ang%>deg); -moz-transform:rotate(<%= ang%>deg); -webkit-transform:rotate(<%= ang%>deg); -o-transform:rotate(<%= ang%>deg);	transform:rotate(<%= ang%>deg);">
-                </div>
-              </div>
-              <div class="tt_number_circle_text">
-                  <%= t('app.common.total_turnout') %>:
-                  <%= @parent_summary_data[1][:total_turnout_number] %>
-              </div>
-              <div class="tt_percent_circle_text">
-                  <%= @parent_summary_data[1][:total_turnout_percent] %>
-              </div>
-            </div>
-          </div>  
-        <% end %>
-      </div>
-    </div>  
--->    
   <% end %>
 
   <div id="shape_nav_social_links" class="row-fluid">

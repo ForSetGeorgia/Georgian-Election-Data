@@ -504,7 +504,7 @@
 	end
 
   # returns:
-  # [ {shape, winner_name, winner_value, second_name, second_value, total_turnout_number, total_turnout_percent} ]
+  # [ {shape, winner_name, winner_percent, winner_number, second_name, second_percent, second_number, total_turnout_number, total_turnout_percent} ]
   def self.get_table_data_summary(event_id, data_set_id, shape_type_id, shape_id, indicator_type_id, data_type)
 		start = Time.now
 		data = []
@@ -527,10 +527,12 @@
           row[:shape_type] = shape_type_name.first.name_singular
           row[:shape] = I18n.t('models.datum.header.map_level_name').gsub('[Level]', shape_type_name.first.name_singular)
           row[:winner_name] = I18n.t('app.common.winner')
-          row[:winner_value] = nil
+          row[:winner_number] = nil
+          row[:winner_percent] = nil
           row[:winner_color] = nil
           row[:second_name] = I18n.t('app.common.second_place')
-          row[:second_value] = nil
+          row[:second_number] = nil
+          row[:second_percent] = nil
           row[:second_color] = nil
           tt_num = json["shape_data"].first.select{|x| x.has_key?("data_item") && x["data_item"]["core_indicator_id"] == 15}
           if tt_num.present?
@@ -552,10 +554,12 @@
               data << row
               row[:shape] = d[0]["shape_values"]["shape_name"]
               row[:winner_name] = nil
-              row[:winner_value] = nil
+              row[:winner_number] = nil
+              row[:winner_percent] = nil
               row[:winner_color] = nil
               row[:second_name] = nil
-              row[:second_value] = nil
+              row[:second_number] = nil
+              row[:second_percent] = nil
               row[:second_color] = nil
               row[:total_turnout_number] = nil
               row[:total_turnout_percent] = nil
@@ -565,13 +569,13 @@
                 row[:winner_name] = d[1]["summary_data"]["data"][0]["indicator_name"] 
                 cell = d[1]["summary_data"]["data"][0]["formatted_value"]
                 cell << d[1]["summary_data"]["data"][0]["number_format"] if d[1]["summary_data"]["data"][0]["number_format"].present? 
-                row[:winner_value] = cell
+                row[:winner_percent] = cell
                 row[:winner_color] = d[1]["summary_data"]["data"][0]["color"] 
                 # 2nd place
                 row[:second_name] = d[1]["summary_data"]["data"][1]["indicator_name"] 
                 cell = d[1]["summary_data"]["data"][1]["formatted_value"]
                 cell << d[1]["summary_data"]["data"][1]["number_format"] if d[1]["summary_data"]["data"][1]["number_format"].present? 
-                row[:second_value] = cell
+                row[:second_percent] = cell
                 row[:second_color] = d[1]["summary_data"]["data"][1]["color"] 
               end
               
@@ -581,6 +585,23 @@
                 cell = tt_num.first["data_item"]["formatted_value"]
                 cell << tt_num.first["data_item"]["number_format"] if tt_num.first["data_item"]["number_format"].present? 
                 row[:total_turnout_number] = cell
+#TODO
+################################              
+###  hack!!!!!!!!!!!  ##########              
+################################              
+
+# compute number from percent * total turnout #
+num = tt_num.first["data_item"]["value"].present? ? tt_num.first["data_item"]["value"].to_f : 0
+perc = d[1]["summary_data"]["data"][0]["value"].present? ? d[1]["summary_data"]["data"][0]["value"].to_f : 0
+row[:winner_number] = ActionController::Base.helpers.number_with_delimiter((num * perc / 100).floor)
+perc = d[1]["summary_data"]["data"][1]["value"].present? ? d[1]["summary_data"]["data"][1]["value"].to_f : 0
+row[:second_number] = ActionController::Base.helpers.number_with_delimiter((num * perc / 100).floor)
+
+
+################################              
+################################              
+################################              
+
               end
               
               # total turnout %
@@ -590,6 +611,8 @@
                 cell << tt_num.first["data_item"]["number_format"] if tt_num.first["data_item"]["number_format"].present? 
                 row[:total_turnout_percent] = cell
               end
+              
+              
             end
           end
         end

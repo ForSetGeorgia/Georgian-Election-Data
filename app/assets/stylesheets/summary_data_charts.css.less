@@ -1,16 +1,16 @@
 #summary_data_above_map{
   font-family: Tahoma, Geneva, sans-serif;
   background-color: #fff;
-  padding: 10px 10px 0;
+  padding: 0 10px 0;
   margin-top: -10px;
   margin-bottom: 5px;
 
   & > div.row-fluid .span6{
     overflow: hidden; /* clear the float */
-    padding: 10px;
+    padding: 0 10px;
     .map_image{
-      width: 130px;
-      height: 130px;
+      width: 115px;
+      height: 115px;
       padding: 0;
       float: left;
       position: relative;
@@ -25,7 +25,7 @@
     }
     .bar_items{
       overflow: hidden;
-      padding-top: 32px;
+      padding-top: 25px;
       padding-left: 10px;
       & > h3{
         font-family: Tahoma, Geneva, sans-serif;
@@ -46,7 +46,8 @@
           width: 250px;
         }
         & > .bar_item_number{
-          width: 50px;
+          width: 60px;
+          text-align: right;
         }
         & > .bar_item_charts{
           position: relative;
@@ -65,12 +66,19 @@
           & > .bar_item_chart{
             height: 12px;
           }
+          & > .bar_item_chart_percent{
+            font-size: 11px;
+            line-height: 11px;
+            padding-left: 7px;
+            padding-top: 1px;
+          }
         }
       }
     }
     
     #summary_total_turnout{
       vertical-align: top;
+      padding-top: 5px;
       #summary_total_turnout_container{
         height: 110px;
         width: 176px;
@@ -135,7 +143,8 @@
           position: absolute;
           left: 0px;
           top: 88px;
-          color: #7799b3;
+/*          color: #7799b3;*/
+          color: #4d4d4d;
           z-index:200;
           text-align: left;
           font-weight: bold;

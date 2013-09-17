@@ -44,13 +44,16 @@
                       <%= data[:winner_name] %>
                     </div>
                     <div class="summary_bar_chart_number" style="color: <%= data[:winner_color] %>;">
-                      <%= data[:winner_value] %>
+                      <%= data[:winner_number] %>
                     </div>
                     <div class="summary_bar_chart_charts">
                       <div class="summary_bar_chart_bg">
                       </div>
-                      <div class="summary_bar_chart" style="width: <%= data[:winner_value]%>; background-color: <%= data[:winner_color] %>" 
-                          title="<%= "#{data[:winner_name]} - #{data[:winner_value]}" %>">
+                      <div class="summary_bar_chart" style="width: <%= data[:winner_percent]%>; background-color: <%= data[:winner_color] %>" 
+                          title="<%= "#{data[:winner_name]} - #{data[:winner_percent]}" %>">
+                      </div>
+                      <div class="summary_bar_chart_percent" style="left: <%= data[:winner_percent]%>; color: <%= data[:winner_color] %>">
+                        <%= data[:winner_percent] %>
                       </div>
                     </div>
                   </div>
@@ -59,15 +62,18 @@
                       <%= data[:second_name] %>
                     </div>
                     <div class="summary_bar_chart_number" style="color: <%= data[:second_color] %>;">
-                      <%= data[:second_value] %>
+                      <%= data[:second_number] %>
                     </div>
                     <div class="summary_bar_chart_charts">
                       <div class="summary_bar_chart_bg">
                         &nbsp;
                       </div>
-                      <div class="summary_bar_chart" style="width: <%= data[:second_value]%>; background-color: <%= data[:second_color] %>" 
-                          title="<%= "#{data[:second_name]} - #{data[:second_value]}" %>">
+                      <div class="summary_bar_chart" style="width: <%= data[:second_percent]%>; background-color: <%= data[:second_color] %>" 
+                          title="<%= "#{data[:second_name]} - #{data[:second_percent]}" %>">
                         &nbsp;
+                      </div>
+                      <div class="summary_bar_chart_percent" style="left: <%= data[:second_percent]%>; color: <%= data[:second_color] %>">
+                        <%= data[:second_percent] %>
                       </div>
                     </div>
                   </div>

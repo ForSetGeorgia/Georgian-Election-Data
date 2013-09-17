@@ -157,7 +157,8 @@
           width: 250px;
         }
         & > .summary_bar_chart_number{
-          width: 50px;
+          width: 60px;
+          text-align: right;
         }
         & > .summary_bar_chart_charts{
           position: relative;
@@ -175,6 +176,12 @@
           }
           & > .summary_bar_chart{
             height: 12px;
+          }
+          & > .summary_bar_chart_percent{
+            font-size: 11px;
+            line-height: 11px;
+            padding-left: 7px;
+            padding-top: 1px;
           }
         }
       }
@@ -243,7 +250,8 @@
         .tt_number_circle_text{
             position: absolute;
             top: 70px;
-            color: #7799b3;
+/*          color: #7799b3;*/
+            color: #4d4d4d;
             z-index:200;
             text-align: left;
             font-weight: bold;
