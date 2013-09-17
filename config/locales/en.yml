@@ -389,7 +389,7 @@ en:
     data_archives:
       title: Data Archives
       no_archives: I am sorry, but at this time we do not have any data archives.
-      explanation: Data Archives contains data from all elections and voter lists contained in this application.  Each election and voters list has its own data file and all of these files are compressed into a ZIP format.
+      explanation: Data Archives is a collection of all data from each election and voter list contained in this application.  Each election and voters list has its own data file and all of these files are compressed into a ZIP format.
     data_archive:
       title: Data Archives
       view_all: View All Data Archive Records
