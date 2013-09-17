@@ -389,7 +389,7 @@ ka:
     data_archives:
       title: მონაცემთა არქივი
       no_archives: ვწუხვართ, მაგრამ ამ დროისთვის მონაცემთა არქივი არ მოიპოვება.
-      explanation: Data Archives is a collection of all data from each election and voter list contained in this application.  Each election and voters list has its own data file and all of these files are compressed into a ZIP format.
+      explanation: მონაცემთა არქივი არის ნაკრები არჩევნების მონაცემების და ამომრჩეველთა სიისა, რომელსაც შეიცავს ეს აპლიკაცია. თითოეულ არჩევნებს და ამომრჩეველთა სიას გააჩნია საკუთარი მონაცემთა ფაილი და ყველა ეს ფაილი დაკომპრესებულია ZIP ფორმატში. 
     data_archive:
       title: მონაცემთა არქივი
       view_all: სრული მონაცემთა არქივის ნახვა
