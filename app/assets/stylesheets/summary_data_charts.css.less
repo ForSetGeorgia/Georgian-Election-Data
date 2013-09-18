@@ -25,7 +25,7 @@
     }
     .bar_items{
       overflow: hidden;
-      padding-top: 25px;
+      padding-top: 20px;
       padding-left: 10px;
       & > h3{
         font-family: Tahoma, Geneva, sans-serif;
@@ -33,14 +33,15 @@
         text-transform: uppercase;
         font-size: 16px;
         padding-left: 3px;
-        margin-bottom: 0;
       }
       & > .bar_item{
         text-align: left;
         overflow: hidden; /* clear the float */
+        margin-bottom: 7px;
         & > div{
           float: left;
-          padding: 3px 5px;
+          padding: 2px 5px;
+          line-height: 15px;
         }
         & > .bar_item_name{
           width: 250px;
@@ -54,23 +55,18 @@
           float: none;
           overflow: hidden;
           height: 15px; 
-          padding-top: 6px;
           & > div{
             position: absolute;
-            height: 12px;
+            height: 15px;
           }
           & > .bar_item_chart_bg{
             width: 100%;
             background-color: #eeefef;
           }
-          & > .bar_item_chart{
-            height: 12px;
-          }
           & > .bar_item_chart_percent{
-            font-size: 11px;
-            line-height: 11px;
-            padding-left: 7px;
-            padding-top: 1px;
+            padding-left: 10px;
+            top: 2px;
+            line-height: 15px;
           }
         }
       }
@@ -81,26 +77,26 @@
       padding-top: 5px;
       #summary_total_turnout_container{
         height: 110px;
-        width: 176px;
+        width: 170px;
         margin: 0 auto;
         position: relative;
       }
       .hold{
-        width:176px;
-        height:176px;
-        clip:rect(0px,176px,176px,88px);
+        width:170px;
+        height:170px;
+        clip:rect(0px,170px,170px,85px);
         position:absolute;
-        top: 0;
+        top: 3px;
         left: 0;
       }
       .pie {
         position:absolute;
-        width:176px;
-        height:176px;
-        clip:rect(0px,88px,176px,0px);
-        -moz-border-radius:88px;
-        -webkit-border-radius:88px; 
-        border-radius:88px; 
+        width:170px;
+        height:170px;
+        clip:rect(0px,85px,170px,0px);
+        -moz-border-radius:85px;
+        -webkit-border-radius:85px; 
+        border-radius:85px; 
       }
       .half_circle {
         -ms-transform:rotate(-90deg);
@@ -133,7 +129,7 @@
       .tt_percent_circle_text{
           position: absolute;
           left: 20px;
-          top: 62px;
+          top: 65px;
           color: #4d4d4d;
           z-index:200;
           font-size: 14px;
@@ -141,16 +137,15 @@
       }
       .tt_number_circle_text{
           position: absolute;
-          left: 0px;
+          left: -22px;
           top: 88px;
-/*          color: #7799b3;*/
           color: #4d4d4d;
           z-index:200;
-          text-align: left;
           font-weight: bold;
           font-size: 12px;
-          width: 178px;
+          width: 212px;
           font-family: Tahoma, Geneva, sans-serif;
+          text-align: center;
       }
     }    
   }

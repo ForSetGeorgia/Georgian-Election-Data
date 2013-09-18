@@ -149,9 +149,11 @@
       & > .summary_bar_chart_container2a{
         text-align: left;
         overflow: hidden; /* clear the float */
+        margin-bottom: 7px;
         & > div{
           float: left;
-          padding: 3px 5px;
+          padding: 2px 5px;
+          line-height: 15px;
         }
         & > .summary_bar_chart_name{
           width: 250px;
@@ -165,23 +167,18 @@
           float: none;
           overflow: hidden;
           height: 15px; 
-          padding-top: 6px;
           & > div{
             position: absolute;
-            height: 12px;
+            height: 15px;
           }
           & > .summary_bar_chart_bg{
             width: 100%;
             background-color: #eeefef;
           }
-          & > .summary_bar_chart{
-            height: 12px;
-          }
           & > .summary_bar_chart_percent{
-            font-size: 11px;
-            line-height: 11px;
-            padding-left: 7px;
-            padding-top: 1px;
+            padding-left: 10px;
+            top: 2px;
+            line-height: 15px;
           }
         }
       }
@@ -201,7 +198,7 @@
 	        height:120px;
 	        clip:rect(0px,120px,120px,60px);
 	        position:absolute;
-	        top: 10px;
+	        top: 5px;
         }
         .pie {
 	        position:absolute;
@@ -243,17 +240,18 @@
         .tt_percent_circle_text{
             position: absolute;
             left: 11px;
-            top: 50px;
+            top: 45px;
             color: #4d4d4d;
             z-index:200;
         }
         .tt_number_circle_text{
             position: absolute;
-            top: 70px;
-/*          color: #7799b3;*/
+            top: 65px;
+            left: -27px;
+            width: 175px;
+            text-align: center;
             color: #4d4d4d;
             z-index:200;
-            text-align: left;
             font-weight: bold;
             font-size: 10px;
         }
