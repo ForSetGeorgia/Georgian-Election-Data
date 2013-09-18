@@ -37,5 +37,17 @@ class ShapeType < ActiveRecord::Base
 		end
 
 	end
+	
+	
+	# get ids of shape types that are precincts
+	def self.precint_ids
+	  ids = nil
+	  x = select('id').precincts
+	  
+	  if x.present?
+	    ids = x.map{|x| x.id}
+	  end
+	  return ids 
+	end
 
 end

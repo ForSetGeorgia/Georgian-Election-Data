@@ -93,6 +93,55 @@ class Event < ActiveRecord::Base
 		.order("events.id")
 	end
 
+
+  # get the number of each event type that is public and 
+  # how many data items are in each event type
+  ###########################
+  ###### NOTE: values are hardcoded into this method
+  ###########################
+  def self.election_type_stats()
+      data = Hash.new
+    
+    sql = "select x.event_type_id, x.id, x.data_set_id "
+    sql << "from (select e.event_type_id, e.id, ds.id as data_set_id, ds.data_type, ds.timestamp "
+    sql << "from events as e inner join data_sets as ds on ds.event_id = e.id "
+    sql << "where ds.show_to_public = 1 "
+    sql << "order by e.event_type_id, e.id, ds.timestamp desc, ds.id desc) as x "
+    sql << "group by event_type_id, id"
+
+    x = find_by_sql(sql)
+
+    if x.present?
+      election_types = [1,3,4,5]
+      election_ind_id = 15
+      voter_list_types = [2]
+      voter_list_ind_id = 17
+      shape_type_ids = ShapeType.precint_ids
+      
+      # get election stats
+      ids = x.select{|x| election_types.index(x.event_type_id).present?}.map{|x| x[:data_set_id]}
+      total_data = Datum.joins(:indicator)
+            .where(:indicators => {:core_indicator_id => election_ind_id, :shape_type_id => shape_type_ids}, :data => {:data_set_id => ids})
+            .sum(:value)
+      hash = Hash.new
+      hash[:total] = ids.length
+      hash[:total_data] = ActionController::Base.helpers.number_with_delimiter(total_data)
+      data[:elections] = hash
+      
+      # get voter list stats
+      ids = x.select{|x| voter_list_types.index(x.event_type_id).present?}.map{|x| x[:data_set_id]}
+      total_data = Datum.joins(:indicator)
+            .where(:indicators => {:core_indicator_id => voter_list_ind_id, :shape_type_id => shape_type_ids}, :data => {:data_set_id => ids})
+            .sum(:value)
+      hash = Hash.new
+      hash[:total] = ids.length
+      hash[:total_data] = ActionController::Base.helpers.number_with_delimiter(total_data)
+      data[:voters_list] = hash
+    end
+    
+    return data
+  end
+
   # clone the event and its translations
   def self.clone_from_event(event_id, event_date)
     event = nil
