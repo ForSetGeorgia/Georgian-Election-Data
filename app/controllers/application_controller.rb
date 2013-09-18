@@ -201,7 +201,7 @@ logger.debug "---********----- shape type cache"
   		gon.tile_url = "http://tile.openstreetmap.org/${z}/${x}/${y}.png"
       gon.is_development = true
     else
-      gon.tile_url = "http://a.tiles.mapbox.com/v3/jsgeorgia.map-e254jl56/${z}/${x}/${y}.png"
+      gon.tile_url = "http://a.tiles.mapbox.com/v3/jsgeorgia.map-mdl2hre2/${z}/${x}/${y}.png"
     end
 
     gon.openlayers_img_path = "/assets/img/"

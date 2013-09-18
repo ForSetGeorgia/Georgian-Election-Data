@@ -257,9 +257,9 @@ en:
       summary: Summary
       added_on: "Added on: %{date}" 
       district: District
-      total_turnout: "Total Turnout"
-      total_turnout_num: "Total Turnout (#)"
-      total_turnout_perc: "Total Turnout (%)"
+      total_turnout: "Total Voter Turnout"
+      total_turnout_num: "Total Voter Turnout (#)"
+      total_turnout_perc: "Total Voter Turnout (%)"
   highcharts:
     downloadPNG: "Download PNG image"
     downloadJPEG: "Download JPEG image"
