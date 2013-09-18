@@ -14,6 +14,7 @@ if (gon.openlayers){
 	scale_nodata['name'] = gon.no_data_text;
 	scale_nodata['color'] = color_nodata;
 	var opacity = "0.6";
+  var legend_opacity = "1.0";
 	var map_opacity = "0.7";
 	var minZoom = 7;
 	var map_width_indicators_fall = 667;
@@ -504,7 +505,7 @@ console.log('scaling root summary images');
 		  // create legend
 		  for (var i=0; i<json_data["indicator"]["scales"].length; i++)
 		  {
-		    legend.append('<li><span style="background-color: ' + json_data["indicator"]["scale_colors"][i] + '; opacity: ' + opacity + '; filter:alpha(opacity=' + (parseFloat(opacity)*100) + ');"></span> ' + json_data["indicator"]["scales"][i].name + '</li>');
+		    legend.append('<li><span style="background-color: ' + json_data["indicator"]["scale_colors"][i] + '; opacity: ' + legend_opacity + '; filter:alpha(opacity=' + (parseFloat(legend_opacity)*100) + ');"></span> ' + json_data["indicator"]["scales"][i].name + '</li>');
 			}
 		} else  if (json_data["indicator"]["scales"] && json_data["indicator"]["scales"].length > 0 && json_data["indicator"]["scale_colors"] && json_data["indicator"]["scale_colors"].length > 0){
 			var color = "";
@@ -516,7 +517,7 @@ console.log('scaling root summary images');
 					color = json_data["indicator"]["scale_colors"][i];
 				}
 
-		    legend.append('<li><span style="background-color: ' + color + '; opacity: ' + opacity + '; filter:alpha(opacity=' + (parseFloat(opacity)*100) + ');"></span> ' + format_number(json_data["indicator"]["scales"][i].name) + '</li>');
+		    legend.append('<li><span style="background-color: ' + color + '; opacity: ' + legend_opacity + '; filter:alpha(opacity=' + (parseFloat(legend_opacity)*100) + ');"></span> ' + format_number(json_data["indicator"]["scales"][i].name) + '</li>');
 			}
 		} else {
 			// no legend

@@ -63,7 +63,7 @@ function build_popup_table_summary_data(json){
 
       html += "<td class='map_popup_table_cell4'>";
       if (!isNaN(json.data[i].value)){
-        html += "<div style='width: " + Number(json.data[i].value) + "%;'>&nbsp;</div>";
+        html += "<div style='width: " + Number(json.data[i].value) + "%; background-color: " + json.data[i].color + ";'>&nbsp;</div>";
       }
       html += "</td>";
 
