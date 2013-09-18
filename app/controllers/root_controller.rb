@@ -414,13 +414,13 @@ logger.debug "//////////////////////////////////////////////////////// done with
 			# get the detailed data
 		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:child_shape_type_id], params[:shape_id], params[:shape_type_id])
 
-			if get_data.present? && get_data[:data].present?
+			if get_data.present? && get_data['data'].present? && get_data['indicator_types'].present?
         cols_skip = 3
         cols_static = 1
 
         @default_cols_show = 5
-        @table_data = get_data[:data]
-        @indicator_types = get_data[:indicator_types]
+        @table_data = get_data['data']
+        @indicator_types = get_data['indicator_types']
         @table_selected_id = ''
         # the data contains the election name, common name, common id in first 3 cols
         # and we don't need - so skip

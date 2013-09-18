@@ -119,10 +119,10 @@
             ind_colors = []
             has_summary = false
             ind_type_name = nil
-            it_index = @indicator_types.index{|x| x[:has_summary] == true}
+            it_index = @indicator_types.index{|x| x['has_summary'] == true}
             if it_index.present?
               has_summary = true
-              ind_type_name = @indicator_types[it_index][:name]
+              ind_type_name = @indicator_types[it_index]['name']
             end
           %>
 
@@ -140,38 +140,38 @@
             <select id="data_table_filter" class="event_filter_select chzn-select" multiple>
               <% option_index = 0 %>
               <% @indicator_types.each_with_index do |type, i| %>
-                <optgroup label="<%= type[:name] %>">
+                <optgroup label="<%= type['name'] %>">
                   <% if type[:has_summary] %>
                     <%# has_summary = true %>
                     <%
                       selected = ''
-                      if @table_selected_id.to_s == "ind_type_#{type[:id]}" || option_index < @default_cols_show
+                      if @table_selected_id.to_s == "ind_type_#{type['id']}" || option_index < @default_cols_show
                         selected << 'selected=selected'
                       end
                     %>
-          			    <!--option <%= selected %> data-id="ind_type_<%= type[:id] %>" value="<%= option_index %>" title="<%= type[:summary_name] %>"><%= type[:summary_name] %></option-->
+          			    <!--option <%= selected %> data-id="ind_type_<%= type['id'] %>" value="<%= option_index %>" title="<%= type['summary_name'] %>"><%= type['summary_name'] %></option-->
           			    <% 
 #          			      option_index += 1 
-#          			      ind_ids << "ind_type_#{type[:id]}"
-#          			      ind_desc << type[:summary_name]
+#          			      ind_ids << "ind_type_#{type['id']}"
+#          			      ind_desc << type['summary_name']
           			    %>
                   <% end %>
 
-                  <% type[:indicators].each_with_index do |ind, j| %>
+                  <% type['indicators'].each_with_index do |ind, j| %>
                     <%
                       selected = ''
-                      if @table_selected_id.to_s == ind[:id].to_s || option_index < @default_cols_show
+                      if @table_selected_id.to_s == ind['id'].to_s || option_index < @default_cols_show
                         selected << 'selected=selected'
                       end
                       
-                      text = ci.generate_rank_name(ind[:name], ind[:rank])
+                      text = ci.generate_rank_name(ind['name'], ind['rank'])
                     %>
-		                <option <%= selected %> data-id="<%= ind[:id] %>" value="<%= option_index %>" title="<%= ind[:description] %>"><%= text %></option>
+		                <option <%= selected %> data-id="<%= ind['id'] %>" value="<%= option_index %>" title="<%= ind['description'] %>"><%= text %></option>
           			    <% 
           			      option_index += 1 
-          			      ind_ids << ind[:id]
-          			      ind_desc << ind[:description]
-          			      ind_colors << ind[:color]
+          			      ind_ids << ind['id']
+          			      ind_desc << ind['description']
+          			      ind_colors << ind['color']
           			    %>
                   <% end %>
                 </optgroup>
