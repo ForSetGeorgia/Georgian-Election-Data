@@ -19,7 +19,7 @@ $(document).ready(function(){
     var y = b.match(/\d/) ? b.replace( /[^\d\-\.]/g, "" ) : 0;
     return parseFloat(y) - parseFloat(x);
   };
-
+  
   $('.indicator_profiles table').dataTable({
     "sDom": "<'row-fluid'<'span6'f><'span6'>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
     "sPaginationType": "bootstrap",

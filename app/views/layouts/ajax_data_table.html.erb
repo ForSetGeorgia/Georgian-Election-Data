@@ -38,7 +38,7 @@
                 <td class="summary_shape_name">
                   <span><%= data[:shape] %></span>
                 </td>    
-                <td class="summary_bar_chart_container2">
+                <td class="summary_bar_chart_container2" data-sort-num="<%= data[:winner_percent]%>">
                   <div class="summary_bar_chart_container2a">
                     <div class="summary_bar_chart_name" style="color: <%= data[:winner_color] %>;">
                       <%= data[:winner_name] %>
@@ -78,7 +78,7 @@
                     </div>
                   </div>
                 </td>
-                <td class="summary_total_turnout">
+                <td class="summary_total_turnout" data-sort-num="<%= data[:total_turnout_percent]%>">
                   <div>
                     <% if data[:total_turnout_percent].present? && data[:total_turnout_percent].index('%').present? %>
                       <div class="half_circle hold">
@@ -320,6 +320,16 @@
       };
 
 
+      jQuery.fn.dataTableExt.afnSortData['sort-data-attr'] = function  ( oSettings, iColumn )
+      {
+        var aData = [];
+        $( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+          aData.push( $(this).data('sort-num') );
+        });
+        return aData;
+      }  
+
+
       /////////////////////////////
       // summary table
       /////////////////////////////
@@ -330,8 +340,11 @@
       for(var i=0;i<col_sort.length;i++){
         if (i == 0 && is_numeric != null){
           col_sort[i] = { "sType": "formatted-num-html", "bVisible": true };
-        }else {
+        }
+        else if (i == 0 && is_numeric == null){
           col_sort[i] = null;
+        }else {
+          col_sort[i] = { "sSortDataType": "sort-data-attr", "sType": "formatted-num", "bVisible": true };
         }
       }
 
@@ -346,9 +359,6 @@
           "sUrl": gon.datatable_i18n_url
         },
         "aoColumns": col_sort,
-        "aoColumnDefs": [
-          { 'bSortable': false, 'aTargets': [ 1, 2 ] }
-        ],
         "iDisplayLength": 20,
         "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]]
       });
