@@ -11,6 +11,10 @@ class RootController < ApplicationController
   # GET /
   # GET /.json
 	def index
+
+  end
+
+	def map
 		# set flag indicating that a param is missing or data could not be found
 		# which will cause user to go back to home page
 		flag_redirect = false
@@ -384,7 +388,7 @@ logger.debug "//////////////////////////////////////////////////////// done with
     if flag_redirect
 			# either data could not be found or param is missing and page could not be loaded
 			logger.debug "+++++++++ either data could not be found or param is missing and page could not be loaded, redirecting to home page"
-			redirect_to root_path
+			redirect_to map_path
 		end
 	end
 
