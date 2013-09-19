@@ -8,6 +8,7 @@ class RootController < ApplicationController
 	FILE_CACHE_KEY_MAP_IMAGE =
 		"event_[event_id]/data_set_[data_set_id]/map_images/shape_[parent_id]"
 
+  BOM = "\uFEFF" #Byte Order Mark
 
   # GET /
   # GET /.json
@@ -462,12 +463,14 @@ logger.debug "//////////////////////////////////////////////////////// done with
   # GET /download.json
   def download
     send_data = false
-		if !params[:event_id].nil? && !params[:data_set_id].nil? && !params[:shape_type_id].nil? && !params[:shape_id].nil?
+		if params[:event_id].present? && params[:data_set_id].present? && params[:shape_type_id].present? && 
+		      params[:child_shape_type_id].present? && params[:shape_id].present?
+		      
       #get the data
-      dt = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:shape_type_id], params[:shape_id])
-			@data = dt[:data]
+		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:child_shape_type_id], params[:shape_id], params[:shape_type_id])
+logger.debug ">>>>>>>>>>>>>>>> get data present = #{get_data.present?}; data present = #{get_data['data'].present?}"
 
-			if !@data.nil?
+			if get_data.present? && get_data['data'].present?
 				# create file name using event name and map title that were passed in
 		    filename = params[:map_title]
 				filename << "-"
@@ -478,17 +481,21 @@ logger.debug "//////////////////////////////////////////////////////// done with
 				respond_to do |format|
 				  format.csv {
 logger.debug ">>>>>>>>>>>>>>>> format = csv"
-						spreadsheet = DataArchive.create_csv_formatted_string(@data)
+						spreadsheet = DataArchive.create_csv_formatted_string(get_data['data'])
 
-						send_data spreadsheet,
+#            content = BOM + spreadsheet
+#						send_data content, :filename => "#{clean_filename(filename)}.csv"
+
+           send_data spreadsheet, 
 				    :type => 'text/csv; header=present',
 				    :disposition => "attachment; filename=#{clean_filename(filename)}.csv"
+
 					  send_data = true
 					}
 
 				  format.xls{
 logger.debug ">>>>>>>>>>>>>>>> format = xls"
-						spreadsheet = DataArchive.create_excel_formatted_string(@data)
+						spreadsheet = DataArchive.create_excel_formatted_string(get_data['data'])
 						send_data spreadsheet,
 				    :disposition => "attachment; filename=#{clean_filename(filename)}.xls"
 					  send_data = true
@@ -501,6 +508,7 @@ logger.debug ">>>>>>>>>>>>>>>> format = xls"
 		if request.env["HTTP_REFERER"] && !send_data
 			redirect_to :back, :notice => t("app.msgs.no_data_download")
 		elsif !send_data
+logger.debug ">>>>>>>>>>>>>>>> NO DATA - going back to root page"
 			redirect_to root_path, :notice => t("app.msgs.no_data_download")
 		end
 

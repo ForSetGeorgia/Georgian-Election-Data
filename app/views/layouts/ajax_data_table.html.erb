@@ -1,14 +1,37 @@
 <% ci = CoreIndicator %>
 <% has_summary_data = @summary_data.present? && @summary_data.length > 1 %>
 <div class="tabbable">
-  <ul class="nav nav-tabs" >
-    <li class="active" style="<%= has_summary_data == true ? '' : 'display:none;' %>">
-      <%= link_to t('.tab_summary'), "#tab_summary", :'data-toggle' => 'tab' %>
-    </li>
-    <li class="<%= has_summary_data ? '' : 'active' %>" style="<%= has_summary_data == true ? '' : 'display:none;' %>">
-      <%= link_to t('.tab_details'), "#tab_detail", :'data-toggle' => 'tab' %>
-    </li>
-  </ul>
+  <div id="summary_table_tab_container">
+    <ul class="nav nav-tabs" >
+      <li class="active" style="<%= has_summary_data == true ? '' : 'display:none;' %>">
+        <%= link_to t('.tab_summary'), "#tab_summary", :'data-toggle' => 'tab' %>
+      </li>
+      <li class="<%= has_summary_data ? '' : 'active' %>" style="<%= has_summary_data == true ? '' : 'display:none;' %>">
+        <%= link_to t('.tab_details'), "#tab_detail", :'data-toggle' => 'tab' %>
+      </li>
+    </ul>
+
+    <div id="tips-download">
+    <%= link_to("XLS",
+	    download_data_xls_path(:event_id => params[:event_id],
+			  :child_shape_type_id => @child_shape_type_id, 
+			  :shape_type_id => params[:shape_type_id],
+			  :shape_id => params[:shape_id],
+			  :map_title => "placeholder", :event_name => "placeholder",
+			  :data_type => params[:data_type], :data_set_id => params[:data_set_id]),
+	    :id => "export-data-xls2", :class => 'download-link', :'data-type' => 'xls', :title => t('app.buttons.download_xls')) %>
+
+		  <%= link_to("CSV",
+			  download_data_csv_path(:event_id => params[:event_id],
+				  :child_shape_type_id => params[:child_shape_type_id], 
+				  :shape_type_id => params[:shape_type_id],
+				  :shape_id => params[:shape_id],
+				  :map_title => "placeholder", :event_name => "placeholder",
+				  :data_type => params[:data_type], :data_set_id => params[:data_set_id]),
+			  :id => "export-data-csv2", :class => 'download-link', :'data-type' => 'csv', :title => t('app.buttons.download_csv')) %>
+	  </div>
+  </div>
+  			  
   <div class="tab-content">
     <% if has_summary_data %>
       <div class="tab-pane active" id="tab_summary">
@@ -388,7 +411,7 @@
 
       // apply jquery datatable
       $('#map_data_table').dataTable({
-        "sDom": "<'row-fluid'<'span4'f><'span4'<'table_color_legend'>><'span4'T>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
+        "sDom": "<'row-fluid'<'span6'f><'span6'<'table_color_legend'>><'span4'>r>t<'row-fluid'<'span5'i><'span2'l><'span5'p>>",    
         "sPaginationType": "bootstrap",
         "bJQueryUI": false,
         "bProcessing": true,
@@ -399,19 +422,7 @@
         },
         "aoColumns": col_sort,
         "iDisplayLength": 20,
-        "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]],
-        "oTableTools": {
-          "aButtons": [
-            {
-              "sExtends": "csv",
-              "sTitle": file_name + " - csv"
-            },
-            {
-              "sExtends": "xls",
-              "sTitle": file_name + " - xls"
-            }
-          ]
-        }
+        "aLengthMenu": [[20, 40, 60, 80], [20, 40, 60, 80]]
       });
       
       // give it time to load georgian characters

@@ -104,6 +104,7 @@ ElectionMap::Application.routes.draw do
     # root
 		match '/export', :to => 'root#export', :as => :export, :via => :post, :defaults => {:format => 'svg'}
 		match '/routing_error', :to => 'root#routing_error'
+		match '/download-data', :to => 'root#download', :as => :download_data, :via => :post, :defaults => {:format => 'csv'}
 		match '/download/csv/event/:event_id/shape_type/:shape_type_id/shape/:shape_id(/event_name/:event_name(/map_title/:map_title(/indicator/:indicator_id)))', :to => 'root#download', :as => :download_data_csv, :via => :get, :defaults => {:format => 'csv'}
 		match '/download/xls/event/:event_id/shape_type/:shape_type_id/shape/:shape_id(/event_name/:event_name(/map_title/:map_title(/indicator/:indicator_id)))', :to => 'root#download', :as => :download_data_xls, :via => :get, :defaults => {:format => 'xls'}
 		match '/archive', :to => 'root#archive', :as => :archive, :via => :get
@@ -123,6 +124,8 @@ ElectionMap::Application.routes.draw do
 		match '/event_type/:event_type_id/event/:event_id/shape_type/:shape_type_id/shape/:shape_id/indicator_type/:indicator_type_id/view_type/:view_type(/custom_view/:custom_view(/highlight_shape/:highlight_shape))' => 'root#index', :as => 'summary_map', :via => :get
 		match '/event_type/:event_type_id/event/:event_id/indicator_type/:indicator_type_id/view_type/:view_type/change_shape/:change_shape_type/parent_clickable/:parent_shape_clickable(/shape/:shape_id(/shape_type/:shape_type_id(/custom_view/:custom_view)))' => 'root#index', :as => 'summary_shape_level_map', :via => :get
 
+    # data table
+		match '/data_table/event_type/:event_type_id/event/:event_id/shape/:shape_id/shape_type/:shape_type_id/child_shape_type/:child_shape_type_id/indicator/:indicator_id/view_type/:view_type/summary_view_type/:summary_view_type_name(/custom_view/:custom_view)', :to => 'root#data_table', :as => :data_table, :via => :get
 
     # other
     match '/data_archives', :to => 'other#data_archives', :as => :data_archives, :via => :get
@@ -191,8 +194,6 @@ ElectionMap::Application.routes.draw do
 			:as => :cache_summary_data, :via => [:get, :post]
 =end
 
-    # data table
-		match '/data_table/event_type/:event_type_id/event/:event_id/shape/:shape_id/shape_type/:shape_type_id/child_shape_type/:child_shape_type_id/indicator/:indicator_id/view_type/:view_type/summary_view_type/:summary_view_type_name(/custom_view/:custom_view)', :to => 'root#data_table', :as => :data_table, :via => :get
 
 
 		root :to => 'root#index'

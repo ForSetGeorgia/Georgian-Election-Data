@@ -1,15 +1,38 @@
-.nav-tabs > li > a {
-  font-size: 16px;
-  color: #666;
-  &:hover{
-    background-color: #AEC9DC;
+#summary_table_tab_container{
+  position: relative;
+  
+  .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+    font-size: 18px;
+    color: #000;
+    background-color: #D6E6F5;
   }
-}
 
-.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
-  font-size: 18px;
-  color: #000;
-  background-color: #D6E6F5;
+  #tips-download {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 5px;
+	  text-align: right;
+
+    a {
+	    background: #e26561;
+	    text-transform: uppercase;
+	    color: #FFF;
+      font-size: 12px;
+	    text-decoration: none;
+	    font-weight: bold;
+	    display: inline-block;
+	    padding: 5px 3px;
+       -webkit-border-radius: 2px;
+       -moz-border-radius: 2px;
+       border-radius: 2px;
+
+      &:hover {
+	      text-decoration: none;
+	      opacity: .5;
+      }
+    }
+  }
 }
 
 .tab-content > .tab-pane{
@@ -60,7 +83,7 @@
   display: none;
 }
 .table_color_legend{
-  text-align: center;
+  text-align: right;
   padding-top: 8px;
   & > div{
     display: inline-block;

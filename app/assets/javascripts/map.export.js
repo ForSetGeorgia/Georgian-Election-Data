@@ -1,4 +1,3 @@
-/*
 $(function(){
    var map_export = $("#export"),
        export_map_svg = $("#export-map, #export-data-xls, #export-data-csv, #export .fancybox"),
@@ -28,6 +27,17 @@ $(function(){
       click: export_click
    });
 
+
+  // download data links cannot submit as normal links due to geo language and event name/titles being long (too many characters for url)
+  // so use hidden form  
+  $('.download-link').live('click', function(event) {
+    event.preventDefault();
+
+		$("#hidden_form_data #type").val($(this).data('type'));
+		$("#hidden_form_data").attr('action', $("#hidden_form_data").data('action') + '.' + $(this).data('type'));
+		// submit the hidden form
+		$('#hidden_form_data').submit();
+  });
+  
 });
 
-*/
