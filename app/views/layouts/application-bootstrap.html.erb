@@ -56,7 +56,7 @@
     
 		<%= yield(:head) %>
   </head>
-  <body>
+  <body id='<%= yield(:body_id) %>'>
 		<div id="wrapper">
 
       <div class="navbar navbar-fixed-top">
@@ -69,7 +69,7 @@
             <%= link_to(image_tag("header-text.png"), root_path(:locale => I18n.locale),
   								:title=> t('.title'), :class=>"brand")%>
 
-            <% if @live_event_menu && !@live_event_menu.empty? %>
+            <% if false #@live_event_menu && !@live_event_menu.empty? %>
               <ul id="live_event_menu" class="nav">
   	            <li class="dropdown">
   	              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -111,10 +111,12 @@
     		            </ul>
                   </li>
                 <% end %>
-								<li><%= link_to t(".indicators"), indicator_profiles_path %></li>
-								<li><%= link_to t(".districts"), district_profiles_path %></li>
-								<li><%= link_to t(".news"), news_path %></li>
-								<li><%= link_to t(".data_archives"), data_archives_path %></li>
+                <% if !(params[:controller] == "root" && params[:action] == "index") %>
+								  <li><%= link_to t(".indicators"), indicator_profiles_path %></li>
+								  <li><%= link_to t(".districts"), district_profiles_path %></li>
+								  <li><%= link_to t(".news"), news_path %></li>
+								  <li><%= link_to t(".data_archives"), data_archives_path %></li>
+                <% end %>
 								<% I18n.available_locales.each do |locale| %>
 									<% if locale != I18n.locale %>
                     <% if @summary_view_type_name == params[:view_type] %>
@@ -129,53 +131,55 @@
           </div>
         </div>
 
-        <!-- Navbar footer -->
-        <div class="navbar-inner-bottom navbar-inner">
-           <div class="container-fluid clear">
-              <div class="navmenu" id="navmenu">
-                 <p class="link-text">
-                    <%= t('.header') %>
-                    <span class="arrow_shape">&#x25BC;</span>
-                 </p>
-              </div>
-              <div class="navmenu-select">
-                 <% if params[:controller] == "root" && params[:action] == "index" %>
-                    <% if @live_event_with_no_data %>
-                      <p><%= @live_event_name %></p>
-                    <% else %>
-                      <% if params[:data_type] == Datum::DATA_TYPE[:live] %>
-												<% if @show_precinct_percentages %>
-													<div id="live_event_name_date_header">
-				                    <%= @event_name %>
-														<span>
-															<%= t('app.common.live_event_status_timestamp', :completed => @live_event_precincts_completed,
-			                              :total => @live_event_precincts_total,
-			                              :percentage => @live_event_precincts_percentage,
-			                              :timestamp => l(@live_event_timestamp, :format => :long))%>
-														</span>
-													</div>
-													<div id="progress_bar" class="progress progress-striped">
-														<div class="bar" style="width: <%=@live_event_precincts_percentage%>;"><%= @live_event_precincts_percentage%></div>
-													</div>
-												<% else %>
-														<p>
-						                  <%= @event_name %>
-															<span>
-															<%= t('app.common.live_event_status_timestamp_no_percent',
-																		:completed => @live_event_precincts_completed,
-				                            :timestamp => l(@live_event_timestamp, :format => :long))%>
-															</span>
-														</p>
-												<% end %>
-											<% else %>
-                        <p><%= @event_name %></p>
-											<% end %>
+       <% if !(params[:controller] == "root" && params[:action] == "index") %>
+          <!-- Navbar footer -->
+          <div class="navbar-inner-bottom navbar-inner">
+             <div class="container-fluid clear">
+                <div class="navmenu" id="navmenu">
+                   <p class="link-text">
+                      <%= t('.header') %>
+                      <span class="arrow_shape">&#x25BC;</span>
+                   </p>
+                </div>
+                <div class="navmenu-select">
+                   <% if params[:controller] == "root" && params[:action] == "map" %>
+                      <% if @live_event_with_no_data %>
+                        <p><%= @live_event_name %></p>
+                      <% else %>
+                        <% if params[:data_type] == Datum::DATA_TYPE[:live] %>
+												  <% if @show_precinct_percentages %>
+													  <div id="live_event_name_date_header">
+				                      <%= @event_name %>
+														  <span>
+															  <%= t('app.common.live_event_status_timestamp', :completed => @live_event_precincts_completed,
+			                                :total => @live_event_precincts_total,
+			                                :percentage => @live_event_precincts_percentage,
+			                                :timestamp => l(@live_event_timestamp, :format => :long))%>
+														  </span>
+													  </div>
+													  <div id="progress_bar" class="progress progress-striped">
+														  <div class="bar" style="width: <%=@live_event_precincts_percentage%>;"><%= @live_event_precincts_percentage%></div>
+													  </div>
+												  <% else %>
+														  <p>
+						                    <%= @event_name %>
+															  <span>
+															  <%= t('app.common.live_event_status_timestamp_no_percent',
+																		  :completed => @live_event_precincts_completed,
+				                              :timestamp => l(@live_event_timestamp, :format => :long))%>
+															  </span>
+														  </p>
+												  <% end %>
+											  <% else %>
+                          <p><%= @event_name %></p>
+											  <% end %>
+                      <% end %>
                     <% end %>
-                  <% end %>
-              </div>
-           </div>
-        </div>
-        <%= render :partial => "layouts/event_menu_tabs" %>
+                </div>
+             </div>
+          </div>
+          <%= render :partial => "layouts/event_menu_tabs" %>
+        <% end %>
       </div> <!-- /navbar -->
 
 
@@ -200,7 +204,7 @@
                     <h1><%= yield(:title) %></h1>
                     <%= link_to(image_tag('rss.png', :alt => 'RSS'), news_path(:format => :atom), :title => t('.feed-title') ) %>
                   </div>
-								<% elsif !(params[:controller] == "root" && params[:action] == "index") %>
+								<% elsif !(params[:controller] == "root" && (params[:action] == "index" || params[:action] == "map")) %>
                    <h1><%= yield(:title) %></h1>
                 <% end %>
 

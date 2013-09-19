@@ -1,1 +1,142 @@
-<%= link_to 'map', map_path %>
+<%= content_for :body_id, 'body_landing_page' %>
+
+<div id="landing_page">
+  <div id="row1" class="row-fluid">
+    <div class="span4 offset2">
+      <%= image_tag 'landing_map.png', :alt => t('.img_alt') %>
+    </div>
+    <div class="span4">
+    
+      <div id="about_text">
+        <%= simple_format(@about.description, {}, :sanitize => false) %>
+      </div>
+
+      <div id="row1_footer" class="row-fluid">
+        <div class="span8">
+          <h3>
+            <%= image_tag 'stats_icon.png' %>
+            <%= t('.stats_header') %>
+          </h3>
+          <div>
+            <%= t('.stats_elections', :total => @stats['elections']['total'], :total_data => @stats['elections']['total_data']) %>
+          </div>
+          <div>
+            <%= t('.stats_voters_lists', :total => @stats['voters_list']['total'], :total_data => @stats['voters_list']['total_data']) %>
+          </div>
+        </div>
+        <div class="span4">
+          <h3>
+            <%= link_to data_archives_path do %>
+              <%= image_tag 'download_icon.png' %>
+              <%= t('.download_data') %>
+            <% end %>
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="row23_container">
+    <div id="row2" class="row-fluid">
+      <div class="span3 offset2">
+        <h2><%= t('.elections_header') %></h2>
+        <% if @elections.present? %>
+          <div>
+            <ul>
+              <% @elections.each do |election| %>
+                <li>
+                  <%= link_to indicator_map_path(:event_id => election.id, :event_type_id => election.event_type_id) do %>
+                    <%= image_tag('menu_official.png', :alt => t('app.common.official_data'), :title => t('app.common.official_data')) %>
+                    <span><%= election.name %></span>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+      <div class="span3">
+        <h2><%= t('.voters_lists_header') %></h2>
+        <% if @voters_lists.present? %>
+          <div>
+            <ul>
+              <% @voters_lists.each do |voters_list| %>
+                <li>
+                  <%= link_to indicator_map_path(:event_id => voters_list.id, :event_type_id => voters_list.event_type_id) do %>
+                    <%= image_tag('menu_official.png', :alt => t('app.common.official_data'), :title => t('app.common.official_data')) %>
+                    <span><%= voters_list.name %></span>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+      <div class="span3">
+        <h2><%= t('.news_header') %></h2>
+        <% if @news.present? %>
+          <div>
+            <ul>
+              <% @news.each do |n| %>
+                <li>
+                  <div class="news_date">
+                    <%= l Date.new(n.date_posted.year, n.date_posted.month, n.date_posted.day), :format => :long %>
+                  </div>
+                  <div class="news_text">
+                    <%= truncate(strip_tags(n.description), :length => 200, :separator => ' ', :omission => '...')   %>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div id="row3" class="row-fluid">
+      <div class="span3 offset2">
+        <div>
+          <%= link_to news_path do %>
+            <div class="show_all">
+              <%= t('.show_all') %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="span3">
+        <div>
+          <%= link_to news_path do %>
+            <div class="show_all">
+              <%= t('.show_all') %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="span3">
+        <div>
+          <%= link_to news_path do %>
+            <div class="show_all">
+              <%= t('.show_all') %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div id="row4" class="row-fluid">
+    <div class="span4 offset2">
+      <a href="http://timeline.electionportal.ge/<%= I18n.locale%>" target="_blank">
+        <div id="title"><%= t('.timeline').html_safe %></div>
+        <%= image_tag('landing_timeline.png') %>
+      </a>
+    </div>
+    <div class="span4">
+      <a href="http://electionportal.ge/" target="_blank">
+        <div id="title"><%= t('.portal').html_safe %></div>
+        <%= image_tag('landing_electionportal.png') %>
+      </a>
+    </div>
+  </div>
+</div>

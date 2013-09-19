@@ -364,6 +364,18 @@ ka:
       js_link_text: Built by
   root:
     index:
+      img_alt: Sample of what map of elections looks like
+      stats_header: Stats
+      stats_elections: "%{total} elections with %{total_data} votes"
+      stats_voters_lists: "%{total} voters lists with %{total_data} registered voters"
+      download_data: Download Data
+      elections_header: Elections
+      voters_lists_header: Voters Lists
+      news_header: News
+      timeline: "Elections<br /> and<br /> Political Timeline"
+      portal: Georgian Election Portal      
+      show_all: Show All 
+    map:
       export_link_text: ჩამოტვირთეთ მონაცემები
       footnote: "შენიშვნა: %{note}"
       footnote_live_data: "შენიშვნა: ეს წინასწარი მონაცემებია ცესკო-დან, ბოლოს განახლდა %{date}"

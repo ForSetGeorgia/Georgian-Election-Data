@@ -39,6 +39,7 @@
 //= require indicator_profiles
 //= require district_profiles
 //= require search
+//= require landing_page
 
 
 $(document).ready(function(){
