@@ -260,6 +260,7 @@ en:
       total_turnout: "Total Voter Turnout"
       total_turnout_num: "Total Voter Turnout (#)"
       total_turnout_perc: "Total Voter Turnout (%)"
+      is_election: Is Election?
   highcharts:
     downloadPNG: "Download PNG image"
     downloadJPEG: "Download JPEG image"

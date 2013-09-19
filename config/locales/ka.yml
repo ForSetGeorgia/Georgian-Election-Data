@@ -260,6 +260,7 @@ ka:
       total_turnout: "ამომრჩეველთა აქტივობა"
       total_turnout_num: "ამომრჩეველთა აქტივობა  (#)"
       total_turnout_perc: "ამომრჩეველთა აქტივობა  (%)"
+      is_election: Is Election?
   highcharts:
     downloadPNG: "ჩამოტვირთე PNG გამოსახულება"
     downloadJPEG: "ჩამოტვირთე JPEG გამოსახულება"

@@ -8,7 +8,7 @@ class Admin::EventTypesController < ApplicationController
   # GET /event_types
   # GET /event_types.json
   def index
-    @event_types = EventType.all
+    @event_types = EventType.sorted
 
     respond_to do |format|
       format.html # index.html.erb

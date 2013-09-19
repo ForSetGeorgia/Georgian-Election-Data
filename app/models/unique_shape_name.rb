@@ -32,7 +32,7 @@ class UniqueShapeName < ActiveRecord::Base
     json = []
 
     shapes = UniqueShapeName.get_districts
-    types = EventType.with_public_events
+    types = EventType.sorted.with_public_events
 
     shapes.each do |shape|
       s = Hash.new

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130919062824) do
+ActiveRecord::Schema.define(:version => 20130919101751) do
 
   create_table "core_indicator_translations", :force => true do |t|
     t.integer  "core_indicator_id"
@@ -202,9 +202,11 @@ ActiveRecord::Schema.define(:version => 20130919062824) do
   create_table "event_types", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sort_order", :default => 1
+    t.integer  "sort_order",  :default => 1
+    t.boolean  "is_election", :default => false
   end
 
+  add_index "event_types", ["is_election"], :name => "index_event_types_on_is_election"
   add_index "event_types", ["sort_order"], :name => "index_event_types_on_sort_order"
 
   create_table "events", :force => true do |t|

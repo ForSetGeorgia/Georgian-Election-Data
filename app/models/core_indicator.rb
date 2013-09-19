@@ -109,7 +109,7 @@ class CoreIndicator < ActiveRecord::Base
   # format: [{id, name, name_abbrv, summary, type_id, child_ids, event_types => [id, name, sort_order, events => [id, name, event_date, shape_id, data_type, data_set_id]]}]
   def self.build_event_json
     json = []
-    types = EventType.all
+    types = EventType.sorted
     CoreIndicator.for_profiles.each do |core|
       # if the indicators is not a child or is a child and parent does not exist, add
       if (core.ancestry.nil? || json.index{|x| x[:id].to_s == core.ancestry}.nil?)
