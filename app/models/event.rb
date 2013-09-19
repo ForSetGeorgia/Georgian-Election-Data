@@ -94,6 +94,22 @@ class Event < ActiveRecord::Base
 	end
 
 
+  # get events that are elections and public
+  def self.public_official_elections(limit = 3)
+		with_translations(I18n.locale)
+    .where(:has_official_data => true, :event_type_id => EventType.ids_with_elections)
+		.order("event_date DESC, event_translations.name ASC")
+		.limit(limit)
+  end  
+
+  # get events that are voters lists and public
+  def self.public_official_voters_lists(limit = 3)
+		with_translations(I18n.locale)
+    .where(:has_official_data => true, :event_type_id => EventType.ids_with_voters_lists)
+		.order("event_date DESC, event_translations.name ASC")
+		.limit(limit)
+  end  
+
   # get the number of each event type that is public and 
   # how many data items are in each event type
   ###########################
@@ -112,9 +128,9 @@ class Event < ActiveRecord::Base
     x = find_by_sql(sql)
 
     if x.present?
-      election_types = [1,3,4,5]
+      election_types = EventType.ids_with_elections
       election_ind_id = 15
-      voter_list_types = [2]
+      voter_list_types = EventType.ids_with_voters_lists
       voter_list_ind_id = 17
       shape_type_ids = ShapeType.precint_ids
       
@@ -125,7 +141,7 @@ class Event < ActiveRecord::Base
             .sum(:value)
       hash = Hash.new
       hash[:total] = ids.length
-      hash[:total_data] = ActionController::Base.helpers.number_with_delimiter(total_data)
+      hash[:total_data] = ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(total_data, :precision => 0))
       data[:elections] = hash
       
       # get voter list stats
@@ -135,7 +151,7 @@ class Event < ActiveRecord::Base
             .sum(:value)
       hash = Hash.new
       hash[:total] = ids.length
-      hash[:total_data] = ActionController::Base.helpers.number_with_delimiter(total_data)
+      hash[:total_data] = ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(total_data, :precision => 0))
       data[:voters_list] = hash
     end
     

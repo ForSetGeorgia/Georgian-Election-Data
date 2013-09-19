@@ -202,11 +202,13 @@ ActiveRecord::Schema.define(:version => 20130919101751) do
   create_table "event_types", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sort_order",  :default => 1
-    t.boolean  "is_election", :default => false
+    t.integer  "sort_order",     :default => 1
+    t.boolean  "is_election",    :default => false
+    t.boolean  "is_voters_list", :default => false
   end
 
   add_index "event_types", ["is_election"], :name => "index_event_types_on_is_election"
+  add_index "event_types", ["is_voters_list"], :name => "index_event_types_on_is_voters_list"
   add_index "event_types", ["sort_order"], :name => "index_event_types_on_sort_order"
 
   create_table "events", :force => true do |t|
