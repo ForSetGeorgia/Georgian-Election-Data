@@ -1,18 +1,17 @@
 <%= content_for :body_id, 'body_landing_page' %>
 
 <div id="landing_page">
-  <div id="row1" class="row-fluid">
-    <div class="span4 offset2">
+  <div id="row1">
+    <div>
       <%= image_tag 'landing_map.png', :alt => t('.img_alt') %>
     </div>
-    <div class="span4">
-    
+    <div>
       <div id="about_text">
         <%= simple_format(@about.description, {}, :sanitize => false) %>
       </div>
 
-      <div id="row1_footer" class="row-fluid">
-        <div class="span8">
+      <div id="row1_footer">
+        <div>
           <h3>
             <%= image_tag 'stats_icon.png' %>
             <%= t('.stats_header') %>
@@ -24,7 +23,7 @@
             <%= t('.stats_voters_lists', :total => @stats['voters_list']['total'], :total_data => @stats['voters_list']['total_data']) %>
           </div>
         </div>
-        <div class="span4">
+        <div>
           <h3>
             <%= link_to data_archives_path do %>
               <%= image_tag 'download_icon.png' %>
@@ -37,8 +36,8 @@
   </div>
 
   <div id="row23_container">
-    <div id="row2" class="row-fluid">
-      <div class="span3 offset2">
+    <div id="row2">
+      <div>
         <h2><%= t('.elections_header') %></h2>
         <% if @elections.present? %>
           <div>
@@ -46,7 +45,7 @@
               <% @elections.each do |election| %>
                 <li>
                   <%= link_to indicator_map_path(:event_id => election.id, :event_type_id => election.event_type_id) do %>
-                    <%= image_tag('menu_official.png', :alt => t('app.common.official_data'), :title => t('app.common.official_data')) %>
+                    <span><%= image_tag('menu_official.png', :alt => t('app.common.official_data'), :title => t('app.common.official_data')) %></span>
                     <span><%= election.name %></span>
                   <% end %>
                 </li>
@@ -55,7 +54,7 @@
           </div>
         <% end %>
       </div>
-      <div class="span3">
+      <div>
         <h2><%= t('.voters_lists_header') %></h2>
         <% if @voters_lists.present? %>
           <div>
@@ -63,7 +62,7 @@
               <% @voters_lists.each do |voters_list| %>
                 <li>
                   <%= link_to indicator_map_path(:event_id => voters_list.id, :event_type_id => voters_list.event_type_id) do %>
-                    <%= image_tag('menu_official.png', :alt => t('app.common.official_data'), :title => t('app.common.official_data')) %>
+                    <span><%= image_tag('menu_official.png', :alt => t('app.common.official_data'), :title => t('app.common.official_data')) %></span>
                     <span><%= voters_list.name %></span>
                   <% end %>
                 </li>
@@ -72,7 +71,7 @@
           </div>
         <% end %>
       </div>
-      <div class="span3">
+      <div>
         <h2><%= t('.news_header') %></h2>
         <% if @news.present? %>
           <div>
@@ -93,8 +92,8 @@
       </div>
     </div>
     
-    <div id="row3" class="row-fluid">
-      <div class="span3 offset2">
+    <div id="row3">
+      <div>
         <div>
           <%= link_to news_path do %>
             <div class="show_all">
@@ -103,7 +102,7 @@
           <% end %>
         </div>
       </div>
-      <div class="span3">
+      <div>
         <div>
           <%= link_to news_path do %>
             <div class="show_all">
@@ -112,7 +111,7 @@
           <% end %>
         </div>
       </div>
-      <div class="span3">
+      <div>
         <div>
           <%= link_to news_path do %>
             <div class="show_all">
@@ -125,14 +124,14 @@
   </div>
   
   
-  <div id="row4" class="row-fluid">
-    <div class="span4 offset2">
+  <div id="row4">
+    <div>
       <a href="http://timeline.electionportal.ge/<%= I18n.locale%>" target="_blank">
         <div id="title"><%= t('.timeline').html_safe %></div>
         <%= image_tag('landing_timeline.png') %>
       </a>
     </div>
-    <div class="span4">
+    <div>
       <a href="http://electionportal.ge/" target="_blank">
         <div id="title"><%= t('.portal').html_safe %></div>
         <%= image_tag('landing_electionportal.png') %>

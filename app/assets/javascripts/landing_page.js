@@ -7,7 +7,6 @@ $(document).ready(function() {
       $('#row2 > div').each(function(){
         heights.push($(this).height());
       });
-console.log(heights);
       
       $('#row2 > div').each(function() { $(this).height(Math.max.apply(Math, heights)); });
     }
