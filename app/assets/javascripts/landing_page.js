@@ -28,7 +28,7 @@ $(document).ready(function() {
         href: $(landing_circle_link_obj).attr('href'),
         onComplete: function(){
           if ($(landing_circle_link_obj).data('type-id') != undefined){
-            // $('div#events_menu_tabs').tabs('enable', _____);
+            $('div#events_menu_tabs .ui-tabs-nav li a[data-type-id="' + $(landing_circle_link_obj).data('type-id') + '"]').click();
           }
         }
       });
