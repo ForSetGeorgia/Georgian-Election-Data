@@ -35,10 +35,10 @@
     </div>
   </div>
 
-  <div id="row23_container">
-    <div id="row2">
-      <div>
-        <h2><%= t('.elections_header') %></h2>
+  <div id="row2">
+    <div>
+      <h2><%= t('.elections_header') %></h2>
+      <div class="row2_links">
         <% if @elections.present? %>
           <div>
             <ul>
@@ -54,8 +54,19 @@
           </div>
         <% end %>
       </div>
-      <div>
-        <h2><%= t('.voters_lists_header') %></h2>
+      <div class="row2_circle">
+        <%= link_to news_path do %>
+          <div class="grey">
+            <div class="show_all">
+              <%= t('.show_all') %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div>
+      <h2><%= t('.voters_lists_header') %></h2>
+      <div class="row2_links">
         <% if @voters_lists.present? %>
           <div>
             <ul>
@@ -71,10 +82,21 @@
           </div>
         <% end %>
       </div>
-      <div>
-        <h2><%= t('.news_header') %></h2>
+      <div class="row2_circle">
+        <%= link_to news_path do %>
+          <div class="grey">
+            <div class="show_all">
+              <%= t('.show_all') %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div>
+      <h2><%= t('.news_header') %></h2>
+      <div class="row2_links">
         <% if @news.present? %>
-          <div>
+          <div id="news_section">
             <ul>
               <% @news.each do |n| %>
                 <li>
@@ -90,47 +112,21 @@
           </div>
         <% end %>
       </div>
-    </div>
-    
-    <div id="row3">
-      <div>
-        <div>
-          <%= link_to news_path do %>
-            <div class="grey">
-              <div class="show_all">
-                <%= t('.show_all') %>
-              </div>
+      <div class="row2_circle">
+        <%= link_to news_path do %>
+          <div class="grey">
+            <div class="show_all">
+              <%= t('.show_all') %>
             </div>
-          <% end %>
-        </div>
-      </div>
-      <div>
-        <div>
-          <%= link_to news_path do %>
-            <div class="grey">
-              <div class="show_all">
-                <%= t('.show_all') %>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-      <div>
-        <div>
-          <%= link_to news_path do %>
-            <div class="grey">
-              <div class="show_all">
-                <%= t('.show_all') %>
-              </div>
-            </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
+    
   
   
-  <div id="row4">
+  <div id="row3">
     <div>
       <a href="http://timeline.electionportal.ge/<%= I18n.locale%>" target="_blank">
         <div id="title"><%= t('.timeline').html_safe %></div>

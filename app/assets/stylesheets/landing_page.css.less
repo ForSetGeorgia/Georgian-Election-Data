@@ -68,21 +68,16 @@
       }
     }
 
-    #row23_container{
-      position: relative;
-      margin-bottom: 18px;
-    }
-
     #row2{
-      padding: 35px 35px;
+      padding: 35px 35px 25px;
       text-align: center;
       & > div {
         vertical-align: top;
         text-align: left;
         display: inline-block;
         width: 366px;
-        min-height: 180px;
-        background-color: #fff;
+/*        min-height: 180px;*/
+/*        background-color: #fff;*/
         position: relative;
         margin-right: 20px;
         & > h2{
@@ -94,7 +89,9 @@
           font-weight: normal;
           font-size: 18px;
         }
-        & > div{
+        & > div.row2_links{
+          min-height: 120px;
+          background-color: #fff;
           padding: 20px;
           li{
             margin-bottom: 7px;
@@ -121,7 +118,7 @@
               }
             }
           }
-          &:last-of-type{
+          div#news_section{
             li{
               line-height: 13px;
               .news_date{
@@ -134,25 +131,8 @@
             }
           }
         }
-      }
-      & > div:nth-child(3) {
-        margin-right: 0;
-      }
-    }
-
-    #row3{
-      position: absolute;
-      bottom: 7px;
-      text-align: center;
-      width: 100%;
-      & > div {
-        vertical-align: top;
-        display: inline-block;
-        width: 366px;
-        text-align: center;
-        margin-right: 20px;
-        & > div {
-          display: inline-block;
+        & > div.row2_circle{
+          margin-top: -33px;
           a > .grey{
             text-align: center;
             width: 65px;
@@ -188,23 +168,23 @@
               opacity: 0.7;
             }
           }
-        }
+        }        
       }
-      & > div:nth-child(1) > div a .show_all{
+      & > div:nth-child(1) a .show_all{
         background: #e67a7b;
       }
-      & > div:nth-child(2) > div a .show_all{
+      & > div:nth-child(2) a .show_all{
         background: #64a8d0;
       }
       & > div:nth-child(3) {
         margin-right: 0;
-        & > div a .show_all{
+        & a .show_all{
           background: #dac466;
         }
       }
     }
 
-    #row4{
+    #row3{
       background-color: #b8b8b8;
       padding: 35px 35px 0;
       text-align: center;
@@ -274,15 +254,14 @@
     #landing_page{
       #row2 > div {
         width: 300px;
-        min-height: 190px;
-        & > div li a span{
-          &:nth-child(2){
-            width: 225px;
+        div.row2_links{
+          min-height: 140px;
+          & li a span{
+            &:nth-child(2){
+              width: 225px;
+            }
           }
         }
-      }
-      #row3 > div {
-        width: 300px;
       }
     }
   }
@@ -310,17 +289,12 @@
         }
       }
       #row2 {
-        padding: 25px 25px;
+        padding: 25px 25px 25px;
         & > div {
           margin-right: 20px;
         }
       }
-      #row3 {
-        & > div {
-          margin-right: 20px;
-        }
-      }
-      #row4{
+      #row3{
         padding: 25px 25px 0;
         & > div {
           width: 400px;
@@ -335,15 +309,14 @@
     #landing_page{
       #row2 > div {
         width: 250px;
-        min-height: 190px;
-        & > div li a span{
-          &:nth-child(2){
-            width: 178px;
+        div.row2_links{
+          min-height: 150px;
+          & li a span{
+            &:nth-child(2){
+              width: 178px;
+            }
           }
         }
-      }
-      #row3 > div {
-        width: 250px;
       }
     }
   }
@@ -373,7 +346,7 @@
           }
         }
       }
-      #row4{
+      #row3{
         padding: 25px 25px 0;
         & > div {
           width: 450px;
@@ -386,17 +359,29 @@
 @media (max-width: 970px) {
   #body_landing_page{
     #landing_page{
-      #row4 > div:nth-child(2) {
+      #row3 > div:nth-child(2) {
         margin-left: 120px;
       }
     }
   }
 }
 
+@media (max-width: 880px) {
+  #body_landing_page{
+    #landing_page{
+      #row2 > div {
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+
 @media (max-width: 635px) {
   #body_landing_page{
     #landing_page{
-      #row4 {
+      #row3 {
         padding-bottom: 25px;
         & > div {
             position: static !important;
@@ -415,4 +400,5 @@
     }
   }
 }
+
 
