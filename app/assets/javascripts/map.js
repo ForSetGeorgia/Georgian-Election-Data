@@ -397,7 +397,7 @@ console.log('scaling root summary images');
 			// load svg into canvas so can convert to img
       // copy path from child shapes into parent shapes
       // and then spit out as png
-      if ($('#summary_data_above_map div.span6:first-of-type .map_image img').length == 0 && gon.view_type == gon.summary_view_type_name)
+      if ($('#summary_data_above_map > div:first-of-type .map_image img').length == 0 && gon.view_type == gon.summary_view_type_name)
       {
 
         // get copy of shape svgs
@@ -425,10 +425,10 @@ console.log('scaling root summary images');
         var img_width;
         var img_height;
         if (bbox.width > bbox.height){
-          img_width = $('#summary_data_above_map div.span6:first-of-type .map_image').width();
+          img_width = $('#summary_data_above_map > div:first-of-type .map_image').width();
           img_height = bbox.height * img_width / bbox.width;
         } else{
-          img_height = $('#summary_data_above_map div.span6:first-of-type .map_image').height();
+          img_height = $('#summary_data_above_map > div:first-of-type .map_image').height();
           img_width = bbox.width * img_height / bbox.height;
         }
 
@@ -437,7 +437,7 @@ console.log('scaling root summary images');
 
         // create img object
         var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
-        $('#summary_data_above_map div.span6:first-of-type .map_image').append(img_PNG);
+        $('#summary_data_above_map > div:first-of-type .map_image').append(img_PNG);
 
         
         // set flag so images are saved

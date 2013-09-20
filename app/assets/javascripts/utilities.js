@@ -178,7 +178,6 @@ function dataURLtoBlob(dataURL) {
 // to the server so they can be saved and used next time
 // taken from: http://rohitrox.github.io/2013/07/19/canvas-images-and-rails/
 function save_generated_map_images(){
-console.log('need to save map images!');
   
   var img = document.getElementById("svg_to_png1");
       
@@ -191,8 +190,8 @@ console.log('need to save map images!');
   fd.append("data_set_id", gon.data_set_id);
   fd.append("parent_shape_id", gon.parent_shape_id);
   fd.append("img", file);
-  fd.append("img_width", $('#summary_data_above_map .row-fluid .span6:first-of-type img').data('width'));
-  fd.append("img_height", $('#summary_data_above_map .row-fluid .span6:first-of-type img').data('height'));
+  fd.append("img_width", $('#summary_data_above_map > div:first-of-type .map_image img').data('width'));
+  fd.append("img_height", $('#summary_data_above_map > div:first-of-type .map_image img').data('height'));
   // And send it
   $.ajax({
      url: "/" + I18n.locale + "/save_map_images",
