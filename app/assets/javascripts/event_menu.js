@@ -1,6 +1,9 @@
 $(document).ready(function () {
 	$('div#events_menu_tabs').tabs();
-	$('div#events_menu_tabs').hide();
+	
+	if (!gon.langing_page){
+  	$('div#events_menu_tabs').hide();
+	}
 
 	$('#navmenu').click(function () {
 
