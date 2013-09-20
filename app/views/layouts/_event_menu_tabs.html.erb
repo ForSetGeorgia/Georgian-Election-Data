@@ -16,24 +16,25 @@
   						<% is_active = event["id"].to_s == params[:event_id].to_s ? "active" : "not_active" %>
   						<li>
 								<ul class="menu_item clear">
-									<li class="live_data">
-				            <% if event["url_live"] && !event["url_live"].empty? %>
-				              <%= link_to(image_tag("menu_live.png"),
-				                  event["url_live"], "title" => t('app.common.live_data'))%>
-										<% else %>
-											&nbsp;
-				            <% end %>
-									</li>
-									<li class="official_data">
-				            <% if event["url_official"] && !event["url_official"].empty? %>
+								  <% url = nil %>
+			            <% if event["url_live"] && !event["url_live"].empty? %>
+								    <li class="live_data">
+	                      <% url = event["url_live"] %>
+			                  <%= link_to(image_tag("menu_live.png"),
+			                      url, "title" => t('app.common.live_data'))%>
+								    </li>
+	                <% end %>
+			            <% if event["url_official"] && !event["url_official"].empty? %>
+  									<li class="official_data">
+                      <% url = event["url_official"] %>
 				              <%= link_to(image_tag("menu_official.png"),
-				                  event["url_official"], "title" => t('app.common.official_data'))%>
-										<% else %>
-											&nbsp;
-				            <% end %>
-									</li>
+				                  url, "title" => t('app.common.official_data'))%>
+  									</li>
+			            <% end %>
 									<li class="event_name">
-		  		          <span title="<%= strip_tags(event["description"]) %>"><%= event["name"] %></span>
+		  		          <span title="<%= strip_tags(event["description"]) %>">
+			                <%= link_to(event["name"], url)%>
+		  		          </span>
 									</li>
 								</ul>
   						</li>
