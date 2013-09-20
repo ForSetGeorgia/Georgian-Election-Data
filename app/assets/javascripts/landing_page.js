@@ -1,3 +1,5 @@
+    var landing_circle_link_obj = null;
+
 $(document).ready(function() {
   if (gon.langing_page){
 
@@ -16,7 +18,21 @@ $(document).ready(function() {
     });
 
     adjust_landing_page_heights();
-
+    
+    $('a.landing_circle_link').click(function(){
+      landing_circle_link_obj = this;
+      $.fancybox({
+        transitionIn: 'elastic',
+        transitionOut: 'elastic',
+        type: 'inline',
+        href: $(landing_circle_link_obj).attr('href'),
+        onComplete: function(){
+          if ($(landing_circle_link_obj).data('type-id') != undefined){
+            // $('div#events_menu_tabs').tabs('enable', _____);
+          }
+        }
+      });
+    });
   }
   
 });

@@ -4,7 +4,7 @@
 			<% @event_menu.each do |event_type| %>
 			  <% if !event_type["events"].empty? %>
   				<% is_active = event_type["id"].to_s == params[:event_type_id].to_s ? "ui-tabs-selected ui-state-active" : "" %>
-  				<li class="<%=is_active%>"><%= link_to event_type["name"], "#event_type_#{event_type["id"]}" %></li>
+  				<li class="<%=is_active%>"><%= link_to event_type["name"], "#event_type_#{event_type["id"]}", :'data-type-id' => event_type["id"] %></li>
 			  <% end %>
 			<% end %>
 		</ul>

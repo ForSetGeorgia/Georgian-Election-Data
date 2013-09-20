@@ -55,7 +55,7 @@
         <% end %>
       </div>
       <div class="row2_circle">
-        <%= link_to news_path do %>
+        <%= link_to "#landing_menu", :class => "landing_circle_link" do %>
           <div class="grey">
             <div class="show_all">
               <%= t('.show_all') %>
@@ -83,7 +83,7 @@
         <% end %>
       </div>
       <div class="row2_circle">
-        <%= link_to news_path do %>
+        <%= link_to "#landing_menu", :class => "landing_circle_link", :'data-type-id' => @voters_lists.first.event_type_id do %>
           <div class="grey">
             <div class="show_all">
               <%= t('.show_all') %>
@@ -140,4 +140,12 @@
       </a>
     </div>
   </div>
+  
+  
+  <div style="display: none;">
+    <div id="landing_menu">
+      <%= render :partial => "layouts/event_menu_tabs" %>
+    </div>  
+  </div>    
+  
 </div>
