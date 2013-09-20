@@ -67,4 +67,20 @@ module ApplicationHelper
 		text.html_safe
 	end
 
+
+  def barchart_no_overflow (left)
+    left = left.to_f;
+    styles = ''
+    if left > 87
+      styles << 'right: ' + (100 - left).to_s + '%;'
+      styles << 'color: #fff !important;'# text-shadow: 1px 0px #fff;'
+    else
+      styles << 'left: ' + left.to_s + '%;'
+    end
+    styles.html_safe
+  end
+
+
+
+
 end

@@ -78,12 +78,10 @@
                 <%= @parent_summary_data[1][:winner_number] %>
               </div>
               <div class="bar_item_charts">
-                <div class="bar_item_chart_bg">
-                </div>
                 <div class="bar_item_chart" style="width: <%= @parent_summary_data[1][:winner_percent]%>; background-color: <%= @parent_summary_data[1][:winner_color] %>" 
                     title="<%= "#{@parent_summary_data[1][:winner_name]} - #{@parent_summary_data[1][:winner_percent]}" %>">
                 </div>
-                <div class="bar_item_chart_percent" style="left: <%= @parent_summary_data[1][:winner_percent]%>; color: <%= @parent_summary_data[1][:winner_color] %>">
+                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(@parent_summary_data[1][:winner_percent])%> color: <%= @parent_summary_data[1][:winner_color] %>">
                   <%= @parent_summary_data[1][:winner_percent] %>
                 </div>
               </div>
@@ -96,12 +94,10 @@
                 <%= @parent_summary_data[1][:second_number] %>
               </div>
               <div class="bar_item_charts">
-                <div class="bar_item_chart_bg">
-                </div>
                 <div class="bar_item_chart" style="width: <%= @parent_summary_data[1][:second_percent]%>; background-color: <%= @parent_summary_data[1][:second_color] %>" 
                     title="<%= "#{@parent_summary_data[1][:second_name]} - #{@parent_summary_data[1][:second_percent]}" %>">
                 </div>
-                <div class="bar_item_chart_percent" style="left: <%= @parent_summary_data[1][:second_percent]%>; color: <%= @parent_summary_data[1][:second_color] %>">
+                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(@parent_summary_data[1][:second_percent])%> color: <%= @parent_summary_data[1][:second_color] %>">
                   <%= @parent_summary_data[1][:second_percent] %>
                 </div>
               </div>
@@ -138,12 +134,10 @@
                 <%= @root_summary_data[1][:winner_number] %>
               </div>
               <div class="bar_item_charts">
-                <div class="bar_item_chart_bg">
-                </div>
                 <div class="bar_item_chart" style="width: <%= @root_summary_data[1][:winner_percent]%>; background-color: <%= @root_summary_data[1][:winner_color] %>" 
                     title="<%= "#{@root_summary_data[1][:winner_name]} - #{@root_summary_data[1][:winner_percent]}" %>">
                 </div>
-                <div class="bar_item_chart_percent" style="left: <%= @root_summary_data[1][:winner_percent]%>; color: <%= @root_summary_data[1][:winner_color] %>">
+                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(@root_summary_data[1][:winner_percent])%> color: <%= @root_summary_data[1][:winner_color] %>">
                   <%= @root_summary_data[1][:winner_percent] %>
                 </div>
               </div>
@@ -156,12 +150,10 @@
                 <%= @root_summary_data[1][:second_number] %>
               </div>
               <div class="bar_item_charts">
-                <div class="bar_item_chart_bg">
-                </div>
                 <div class="bar_item_chart" style="width: <%= @root_summary_data[1][:second_percent]%>; background-color: <%= @root_summary_data[1][:second_color] %>" 
                     title="<%= "#{@root_summary_data[1][:second_name]} - #{@root_summary_data[1][:second_percent]}" %>">
                 </div>
-                <div class="bar_item_chart_percent" style="left: <%= @root_summary_data[1][:second_percent]%>; color: <%= @root_summary_data[1][:second_color] %>">
+                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(@root_summary_data[1][:second_percent])%> color: <%= @root_summary_data[1][:second_color] %>">
                   <%= @root_summary_data[1][:second_percent] %>
                 </div>
               </div>
