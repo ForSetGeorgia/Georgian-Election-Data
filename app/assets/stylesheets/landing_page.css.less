@@ -81,7 +81,7 @@
         text-align: left;
         display: inline-block;
         width: 366px;
-        min-height: 165px;
+        min-height: 180px;
         background-color: #fff;
         position: relative;
         margin-right: 20px;
@@ -153,20 +153,34 @@
         margin-right: 20px;
         & > div {
           display: inline-block;
-          a > .show_all{
-            color: #fff;
+          a > .grey{
             text-align: center;
-            width: 55px;
-            height: 55px;
-            padding: 13px 5px 0;
+            width: 65px;
+            height: 65px;
+            padding: 5px;
             margin: 0 auto;
+            background: #eeefef;
             -webkit-border-radius: 50%;
                -moz-border-radius: 50%;
                     border-radius: 50%;
             -webkit-box-sizing: border-box;
                -moz-box-sizing: border-box;
                   	box-sizing: border-box;
-          	line-height: 13px;
+            .show_all{
+              color: #fff;
+              text-align: center;
+              width: 55px;
+              height: 55px;
+              padding: 13px 5px 0;
+              margin: 0 auto;
+              -webkit-border-radius: 50%;
+                 -moz-border-radius: 50%;
+                      border-radius: 50%;
+              -webkit-box-sizing: border-box;
+                 -moz-box-sizing: border-box;
+                    	box-sizing: border-box;
+            	line-height: 13px;
+            }
           }
           a:hover{
             text-decoration: none;
@@ -176,15 +190,15 @@
           }
         }
       }
-      & > div:nth-child(1) > div a > .show_all{
+      & > div:nth-child(1) > div a .show_all{
         background: #e67a7b;
       }
-      & > div:nth-child(2) > div a > .show_all{
+      & > div:nth-child(2) > div a .show_all{
         background: #64a8d0;
       }
       & > div:nth-child(3) {
         margin-right: 0;
-        & > div a > .show_all{
+        & > div a .show_all{
           background: #dac466;
         }
       }
@@ -260,6 +274,7 @@
     #landing_page{
       #row2 > div {
         width: 300px;
+        min-height: 190px;
         & > div li a span{
           &:nth-child(2){
             width: 225px;
@@ -300,6 +315,11 @@
           margin-right: 20px;
         }
       }
+      #row3 {
+        & > div {
+          margin-right: 20px;
+        }
+      }
       #row4{
         padding: 25px 25px 0;
         & > div {
@@ -315,6 +335,7 @@
     #landing_page{
       #row2 > div {
         width: 250px;
+        min-height: 190px;
         & > div li a span{
           &:nth-child(2){
             width: 178px;
