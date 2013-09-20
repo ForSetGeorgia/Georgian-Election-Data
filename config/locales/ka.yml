@@ -364,17 +364,17 @@ ka:
       js_link_text: Built by
   root:
     index:
-      img_alt: Sample of what map of elections looks like
-      stats_header: Stats
-      stats_elections: "%{total} elections with %{total_data} votes"
-      stats_voters_lists: "%{total} voters lists with %{total_data} registered voters"
-      download_data: Download Data
-      elections_header: Elections
-      voters_lists_header: Voters Lists
-      news_header: News
-      timeline: "Elections<br /> and<br /> Political Timeline"
-      portal: Georgian Election Portal      
-      show_all: Show All 
+      img_alt: არჩევნების რუკის ნიმუში
+      stats_header: სტატისტიკა
+      stats_elections: "%{total} არჩევნები %{total_data} ხმებით"
+      stats_voters_lists: "%{total} ამომრჩეველთა სიები %{total_data} დარეგისტრირებული ამომრჩევლებით"
+      download_data: მონაცემების ჩამოტვირთვა
+      elections_header: არჩევნები
+      voters_lists_header: ამომრჩეველთა სიები
+      news_header: სიახლეები
+      timeline: "არჩევნები<br /> და<br /> პოლიტიკური ქრონიკა"
+      portal: საქართველოს არჩევნების პორტალი      
+      show_all: ყველას ჩვენება 
     map:
       export_link_text: ჩამოტვირთეთ მონაცემები
       footnote: "შენიშვნა: %{note}"

@@ -1,0 +1,43 @@
+#body_landing_page #landing_page #row1 > div:nth-child(2) #row1_footer h3 {
+  font-family: 'din_med';
+  font-size: 17px;
+  font-weight: normal;
+}
+#body_landing_page #landing_page #row1 > div:nth-child(2) #row1_footer > div:nth-child(1) {
+  width: 345px;
+}
+#body_landing_page #landing_page #row1 > div:nth-child(2) #row1_footer > div:nth-child(2) {
+  width: 150px;
+}
+#body_landing_page #landing_page #row2 > div > h2 {
+  font-family: 'dejavu_extralight';
+  font-weight: normal;
+  font-size: 18px;
+}
+#body_landing_page #landing_page #row3 {
+  position: absolute;
+  bottom: 7px;
+  text-align: center;
+  width: 100%;
+}
+#body_landing_page #landing_page #row3 > div {
+  vertical-align: top;
+  display: inline-block;
+  width: 366px;
+  text-align: center;
+}
+#body_landing_page #landing_page #row3 > div > div {
+  display: inline-block;
+}
+#body_landing_page #landing_page #row3 > div > div a > .show_all {
+  padding: 10px 2px;
+  line-height: 14px;
+  font-size: 12px;
+}
+#body_landing_page #landing_page #row4 > div:nth-child(1) #title {
+  padding: 19px 5px 0;
+}
+#body_landing_page #landing_page #row4 > div:nth-child(2) #title {
+  padding: 30px 5px 0;
+}
+

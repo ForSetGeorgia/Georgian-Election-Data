@@ -67,5 +67,11 @@ module ElectionMap
 
 #    config.threadsafe! # enable threadsafe for girl_friday
 
+    # tell the assest pipeline to add the public/locale dir as assets path
+    config.assets.paths << "#{Rails.root}/public/css/"
+
+    # tell the assest pipeline to include the fancybox.js and font styles
+    config.assets.precompile += ['fonts_en.css', 'fonts_ka.css']
+
   end
 end
