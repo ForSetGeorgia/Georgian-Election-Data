@@ -53,6 +53,16 @@
           }          
           & > div:nth-child(2) {
             width: 150px; 
+            span{
+              display: inline-block;
+              vertical-align: top;
+            }     
+            span:nth-child(1){
+              width: 27px;
+            }       
+            span:nth-child(2){
+              width: 119px;
+            }       
           }          
         }
       }
@@ -71,7 +81,7 @@
         text-align: left;
         display: inline-block;
         width: 366px;
-        min-height: 152px;
+        min-height: 165px;
         background-color: #fff;
         position: relative;
         margin-right: 20px;
@@ -140,6 +150,7 @@
         display: inline-block;
         width: 366px;
         text-align: center;
+        margin-right: 20px;
         & > div {
           display: inline-block;
           a > .show_all{
@@ -166,15 +177,15 @@
         }
       }
       & > div:nth-child(1) > div a > .show_all{
-        background: #e8a1a1;
+        background: #e67a7b;
       }
       & > div:nth-child(2) > div a > .show_all{
-        background: #b0d0e1;
+        background: #64a8d0;
       }
       & > div:nth-child(3) {
         margin-right: 0;
         & > div a > .show_all{
-          background: #eedfa0;
+          background: #dac466;
         }
       }
     }
@@ -321,12 +332,23 @@
   #body_landing_page{
     #landing_page{
       margin-top: -20px;
-      #row1 > div:nth-child(2) {
-        width: 100%;
-        #row1_footer{
-          text-align: center;
-          & > div{
-            text-align: left;
+      #row1 {
+        & > div:nth-child(1) {
+          display: none;
+        }
+        & > div:nth-child(2) {
+          width: 100%;
+          #row1_footer{
+            text-align: center;
+            & > div:nth-child(1){
+              display: none;
+            }
+            & > div:nth-child(2){
+              width: 100% !important;
+              span:nth-child(2){
+                width: auto !important;
+              }
+            }
           }
         }
       }
@@ -345,6 +367,29 @@
     #landing_page{
       #row4 > div:nth-child(2) {
         margin-left: 120px;
+      }
+    }
+  }
+}
+
+@media (max-width: 635px) {
+  #body_landing_page{
+    #landing_page{
+      #row4 {
+        padding-bottom: 25px;
+        & > div {
+            position: static !important;
+            width: 110px;
+          #title{
+            position: static !important;
+          }
+          img {
+            display: none;
+          }
+        }
+        & > div:nth-child(2){
+          margin-left: 25px;
+        }
       }
     }
   }
