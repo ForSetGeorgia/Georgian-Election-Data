@@ -18,6 +18,10 @@ class RootController < ApplicationController
 	  @voters_lists = Event.public_official_voters_lists
 	  @news = News.with_translations(I18n.locale).recent.limit(2)
     gon.langing_page = true
+
+    respond_to do |format|
+      format.html 
+    end
   end
 
 	def map
@@ -395,6 +399,10 @@ logger.debug "//////////////////////////////////////////////////////// done with
 			# either data could not be found or param is missing and page could not be loaded
 			logger.debug "+++++++++ either data could not be found or param is missing and page could not be loaded, redirecting to home page"
 			redirect_to map_path
+    else
+      respond_to do |format|
+        format.html 
+      end
 		end
 	end
 
