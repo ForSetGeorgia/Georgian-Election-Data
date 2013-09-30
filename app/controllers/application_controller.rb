@@ -39,7 +39,8 @@ protected
 		Browser.new("Safari", "4.0.2"),
 		Browser.new("Firefox", "10.0.2"),
 		Browser.new("Internet Explorer", "9.0"),
-		Browser.new("Opera", "11.0")
+		Browser.new("Opera", "11.0"),
+		Broweser.new("CriOS", "26.0")
 	]
 
 	def is_browser_supported?
