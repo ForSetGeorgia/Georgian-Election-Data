@@ -1,3 +1,8 @@
+.navbar-inner-bottom .navmenu-select p {
+  font-family: din_medium;
+}
+
+
 #body_landing_page #landing_page #row1 > div:nth-child(2) #row1_footer h3 {
   font-family: 'din_med';
   font-size: 17px;
@@ -25,7 +30,7 @@
 
 
 #body_landing_page #landing_page #row2 > div > h2 {
-  font-family: 'dejavu_extralight';
+/*  font-family: 'dejavu_extralight';*/
   font-weight: normal;
   font-size: 18px;
 }
