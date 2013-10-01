@@ -101,10 +101,12 @@
               <% @news.each do |n| %>
                 <li>
                   <div class="news_date">
-                    <%= l Date.new(n.date_posted.year, n.date_posted.month, n.date_posted.day), :format => :long %>
+                    <%= link_to news_path do %>
+                      <%= l Date.new(n.date_posted.year, n.date_posted.month, n.date_posted.day), :format => :long %>
+                    <% end %>
                   </div>
                   <div class="news_text">
-                    <%= truncate(strip_tags(n.description), :length => 200, :separator => ' ', :omission => '...')   %>
+                    <%= truncate(strip_tags(n.description), :length => 125, :separator => ' ', :omission => '...')   %>
                   </div>
                 </li>
               <% end %>

@@ -6,11 +6,11 @@ $(document).ready(function() {
     // get the max height for row 3 divs and set all other divs to match
     function adjust_landing_page_heights(){
       var heights = [];
-      $('#row2 > div').each(function(){
+      $('#row2 .row2_links').each(function(){
         heights.push($(this).height());
       });
       
-      $('#row2 > div').each(function() { $(this).height(Math.max.apply(Math, heights)); });
+      $('#row2 .row2_links').each(function() { $(this).height(Math.max.apply(Math, heights)); });
     }
 
     $(window).resize(function(){
