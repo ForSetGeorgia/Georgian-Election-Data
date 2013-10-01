@@ -401,12 +401,12 @@ ka:
       data_archives_link: ჩამოტვირთეთ მონაცემები
     data_archives:
       title: ჩამოტვირთეთ მონაცემები
-      no_archives: I am sorry, but at this time we do not have any data to download.
-      explanation: This is a collection of all data from every election and voters list contained in this application.  Each election and voters list has its own data file and all of these files are compressed into a ZIP format.  A new set of downloadable data files is generated when new data is added to this application and a complete history of all downloadable data files is maintained.
+      no_archives: ბოდიშს გიხდით, მაგრამ ამჟამად არ გვაქვს ჩამოსატვირთი მონაცემები.
+      explanation: ყველა არჩევნების და ამომრჩეველთა სიის ნაკრები შედის ამ აპლიკაციაში. თითოეულ არჩევნებს და ამომრჩეველთა სია აქვს თავისი მონაცემთა ფაილი და ყველა ეს ფაილი ZIP ფორმატშია დაკომპრესებული. ჩამოტვირთვადი მონაცემების ფაილების ახალი ნაკრები გენერირდება, როდესაც ახალი მონაცემები ემატება ამ აპლიკაციას და ყველა ჩამოტვირთვადი მონაცემების ფაილების სრული ისტორია ნარჩუნდება.
     data_archive:
       title: ჩამოტვირთეთ მონაცემები
-      view_all: View All Data to Download
-      no_archive: I am sorry, but the requested data to download could not be found.
+      view_all: ყველა მონაცემის ნახვა ჩამოსატვირთად
+      no_archive: ბოდიშს გიხდით, მოთხოვნილი მონაცემები არ მოიძებნა.
     indicators:
       title: მაჩვენებლები
       no_records: სამწუხაროდ ამჟამად არ გვაქვს მაჩვენებლები ფაილზე.
