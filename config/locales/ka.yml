@@ -32,7 +32,7 @@ ka:
         map_level: რუქის დონე
         map_level_id: "[Level] საიდენტიფიკაციო ნომერი"
         map_level_name: "[Level] დასახელება"
-        map_level_summary: "ყველაზე მაღალი შედეგები [Level]-ში."
+        map_level_summary: "ყველაზე მაღალი შედეგები [Level]"
       msgs:
         no_event_db: მონაცემთა ბაზაში მოვლენა არ მოიძებნა.
         indicator_not_found: მაჩვენებელი %{name} არ მოიძებნა.
@@ -193,6 +193,7 @@ ka:
       name_abbrv: Abbrveiated Name
       name_singular: Singular Name
       name_singular_possessive: Singular Possessive
+      name_singular_in: "Singular Name with 'in'"
       name_plural: Plural Name
       title: Title
       description: Description

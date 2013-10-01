@@ -32,7 +32,7 @@ en:
         map_level: Map Level
         map_level_id: "[Level] ID"
         map_level_name: "[Level] Name"
-        map_level_summary: "Top Results In [Level]"
+        map_level_summary: "Top Results [Level]"
       msgs:
         no_event_db: The event was not found in the database.
         indicator_not_found: Indicator %{name} could not be found.
@@ -193,6 +193,7 @@ en:
       name_abbrv: Abbrveiated Name
       name_singular: Singular Name
       name_singular_possessive: Singular Possessive
+      name_singular_in: "Singular Name with 'in'"
       name_plural: Plural Name
       title: Title
       description: Description

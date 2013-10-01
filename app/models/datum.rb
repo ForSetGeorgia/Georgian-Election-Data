@@ -511,7 +511,7 @@
     if event_id.present? && data_set_id.present? && shape_type_id.present? && shape_id.present? && 
         indicator_type_id.present? && data_type.present?
         
-      shape_type_name = ShapeTypeTranslation.select('name_singular')
+      shape_type_name = ShapeTypeTranslation.select('name_singular, name_singular_in')
         .where(:locale => I18n.locale, :shape_type_id => shape_type_id)
         
       if shape_type_name.present?
@@ -524,6 +524,7 @@
           row = Hash.new
           data << row
           row[:shape_type] = shape_type_name.first.name_singular
+          row[:shape_type_in] = shape_type_name.first.name_singular_in
           row[:shape] = I18n.t('models.datum.header.map_level_name').gsub('[Level]', shape_type_name.first.name_singular)
           row[:winner_name] = I18n.t('app.common.winner')
           row[:winner_number] = nil

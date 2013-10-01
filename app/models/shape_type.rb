@@ -1,5 +1,5 @@
 class ShapeType < ActiveRecord::Base
-  translates :name_singular, :name_plural, :name_singular_possessive
+  translates :name_singular, :name_plural, :name_singular_possessive, :name_singular_in
   has_ancestry
 
   has_many :indicators

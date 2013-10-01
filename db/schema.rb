@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131001055525) do
+ActiveRecord::Schema.define(:version => 20131001103242) do
 
   create_table "core_indicator_translations", :force => true do |t|
     t.integer  "core_indicator_id"
@@ -418,6 +418,7 @@ ActiveRecord::Schema.define(:version => 20131001055525) do
     t.datetime "updated_at"
     t.string   "name_plural"
     t.string   "name_singular_possessive"
+    t.string   "name_singular_in"
   end
 
   add_index "shape_type_translations", ["locale", "name_singular"], :name => "index_shape_type_translations_on_locale_and_name_singular"

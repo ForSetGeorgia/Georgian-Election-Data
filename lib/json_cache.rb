@@ -111,7 +111,7 @@ module JsonCache
 	def self.clear_data_files(event_id=nil)
 		Rails.logger.debug "################## - clearing data cache files"
 		Rails.logger.debug "################## -> event id provided, so only for event #{event_id}" if event_id.present?
-		if event_id
+		if event_id.present?
 			FileUtils.rm_rf(JSON_DATA_EVENT_PATH.gsub("[event_id]", event_id.to_s))
 		else
 			FileUtils.rm_rf(JSON_DATA_PATH)
