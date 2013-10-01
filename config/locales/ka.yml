@@ -410,6 +410,7 @@ ka:
     indicators:
       title: მაჩვენებლები
       no_records: სამწუხაროდ ამჟამად არ გვაქვს მაჩვენებლები ფაილზე.
+      explanation: This section explains the purpose of each indicator and provides the ability to quickly view the results of each indicator across all elections.
     indicator:
       summary_header: სრული
       details_header: დეტალები
@@ -421,6 +422,7 @@ ka:
     districts:
       title: ოლქები
       no_records: სამწუხაროდ ამჟამად არ გვაქვს ოლქები ფაილზე.
+      explanation: This section explains the population and location of each district and provides the ability to quickly view all results of each district across all elections. 
     district:
       summary_header: სრული
       details_header: დეტალები

@@ -410,6 +410,7 @@ en:
     indicators:
       title: Indicators
       no_records: I am sorry, but at this time we do not have any indicators on file.
+      explanation: This section explains the purpose of each indicator and provides the ability to quickly view the results of each indicator across all elections.
     indicator:
       summary_header: Overall
       details_header: Details
@@ -421,6 +422,7 @@ en:
     districts:
       title: Districts
       no_records: I am sorry, but at this time we do not have any districts on file.
+      explanation: This section explains the population and location of each district and provides the ability to quickly view all results of each district across all elections. 
     district:
       summary_header: Overall
       details_header: Details
