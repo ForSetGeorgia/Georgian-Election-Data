@@ -20,7 +20,7 @@
 <% else %>
 	<div id="archive_item">
 		<h3><%= @archive["date"] %></h3>
-		<%= simple_format @archive["news"], {}, :sanitize => false %>
+		<%= simple_format_no_tags @archive["news"], {}, :sanitize => false %>
 		<ul id="archive_links" class="clear">
 		<% @archive["files"].each do |file| %>
 			<li>

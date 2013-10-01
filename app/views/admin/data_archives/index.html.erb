@@ -14,9 +14,11 @@
 	</p>
 <% else %>
 	<% @archives.each do |archive| %>
-		<div id="archive_item">
+		<div class="archive_item">
 			<h3><%= archive["date"] %></h3>
-			<%= simple_format archive["news"], {}, :sanitize => false %>
+			<div class="archive_text">
+  			<%= simple_format_no_tags archive["news"], {}, :sanitize => false %>
+			</div>
 			<ul id="archive_links" class="clear">
 			<% archive["files"].each do |file| %>
 				<li>

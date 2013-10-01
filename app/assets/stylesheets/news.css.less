@@ -1,9 +1,23 @@
 .news_item {
  padding: 0.3em 0;
  
- .news_text a{
-  text-decoration: underline;
- }
+ .news_text {
+    ul, ol, ul ul, ol ol,
+    ul ol, ol ul {
+	    margin-left: 1.5em;
+    }
+    ul li {
+	    list-style-type:disc;
+	    line-height: 1.1;
+    }
+    ol li {
+	    list-style-type:decimal;
+	    line-height: 1.1;
+    }
+    a{
+      text-decoration: underline;
+    }
+  }
 }
 
 #news_header{

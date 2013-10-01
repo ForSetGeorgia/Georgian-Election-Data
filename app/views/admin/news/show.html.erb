@@ -32,6 +32,6 @@
 <p>
   <strong><%= t('app.common.description')%>:</strong>
 </p>
-<%= simple_format(@news.description, {}, :sanitize => false) %>
+<%= simple_format_no_tags(@news.description, {}, :sanitize => false) %>
 
 
