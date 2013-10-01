@@ -122,7 +122,7 @@ ka:
       new_shape_types: ახალი ფორმის (Shape) ტიპი
       new_shapes: ახალი ფორმა (Shape)
       new_news: უახლესი ამბები
-      new_data_archives: ახალი მონაცემთა არქივი
+      new_data_archives: New Data Download Files
       new_menu_live_events: ახალი განახლებადი მოვლენების მენიუ
       new_data_sets: მოვლენათა მონაცემების ატვირთვა
       upload_csv: CSV ფაილის დამუშავება
@@ -225,10 +225,10 @@ ka:
       overall_placement: დაკავებული ადგილი
       total_participants: სუბიექტთა რაოდენობა
       footnote_duplicates: სულ მცირე ორი სუბიექტის შედეგები მიახლოებულია
-      data_archive: Data Archive
+      data_archive: Download Data
       news_type: News Type
       date_posted: Date Posted
-      data_archive_folder: Data Archive Folder
+      data_archive_folder: Download Data Folder
       page: Page
       menu_start_date: Live Menu Start Date
       menu_end_date: Live Menu End Date
@@ -293,7 +293,7 @@ ka:
       js_link_text: აგებულია
       header: არჩევნები
       news: სიახლეები
-      data_archives: მონაცემთა არქივი
+      data_archives: მონაცემების ჩამოტვირთვა
       indicators: მაჩვენებლები
       districts: ოლქები
       feed-title: საქართველოს საარჩევნო მონაცემთა სიახლეები
@@ -394,19 +394,19 @@ ka:
     news:
       title_feed: საქართველოს საარჩევნო მონაცემთა სიახლეები
       title: სიახლეები
-      data_archives_link: მონაცემთა არქივის ნახვა
+      data_archives_link: ჩამოტვირთეთ მონაცემები
       no_news: ვწუხვართ, მაგრამ ამ დროისთვის ახალი ინფორმაცია არ მოიპოვება.
     news_show:
       title: სიახლეები
-      data_archives_link: მონაცემთა არქივის ნახვა
+      data_archives_link: ჩამოტვირთეთ მონაცემები
     data_archives:
-      title: მონაცემთა არქივი
-      no_archives: ვწუხვართ, მაგრამ ამ დროისთვის მონაცემთა არქივი არ მოიპოვება.
-      explanation: მონაცემთა არქივი არის ნაკრები არჩევნების მონაცემების და ამომრჩეველთა სიისა, რომელსაც შეიცავს ეს აპლიკაცია. თითოეულ არჩევნებს და ამომრჩეველთა სიას გააჩნია საკუთარი მონაცემთა ფაილი და ყველა ეს ფაილი დაკომპრესებულია ZIP ფორმატში. 
+      title: ჩამოტვირთეთ მონაცემები
+      no_archives: I am sorry, but at this time we do not have any data to download.
+      explanation: This is a collection of all data from every election and voters list contained in this application.  Each election and voters list has its own data file and all of these files are compressed into a ZIP format.  A new set of downloadable data files is generated when new data is added to this application and a complete history of all downloadable data files is maintained.
     data_archive:
-      title: მონაცემთა არქივი
-      view_all: სრული მონაცემთა არქივის ნახვა
-      no_archive: ვწუხვართ, მაგრამ მოთხოვნილი მონაცემები ვერ მოიძებნა.
+      title: ჩამოტვირთეთ მონაცემები
+      view_all: View All Data to Download
+      no_archive: I am sorry, but the requested data to download could not be found.
     indicators:
       title: მაჩვენებლები
       no_records: სამწუხაროდ ამჟამად არ გვაქვს მაჩვენებლები ფაილზე.
@@ -466,7 +466,7 @@ ka:
       shapes: Map Shapes
       download_header: Download Files
       download_indicators: Indicators
-      data_archives: Create Data Archive Set
+      data_archives: Create Download Data Files
       delete_header: Delete Records
       delete_shapes: Map Shapes
       delete_data: Data
@@ -696,7 +696,7 @@ ka:
         title: Editing News
       index:
         title: სიახლეები
-        data_archives_link: მონაცემთა არქივის ნახვა
+        data_archives_link: ჩამოტვირთეთ მონაცემები
         no_news: ვწუხვართ, მაგრამ ამ დროისთვის ახალი ინფორმაცია არ მოიპოვება.
       new:
         title: New News
@@ -704,18 +704,18 @@ ka:
         title: News Details
     data_archives:
       new:
-        title: Create a new Data Archive set of files
+        title: Create a new set of files for download
         explanation: "A Data Archive is a ZIP archive of all event data in four formats: English - CSV, English - XLS, Georgian - CSV, Georgian XLS.  Each ZIP file contains one spreadsheet file per event."
         size: This will take about 5mb of disk space.
-        time: This will take about 30 minutes.
-        created: The data archive files have been created.
+        time: This will take about 60 minutes.
+        created: The data files have been created.
       index:
-        title: მონაცემთა არქივი
-        no_archives: ვწუხვართ, მაგრამ ამ დროისთვის მონაცემთა არქივი არ მოიპოვება.
+        title: ჩამოტვირთეთ მონაცემები
+        no_archives: I am sorry, but at this time we do not have any data to download.
       show:
-        title: მონაცემთა არქივი
-        view_all: სრული მონაცემთა არქივის ნახვა
-        no_archive: ვწუხვართ, მაგრამ მოთხოვნილი მონაცემები ვერ მოიძებნა.
+        title: ჩამოტვირთეთ მონაცემები
+        view_all: View All Data to Download
+        no_archive: I am sorry, but the requested data to download could not be found.
     shape_text:
       edit:
         title: "Editing Profile Text: '%{name}'"

@@ -95,11 +95,17 @@ class Event < ActiveRecord::Base
 
 
   # get events that are elections and public
-  def self.public_official_elections(limit = 3)
-		with_translations(I18n.locale)
+  def self.public_official_elections(limit = 3, ids = nil)
+		x = with_translations(I18n.locale)
     .where(:has_official_data => true, :event_type_id => EventType.ids_with_elections)
 		.order("event_date DESC, event_translations.name ASC")
 		.limit(limit)
+		
+		if ids.present?
+		  x = x.where(:id => ids)
+		end
+		
+	  return x
   end  
 
   # get events that are voters lists and public
