@@ -11,6 +11,10 @@ class FixByElectionNames < ActiveRecord::Migration
           event.save
         end
       end
+
+      I18n.available_locales.each do |locale|
+        Rails.cache.clear("event_menu_json_#{locale}")
+      end
     end
   end
 
@@ -23,6 +27,10 @@ class FixByElectionNames < ActiveRecord::Migration
           event.name_abbrv = event.name_abbrv.gsub('By-election', 'Bi-election')        
           event.save
         end
+      end
+
+      I18n.available_locales.each do |locale|
+        Rails.cache.clear("event_menu_json_#{locale}")
       end
     end
   end
