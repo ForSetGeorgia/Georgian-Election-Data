@@ -58,5 +58,14 @@ class Admin::CacheController < ApplicationController
 		end
   end
 
+  def clear_map_images
+		if request.post?
+			start = Time.now
+			JsonCache.clear_image_files
+			flash[:notice] = I18n.t('admin.cache.clear_map_images.cleared')
+			send_status_update(I18n.t('admin.cache.clear_map_images.cleared'), Time.now-start)
+		end
+  end
+
 
 end

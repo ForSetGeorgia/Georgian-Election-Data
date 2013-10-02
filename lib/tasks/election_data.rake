@@ -42,4 +42,12 @@ namespace :election_data do
     DataArchive.create_files
   end
 
+	##############################
+  desc "clear map images"
+  task :clear_map_images => [:environment] do
+
+    # clear all image files
+    JsonCache.clear_image_files
+  end
+
 end

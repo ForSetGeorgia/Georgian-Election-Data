@@ -477,6 +477,7 @@ ka:
       cache_clear_all: Clear All Cache
       cache_clear_memory: Clear Memory Cache
       cache_clear_files: Clear File Cache
+      cache_clear_map_images: Clear Map Image Cache
       cache_create_header: Create File Cache
       cache_default_event: Default Custom Event View Cache
       cache_indicators: Custom Event Indicator Cache
@@ -497,6 +498,10 @@ ka:
         title: Clear File Cache
         explanation: File Cache holds custom event json shape files for all indicators.
         cleared: The cache files have been deleted.
+      clear_map_images:
+        title: Clear Map Image Cache
+        explanation: Map Image Cache holds the images of the maps that appear in the summary bar above the map.
+        cleared: The map image cache files have been deleted.
       custom_event_indicators:
         title: Create Cache for All Custom Event Indicators
         explanation: Create cache files for each indicator in an event that has a custom view (e.g., all indicators at the District level of the 2008 Presidential Election).

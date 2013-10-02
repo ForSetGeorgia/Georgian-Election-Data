@@ -607,7 +607,7 @@ logger.debug " - no matching event found!"
 
 	# get the shape type
 	def get_shape_type(shape_type_id)
-		if @shape_types.nil? || @shape_types.empty? || shape_type_id.nil?
+		if @shape_types.blank? || shape_type_id.blank?
       return nil
     else
 			@shape_types.each do |type|

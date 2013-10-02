@@ -125,6 +125,17 @@ module JsonCache
 		end
 	end
 
+	def self.clear_image_files(event_id=nil)
+		Rails.logger.debug "################## - clearing image cache files"
+		Rails.logger.debug "################## -> event id provided, so only for event #{event_id}" if event_id.present?
+
+		if event_id.present?
+			FileUtils.rm_rf(Dir.glob(JSON_DATA_EVENT_PATH.gsub("[event_id]", event_id.to_s) + '/**/map_images'))
+		else
+			FileUtils.rm_rf(Dir.glob(JSON_DATA_PATH + '/**/map_images'))
+		end
+	end
+
 
 
 

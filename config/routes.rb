@@ -13,6 +13,7 @@ ElectionMap::Application.routes.draw do
 	    match '/cache/clear_all' => 'cache#clear_all', :via => [:get, :post]
   		match '/cache/clear_memory' => 'cache#clear_memory', :via => [:get, :post]
 	    match '/cache/clear_files', :to => 'cache#clear_files', :via => [:get, :post]
+	    match '/cache/clear_map_images', :to => 'cache#clear_map_images', :via => [:get, :post]
 	    match '/cache/custom_event_indicators', :to => 'cache#custom_event_indicators', :via => [:get, :post]
 	    match '/cache/default_custom_event', :to => 'cache#default_custom_event', :via => [:get, :post]
 	    match '/cache/summary_data', :to => 'cache#summary_data', :via => [:get, :post]
