@@ -177,67 +177,67 @@ ka:
       app_name: საქართველოს საარჩევნო მონაცემები
       yes: დიახ
       no: არა
-      important: Important
-      indicator: Indicator
-      core_indicator: Unique Indicator
-      data: Data
-      event_custom_view: Event Custom View
-      event_indicator_relationship: Event Indicator Relationship
-      indicator_scale: Indicator Scale
-      news: News
-      shape: Shape
-      common_id: Common ID
-      common_name: Common Name
-      value: Value
-      name: Name
-      name_abbrv: Abbrveiated Name
-      name_singular: Singular Name
-      name_singular_possessive: Singular Possessive
+      important: მნიშვნელოვანი
+      indicator: მაჩვენებელი
+      core_indicator: უნიკალური მაჩვენებელი
+      data: მონაცემები
+      event_custom_view: მოვლენის პერსონიფიცირებული ხედი
+      event_indicator_relationship: მოვლენის მაჩენებლის პოპაპი
+      indicator_scale: მაჩვენებლის შკალა
+      news: ახალი ამბები
+      shape: ფორმა (Shape)
+      common_id: საერთო ID
+      common_name: საერთო სახელი
+      value: ღირებულება
+      name: სახელი
+      name_abbrv: შემოკლებული სახელი
+      name_singular: მხოლობითი სახელი
+      name_singular_possessive: მხოლობითი კუთვნილებითი
       name_singular_in: "Singular Name with 'in'"
-      name_plural: Plural Name
-      title: Title
-      description: Description
-      event: Event
-      event_type: Event Group
-      event_date: Event Date
-      parent_shape: Parent Shape
-      locale: Language
-      file_upload: CSV File to Upload
-      has_summary: Can Summarize All Indicators in Type
-      summary: Summary
-      shape_text_summary_hint: "(text that appears on district profile page)"
-      core_indicator_summary_hint: "(text that appears on indicator profile page)"
-      core_indicator_description_hint: "(descriptive name that appears in data table)"
-      indicator_type: Indicator Group
-      number_format: Number Format
-      color: Color
-      indicator_ancestry: Belongs To
-      sort_order: Sort Order
-      shape_type: Shape Level
-      at_shape_type: At This Shape View
-      custom_shape_type: Show These Shapes
-      is_default_view: Use as Default
-      num_indicator_types: "# Indicator Groups with Relationships"
-      num_indicators: "# Indicators with Relationships"
-      indicator_relationship: Indicator with Relationship
-      indicator_type_relationship: Indicator Group with Relationship
+      name_plural: მრავლობითი სახელი
+      title: სათაური
+      description: აღწერა
+      event: მოვლენა
+      event_type: მოვლენათა ჯგუფი
+      event_date: მოვლენის თარიღი
+      parent_shape: მთავარი ფორმა (Shape)
+      locale: ენა
+      file_upload: ასატვირთი CSV ფაილი
+      has_summary: შესაძლებელია ყველა ინდიკატორის ტიპის მიხედვით შეჯამება
+      summary: შეჯამება
+      shape_text_summary_hint: "(ტექსტი, რომელიც ჩნდება ოლქის პროფილის გვერდზე)"
+      core_indicator_summary_hint: "(ტექსტი, რომელიც ჩნდება ინდიკატორის პროფილის გვერდზე)"
+      core_indicator_description_hint: "(აღწერითი სახელწოდება, რომელიც ჩნდება მონაცემთა ცხრილში)"
+      indicator_type: ინდიკატორის ჯგუფი
+      number_format: რიცხვის ფორმატი
+      color: ფერი
+      indicator_ancestry: ეკუთვნის
+      sort_order: დალაგება
+      shape_type: ფორმის დონე
+      at_shape_type: ამ ფორმის ხედზე
+      custom_shape_type: ამ ფორმების ჩვენება
+      is_default_view: სტანდარტად გამოყენება
+      num_indicator_types: "# ინდიკატორის ჯგუფები პოპაპებით"
+      num_indicators: "# ინდიკატორები პოპაპებით"
+      indicator_relationship: ინდიკატორის პოპაპი
+      indicator_type_relationship: ინდიკატორის ჯგუფის პოპაპი
       winner: გამარჯვებული
       second_place: მე-2 ადგილი
       overall_placement: დაკავებული ადგილი
       total_participants: სუბიექტთა რაოდენობა
       footnote_duplicates: სულ მცირე ორი სუბიექტის შედეგები მიახლოებულია
-      data_archive: Download Data
-      news_type: News Type
-      date_posted: Date Posted
-      data_archive_folder: Download Data Folder
-      page: Page
-      menu_start_date: Live Menu Start Date
-      menu_end_date: Live Menu End Date
-      menu_live_event: Live Event Menu
-      menu_live_events: Menu Live Events
+      data_archive: მონაცემების ჩამოტვირთვა
+      news_type: ახალი ამბების ტიპი
+      date_posted: მონაცემები გამოქვეყნებულია
+      data_archive_folder: მონაცემთა არქივის საქაღალდე
+      page: გვერდი
+      menu_start_date: განახლებადი მენიუს დასაწყისის თარიღი
+      menu_end_date: განახლებადი მენიუს დასასრულის თარიღი
+      menu_live_event: განახლებადი მოვლენების მენიუ
+      menu_live_events: მენიუ განახლებადი მოვლენები
       live_events: 2012 წლის არჩევნები
-      data_set: Dataset
-      is_precinct: Is Precinct
+      data_set: მონაცემთა ნაკრები
+      is_precinct: არის საარჩევნო უბანი
       live_data: მიმდინარე მონაცემები
       official_data: ოფიციალური მონაცემები
       live_event_status: "უბნის მონაცემები მიღებულია: %{completed} / %{total} - %{percentage}"
@@ -245,9 +245,9 @@ ka:
       live_event_status_no_percent: "უბნის მონაცემები მიღებულია: %{completed}"
       live_event_status_timestamp_no_percent: " (უბნის მონაცემები მიღებულია: %{completed} - %{timestamp})"
       openlayers_rule_value_hint: "( * - has OpenLayers rule value )"
-      visible: Is Visible
-      not_visible_hint: "( * - not visible)"
-      is_default_view: Default Event to Show on Site Load?
+      visible: ჩანს
+      not_visible_hint: "( * - არ ჩანს)"
+      is_default_view: საიტის გახსნისას საჩვენები სტანდარტული მოვლენა
       placeholder: "placeholder" # do not translate
       placeholder_indicator: "placeholder_indicator"  # do not translate
       placeholder_core_indicator: "placeholder_core_indicator"  # do not translate
@@ -255,9 +255,9 @@ ka:
       placeholder_shape_type_id: "placeholder_shape_type_id"  # do not translate 
       placeholder_common_id: "placeholder_common_id"  # do not translate 
       placeholder_common_name: "placeholder_common_name"  # do not translate 
-      summary: Summary
-      added_on: "Added on: %{date}" 
-      district: District
+      summary: შეჯამება
+      added_on: "დამაყებულია: %{date}"
+      district: ოლქი
       total_turnout: "ამომრჩეველთა აქტივობა"
       total_turnout_num: "ამომრჩეველთა აქტივობა  (#)"
       total_turnout_perc: "ამომრჩეველთა აქტივობა  (%)"
