@@ -51,7 +51,7 @@ logger.debug "////////////// getting current event for event type #{params[:even
 
 			# if this is a live event, mark flag to show user message that data does not exist yet and to come back
       live_event = @live_event_menu.select{|x| x["id"].to_s == params["event_id"].to_s}
-			if params[:data_type] == Datum::DATA_TYPE[:live] && live_event && !live_event.empty?
+			if params[:data_type] == Datum::DATA_TYPE[:live] && live_event.present?
 			  logger.debug "+++++++++ this is live event but no data has been loaded yet"
         @live_event_with_no_data = true
         @live_event_name = live_event.first["name"]
@@ -72,12 +72,20 @@ logger.debug "////////////// getting current event for event type #{params[:even
       @event_custom_shape_nav = event.custom_shape_navigations
 
   		# get data set info
-			dataset = DataSet.find(params[:data_set_id]) if params[:data_set_id] && !params[:data_set_id].empty?
+			dataset = DataSet.find(params[:data_set_id]) if params[:data_set_id].present?
 
 			# get the most recent dataset for this event
       most_recent_dataset = DataSet.current_dataset(event.id, params[:data_type])
 			@most_recent_dataset = most_recent_dataset.first if most_recent_dataset
-			dataset = @most_recent_dataset if !dataset
+      if @most_recent_dataset.present? && dataset.present? && @most_recent_dataset.id != dataset.id && params[:data_type] == Datum::DATA_TYPE[:official]
+        # the passed in official data set is not the most recent, 
+        # redirect to the most recent data set
+        redirect_to indicator_map_path(:event_id => params[:event_id], :event_type_id => params[:event_type_id]),
+          :notice => I18n.t('app.msgs.newer_data')
+        return
+      elsif dataset.blank?
+  			dataset = @most_recent_dataset
+      end
 
       if dataset
         params[:data_set_id] = dataset.id.to_s
@@ -578,11 +586,11 @@ private
 	def get_current_event(event_type_id, data_type, event_id=nil)
 	  if event_type_id && data_type
 	    event_type = @event_types.select{|x| x.id.to_s == event_type_id.to_s}
-	    if event_type && !event_type.empty? && !event_type.first.events.empty?
+	    if event_type.present? && event_type.first.events.present?
 	      if event_id
           # find the event that matches the passed in id
 	        event = event_type.first.events.select{|x| x.id.to_s == event_id.to_s}
-	        if event && !event.empty?
+	        if event.present?
 	          # check if have correct data type
 	          return event.first if (event.first.has_official_data && data_type == Datum::DATA_TYPE[:official]) ||
 	                                (event.first.has_live_data && data_type == Datum::DATA_TYPE[:live])

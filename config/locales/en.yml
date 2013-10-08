@@ -173,6 +173,7 @@ en:
       event_indicator_relationships_missing_params: Please provide all parameters to edit a record.
       profile_table_no_data: "N/A<sup>†</sup>"
       profile_table_no_data_footnote: "† - The indicator does not exist for this election."
+      newer_data: The data that you tried to access is old and no longer valid.  You have been redirected to the most recent data.
     common:
       app_name: Georgia Election Data
       yes: Yes

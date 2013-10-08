@@ -121,6 +121,15 @@ class OtherController < ApplicationController
     data = JSON.parse(get_core_indicator_events)
     @indicator = data.select{|x| x["id"].to_s == params[:id]}.first
 
+    # if indicator is not in list, see if it is a child
+    # and if so, load parent
+    if @indicator.blank?
+      ind = Indicator.where("ancestry is not null and core_indicator_id = ?", params[:id]).limit(1)
+      if ind.present? && ind.first.root_id.present?
+        @indicator = data.select{|x| x["id"].to_s == ind.first.root.core_indicator_id.to_s}.first
+      end
+    end
+
     if @indicator.present?
       # if event type id in url, use it to set the active view
       @active_index = 0

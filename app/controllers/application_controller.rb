@@ -95,7 +95,7 @@ logger.debug "---********----- event type cache"
   def set_event_menu
 		json = Rails.cache.fetch("event_menu_json_#{I18n.locale}") {
 			json = []
-			if @event_types && !@event_types.empty?
+			if @event_types.present?
 				@event_types.each do |event_type|
 					type = Hash.new
 					json << type
