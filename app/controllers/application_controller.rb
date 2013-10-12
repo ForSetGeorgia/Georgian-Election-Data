@@ -188,6 +188,11 @@ logger.debug "---********----- shape type cache"
   def set_default_values
 		@svg_directory_path = File.dirname(__FILE__)+"/../../public/assets/svg/"
     @shape_type_ids_for_ind_profile = [1,3,7]
+    
+		# see if banner for this election exists, if not load default
+		@header_img_name = "header-text_#{I18n.locale}.png"
+		@header_img_name = "header-text.png" if Rails.application.assets.find_asset(@header_img_name).blank?
+    
   end
 
 	def set_gon_data

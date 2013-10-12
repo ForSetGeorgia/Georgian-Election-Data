@@ -17,7 +17,7 @@
 		<meta property="og:description" content="<%= @event_description.nil? ? '' : strip_tags(@event_description) %>" />
 	  <meta property="og:type" content="non_profit" />
 	  <meta property="og:url" content="<%= current_url %>" />
-	  <meta property="og:image" content="<%= full_url(image_path('share_image.png')) %>" />
+	  <meta property="og:image" content="<%= full_url(image_path('share.jpg')) %>" />
 	  <meta property="og:site_name" content="<%= t('app.common.app_name') %>" />
 		<!-- for /social sites -->
 
@@ -67,7 +67,7 @@
 		        <a id="header_collapsed_menu" class="btn btn-navbar" data-target=".header-nav-collapse" data-toggle="collapse">
 							<%= image_tag("header_collapsed_menu.png") %>
 						</a>
-            <%= link_to(image_tag("header-text.png"), root_path(:locale => I18n.locale),
+            <%= link_to(image_tag(@header_img_name), root_path(:locale => I18n.locale),
   								:title=> t('.title'), :class=>"brand")%>
 
             <% if false #@live_event_menu && !@live_event_menu.empty? %>
