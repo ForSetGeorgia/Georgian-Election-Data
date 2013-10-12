@@ -246,7 +246,9 @@
         <div id="export">
   			   <p>Download:</p>
 
-  			  <a href="javascript:;" id="export-map" title="<%= t('app.buttons.download_map') %>">SVG</a>
+  			  <a href="javascript:;" id="export-png" title="<%= t('app.buttons.download_png') %>">PNG</a>
+
+  			  <a href="javascript:;" id="export-map" title="<%= t('app.buttons.download_svg') %>">SVG</a>
 
   			  <%= link_to("XLS",
   				  download_data_xls_path(:event_id => params[:event_id],
@@ -340,7 +342,7 @@
   <% end %>
 
   <canvas id="svg_to_png1" style="display: none;"></canvas>
-  <canvas id="svg_to_png2" style="display: none;"></canvas>
+  <a id="download_png" style="display: none;"></a>
   
   <div id="svg_test" style="display:none;">
     <svg>

@@ -128,8 +128,9 @@ ka:
       upload_csv: CSV ფაილის დამუშავება
       download_xls: ჩამოტვირთეთ XLS რუქა ფაილი
       download_csv: ჩამოტვირთეთ CSV რუქა ფაილი
+      download_svg: ჩამოტვირთეთ SVG მონაცემები
+      download_png: ჩამოტვირთეთ PNG მონაცემები
       download_data: ჩამოტვირთეთ რუქა
-      download_map: ჩამოტვირთეთ მონაცემები
       download_help: დახმარება
       custom_view: იხილეთ ყველა %{children_shapes} %{parent_shape}ში
       create_cache: ქეშ მეხსიერების შექმნა

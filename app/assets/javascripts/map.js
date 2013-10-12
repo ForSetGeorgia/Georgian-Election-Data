@@ -37,6 +37,14 @@ if (gon.openlayers){
 
 	OpenLayers.ImgPath = gon.openlayers_img_path;
 
+  // download a png version of what the map is currently showing
+  function download_map_png(){    
+    // send img object
+    var link = $('a#download_png');
+    $(link).attr('download', gon.event_name + '--' + gon.indicator_name_abbrv + '.png').attr('href', generate_map_png().toDataURL());
+    link[0].click();
+  }
+
 
   function resize_map ()
   {
@@ -399,29 +407,11 @@ console.log('scaling root summary images');
       // and then spit out as png
       if ($('#summary_data_above_map > div:first-of-type > div:first-of-type .map_image img').length == 0 && gon.view_type == gon.summary_view_type_name)
       {
-
-        // get copy of shape svgs
-        var svg1 = $("#map").find("svg:eq(0)").parent() .clone();
-        var svg2 = $("#map").find("svg:eq(1)").parent().clone();
-        // get how much child shapes are offset
-        var svg_child_offset = $(svg2).css('left').replace('px', '');
-
-        var svg = $('#svg_test');
-        $(svg1).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
-        $(svg2).find('svg > g > g:first-of-type').attr('transform', 'translate(' + svg_child_offset + ')');
-        $(svg2).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
-        // set svg height/width and shift by bounding box x/y values
-        var bbox = $("#map").find("svg:eq(0) g:eq(1)")[0].getBBox();
-        $(svg).find('g:eq(0)').attr('transform', 'translate(-' + bbox.x + ', -' + bbox.y + ')');
-        $(svg).find('svg').width(bbox.width);
-        $(svg).find('svg').height(bbox.height);
-
-        // load svg into canvas        
-        canvg('svg_to_png1', $.trim(svg.html()));
-        var canvas = document.getElementById("svg_to_png1");
+        var canvas = generate_map_png();
 
         // scale image to fit in summary bar
         // - scale by the dimension that is the largest
+        var bbox = $("#map").find("svg:eq(0) g:eq(1)")[0].getBBox();
         var img_width;
         var img_height;
         if (bbox.width > bbox.height){
@@ -431,9 +421,6 @@ console.log('scaling root summary images');
           img_height = $('#summary_data_above_map > div:first-of-type .map_image').height();
           img_width = bbox.width * img_height / bbox.height;
         }
-
-//        var img_height = $('#summary_data_above_map div.span6:first-of-type').height();
-//        var img_width = bbox.width * img_height / bbox.height;
 
         // create img object
         var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
@@ -856,6 +843,10 @@ console.log('scaling root summary images');
 			$("#export-data-csv").attr('href',update_query_parameter($("#export-data-csv").attr('href'), "event_name", "event_name", gon.event_name));
 			$("#export-data-csv").attr('href',update_query_parameter($("#export-data-csv").attr('href'), "map_title", "map_title", gon.map_title));
 
+      $('#export-png').click(function(){
+        download_map_png();
+      });
+
 			$("#export-map").click(function(){
 				// get the indicator names and colors
 				var scales = [];
@@ -1017,4 +1008,5 @@ console.log('scaling root summary images');
     adjust_summary_images();
 		setTimeout(set_map_extent, 1);
   }
+    
 }

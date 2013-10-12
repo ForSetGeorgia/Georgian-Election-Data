@@ -202,6 +202,30 @@ function save_generated_map_images(){
   }); 
 }
 
+
+function generate_map_png(){
+  // get copy of shape svgs
+  var svg1 = $("#map").find("svg:eq(0)").parent() .clone();
+  var svg2 = $("#map").find("svg:eq(1)").parent().clone();
+  // get how much child shapes are offset
+  var svg_child_offset = $(svg2).css('left').replace('px', '');
+
+  var svg = $('#svg_test');
+  $(svg1).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
+  $(svg2).find('svg > g > g:first-of-type').attr('transform', 'translate(' + svg_child_offset + ')');
+  $(svg2).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
+  // set svg height/width and shift by bounding box x/y values
+  var bbox = $("#map").find("svg:eq(0) g:eq(1)")[0].getBBox();
+  $(svg).find('g:eq(0)').attr('transform', 'translate(-' + bbox.x + ', -' + bbox.y + ')');
+  $(svg).find('svg').width(bbox.width);
+  $(svg).find('svg').height(bbox.height);
+
+  // load svg into canvas        
+  canvg('svg_to_png1', $.trim(svg.html()));
+  return document.getElementById("svg_to_png1");
+}
+
+
 /*
 
 function full_height (element)
