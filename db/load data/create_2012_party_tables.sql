@@ -1,3 +1,4 @@
+drop table if exists `2012 election parl party list - raw`;
 CREATE TABLE `2012 election parl party list - raw` (
 	`region` VARCHAR(255) NULL DEFAULT NULL,
 	`district_id` INT(11) NULL DEFAULT NULL,
@@ -14,6 +15,10 @@ CREATE TABLE `2012 election parl party list - raw` (
 	`num_valid_votes` INT(11) NULL DEFAULT NULL,
 	`logic_check_fail` INT(11) NULL DEFAULT NULL,
 	`logic_check_difference` INT(11) NULL DEFAULT NULL,
+	`more_ballots_than_votes_flag` INT(11) NULL DEFAULT NULL,
+	`more_ballots_than_votes` INT(11) NULL DEFAULT NULL,
+	`more_votes_than_ballots_flag` INT(11) NULL DEFAULT NULL,
+	`more_votes_than_ballots` INT(11) NULL DEFAULT NULL,
 	`Free Georgia` INT(11) NULL DEFAULT NULL,
 	`National Democratic Party of Georgia` INT(11) NULL DEFAULT NULL,
 	`United National Movement` INT(11) NULL DEFAULT NULL,
@@ -34,7 +39,7 @@ CREATE TABLE `2012 election parl party list - raw` (
 COLLATE='utf8_general_ci'
 ENGINE=MyISAM;
 
-
+drop view if exists `2012 election parl party list - invalid ballots 0-1`;
 create view `2012 election parl party list - invalid ballots 0-1` as
 select `raw`.`region` AS `region`,
 `raw`.`district_id` AS `district_id`,
@@ -43,6 +48,7 @@ count(0) AS `num_invalid_ballots` from `2012 election parl party list - raw` `ra
 `raw`.`district_id`,
 `raw`.`precinct_id`;
 
+drop view if exists `2012 election parl party list - invalid ballots 1-3`;
 create view `2012 election parl party list - invalid ballots 1-3` as
 select `raw`.`region` AS `region`,
 `raw`.`district_id` AS `district_id`,
@@ -51,6 +57,7 @@ count(0) AS `num_invalid_ballots` from `2012 election parl party list - raw` `ra
 `raw`.`district_id`,
 `raw`.`precinct_id`;
 
+drop view if exists `2012 election parl party list - invalid ballots 3-5`;
 create view `2012 election parl party list - invalid ballots 3-5` as
 select `raw`.`region` AS `region`,
 `raw`.`district_id` AS `district_id`,
@@ -59,6 +66,7 @@ count(0) AS `num_invalid_ballots` from `2012 election parl party list - raw` `ra
 `raw`.`district_id`,
 `raw`.`precinct_id`;
 
+drop view if exists `2012 election parl party list - invalid ballots >5`;
 create view `2012 election parl party list - invalid ballots >5` as
 select `raw`.`region` AS `region`,
 `raw`.`district_id` AS `district_id`,
@@ -67,6 +75,7 @@ count(0) AS `num_invalid_ballots` from `2012 election parl party list - raw` `ra
 `raw`.`district_id`,
 `raw`.`precinct_id`;
 
+drop view if exists `2012 election parl party list - vpm 8-12>2`;
 create view `2012 election parl party list - vpm 8-12>2` as
 select `2012 election parl party list - raw`.`region` AS `region`,
 `2012 election parl party list - raw`.`district_id` AS `district_id`,
@@ -75,6 +84,7 @@ count(0) AS `vpm > 2` from `2012 election parl party list - raw` where ((`2012 e
 `2012 election parl party list - raw`.`district_id`,
 `2012 election parl party list - raw`.`precinct_id`;
 
+drop view if exists `2012 election parl party list - vpm 12-17>2`;
 create view `2012 election parl party list - vpm 12-17>2` as
 select `2012 election parl party list - raw`.`region` AS `region`,
 `2012 election parl party list - raw`.`district_id` AS `district_id`,
@@ -83,6 +93,7 @@ count(0) AS `vpm > 2` from `2012 election parl party list - raw` where (((`2012 
 `2012 election parl party list - raw`.`district_id`,
 `2012 election parl party list - raw`.`precinct_id`;
 
+drop view if exists `2012 election parl party list - vpm 17-20>2`;
 create view `2012 election parl party list - vpm 17-20>2` as
 select `2012 election parl party list - raw`.`region` AS `region`,
 `2012 election parl party list - raw`.`district_id` AS `district_id`,
@@ -146,6 +157,7 @@ sum(if((`2012 election parl party list - staging`.`party_num` = 41),
 `2012 election parl party list - staging`.`precinct_id`;
 */
 
+drop view if exists `2012 election parl party list - country`;
 create view `2012 election parl party list - country` as
 select sum(`raw`.`num_possible_voters`) AS `possible voters`,
 sum(`raw`.`num_votes`) AS `total ballots cast`,
@@ -162,6 +174,12 @@ ifnull(sum(`invalid_ballots_>5`.`num_invalid_ballots`),
 sum(`raw`.`logic_check_fail`) AS `num precincts logic fail`,
 (100 * (sum(`raw`.`logic_check_fail`) / count(0))) AS `percent precincts logic fail`,
 (sum(`raw`.`logic_check_difference`) / sum(`raw`.`logic_check_fail`)) AS `avg precinct logic fail difference`,
+sum(`raw`.`more_ballots_than_votes_flag`) AS `num precincts more ballots than votes`,
+(100 * (sum(`raw`.`more_ballots_than_votes_flag`) / count(0))) AS `percent precincts more ballots than votes`,
+(sum(`raw`.`more_ballots_than_votes`) / sum(`raw`.`more_ballots_than_votes_flag`)) AS `avg precinct difference more ballots than votes`,
+sum(`raw`.`more_votes_than_ballots_flag`) AS `num precincts more votes than ballots`,
+(100 * (sum(`raw`.`more_votes_than_ballots_flag`) / count(0))) AS `percent precincts more votes than ballots`,
+(sum(`raw`.`more_votes_than_ballots`) / sum(`raw`.`more_votes_than_ballots_flag`)) AS `avg precinct difference more votes than ballots`,
 sum(`raw`.`num_at_12`) AS `votes 8-12`,
 sum((`raw`.`num_at_17` - `raw`.`num_at_12`)) AS `votes 12-17`,
 sum((`raw`.`num_votes` - `raw`.`num_at_17`)) AS `votes 17-20`,
@@ -222,6 +240,7 @@ sum(`raw`.`Georgian Dream`) AS `Georgian Dream count`,
 
 
 
+drop view if exists `2012 election parl party list - districts`;
 create view `2012 election parl party list - districts` as
 select `raw`.`region` AS `region`,
 `raw`.`district_id` AS `district_id`,
@@ -241,6 +260,12 @@ ifnull(sum(`invalid_ballots_>5`.`num_invalid_ballots`),
 sum(`raw`.`logic_check_fail`) AS `num precincts logic fail`,
 (100 * (sum(`raw`.`logic_check_fail`) / count(0))) AS `percent precincts logic fail`,
 (sum(`raw`.`logic_check_difference`) / sum(`raw`.`logic_check_fail`)) AS `avg precinct logic fail difference`,
+sum(`raw`.`more_ballots_than_votes_flag`) AS `num precincts more ballots than votes`,
+(100 * (sum(`raw`.`more_ballots_than_votes_flag`) / count(0))) AS `percent precincts more ballots than votes`,
+(sum(`raw`.`more_ballots_than_votes`) / sum(`raw`.`more_ballots_than_votes_flag`)) AS `avg precinct difference more ballots than votes`,
+sum(`raw`.`more_votes_than_ballots_flag`) AS `num precincts more votes than ballots`,
+(100 * (sum(`raw`.`more_votes_than_ballots_flag`) / count(0))) AS `percent precincts more votes than ballots`,
+(sum(`raw`.`more_votes_than_ballots`) / sum(`raw`.`more_votes_than_ballots_flag`)) AS `avg precinct difference more votes than ballots`,
 sum(`raw`.`num_at_12`) AS `votes 8-12`,
 sum((`raw`.`num_at_17` - `raw`.`num_at_12`)) AS `votes 12-17`,
 sum((`raw`.`num_votes` - `raw`.`num_at_17`)) AS `votes 17-20`,
@@ -317,6 +342,12 @@ ifnull(sum(`invalid_ballots_>5`.`num_invalid_ballots`),
 sum(`raw`.`logic_check_fail`) AS `num precincts logic fail`,
 (100 * (sum(`raw`.`logic_check_fail`) / count(0))) AS `percent precincts logic fail`,
 (sum(`raw`.`logic_check_difference`) / sum(`raw`.`logic_check_fail`)) AS `avg precinct logic fail difference`,
+sum(`raw`.`more_ballots_than_votes_flag`) AS `num precincts more ballots than votes`,
+(100 * (sum(`raw`.`more_ballots_than_votes_flag`) / count(0))) AS `percent precincts more ballots than votes`,
+(sum(`raw`.`more_ballots_than_votes`) / sum(`raw`.`more_ballots_than_votes_flag`)) AS `avg precinct difference more ballots than votes`,
+sum(`raw`.`more_votes_than_ballots_flag`) AS `num precincts more votes than ballots`,
+(100 * (sum(`raw`.`more_votes_than_ballots_flag`) / count(0))) AS `percent precincts more votes than ballots`,
+(sum(`raw`.`more_votes_than_ballots`) / sum(`raw`.`more_votes_than_ballots_flag`)) AS `avg precinct difference more votes than ballots`,
 sum(`raw`.`num_at_12`) AS `votes 8-12`,
 sum((`raw`.`num_at_17` - `raw`.`num_at_12`)) AS `votes 12-17`,
 sum((`raw`.`num_votes` - `raw`.`num_at_17`)) AS `votes 17-20`,
@@ -378,6 +409,7 @@ sum(`raw`.`Georgian Dream`) AS `Georgian Dream count`,
 
 
 
+drop view if exists `2012 election parl party list - precincts`;
 create view `2012 election parl party list - precincts` as
 select `raw`.`region` AS `region`,
 `raw`.`district_id` AS `district_id`,
@@ -393,6 +425,10 @@ cast(`raw`.`precinct_id` as char charset utf8)) AS `precinct_name`,
 (100 * (`raw`.`num_valid_votes` / `raw`.`num_possible_voters`)) AS `percent voters voting`,
 `raw`.`logic_check_fail` AS `logic_check_fail`,
 `raw`.`logic_check_difference` AS `logic_check_difference`,
+`raw`.`more_ballots_than_votes_flag` as `more_ballots_than_votes_flag`,
+`raw`.`more_ballots_than_votes` as `more_ballots_than_votes`,
+`raw`.`more_votes_than_ballots_flag` as `more_votes_than_ballots_flag`,
+`raw`.`more_votes_than_ballots` as `more_votes_than_ballots`,
 `raw`.`num_at_12` AS `votes 8-12`,
 (`raw`.`num_at_17` - `raw`.`num_at_12`) AS `votes 12-17`,
 (`raw`.`num_votes` - `raw`.`num_at_17`) AS `votes 17-20`,
@@ -435,6 +471,7 @@ cast(`raw`.`precinct_id` as char charset utf8)) AS `precinct_name`,
 
 
 
+drop view if exists `2012 election parl party list - region`;
 create view `2012 election parl party list - region` as
 select `raw`.`region` AS `region`,
 sum(`raw`.`num_possible_voters`) AS `possible voters`,
@@ -452,6 +489,12 @@ ifnull(sum(`invalid_ballots_>5`.`num_invalid_ballots`),
 sum(`raw`.`logic_check_fail`) AS `num precincts logic fail`,
 (100 * (sum(`raw`.`logic_check_fail`) / count(0))) AS `percent precincts logic fail`,
 (sum(`raw`.`logic_check_difference`) / sum(`raw`.`logic_check_fail`)) AS `avg precinct logic fail difference`,
+sum(`raw`.`more_ballots_than_votes_flag`) AS `num precincts more ballots than votes`,
+(100 * (sum(`raw`.`more_ballots_than_votes_flag`) / count(0))) AS `percent precincts more ballots than votes`,
+(sum(`raw`.`more_ballots_than_votes`) / sum(`raw`.`more_ballots_than_votes_flag`)) AS `avg precinct difference more ballots than votes`,
+sum(`raw`.`more_votes_than_ballots_flag`) AS `num precincts more votes than ballots`,
+(100 * (sum(`raw`.`more_votes_than_ballots_flag`) / count(0))) AS `percent precincts more votes than ballots`,
+(sum(`raw`.`more_votes_than_ballots`) / sum(`raw`.`more_votes_than_ballots_flag`)) AS `avg precinct difference more votes than ballots`,
 sum(`raw`.`num_at_12`) AS `votes 8-12`,
 sum((`raw`.`num_at_17` - `raw`.`num_at_12`)) AS `votes 12-17`,
 sum((`raw`.`num_votes` - `raw`.`num_at_17`)) AS `votes 17-20`,
@@ -513,6 +556,7 @@ sum(`raw`.`Georgian Dream`) AS `Georgian Dream count`,
 
 
 
+drop view if exists `2012 election parl party list - tbilisi district`;
 create view `2012 election parl party list - tbilisi district` as
 select `raw`.`region` AS `region`,
 `raw`.`district_id` AS `district_id`,
@@ -532,6 +576,12 @@ ifnull(sum(`invalid_ballots_>5`.`num_invalid_ballots`),
 sum(`raw`.`logic_check_fail`) AS `num precincts logic fail`,
 (100 * (sum(`raw`.`logic_check_fail`) / count(0))) AS `percent precincts logic fail`,
 (sum(`raw`.`logic_check_difference`) / sum(`raw`.`logic_check_fail`)) AS `avg precinct logic fail difference`,
+sum(`raw`.`more_ballots_than_votes_flag`) AS `num precincts more ballots than votes`,
+(100 * (sum(`raw`.`more_ballots_than_votes_flag`) / count(0))) AS `percent precincts more ballots than votes`,
+(sum(`raw`.`more_ballots_than_votes`) / sum(`raw`.`more_ballots_than_votes_flag`)) AS `avg precinct difference more ballots than votes`,
+sum(`raw`.`more_votes_than_ballots_flag`) AS `num precincts more votes than ballots`,
+(100 * (sum(`raw`.`more_votes_than_ballots_flag`) / count(0))) AS `percent precincts more votes than ballots`,
+(sum(`raw`.`more_votes_than_ballots`) / sum(`raw`.`more_votes_than_ballots_flag`)) AS `avg precinct difference more votes than ballots`,
 sum(`raw`.`num_at_12`) AS `votes 8-12`,
 sum((`raw`.`num_at_17` - `raw`.`num_at_12`)) AS `votes 12-17`,
 sum((`raw`.`num_votes` - `raw`.`num_at_17`)) AS `votes 17-20`,
@@ -594,6 +644,7 @@ sum(`raw`.`Georgian Dream`) AS `Georgian Dream count`,
 
 
 
+drop view if exists `2012 election parl party list - tbilisi precincts`;
 create view `2012 election parl party list - tbilisi precincts` as
 select `raw`.`region` AS `region`,
 `raw`.`district_id` AS `district_id`,
@@ -609,6 +660,10 @@ cast(`raw`.`precinct_id` as char charset utf8)) AS `precinct_name`,
 (100 * (`raw`.`num_valid_votes` / `raw`.`num_possible_voters`)) AS `percent voters voting`,
 `raw`.`logic_check_fail` AS `logic_check_fail`,
 `raw`.`logic_check_difference` AS `logic_check_difference`,
+`raw`.`more_ballots_than_votes_flag` as `more_ballots_than_votes_flag`,
+`raw`.`more_ballots_than_votes` as `more_ballots_than_votes`,
+`raw`.`more_votes_than_ballots_flag` as `more_votes_than_ballots_flag`,
+`raw`.`more_votes_than_ballots` as `more_votes_than_ballots`,
 `raw`.`num_at_12` AS `votes 8-12`,
 (`raw`.`num_at_17` - `raw`.`num_at_12`) AS `votes 12-17`,
 (`raw`.`num_votes` - `raw`.`num_at_17`) AS `votes 17-20`,
@@ -652,6 +707,7 @@ cast(`raw`.`precinct_id` as char charset utf8)) AS `precinct_name`,
 
 
 
+drop view if exists `2012 election parl party list - csv`;
 create view `2012 election parl party list - csv` as
 (select 'Country' AS `shape`,
 'Georgia' AS `common_id`,
@@ -667,6 +723,14 @@ NULL AS `Invalid Ballots (%)`,
 `2012 election parl party list - country`.`percent precincts logic fail` AS `Precincts with Missing Ballots (%)`,
 `2012 election parl party list - country`.`avg precinct logic fail difference` AS `Average Number of Missing Ballots`, 
 NULL AS `Number of Missing Ballots`,
+`2012 election parl party list - country`.`num precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (#)`,
+`2012 election parl party list - country`.`percent precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (%)`,
+`2012 election parl party list - country`.`avg precinct difference more ballots than votes` AS `Average Number of More Ballots Than Votes`, 
+NULL AS `Number of More Ballots Than Votes`,
+`2012 election parl party list - country`.`num precincts more votes than ballots` AS `Precincts with More Votes than Ballots (#)`,
+`2012 election parl party list - country`.`percent precincts more votes than ballots` AS `Precincts with More Votes than Ballots (%)`,
+`2012 election parl party list - country`.`avg precinct difference more votes than ballots` AS `Average Number of More Votes than Ballots`, 
+NULL AS `Number of More Votes than Ballots`,
 NULL AS `Average votes per minute (08:00-12:00)`,
 NULL AS `Average votes per minute (12:00-17:00)`,
 NULL AS `Average votes per minute (17:00-20:00)`,
@@ -707,6 +771,14 @@ NULL AS `Invalid Ballots (%)`,
 `2012 election parl party list - region`.`percent precincts logic fail` AS `Precincts with Missing Ballots (%)`,
 `2012 election parl party list - region`.`avg precinct logic fail difference` AS `Average Number of Missing Ballots`, 
 NULL AS `Number of Missing Ballots`,
+`2012 election parl party list - region`.`num precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (#)`,
+`2012 election parl party list - region`.`percent precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (%)`,
+`2012 election parl party list - region`.`avg precinct difference more ballots than votes` AS `Average Number of More Ballots Than Votes`, 
+NULL AS `Number of More Ballots Than Votes`,
+`2012 election parl party list - region`.`num precincts more votes than ballots` AS `Precincts with More Votes than Ballots (#)`,
+`2012 election parl party list - region`.`percent precincts more votes than ballots` AS `Precincts with More Votes than Ballots (%)`,
+`2012 election parl party list - region`.`avg precinct difference more votes than ballots` AS `Average Number of More Votes than Ballots`, 
+NULL AS `Number of More Votes than Ballots`,
 NULL AS `Average votes per minute (08:00-12:00)`,
 NULL AS `Average votes per minute (12:00-17:00)`,
 NULL AS `Average votes per minute (17:00-20:00)`,
@@ -747,6 +819,14 @@ NULL AS `Invalid Ballots (%)`,
 `2012 election parl party list - districts`.`percent precincts logic fail` AS `Precincts with Missing Ballots (%)`,
 `2012 election parl party list - districts`.`avg precinct logic fail difference` AS `Average Number of Missing Ballots`, 
 NULL AS `Number of Missing Ballots`,
+`2012 election parl party list - districts`.`num precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (#)`,
+`2012 election parl party list - districts`.`percent precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (%)`,
+`2012 election parl party list - districts`.`avg precinct difference more ballots than votes` AS `Average Number of More Ballots Than Votes`, 
+NULL AS `Number of More Ballots Than Votes`,
+`2012 election parl party list - districts`.`num precincts more votes than ballots` AS `Precincts with More Votes than Ballots (#)`,
+`2012 election parl party list - districts`.`percent precincts more votes than ballots` AS `Precincts with More Votes than Ballots (%)`,
+`2012 election parl party list - districts`.`avg precinct difference more votes than ballots` AS `Average Number of More Votes than Ballots`, 
+NULL AS `Number of More Votes than Ballots`,
 NULL AS `Average votes per minute (08:00-12:00)`,
 NULL AS `Average votes per minute (12:00-17:00)`,
 NULL AS `Average votes per minute (17:00-20:00)`,
@@ -787,6 +867,14 @@ NULL AS `Precincts with Missing Ballots (#)`,
 NULL AS `Precincts with Missing Ballots (%)`,
 NULL AS `Average Number of Missing Ballots`, 
 `2012 election parl party list - precincts`.`logic_check_difference` AS `Number of Missing Ballots`,
+null AS `Precincts with More Ballots Than Votes (#)`,
+null AS `Precincts with More Ballots Than Votes (%)`,
+null AS `Average Number of More Ballots Than Votes`, 
+`2012 election parl party list - precincts`.`more_ballots_than_votes` AS `Number of More Ballots Than Votes`,
+null AS `Precincts with More Votes than Ballots (#)`,
+null AS `Precincts with More Votes than Ballots (%)`,
+null AS `Average Number of More Votes than Ballots`, 
+`2012 election parl party list - precincts`.`more_votes_than_ballots` AS `Number of More Votes than Ballots`,
 `2012 election parl party list - precincts`.`vpm 8-12` AS `Average votes per minute (08:00-12:00)`,
 `2012 election parl party list - precincts`.`vpm 12-17` AS `Average votes per minute (12:00-17:00)`,
 `2012 election parl party list - precincts`.`vpm 17-20` AS `Average votes per minute (17:00-20:00)`,
@@ -827,6 +915,14 @@ NULL AS `Invalid Ballots (%)`,
 `2012 election parl party list - tbilisi district`.`percent precincts logic fail` AS `Precincts with Missing Ballots (%)`,
 `2012 election parl party list - tbilisi district`.`avg precinct logic fail difference` AS `Average Number of Missing Ballots`, 
 NULL AS `Number of Missing Ballots`,
+`2012 election parl party list - tbilisi district`.`num precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (#)`,
+`2012 election parl party list - tbilisi district`.`percent precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (%)`,
+`2012 election parl party list - tbilisi district`.`avg precinct difference more ballots than votes` AS `Average Number of More Ballots Than Votes`, 
+NULL AS `Number of More Ballots Than Votes`,
+`2012 election parl party list - tbilisi district`.`num precincts more votes than ballots` AS `Precincts with More Votes than Ballots (#)`,
+`2012 election parl party list - tbilisi district`.`percent precincts more votes than ballots` AS `Precincts with More Votes than Ballots (%)`,
+`2012 election parl party list - tbilisi district`.`avg precinct difference more votes than ballots` AS `Average Number of More Votes than Ballots`, 
+NULL AS `Number of More Votes than Ballots`,
 NULL AS `Average votes per minute (08:00-12:00)`,
 NULL AS `Average votes per minute (12:00-17:00)`,
 NULL AS `Average votes per minute (17:00-20:00)`,
@@ -867,6 +963,14 @@ NULL AS `Precincts with Missing Ballots (#)`,
 NULL AS `Precincts with Missing Ballots (%)`,
 NULL AS `Average Number of Missing Ballots`, 
 `2012 election parl party list - tbilisi precincts`.`logic_check_difference` AS `Number of Missing Ballots`,
+null AS `Precincts with More Ballots Than Votes (#)`,
+null AS `Precincts with More Ballots Than Votes (%)`,
+null AS `Average Number of More Ballots Than Votes`, 
+`2012 election parl party list - tbilisi precincts`.`more_ballots_than_votes` AS `Number of More Ballots Than Votes`,
+null AS `Precincts with More Votes than Ballots (#)`,
+null AS `Precincts with More Votes than Ballots (%)`,
+null AS `Average Number of More Votes than Ballots`, 
+`2012 election parl party list - tbilisi precincts`.`more_votes_than_ballots` AS `Number of More Votes than Ballots`,
 `2012 election parl party list - tbilisi precincts`.`vpm 8-12` AS `Average votes per minute (08:00-12:00)`,
 `2012 election parl party list - tbilisi precincts`.`vpm 12-17` AS `Average votes per minute (12:00-17:00)`,
 `2012 election parl party list - tbilisi precincts`.`vpm 17-20` AS `Average votes per minute (17:00-20:00)`,
