@@ -60,6 +60,10 @@
 
             <%= render :partial => 'other/district_profile_filters', :locals => {:type => type, :index => 2} %>
 
+            <div class="indicator_table_no_data">
+              <%= I18n.t('charts.no_data') %>
+            </div>
+
             <div class="district_table"></div>
           </div>
 

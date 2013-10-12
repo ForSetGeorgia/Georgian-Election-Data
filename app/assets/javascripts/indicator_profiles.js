@@ -101,42 +101,82 @@ function adjust_indicator_profile_height(){
   $('#indicator_profile .tab-pane.active .profile_item > div.active div.indicator_detail_chart').each(function() { $(this).height(Math.max.apply(Math, detail_height)); });
 }
 
+function set_indicator_profile_table_visibility(visible){
+  if (visible){
+    $('.indicator_table_container .indicator_table_no_data').hide(); 
+    $('.indicator_table_container .indicator_table').show(); 
+  } else{
+    $('.indicator_table_container .indicator_table_no_data').show(); 
+    $('.indicator_table_container .indicator_table').hide(); 
+  }
+}
 
 function build_indicator_profile_table(json_data){
   if (json_data != undefined && json_data.length > 0){
-    // holds rows that will be used to create table
-    var rows = [];
-    // holds list of unique indicators
-    // the index of the indicator + 1 = the array of values for that indicator in rows
-    var indicators = []; 
-    // holds list of events ids so can assign to table cells
-    var event_ids = new Array(json_data.length);
-    var row, ind, ind_index, footnote;
-
-    // get event ids
-    for (var i=0;i<json_data.length;i++){
-      event_ids[i] = json_data[i].event.id;      
-    }
-
-    // create the header row
-    row = new Array(json_data.length+1);
-    rows.push(row);
-    row[0] = gon.profile_table_indicator_header;
-    for (var i=0;i<json_data.length;i++){
-      row[i+1] = json_data[i].event.name;      
-    }
-    
-    // add data rows
-    // format: [ [ind, event 1 name, event 2 name, etc], [ind 1, event 1 value, event 2, value, etc ], [ind 2, event 1 value, event 2, value, etc ], etc. ]
-    // for each event
+    // if all items in json_data have no data, show no data message
+    var has_data = false;
     for (var i=0;i<json_data.length;i++){
       if (json_data[i].data !== null && json_data[i].data.length > 0){
-        // for each data item/summary
-        for (var j=0;j<json_data[i].data.length;j++){
-          if (json_data[i].data[j].hasOwnProperty("summary_data")){
-            for (var k=0;k<json_data[i].data[j].summary_data.data.length;k++){
-              ind = json_data[i].data[j].summary_data.data[k];
+        has_data = true;
+        break
+      }
+    }
+    if (!has_data){
+      set_indicator_profile_table_visibility(false);
+    }else {
+      set_indicator_profile_table_visibility(true);
 
+      // holds rows that will be used to create table
+      var rows = [];
+      // holds list of unique indicators
+      // the index of the indicator + 1 = the array of values for that indicator in rows
+      var indicators = []; 
+
+      // holds list of events ids so can assign to table cells
+      var event_ids = new Array(json_data.length);
+      var row, ind, ind_index, footnote;
+
+      // get event ids
+      for (var i=0;i<json_data.length;i++){
+        event_ids[i] = json_data[i].event.id;      
+      }
+
+      // create the header row
+      row = new Array(json_data.length+1);
+      rows.push(row);
+      row[0] = gon.profile_table_indicator_header;
+      for (var i=0;i<json_data.length;i++){
+        row[i+1] = json_data[i].event.name;      
+      }
+      
+      // add data rows
+      // format: [ [ind, event 1 name, event 2 name, etc], [ind 1, event 1 value, event 2, value, etc ], [ind 2, event 1 value, event 2, value, etc ], etc. ]
+      // for each event
+      for (var i=0;i<json_data.length;i++){
+        if (json_data[i].data !== null && json_data[i].data.length > 0){
+          // for each data item/summary
+          for (var j=0;j<json_data[i].data.length;j++){
+            if (json_data[i].data[j].hasOwnProperty("summary_data")){
+              for (var k=0;k<json_data[i].data[j].summary_data.data.length;k++){
+                ind = json_data[i].data[j].summary_data.data[k];
+
+                // see if this is a new indicator 
+                ind_index = indicators.indexOf(ind.indicator_name)
+                if (ind_index == -1){
+                  // add the new indicator to the list
+                  indicators.push(ind.indicator_name);
+                  ind_index = indicators.length-1;            
+                  // create a new row for this indicator
+                  row = new Array(json_data.length+1);
+                  rows.push(row);
+                  row[0] = ind.indicator_name;
+                }
+
+                // add value
+                rows[ind_index+1][i+1] = ind.formatted_value+(ind.number_format === null ? '' : ind.number_format);
+              }
+            } else if (json_data[i].data[j].hasOwnProperty("data_item")){
+              ind = json_data[i].data[j].data_item;
               // see if this is a new indicator 
               ind_index = indicators.indexOf(ind.indicator_name)
               if (ind_index == -1){
@@ -151,166 +191,149 @@ function build_indicator_profile_table(json_data){
 
               // add value
               rows[ind_index+1][i+1] = ind.formatted_value+(ind.number_format === null ? '' : ind.number_format);
-            }
-          } else if (json_data[i].data[j].hasOwnProperty("data_item")){
-            ind = json_data[i].data[j].data_item;
-            // see if this is a new indicator 
-            ind_index = indicators.indexOf(ind.indicator_name)
-            if (ind_index == -1){
-              // add the new indicator to the list
-              indicators.push(ind.indicator_name);
-              ind_index = indicators.length-1;            
-              // create a new row for this indicator
-              row = new Array(json_data.length+1);
-              rows.push(row);
-              row[0] = ind.indicator_name;
-            }
 
-            // add value
-            rows[ind_index+1][i+1] = ind.formatted_value+(ind.number_format === null ? '' : ind.number_format);
-
-          } else if (json_data[i].data[j].hasOwnProperty("footnote") && footnote == undefined){
-            footnote = json_data[i].data[j].footnote.indicator_name;
+            } else if (json_data[i].data[j].hasOwnProperty("footnote") && footnote == undefined){
+              footnote = json_data[i].data[j].footnote.indicator_name;
+            }
           }
         }
-      }
-    }  
-  
-    // now build table using rows array
-    if (rows.length > 1){
-      var html = "";
+      }  
+    
+      // now build table using rows array
+      if (rows.length > 1){
+        var html = "";
 
-      html += "<table class='table table-striped table-bordered profile-table'>";
+        html += "<table class='table table-striped table-bordered profile-table'>";
 
-      // add header
-      html += "<thead>";
-      html += "<tr>";
-
-      for (var j=0;j<rows[0].length;j++){
-        html += "<th";
-        // add event id
-        if (j == 0){
-          html += " data-id='" + datatable_first_column_value + "'"
-        } else {
-          html += " data-id='" + event_ids[j-1] + "'"
-        }
-        html += ">";
-
-        if (rows[0][j] !== undefined){
-          html += rows[0][j];
-        }
-        html += "</th>";
-      }
-      html += "</tr>";
-      html += "</thead>";
-
-      // add rows
-      html += "<tbody>";
-      for (var i=1;i<rows.length;i++){
+        // add header
+        html += "<thead>";
         html += "<tr>";
 
-        for (var j=0;j<rows[i].length;j++){
-          html += "<td";
+        for (var j=0;j<rows[0].length;j++){
+          html += "<th";
           // add event id
           if (j == 0){
-          html += " data-id='" + datatable_first_column_value + "'"
+            html += " data-id='" + datatable_first_column_value + "'"
           } else {
             html += " data-id='" + event_ids[j-1] + "'"
           }
           html += ">";
 
-          if (rows[i][j] !== undefined){
-            html += rows[i][j];
-          }else{
-            html += gon.profile_table_no_data;
+          if (rows[0][j] !== undefined){
+            html += rows[0][j];
           }
-          html += "</td>";
+          html += "</th>";
         }
-
         html += "</tr>";
-      }
+        html += "</thead>";
 
-      var colspan = 4;
-      if (rows[0].length < 4){
-        colspan = rows[0].length;
-      }
-      html += "<tfoot><tr><td colspan='" + colspan + "'>";
-      html += gon.profile_table_no_data_footnote;
-      if (footnote !== undefined){
-        html += "<br />" + footnote;
-      }
-      html += "</td></tr></tfoot>";
+        // add rows
+        html += "<tbody>";
+        for (var i=1;i<rows.length;i++){
+          html += "<tr>";
 
-      html += "</tbody></table>";
-      
-      // create table
-      $('.tab-pane.active .indicator_table').html(html);
-
-
-      // show the columns for the events that are selected
-      // - first col should always be shown
-      $('#indicator_profile .tab-pane.active .indicator_table_container .indicator_table table th[data-id="' + datatable_first_column_value + '"]').addClass('active');
-      $('#indicator_profile .tab-pane.active .indicator_table_container .indicator_table table td[data-id="' + datatable_first_column_value + '"]').addClass('active');
-      // event columns
-      $('#indicator_profile .tab-pane.active .indicator_table_container .event_filter select.event_filter_select option:selected').each(function(){
-        $('#indicator_profile .tab-pane.active .indicator_table_container .indicator_table table th[data-id="' + $(this).val() + '"]').addClass('active');
-        $('#indicator_profile .tab-pane.active .indicator_table_container .indicator_table table td[data-id="' + $(this).val() + '"]').addClass('active');
-      });
-
-      // update colspan if the table has a footer
-      var tfoot = $('#indicator_profile .tab-pane.active .indicator_table_container .indicator_table table tfoot tr td');
-      if (tfoot !== undefined){
-        tfoot.attr('colspan', $('#indicator_profile .tab-pane.active .indicator_table_container .event_filter input[name="event_filter_checkboxes"]:checked').length+1);
-      }
-
-
-      // build col sorting array so formatted numbers are sorted properly
-      col_sort = new Array(rows[0].length);
-      for(var i=0;i<col_sort.length;i++){
-        if (i==0){
-          col_sort[i] = null
-        }else{
-          col_sort[i] = { "sType": "formatted-num" }
-        }
-      }
-
-      // create file name for downloads
-      var file_name = $('h1').html();
-      file_name += " - ";
-      file_name += $('ul.nav-tabs li.active a').html();
-
-      // add datatable fn
-      $('#indicator_profile .tab-pane.active .indicator_table table').dataTable({
-        "sDom": "<'row-fluid'<'span6'f><'span6'T>r>t",    
-        "bLengthChange": false,
-        "bJQueryUI": false,
-        "bProcessing": true,
-        "bStateSave": true,
-        "bAutoWidth": false,
-        "oLanguage": {
-          "sUrl": gon.datatable_i18n_url
-        },
-        "aoColumns": col_sort,
-        "iDisplayLength" : rows.length,
-        "oTableTools": {
-			    "aButtons": [
-            {
-              "sExtends": "csv",
-              "sTitle": file_name + " - csv"
-            },
-            {
-              "sExtends": "xls",
-              "sTitle": file_name + " - xls"
+          for (var j=0;j<rows[i].length;j++){
+            html += "<td";
+            // add event id
+            if (j == 0){
+            html += " data-id='" + datatable_first_column_value + "'"
+            } else {
+              html += " data-id='" + event_ids[j-1] + "'"
             }
-			    ]
-		    }
-      });
-    } else {
+            html += ">";
 
+            if (rows[i][j] !== undefined){
+              html += rows[i][j];
+            }else{
+              html += gon.profile_table_no_data;
+            }
+            html += "</td>";
+          }
+
+          html += "</tr>";
+        }
+
+        var colspan = 4;
+        if (rows[0].length < 4){
+          colspan = rows[0].length;
+        }
+        html += "<tfoot><tr><td colspan='" + colspan + "'>";
+        html += gon.profile_table_no_data_footnote;
+        if (footnote !== undefined){
+          html += "<br />" + footnote;
+        }
+        html += "</td></tr></tfoot>";
+
+        html += "</tbody></table>";
+        
+        // create table
+        $('.tab-pane.active .indicator_table').html(html);
+
+
+        // show the columns for the events that are selected
+        // - first col should always be shown
+        $('#indicator_profile .tab-pane.active .indicator_table_container .indicator_table table th[data-id="' + datatable_first_column_value + '"]').addClass('active');
+        $('#indicator_profile .tab-pane.active .indicator_table_container .indicator_table table td[data-id="' + datatable_first_column_value + '"]').addClass('active');
+        // event columns
+        $('#indicator_profile .tab-pane.active .indicator_table_container .event_filter select.event_filter_select option:selected').each(function(){
+          $('#indicator_profile .tab-pane.active .indicator_table_container .indicator_table table th[data-id="' + $(this).val() + '"]').addClass('active');
+          $('#indicator_profile .tab-pane.active .indicator_table_container .indicator_table table td[data-id="' + $(this).val() + '"]').addClass('active');
+        });
+
+        // update colspan if the table has a footer
+        var tfoot = $('#indicator_profile .tab-pane.active .indicator_table_container .indicator_table table tfoot tr td');
+        if (tfoot !== undefined){
+          tfoot.attr('colspan', $('#indicator_profile .tab-pane.active .indicator_table_container .event_filter input[name="event_filter_checkboxes"]:checked').length+1);
+        }
+
+
+        // build col sorting array so formatted numbers are sorted properly
+        col_sort = new Array(rows[0].length);
+        for(var i=0;i<col_sort.length;i++){
+          if (i==0){
+            col_sort[i] = null
+          }else{
+            col_sort[i] = { "sType": "formatted-num" }
+          }
+        }
+
+        // create file name for downloads
+        var file_name = $('h1').html();
+        file_name += " - ";
+        file_name += $('ul.nav-tabs li.active a').html();
+
+        // add datatable fn
+        $('#indicator_profile .tab-pane.active .indicator_table table').dataTable({
+          "sDom": "<'row-fluid'<'span6'f><'span6'T>r>t",    
+          "bLengthChange": false,
+          "bJQueryUI": false,
+          "bProcessing": true,
+          "bStateSave": true,
+          "bAutoWidth": false,
+          "oLanguage": {
+            "sUrl": gon.datatable_i18n_url
+          },
+          "aoColumns": col_sort,
+          "iDisplayLength" : rows.length,
+          "oTableTools": {
+			      "aButtons": [
+              {
+                "sExtends": "csv",
+                "sTitle": file_name + " - csv"
+              },
+              {
+                "sExtends": "xls",
+                "sTitle": file_name + " - xls"
+              }
+			      ]
+		      }
+        });
+      } else {
+        set_indicator_profile_table_visibility(false);
+      }
     }
   } else {
-
-
+    set_indicator_profile_table_visibility(false);
   }
 }
 
