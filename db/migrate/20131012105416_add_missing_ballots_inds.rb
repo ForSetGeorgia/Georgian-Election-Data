@@ -110,6 +110,32 @@ class AddMissingBallotsInds < ActiveRecord::Migration
               
               Indicator.clone_from_core_indicator(event.id, core.id, event.id, new_core_id) if new_core_id.present?
 
+              if i == 3
+                puts "-- this is the last core ind, fixing stuff"
+                # clone process does not work when ind has parent id that is not itself
+                # - manual fix for precincts (%) -> number
+                fix_inds = Indicator.where(:event_id => event.id, :core_indicator_id => prec_missing_perc.id, :shape_type_id => 3)
+                if fix_inds.present?
+                  puts "-- found ind for prec missing % at district"
+                  Indicator.where(:event_id => event.id, :core_indicator_id => new_core_id).each do |fix_ind|
+                    puts "--- fixing parent id from #{fix_ind.parent_id} to #{fix_inds.first.id}"
+                    fix_ind.parent_id = fix_inds.first.id
+                    fix_ind.save
+
+                    # the old validation errors scale for number of validation errors (at precinct level)
+                    # had scale of < 0
+                    # this was cloned for the new indicators, but is no longer needed
+                    fix_scale_ids = fix_ind.indicator_scales.map{|x| x.id}
+                    if fix_scale_ids.present?
+                      puts "--- removing '<0' scale"
+                      matches = IndicatorScaleTranslation.select('indicator_scale_id').where(:indicator_scale_id => fix_scale_ids, :name => '<0')
+                      IndicatorScale.where(:id => matches.map{|x| x.indicator_scale_id}.uniq).destroy_all if matches.present?
+                    end                   
+
+                  end
+                end
+              end
+
               puts "- finished cloning"
           
             end
@@ -219,8 +245,34 @@ class AddMissingBallotsInds < ActiveRecord::Migration
               
               Indicator.clone_from_core_indicator(event.id, core.id, event.id, new_core_id) if new_core_id.present?
 
+              if i == 3
+                puts "-- this is the last core ind, fixing stuff"
+                # clone process does not work when ind has parent id that is not itself
+                # - manual fix for precincts (%) -> number
+                fix_inds = Indicator.where(:event_id => event.id, :core_indicator_id => prec_missing_perc.id, :shape_type_id => 3)
+                if fix_inds.present?
+                  puts "-- found ind for prec missing % at district"
+                  Indicator.where(:event_id => event.id, :core_indicator_id => new_core_id).each do |fix_ind|
+                    puts "--- fixing parent id from #{fix_ind.parent_id} to #{fix_inds.first.id}"
+                    fix_ind.parent_id = fix_inds.first.id
+                    fix_ind.save
+
+                    # the old validation errors scale for number of validation errors (at precinct level)
+                    # had scale of '<0'
+                    # this was cloned for the new indicators, but is no longer needed
+                    fix_scale_ids = fix_ind.indicator_scales.map{|x| x.id}
+                    if fix_scale_ids.present?
+                      puts "--- removing '<0' scale"
+                      matches = IndicatorScaleTranslation.select('indicator_scale_id').where(:indicator_scale_id => fix_scale_ids, :name => '<0')
+                      IndicatorScale.where(:id => matches.map{|x| x.indicator_scale_id}.uniq).destroy_all if matches.present?
+                    end                   
+
+                  end
+                end
+              end
+              
               puts "- finished cloning"
-          
+              
             end
           end
 
