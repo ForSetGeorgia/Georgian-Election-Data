@@ -1,0 +1,272 @@
+<%= content_for :body_id, 'body_landing_page' %>
+
+<style>
+
+#body_landing_page #landing_page{
+  margin-top: 0;
+}
+  #summary_data_above_map{
+    background-color: transparent;
+  }
+
+  #summary_data_above_map a{
+    text-decoration: underline;
+  }
+
+  #summary_data_above_map h2{
+    background-color: #B8B8B8;
+    text-align: center;
+    padding: 5px;
+  }
+  
+  #summary_data_above_map > div > div:first-of-type{
+    background-color: #fff;
+    
+  }
+
+  #summary_data_above_map > div > div:last-of-type > div:first-of-type{
+    font-style: italic;
+  }
+</style>
+
+
+<div id="summary_data_above_map">
+  <div class="row-fluid">
+    <% 
+      span1 = 'span9' 
+      span2 = 'span3'
+    %>
+    <% if I18n.locale == :ka %>
+      <% 
+        span1 = 'span8' 
+        span2 = 'span4'
+      %>
+    <% end %>
+  
+  
+    <div class="<%= span1 %>">
+
+      <div>
+        <h2 style="background-color: #e2494b; color: #fff;">
+          <%= image_tag('live_icon.png') %>
+          Live Election Results
+        </h2>
+      </div>
+        
+      <% @summary_data.each_with_index do |data, i| %>
+        <% break if i > 0 %>
+        <div class="clear">
+          <div class="map_image">
+            <% if data[:parent_summary_img].present? %>
+              <% 
+               style_parent = ''
+               style_child = ''
+                if data[:parent_summary_img_json].present? 
+                   orig_width = data[:parent_summary_img_json]['width'].present? ? data[:parent_summary_img_json]['width'] : '0'
+                   orig_height = data[:parent_summary_img_json]['height'].present? ? data[:parent_summary_img_json]['height'] : '0'
+                   style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
+                   style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
+                   style_img = style_width + style_height
+                 end
+                 
+                 
+                 # just so voters list has images
+                 @voter_list_image = data[:parent_summary_img]
+                 @voter_list_style = style_img
+               %>
+              <%= image_tag(data[:parent_summary_img], :style => style_img, 
+                  :'data-width' => orig_width, :'data-height' => orig_height) %>
+              
+            <% end %>
+          </div>        
+
+
+          <div class="bar_items">
+            <h3>
+              <%= link_to '2013 Presidential', 
+                indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id) %>
+            </h3>
+            <div class="bar_item">
+              <div class="bar_item_name" style="color: <%= data[:summary_item][1][:winner_color] %>;">
+                <%= data[:summary_item][1][:winner_name] %>
+              </div>
+              <div class="bar_item_number" style="color: <%= data[:summary_item][1][:winner_color] %>;">
+                <%= data[:summary_item][1][:winner_number] %>
+              </div>
+              <div class="bar_item_charts">
+                <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:winner_percent]%>; background-color: <%= data[:summary_item][1][:winner_color] %>" 
+                    title="<%= "#{data[:summary_item][1][:winner_name]} - #{data[:summary_item][1][:winner_percent]}" %>">
+                </div>
+                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:winner_percent])%> color: <%= data[:summary_item][1][:winner_color] %>">
+                  <%= data[:summary_item][1][:winner_percent] %>
+                </div>
+              </div>
+            </div>
+            <div class="bar_item">
+              <div class="bar_item_name" style="color: <%= data[:summary_item][1][:second_color] %>;">
+                <%= data[:summary_item][1][:second_name] %>
+              </div>
+              <div class="bar_item_number" style="color: <%= data[:summary_item][1][:second_color] %>;">
+                <%= data[:summary_item][1][:second_number] %>
+              </div>
+              <div class="bar_item_charts">
+                <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:second_percent]%>; background-color: <%= data[:summary_item][1][:second_color] %>" 
+                    title="<%= "#{data[:summary_item][1][:second_name]} - #{data[:summary_item][1][:second_percent]}" %>">
+                </div>
+                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:second_percent])%> color: <%= data[:summary_item][1][:second_color] %>">
+                  <%= data[:summary_item][1][:second_percent] %>
+                </div>
+              </div>
+            </div>
+          </div>   
+
+        </div>
+      
+      <% end %>
+
+
+      <div style="position: relative;">
+        <h2>Election Results</h2>
+        <a href="#" style="position:absolute; right: 5px; top: 5px;">View All</a>
+      </div>
+        
+      <% @summary_data.each do |data| %>
+        <div class="clear">
+          <div class="map_image">
+            <% if data[:parent_summary_img].present? %>
+              <% 
+               style_parent = ''
+               style_child = ''
+                if data[:parent_summary_img_json].present? 
+                   orig_width = data[:parent_summary_img_json]['width'].present? ? data[:parent_summary_img_json]['width'] : '0'
+                   orig_height = data[:parent_summary_img_json]['height'].present? ? data[:parent_summary_img_json]['height'] : '0'
+                   style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
+                   style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
+                   style_img = style_width + style_height
+                 end
+                 
+                 
+                 # just so voters list has images
+                 @voter_list_image = data[:parent_summary_img]
+                 @voter_list_style = style_img
+               %>
+              <%= image_tag(data[:parent_summary_img], :style => style_img, 
+                  :'data-width' => orig_width, :'data-height' => orig_height) %>
+              
+            <% end %>
+          </div>        
+
+
+          <div class="bar_items">
+            <h3>
+              <%= link_to data[:election].name, 
+                indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id) %>
+            </h3>
+            <div class="bar_item">
+              <div class="bar_item_name" style="color: <%= data[:summary_item][1][:winner_color] %>;">
+                <%= data[:summary_item][1][:winner_name] %>
+              </div>
+              <div class="bar_item_number" style="color: <%= data[:summary_item][1][:winner_color] %>;">
+                <%= data[:summary_item][1][:winner_number] %>
+              </div>
+              <div class="bar_item_charts">
+                <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:winner_percent]%>; background-color: <%= data[:summary_item][1][:winner_color] %>" 
+                    title="<%= "#{data[:summary_item][1][:winner_name]} - #{data[:summary_item][1][:winner_percent]}" %>">
+                </div>
+                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:winner_percent])%> color: <%= data[:summary_item][1][:winner_color] %>">
+                  <%= data[:summary_item][1][:winner_percent] %>
+                </div>
+              </div>
+            </div>
+            <div class="bar_item">
+              <div class="bar_item_name" style="color: <%= data[:summary_item][1][:second_color] %>;">
+                <%= data[:summary_item][1][:second_name] %>
+              </div>
+              <div class="bar_item_number" style="color: <%= data[:summary_item][1][:second_color] %>;">
+                <%= data[:summary_item][1][:second_number] %>
+              </div>
+              <div class="bar_item_charts">
+                <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:second_percent]%>; background-color: <%= data[:summary_item][1][:second_color] %>" 
+                    title="<%= "#{data[:summary_item][1][:second_name]} - #{data[:summary_item][1][:second_percent]}" %>">
+                </div>
+                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:second_percent])%> color: <%= data[:summary_item][1][:second_color] %>">
+                  <%= data[:summary_item][1][:second_percent] %>
+                </div>
+              </div>
+            </div>
+          </div>   
+
+        </div>
+      
+      <% end %>
+
+      <% if @voters_lists.present? %>
+        <div id="voter_lists">
+          <div style="position: relative;">
+            <h2>Latest Voters Lists</h2>
+            <a href="#" style="position:absolute; right: 5px; top: 5px;">View All</a>
+          </div>
+          
+          <% @voters_lists.each do |list| %>
+            <div class="clear" style="display: inline-block; width: 33%;">
+              <div class="map_image">
+                <%= image_tag(@voter_list_image, :style => @voter_list_style) %>
+              </div>        
+
+              <div class="bar_items">
+                <h3>
+                  <%= link_to list.name, 
+                    indicator_map_path(:event_id => list.id, :event_type_id => list.event_type_id) %>
+                </h3>
+                <div>
+                  <strong>Total Registered Voters:</strong> 3,450,234
+                </div>
+                <div>
+                  <strong>Number of Districts:</strong> 78
+                </div>
+                <div>
+                  <strong>Number of Precincts:</strong> 3,745
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+    </div>
+
+    <div class="<%= span2 %>">
+      <div>
+        <%= simple_format(@about.description, {}, :sanitize => false) %>
+      </div>
+      
+    </div>  
+
+  </div>
+
+
+  <div id="landing_page">
+    <div id="row3">
+      <div>
+        <a href="http://timeline.electionportal.ge/<%= I18n.locale%>" target="_blank">
+          <div id="title"><%= t('.timeline').html_safe %></div>
+          <%= image_tag('landing_timeline.png') %>
+        </a>
+      </div>
+      <div>
+        <a href="http://electionportal.ge/" target="_blank">
+          <div id="title"><%= t('.portal').html_safe %></div>
+          <%= image_tag('landing_electionportal.png') %>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: none;">
+    <div id="landing_menu">
+      <%= render :partial => "layouts/event_menu_tabs" %>
+    </div>  
+  </div>    
+  
+</div>
+

@@ -196,6 +196,8 @@ ElectionMap::Application.routes.draw do
 =end
 
 
+		match '/index2', :to => 'root#index2', :via => :get
+
 
 		root :to => 'root#index'
 

@@ -1,7 +1,7 @@
     var landing_circle_link_obj = null;
 
 $(document).ready(function() {
-  if (gon.langing_page){
+  if (gon.landing_page){
 
     // get the max height for row 3 divs and set all other divs to match
     function adjust_landing_page_heights(){
