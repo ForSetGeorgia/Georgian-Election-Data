@@ -4,7 +4,7 @@ use election_data-elections;
 truncate table `2013 election bi maj - raw`;
 
 # load data from the csv file
-LOAD DATA LOCAL INFILE '/var/www/data/official_bi_major.csv'
+LOAD DATA LOCAL INFILE '/var/www/data/2013_official_bi_major.csv'
 INTO TABLE `2013 election bi maj - raw`
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
@@ -31,7 +31,7 @@ set num_valid_votes = (`Free Georgia` + `National Democratic Party of Georgia` +
 SELECT 'shape', 'common_id', 'common_name', 'Total Turnout (#)', 'Total Turnout (%)', 'Free Georgia', 'National Democratic Party of Georgia', 'United National Movement', 'Movement for Fair Georgia', 'Freedom Party', 'Merab Kostava Society', 'Labour Council of Georgia', 'Labour', 'Georgian Dream', 'Ioseb Manjavidze', 'Zviad Chitishvili', 'Roman Robakidze', 'Zurab Mskhvilidze'
 union
 select * from `2013 election bi maj - csv` where common_id != '' && common_name != ''
-INTO OUTFILE '/var/www/data/upload_official_bi_major.csv'
+INTO OUTFILE '/var/www/data/upload_2013_official_bi_major.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n';

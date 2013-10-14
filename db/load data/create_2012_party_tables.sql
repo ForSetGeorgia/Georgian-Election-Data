@@ -236,7 +236,8 @@ sum(`raw`.`Labour`) AS `Labour count`,
 sum(`raw`.`Sportsman's Union`) AS `Sportsman's Union count`,
 (100 * (sum(`raw`.`Sportsman's Union`) / sum(`raw`.`num_valid_votes`))) AS `Sportsman's Union`,
 sum(`raw`.`Georgian Dream`) AS `Georgian Dream count`,
-(100 * (sum(`raw`.`Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `Georgian Dream` from ((((((((`2012 election parl party list - raw` `raw` left join `2012 election parl party list - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2012 election parl party list - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2012 election parl party list - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2012 election parl party list - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2012 election parl party list - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2012 election parl party list - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2012 election parl party list - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) join `2012 election parl - precinct count by country` `precinct_count`);
+(100 * (sum(`raw`.`Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `Georgian Dream` 
+from ((((((((`2012 election parl party list - raw` `raw` left join `2012 election parl party list - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2012 election parl party list - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2012 election parl party list - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2012 election parl party list - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2012 election parl party list - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2012 election parl party list - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2012 election parl party list - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) join `2012 election parl - precinct count by country` `precinct_count`);
 
 
 
@@ -466,7 +467,8 @@ cast(`raw`.`precinct_id` as char charset utf8)) AS `precinct_name`,
 `raw`.`Sportsman's Union` AS `Sportsman's Union count`,
 (100 * (`raw`.`Sportsman's Union` / `raw`.`num_valid_votes`)) AS `Sportsman's Union`,
 `raw`.`Georgian Dream` AS `Georgian Dream count`,
-(100 * (`raw`.`Georgian Dream` / `raw`.`num_valid_votes`)) AS `Georgian Dream` from `2012 election parl party list - raw` `raw` where (`raw`.`district_id` not between 1 and 10);
+(100 * (`raw`.`Georgian Dream` / `raw`.`num_valid_votes`)) AS `Georgian Dream` 
+from `2012 election parl party list - raw` `raw` where (`raw`.`district_id` not between 1 and 10);
 
 
 
@@ -755,7 +757,8 @@ NULL AS `Average votes per minute (17:00-20:00)`,
 `2012 election parl party list - country`.`Labour Council of Georgia` AS `Labour Council of Georgia`,
 `2012 election parl party list - country`.`Labour` AS `Labour`,
 `2012 election parl party list - country`.`Sportsman's Union` AS `Sportsman's Union`,
-`2012 election parl party list - country`.`Georgian Dream` AS `Georgian Dream` from `2012 election parl party list - country`)
+`2012 election parl party list - country`.`Georgian Dream` AS `Georgian Dream` 
+from `2012 election parl party list - country`)
 union
 (select 'Region' AS `shape`,
 `2012 election parl party list - region`.`region` AS `common_id`,

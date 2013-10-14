@@ -4,7 +4,7 @@ use election_data-elections;
 truncate table `2012 election parl major - raw`;
 
 # load data from the csv file
-LOAD DATA LOCAL INFILE '/var/www/data/official_major.csv'
+LOAD DATA LOCAL INFILE '/var/www/data/2012_official_major.csv'
 INTO TABLE `2012 election parl major - raw`
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
@@ -63,7 +63,7 @@ if(num_valid_votes < (`Free Georgia` + `National Democratic Party of Georgia` + 
 SELECT 'shape', 'common_id', 'common_name', 'Total Voter Turnout (#)', 'Total Voter Turnout (%)', 'Number of Precincts with Invalid Ballots from 0-1%', 'Number of Precincts with Invalid Ballots from 1-3%', 'Number of Precincts with Invalid Ballots from 3-5%', 'Number of Precincts with Invalid Ballots > 5%', 'Invalid Ballots (%)', 'Precincts with Validation Errors (#)', 'Precincts with Validation Errors (%)', 'Average Number of Validation Errors', 'Number of Validation Errors', 'Precincts with More Ballots Than Votes (#)', 'Precincts with More Ballots Than Votes (%)', 'Average Number of More Ballots Than Votes', 'Number of More Ballots Than Votes','Precincts with More Votes than Ballots (#)', 'Precincts with More Votes than Ballots (%)', 'Average Number of More Votes than Ballots', 'Number of More Votes than Ballots','Average votes per minute (08:00-12:00)', 'Average votes per minute (12:00-17:00)', 'Average votes per minute (17:00-20:00)', 'Number of Precincts with votes per minute > 2 (08:00-12:00)', 'Number of Precincts with votes per minute > 2 (12:00-17:00)', 'Number of Precincts with votes per minute > 2 (17:00-20:00)', 'Number of Precincts with votes per minute > 2', 'Precincts Reported (#)', 'Precincts Reported (%)', 'Free Georgia', 'National Democratic Party of Georgia', 'United National Movement', 'Movement for Fair Georgia', 'Christian-Democratic Movement', 'Public Movement', 'Freedom Party', 'Georgian Group', 'New Rights', 'People\'s Party', 'Merab Kostava Society', 'Future Georgia', 'Labour Council of Georgia', 'Labour', 'Sportsman\'s Union', 'Georgian Dream'
 union
 select * from `2012 election parl major - csv` where common_id != '' && common_name != ''
-INTO OUTFILE '/var/www/data/upload_official_major.csv'
+INTO OUTFILE '/var/www/data/upload_2012_official_major.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
