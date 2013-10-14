@@ -273,6 +273,54 @@ a#footer_collapsed_menu {
 	text-shadow: #000 0.1em 0.1em 0.2em;
 }
 
+.navbar-inner-bottom > .container-fluid > .row-fluid {
+  height: 100%;
+  & > div {
+    height: 100%;
+  }
+}
+.navbar-inner-bottom > .container-fluid > .row-fluid > #social_links {
+  text-align: center;
+  margin-top: 10px;
+
+  span {
+     display: inline-block;
+     margin: 6px 5px 0px 0px;
+
+    a {
+      display: block;
+      width: 22px;
+      height: 21px;
+      background-image: url(/assets/social.png);
+    }
+
+    &.f a {
+      background-position: 0px 21px;
+
+      &:hover {
+        background-position: 0px 0px;
+      }
+    }
+
+    &.t a {
+      background-position: -24px 21px;
+
+      &:hover {
+        background-position: -24px 0px;
+      }
+    }
+
+    &.g a {
+      background-position: -48px 21px;
+
+      &:hover {
+        background-position: -48px 0px;
+      }
+    }
+  }
+
+}
+
 // Menu tabs
 #events_menu_tabs {
   float: left;

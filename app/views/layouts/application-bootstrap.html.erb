@@ -136,46 +136,60 @@
           <!-- Navbar footer -->
           <div class="navbar-inner-bottom navbar-inner">
              <div class="container-fluid clear">
-                <div class="navmenu" id="navmenu">
-                   <p class="link-text">
-                      <%= t('.header') %>
-                      <span class="arrow_shape">&#x25BC;</span>
-                   </p>
-                </div>
-                <div class="navmenu-select">
-                   <% if params[:controller] == "root" && params[:action] == "map" %>
-                      <% if @live_event_with_no_data %>
-                        <p><%= @live_event_name %></p>
-                      <% else %>
-                        <% if params[:data_type] == Datum::DATA_TYPE[:live] %>
-												  <% if @show_precinct_percentages %>
-													  <div id="live_event_name_date_header">
-				                      <%= @event_name %>
-														  <span>
-															  <%= t('app.common.live_event_status_timestamp', :completed => @live_event_precincts_completed,
-			                                :total => @live_event_precincts_total,
-			                                :percentage => @live_event_precincts_percentage,
-			                                :timestamp => l(@live_event_timestamp, :format => :long))%>
-														  </span>
-													  </div>
-													  <div id="progress_bar" class="progress progress-striped">
-														  <div class="bar" style="width: <%=@live_event_precincts_percentage%>;"><%= @live_event_precincts_percentage%></div>
-													  </div>
-												  <% else %>
-														  <p>
-						                    <%= @event_name %>
-															  <span>
-															  <%= t('app.common.live_event_status_timestamp_no_percent',
-																		  :completed => @live_event_precincts_completed,
-				                              :timestamp => l(@live_event_timestamp, :format => :long))%>
-															  </span>
-														  </p>
-												  <% end %>
-											  <% else %>
-                          <p><%= @event_name %></p>
-											  <% end %>
-                      <% end %>
-                    <% end %>
+                <div class="row-fluid">
+                  <div class="span9">
+                    <div class="navmenu" id="navmenu">
+                       <p class="link-text">
+                          <%= t('.header') %>
+                          <span class="arrow_shape">&#x25BC;</span>
+                       </p>
+                    </div>
+                    <div class="navmenu-select">
+                       <% if params[:controller] == "root" && params[:action] == "map" %>
+                          <% if @live_event_with_no_data %>
+                            <p><%= @live_event_name %></p>
+                          <% else %>
+                            <% if params[:data_type] == Datum::DATA_TYPE[:live] %>
+												      <% if @show_precinct_percentages %>
+													      <div id="live_event_name_date_header">
+				                          <%= @event_name %>
+														      <span>
+															      <%= t('app.common.live_event_status_timestamp', :completed => @live_event_precincts_completed,
+			                                    :total => @live_event_precincts_total,
+			                                    :percentage => @live_event_precincts_percentage,
+			                                    :timestamp => l(@live_event_timestamp, :format => :long))%>
+														      </span>
+													      </div>
+													      <div id="progress_bar" class="progress progress-striped">
+														      <div class="bar" style="width: <%=@live_event_precincts_percentage%>;"><%= @live_event_precincts_percentage%></div>
+													      </div>
+												      <% else %>
+														      <p>
+						                        <%= @event_name %>
+															      <span>
+															      <%= t('app.common.live_event_status_timestamp_no_percent',
+																		      :completed => @live_event_precincts_completed,
+				                                  :timestamp => l(@live_event_timestamp, :format => :long))%>
+															      </span>
+														      </p>
+												      <% end %>
+											      <% else %>
+                              <p><%= @event_name %></p>
+											      <% end %>
+                          <% end %>
+                        <% end %>
+                    </div>
+                  </div>
+                	<div id="social_links" class="span3">
+              			<span class="f">
+              				<a href="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>" 
+                          target="_blank" title="facebook"
+                          id="facebook_link" data-url="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}" %>"></a>
+              			</span>
+              			<span class="t">
+              				<a href="https://twitter.com/share" target="_blank" title="twitter"></a>
+              			</span>
+                  </div>
                 </div>
              </div>
           </div>

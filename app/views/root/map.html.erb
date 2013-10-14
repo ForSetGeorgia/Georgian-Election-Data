@@ -189,9 +189,9 @@
     </div>
   <% end %>
 
-  <div id="shape_nav_social_links" class="row-fluid">
+  <div id="shape_nav_social_links" class="row-fluid" style="display: none;">
   	<div id="shape_layer_navigation" class="span9">
-      <%= render "root/shape_nav" %>
+      <%#= render "root/shape_nav" %>
   	</div>
   	<div id="social_links" class="span3">
   		<ul class="clear">
@@ -272,13 +272,21 @@
 
   		<div id="map-loading"></div>
 
-  		<div id="map-title">
-				<%= @map_title.html_safe %>
-				<% if @map_title_precincts %>
-					<span id="live_data"><%= @map_title_precincts %></span>
-				<% end %>
-			</div>
 
+  		<div id="map-title-container">
+
+      	<div id="shape_layer_navigation">
+          <%= render "root/shape_nav" %>
+      	</div>
+
+    		<div id="map-title">
+				  <%= @map_title.html_safe %>
+				  <% if @map_title_precincts %>
+					  <span id="live_data"><%= @map_title_precincts %></span>
+				  <% end %>
+			  </div>
+      </div>
+      
   			<div id="footnote">
 		  		<% if params[:data_type] == Datum::DATA_TYPE[:live] %>
 						<p>

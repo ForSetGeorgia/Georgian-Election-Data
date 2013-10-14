@@ -32,19 +32,7 @@
 
 <div id="summary_data_above_map">
   <div class="row-fluid">
-    <% 
-      span1 = 'span9' 
-      span2 = 'span3'
-    %>
-    <% if I18n.locale == :ka %>
-      <% 
-        span1 = 'span8' 
-        span2 = 'span4'
-      %>
-    <% end %>
-  
-  
-    <div class="<%= span1 %>">
+    <div class="span9">
 
       <div>
         <h2 style="background-color: #e2494b; color: #fff;">
@@ -235,7 +223,7 @@
 
     </div>
 
-    <div class="<%= span2 %>">
+    <div class="span3">
       <div>
         <%= simple_format(@about.description, {}, :sanitize => false) %>
       </div>
