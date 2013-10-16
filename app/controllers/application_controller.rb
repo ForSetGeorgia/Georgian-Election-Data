@@ -51,7 +51,12 @@ logger.debug "////////////////////////// BROWSER NOT SUPPORTED"
 #			render "layouts/unsupported_browser", :layout => false
 			@error_type = "unsupported_browser"
 			render "layouts/error", :layout => false
+			return
 		end
+		
+		gon.is_mobile = user_agent.mobile?
+		gon.is_ie = user_agent.browser == "Internet Explorer"
+		
 	end
 
   def valid_role?(role)

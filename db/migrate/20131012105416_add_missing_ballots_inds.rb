@@ -24,8 +24,8 @@ class AddMissingBallotsInds < ActiveRecord::Migration
           prec_missing_perc = CoreIndicator.create(:indicator_type_id => 1, :number_format => '%')
           prec_missing_perc.core_indicator_translations.create(:locale => 'en', :name => 'Precincts with More Ballots Than Votes (%)',
             :name_abbrv => 'More Ballots Than Votes (%)', :description => 'Precincts with More Ballots Than Votes (%)')
-          prec_missing_perc.core_indicator_translations.create(:locale => 'ka', :name => 'Precincts with More Ballots Than Votes (%)',
-            :name_abbrv => 'More Ballots Than Votes (%)', :description => 'Precincts with More Ballots Than Votes (%)')
+          prec_missing_perc.core_indicator_translations.create(:locale => 'ka', :name => 'საარჩევნო უბნები ხმებზე მეტი ბიულეტენებით (%)',
+            :name_abbrv => 'ხმებზე მეტი ბიულეტენები (%)', :description => 'საარჩევნო უბნები ხმებზე მეტი ბიულეტენებით (%)')
         end
         
         # precincts with More Ballots Than Votes (#)
@@ -36,32 +36,32 @@ class AddMissingBallotsInds < ActiveRecord::Migration
           prec_missing_num = CoreIndicator.create(:indicator_type_id => 1)
           prec_missing_num.core_indicator_translations.create(:locale => 'en', :name => 'Precincts with More Ballots Than Votes (#)',
             :name_abbrv => 'More Ballots Than Votes (#)', :description => 'Precincts with More Ballots Than Votes (#)')
-          prec_missing_num.core_indicator_translations.create(:locale => 'ka', :name => 'Precincts with More Ballots Than Votes (#)',
-            :name_abbrv => 'More Ballots Than Votes (#)', :description => 'Precincts with More Ballots Than Votes (#)')
+          prec_missing_num.core_indicator_translations.create(:locale => 'ka', :name => 'საარჩევნო უბნები ხმებზე მეტი ბიულეტენებით (#)',
+            :name_abbrv => 'ხმებზე მეტი ბიულეტენები (#)', :description => 'საარჩევნო უბნები ხმებზე მეტი ბიულეტენებით (#)')
         end
         
         # avg # of More Ballots Than Votes
-        exists = CoreIndicatorTranslation.where(:locale => 'en', :name => 'Average Number of More Ballots Than Votes')
+        exists = CoreIndicatorTranslation.where(:locale => 'en', :name => 'More Ballots Than Votes (Average)')
         if exists.present?
           avg = CoreIndicator.find_by_id(exists.first.core_indicator_id)
         else
           avg = CoreIndicator.create(:indicator_type_id => 1)
-          avg.core_indicator_translations.create(:locale => 'en', :name => 'Average Number of More Ballots Than Votes',
-            :name_abbrv => 'Avg Num More Ballots Than Votes', :description => 'Average Number of More Ballots Than Votes')
-          avg.core_indicator_translations.create(:locale => 'ka', :name => 'Average Number of More Ballots Than Votes',
-            :name_abbrv => 'Avg Num More Ballots Than Votes', :description => 'Average Number of More Ballots Than Votes')
+          avg.core_indicator_translations.create(:locale => 'en', :name => 'More Ballots Than Votes (Average)',
+            :name_abbrv => 'More Ballots Than Votes (Avg)', :description => 'More Ballots Than Votes (Average)')
+          avg.core_indicator_translations.create(:locale => 'ka', :name => 'ხმებზე მეტი ბიულეტენები (საშუალო)',
+            :name_abbrv => 'ხმებზე მეტი ბიულეტენები (საშუალო)', :description => 'ხმებზე მეტი ბიულეტენები (საშუალო)')
         end
 
         # More Ballots Than Votes (#)
-        exists = CoreIndicatorTranslation.where(:locale => 'en', :name => 'Number of More Ballots Than Votes')
+        exists = CoreIndicatorTranslation.where(:locale => 'en', :name => 'More Ballots Than Votes (#)')
         if exists.present?
           missing = CoreIndicator.find_by_id(exists.first.core_indicator_id)
         else
           missing = CoreIndicator.create(:indicator_type_id => 1)
-          missing.core_indicator_translations.create(:locale => 'en', :name => 'Number of More Ballots Than Votes',
-            :name_abbrv => 'More Ballots Than Votes (#)', :description => 'Number of More Ballots Than Votes')
-          missing.core_indicator_translations.create(:locale => 'ka', :name => 'Number of More Ballots Than Votes',
-            :name_abbrv => 'More Ballots Than Votes (#)', :description => 'Number of More Ballots Than Votes')
+          missing.core_indicator_translations.create(:locale => 'en', :name => 'More Ballots Than Votes (#)',
+            :name_abbrv => 'More Ballots Than Votes (#)', :description => 'More Ballots Than Votes (#)')
+          missing.core_indicator_translations.create(:locale => 'ka', :name => 'ხმებზე მეტი ბიულეტენები (#)',
+            :name_abbrv => 'ხმებზე მეტი ბიულეტენები (#)', :description => 'ხმებზე მეტი ბიულეტენები (#)')
         end
         
         
@@ -159,8 +159,8 @@ class AddMissingBallotsInds < ActiveRecord::Migration
           prec_missing_perc = CoreIndicator.create(:indicator_type_id => 1, :number_format => '%')
           prec_missing_perc.core_indicator_translations.create(:locale => 'en', :name => 'Precincts with More Votes Than Ballots (%)',
             :name_abbrv => 'More Votes Than Ballots (%)', :description => 'Precincts with More Votes Than Ballots (%)')
-          prec_missing_perc.core_indicator_translations.create(:locale => 'ka', :name => 'Precincts with More Votes Than Ballots (%)',
-            :name_abbrv => 'More Votes Than Ballots (%)', :description => 'Precincts with More Votes Than Ballots (%)')
+          prec_missing_perc.core_indicator_translations.create(:locale => 'ka', :name => 'საარჩევნო უბნები ბიულეტენებზე მეტი ხმების რაოდენობით (%)',
+            :name_abbrv => 'ბიულეტენებზე მეტი ხმები (%)', :description => 'საარჩევნო უბნები ბიულეტენებზე მეტი ხმების რაოდენობით (%)')
         end
         
         # precincts with More Votes Than Ballots (#)
@@ -171,32 +171,32 @@ class AddMissingBallotsInds < ActiveRecord::Migration
           prec_missing_num = CoreIndicator.create(:indicator_type_id => 1)
           prec_missing_num.core_indicator_translations.create(:locale => 'en', :name => 'Precincts with More Votes Than Ballots (#)',
             :name_abbrv => 'More Votes Than Ballots (#)', :description => 'Precincts with More Votes Than Ballots (#)')
-          prec_missing_num.core_indicator_translations.create(:locale => 'ka', :name => 'Precincts with More Votes Than Ballots (#)',
-            :name_abbrv => 'More Votes Than Ballots (#)', :description => 'Precincts with More Votes Than Ballots (#)')
+          prec_missing_num.core_indicator_translations.create(:locale => 'ka', :name => 'საარჩევნო უბნები ბიულეტენებზე მეტი ხმების რაოდენობით (#)',
+            :name_abbrv => 'ბიულეტენებზე მეტი ხმები (#)', :description => 'საარჩევნო უბნები ბიულეტენებზე მეტი ხმების რაოდენობით (#)')
         end
         
         # avg # of More Votes Than Ballots
-        exists = CoreIndicatorTranslation.where(:locale => 'en', :name => 'Average Number of More Votes Than Ballots')
+        exists = CoreIndicatorTranslation.where(:locale => 'en', :name => 'More Votes Than Ballots (Average)')
         if exists.present?
           avg = CoreIndicator.find_by_id(exists.first.core_indicator_id)
         else
           avg = CoreIndicator.create(:indicator_type_id => 1)
-          avg.core_indicator_translations.create(:locale => 'en', :name => 'Average Number of More Votes Than Ballots',
-            :name_abbrv => 'Avg Num More Votes Than Ballots', :description => 'Average Number of More Votes Than Ballots')
-          avg.core_indicator_translations.create(:locale => 'ka', :name => 'Average Number of More Votes Than Ballots',
-            :name_abbrv => 'Avg Num More Votes Than Ballots', :description => 'Average Number of More Votes Than Ballots')
+          avg.core_indicator_translations.create(:locale => 'en', :name => 'More Votes Than Ballots (Average)',
+            :name_abbrv => 'More Votes Than Ballots (Avg)', :description => 'More Votes Than Ballots (Average)')
+          avg.core_indicator_translations.create(:locale => 'ka', :name => 'ბიულეტენებზე მეტი ხმები (საშუალო)',
+            :name_abbrv => 'ბიულეტენებზე მეტი ხმები (საშუალო)', :description => 'ბიულეტენებზე მეტი ხმები (საშუალო)')
         end
 
         # More Votes Than Ballots (#)
-        exists = CoreIndicatorTranslation.where(:locale => 'en', :name => 'Number of More Votes Than Ballots')
+        exists = CoreIndicatorTranslation.where(:locale => 'en', :name => 'More Votes Than Ballots (#)')
         if exists.present?
           missing = CoreIndicator.find_by_id(exists.first.core_indicator_id)
         else
           missing = CoreIndicator.create(:indicator_type_id => 1)
-          missing.core_indicator_translations.create(:locale => 'en', :name => 'Number of More Votes Than Ballots',
-            :name_abbrv => 'More Votes Than Ballots (#)', :description => 'Number of More Votes Than Ballots')
-          missing.core_indicator_translations.create(:locale => 'ka', :name => 'Number of More Votes Than Ballots',
-            :name_abbrv => 'More Votes Than Ballots (#)', :description => 'Number of More Votes Than Ballots')
+          missing.core_indicator_translations.create(:locale => 'en', :name => 'More Votes Than Ballots (#)',
+            :name_abbrv => 'More Votes Than Ballots (#)', :description => 'More Votes Than Ballots (#)')
+          missing.core_indicator_translations.create(:locale => 'ka', :name => 'ბიულეტენებზე მეტი ხმები (#)',
+            :name_abbrv => 'ბიულეტენებზე მეტი ხმები (#)', :description => 'ბიულეტენებზე მეტი ხმები (#)')
         end
         
         
@@ -283,8 +283,8 @@ class AddMissingBallotsInds < ActiveRecord::Migration
   end
 
   def down
-    ind_names = ['Precincts with More Ballots Than Votes (%)', 'Precincts with More Ballots Than Votes (#)', 'Average Number of More Ballots Than Votes', 'Number of More Ballots Than Votes', 'Precincts with More Votes Than Ballots (%)', 'Precincts with More Votes Than Ballots (#)', 'Average Number of More Votes Than Ballots', 'Number of More Votes Than Ballots']
-    inds = CoreIndicatorTranslation.where(:name => ind_names)
+    ind_names = ['Precincts with More Ballots Than Votes (%)', 'Precincts with More Ballots Than Votes (#)', 'More Ballots Than Votes (Average)', 'More Ballots Than Votes (#)', 'Precincts with More Votes Than Ballots (%)', 'Precincts with More Votes Than Ballots (#)', 'More Votes Than Ballots (Average)', 'More Votes Than Ballots (#)']
+    inds = CoreIndicatorTranslation.where(:name => ind_names, :locale => 'en')
     if inds.present?
       CoreIndicator.transaction do
         CoreIndicator.where(:id => inds.map{|x| x.core_indicator_id}).destroy_all

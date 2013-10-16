@@ -427,8 +427,10 @@ console.log('scaling root summary images');
         $('#summary_data_above_map > div:first-of-type > div:first-of-type .map_image').append(img_PNG);
 
         
-        // set flag so images are saved
-        generated_map_images = true;
+        // set flag so images are saved if this is not mobile device
+        if (!gon.is_mobile){
+          generated_map_images = true;
+        }
         
         // adjust the images to fit in space
         adjust_summary_images();
