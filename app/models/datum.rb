@@ -18,6 +18,8 @@
 	PRECINCTS_REPORTED = {:number => 'Precincts Reported (#)', :percent => 'Precincts Reported (%)'}
 	FILE_CACHE_KEY_SUMMARY_DATA =
 		"event_[event_id]/data_set_[data_set_id]/[locale]/summary_data/indicator_type_[indicator_type_id]/shape_type_[shape_type_id]/shape_[shape_id]"
+	FILE_CACHE_KEY_SUMMARY_VOTER_LIST_DATA =
+		"event_[event_id]/data_set_[data_set_id]/[locale]/summary_data/voters_list/shape_type_[shape_type_id]/shape_[shape_id]"
 
 	FILE_CACHE_KEY_CUSTOM_CHILDREN_DATA =
 		"event_[event_id]/data_set_[data_set_id]/[locale]/custom_children_data/shape_type_[shape_type_id]/shape_[parent_id]_indicator_[indicator_id]"
@@ -199,6 +201,37 @@
     return x
 	end
 
+
+	# get the summary voter list data for a shape
+	def self.get_summary_voter_list_data_for_shape(shape_id, event_id, shape_type_id, core_indicator_ids, data_set_id)
+    start = Time.now
+    x = nil
+		if !shape_id.nil? && !event_id.nil? && !core_indicator_ids.nil? && !shape_type_id.nil? && !data_set_id.nil?
+			sql = "SELECT s.id as shape_id, i.id as indicator_id, i.core_indicator_id, "
+			sql << "d.id, d.value, ci.number_format as number_format, cit.name as indicator_name_unformatted, "
+			sql << "if (ci.ancestry is null, cit.name, concat(cit.name, ' (', cit_parent.name_abbrv, ')')) as indicator_name, "
+			sql << "if (ci.ancestry is null, cit.name_abbrv, concat(cit.name_abbrv, ' (', cit_parent.name_abbrv, ')')) as indicator_name_abbrv, "
+			sql << "if(ci.ancestry is null OR (ci.ancestry is not null AND (ci.color is not null AND length(ci.color)>0)),ci.color,ci_parent.color) as color "
+			sql << "FROM data as d "
+			sql << "inner join indicators as i on d.indicator_id = i.id "
+			sql << "inner join core_indicators as ci on i.core_indicator_id = ci.id "
+			sql << "inner join core_indicator_translations as cit on ci.id = cit.core_indicator_id "
+			sql << "left join core_indicators as ci_parent on ci.ancestry = ci_parent.id "
+			sql << "left join core_indicator_translations as cit_parent on ci_parent.id = cit_parent.core_indicator_id AND cit_parent.locale = :locale "
+			sql << "inner join shapes as s on i.shape_type_id = s.shape_type_id  "
+			sql << "inner join shape_translations as st on s.id = st.shape_id and d.#{I18n.locale}_common_id = st.common_id and d.#{I18n.locale}_common_name = st.common_name "
+			sql << "WHERE i.event_id = :event_id and i.shape_type_id = :shape_type_id and i.core_indicator_id in (:core_indicator_ids) "
+			sql << "and s.id=:shape_id  and d.data_set_id = :data_set_id "
+			sql << "AND cit.locale = :locale AND st.locale = :locale "
+      sql << "order by s.id "
+			x = find_by_sql([sql, :event_id => event_id, :shape_type_id => shape_type_id,
+			                  :shape_id => shape_id, :data_set_id => data_set_id,
+			                  :core_indicator_ids => core_indicator_ids, :locale => I18n.locale])
+
+		end
+#		puts "********************* time to query summary data for indicator type: #{Time.now-start} seconds for event #{event_id} and indicator type #{indicator_type_id} - # of results = #{x.length}"
+    return x
+	end
 
 	###################################
 	## get data
@@ -1291,6 +1324,54 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
     return results
   end  
   
+
+  # get the summary data for a voters list at a particular shape
+	def self.build_summary_voter_list_data_json(shape_id, shape_type_id, event_id, data_set_id)
+		start = Time.now
+		json = []
+
+		key = FILE_CACHE_KEY_SUMMARY_VOTER_LIST_DATA.gsub("[shape_id]", shape_id.to_s)
+				.gsub("[locale]", I18n.locale.to_s)
+	      .gsub("[event_id]", event_id.to_s)
+	      .gsub("[shape_type_id]", shape_type_id.to_s)
+	      .gsub("[data_set_id]", data_set_id.to_s)
+
+		json = JSON.parse(JsonCache.fetch_data(key) {
+  		results = []
+      # [total voters, avg age, 85-99 years, > 99 years]
+      core_ids = [17, 1, 13, 14]
+
+      data = get_summary_voter_list_data_for_shape(shape_id, event_id, shape_type_id, core_ids, data_set_id)
+
+      if data.present?
+        puts "data length = #{data.length}"
+        core_ids.each do |core_id|
+          puts "core id = #{core_id}"
+          h = Hash.new
+          results << h
+        
+          h[:core_indicator_id] = core_id
+          
+          index = data.index{|x| x[:core_indicator_id] == core_id}
+          if index.present?
+            puts "index = #{index}"
+            h[:value] = data[index].value
+            h[:formatted_value] = data[index].formatted_value
+            h[:number_format] = data[index].number_format
+            h[:indicator_id] = data[index][:indicator_id]
+			      h[:indicator_name_unformatted] = data[index][:indicator_name_unformatted]
+			      h[:indicator_name] = data[index][:indicator_name]
+			      h[:indicator_name_abbrv] = data[index][:indicator_name_abbrv]
+          end
+        end      
+      end
+      results.to_json
+    })
+    
+#		puts "******* time to get_related_indicator_type_data: #{Time.now-start} seconds for event #{event_id}"
+    return json
+  end
+
   
 	# determine overall placement of value in array
 	# assume array is already sorted in desired order
