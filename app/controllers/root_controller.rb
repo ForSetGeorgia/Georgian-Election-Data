@@ -282,7 +282,7 @@ logger.debug "////////////// getting current event for event type #{params[:even
   						# if the first indicator type has a summary, select the summary
   						if params[:indicator_id].nil? && params[:view_type].nil?
   logger.debug "////////////// selecting first indicator"
-								x = get_current_indicator(@indicator_types)
+								x = get_current_indicator(event, @indicator_types)
 								if x[:error]
   								logger.debug "+++++++++ cound not find an indicator to set as the value for params[:indicator_id]"
 									flag_redirect = true
@@ -331,7 +331,7 @@ logger.debug "////////////// - no default found"
   logger.debug "////////////// - could not find new indicator, looking for default"
 										# could not find matching indicator at new level
 										# - so now use first indicator in list
-										x = get_current_indicator(@indicator_types)
+										x = get_current_indicator(event, @indicator_types)
 										if x[:error]
 											logger.debug "+++++++++ cound not find matching indicator at new shape level and could not find default indicator"
 											flag_redirect = true
@@ -693,14 +693,20 @@ logger.debug " - no matching event found!"
 	# get current indicator
 	# returns:
 	# {error, indicator_id, indicator_type_id, view_type}
-	def get_current_indicator(indicator_types)
+	def get_current_indicator(event, indicator_types)
 		hash = Hash.new()
 		hash[:error] = false
 		hash[:indicator_id] = nil
 		hash[:indicator_type_id] = nil
 		hash[:view_type] = nil
 
-		if indicator_types && !indicator_types.empty?
+    if event.default_core_indicator_id.present?
+      ind = indicator_types.map{|x| x.core_indicators.select{|y| y.id == event.default_core_indicator_id}}
+      if ind.present? && ind.flatten!.present?
+				hash[:indicator_id] = ind.first.indicators[0].id
+				hash[:indicator_type_id] = ind.first.indicator_type_id
+      end
+		elsif indicator_types && !indicator_types.empty?
 			if indicator_types[0].has_summary
 				hash[:view_type] = @summary_view_type_name
 				hash[:indicator_type_id] = indicator_types[0].id
