@@ -11,7 +11,13 @@
       </li>
     </ul>
 
-    <div id="tips-download">
+    <% 
+      download_top = ''
+      if !has_summary_data 
+        download_top = "style=top:-32px;"
+      end 
+    %>
+    <div id="tips-download" <%= download_top %>>
     <%= link_to("XLS",
 	    download_data_xls_path(:event_id => params[:event_id],
 			  :child_shape_type_id => @child_shape_type_id, 

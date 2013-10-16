@@ -1,7 +1,7 @@
 <% if @event_custom_shape_nav.present? %>
   <ul id="custom_shape_nav" class="clear">
     <% @event_custom_shape_nav.each do |nav| %>
-      <% if @parent_shape_type == nav.shape_type_id && nav.always_visible %>
+      <% if false #@parent_shape_type == nav.shape_type_id && nav.always_visible %>
         <li class="inactive_shape_nav">
           <span>
             <%= image_tag("shape_arrow.png") %>
