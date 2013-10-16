@@ -1,11 +1,13 @@
     <% 
       span1 = 'span12' 
       span2 = nil
+      ind_name_key = 'indicator_name'
     %>
     <% if @root_summary_data.present? && @root_summary_data.length > 1 %>
       <% 
         span1 = 'span6' 
         span2 = 'span6'
+        ind_name_key = 'indicator_name_abbrv'
       %>
     <% end %>
     <div id="summary_data_container">
@@ -33,24 +35,40 @@
             </div>     
             <div class="group1">
               <h3><%= t('.summary_data_above_map.header', :shape => @parent_summary_data[0]['common_name']) %></h3>
-              <div>
-                <strong><%= @parent_summary_data[0]['indicator_name'] %>:</strong>
-                <%= @parent_summary_data[0]['formatted_value'] %>
+              <div class="group_box">
+                <div class="group_box_row1">
+                  <%= @parent_summary_data[0][ind_name_key] %>
+                </div>
+                <div class="group_box_row2">
+                  <%= @parent_summary_data[0]['formatted_value'] %>
+                </div>
               </div>
-              <div>
-                <strong><%= @parent_summary_data[1]['indicator_name'] %>:</strong>
-                <%= @parent_summary_data[1]['formatted_value'] %>
+              <div class="group_box">
+                <div class="group_box_row1">
+                  <%= @parent_summary_data[1][ind_name_key] %>
+                </div>
+                <div class="group_box_row2">
+                  <%= @parent_summary_data[1]['formatted_value'] %>
+                </div>
               </div>
             </div>
             
             <div class="group2">
-              <div>
-                <strong><%= @parent_summary_data[2]['indicator_name'] %>:</strong>
-                <%= @parent_summary_data[2]['formatted_value'] %>
+              <div class="group_box">
+                <div class="group_box_row1">
+                  <%= @parent_summary_data[2][ind_name_key] %>
+                </div>
+                <div class="group_box_row2">
+                  <%= @parent_summary_data[2]['formatted_value'] %>
+                </div>
               </div>
-              <div>
-                <strong><%= @parent_summary_data[3]['indicator_name'] %>:</strong>
-                <%= @parent_summary_data[3]['formatted_value'] %>
+              <div class="group_box">
+                <div class="group_box_row1">
+                  <%= @parent_summary_data[3][ind_name_key] %>
+                </div>
+                <div class="group_box_row2">
+                  <%= @parent_summary_data[3]['formatted_value'] %>
+                </div>
               </div>
             </div>   
           </div>   
@@ -78,24 +96,40 @@
               </div>     
               <div class="group1">
                 <h3><%= t('.summary_data_above_map.header', :shape => @root_summary_data[0]['common_name']) %></h3>
-                <div>
-                  <strong><%= @root_summary_data[0]['indicator_name'] %>:</strong>
-                  <%= @root_summary_data[0]['formatted_value'] %>
+                <div class="group_box">
+                  <div class="group_box_row1">
+                    <%= @root_summary_data[0][ind_name_key] %>
+                  </div>
+                  <div class="group_box_row2">
+                    <%= @root_summary_data[0]['formatted_value'] %>
+                  </div>
                 </div>
-                <div>
-                  <strong><%= @root_summary_data[1]['indicator_name'] %>:</strong>
-                  <%= @root_summary_data[1]['formatted_value'] %>
+                <div class="group_box">
+                  <div class="group_box_row1">
+                    <%= @root_summary_data[1][ind_name_key] %>
+                  </div>
+                  <div class="group_box_row2">
+                    <%= @root_summary_data[1]['formatted_value'] %>
+                  </div>
                 </div>
               </div>
               
               <div class="group2">
-                <div>
-                  <strong><%= @root_summary_data[2]['indicator_name'] %>:</strong>
-                  <%= @root_summary_data[2]['formatted_value'] %>
+                <div class="group_box">
+                  <div class="group_box_row1">
+                    <%= @root_summary_data[2][ind_name_key] %>
+                  </div>
+                  <div class="group_box_row2">
+                    <%= @root_summary_data[2]['formatted_value'] %>
+                  </div>
                 </div>
-                <div>
-                  <strong><%= @root_summary_data[3]['indicator_name'] %>:</strong>
-                  <%= @root_summary_data[3]['formatted_value'] %>
+                <div class="group_box">
+                  <div class="group_box_row1">
+                    <%= @root_summary_data[3][ind_name_key] %>  
+                  </div>
+                  <div class="group_box_row2">
+                    <%= @root_summary_data[3]['formatted_value'] %>
+                  </div>
                 </div>
               </div>   
             </div>   

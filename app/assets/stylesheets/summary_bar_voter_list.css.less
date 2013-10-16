@@ -23,21 +23,34 @@
       }
     }
     
-    .group1, .group2{
+    .group1{
       padding-top: 20px;
       padding-left: 10px;
+    }
+    .group1, .group2{
       display: inline-block;
+  
+      h3{
+        margin-top: 0;
+        text-transform: uppercase;
+        font-size: 16px;
+        padding-left: 3px;
+      }
+      
+      & > .group_box{
+        border: solid 1px #EFEFEF;
+        display: inline-block;
+        .group_box_row1{
+          padding: 0 3px;
+          font-weight: bold;
+          text-align: center;
+        }  
+        .group_box_row2{
+          padding: 0 3px;
+          text-align: center;
+          background-color: #EFEFEF;
+        }  
+      }
     }
-    .group1 > div, .group2 > div{
-      display: inline-block;
-    }
-    .group1 h3{
-      margin-top: 0;
-      text-transform: uppercase;
-      font-size: 16px;
-      padding-left: 3px;
-    }
-
-    
   }
 }
