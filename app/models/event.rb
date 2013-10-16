@@ -12,9 +12,10 @@ class Event < ActiveRecord::Base
   has_many :custom_shape_navigations, :dependent => :destroy
   accepts_nested_attributes_for :event_translations
   attr_accessible :shape_id, :event_type_id, :event_date, :is_default_view,
-		:event_translations_attributes, :has_official_data, :has_live_data
+		:event_translations_attributes, :has_official_data, :has_live_data, :default_core_indicator_id
 
   validates :event_type_id, :event_date, :presence => true
+  validates :default_core_indicator_id, :inclusion => {:in => CoreIndicator.ids}
   #do not require shape id for the geo data might not be loaded yet
 #  validates :shape_id, :presence => true
 

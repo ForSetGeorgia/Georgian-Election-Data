@@ -16,6 +16,7 @@ en:
         show_to_public: Make Public?
       event:
         is_default_view: Default Event to Show on Site Load?
+        default_core_indicator_id: ID of unique indicator to load by default
   models:
     live_data:
       msgs:

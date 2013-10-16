@@ -16,6 +16,7 @@ ka:
         show_to_public: გახდეს საჯარო?
       events:
         is_default_view: განსაზღვრული მოვლენა, რომ გამოჩნდეს საიტის ჩატვირთვისას?
+        default_core_indicator_id: უნიკალური მაჩვენებლის ID ჩასატვირთად
   models:
     live_data:
       msgs:

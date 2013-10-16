@@ -73,6 +73,12 @@ class CoreIndicator < ActiveRecord::Base
 			nil
 		end
 	end
+	
+	# get array of ids
+	# - used for validation in :default_core_indicator_id in event
+	def self.ids
+	  select('id').map{|x| x.id}
+	end
 
 	# get list of unique core indicators in event
 	def self.get_unique_indicators_in_event(event_id)

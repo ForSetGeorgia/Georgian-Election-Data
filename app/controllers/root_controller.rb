@@ -273,7 +273,7 @@ logger.debug "////////////// getting current event for event type #{params[:even
 #  					@indicator_types = IndicatorType.find_by_event_shape_type(params[:event_id], @child_shape_type_id)
   					@indicator_types = IndicatorType.with_summary_rank(params[:shape_id], @child_shape_type_id, params[:event_id], params[:data_set_id], @parent_shape_type)
 
-  					if @indicator_types.nil? || @indicator_types.empty?
+  					if @indicator_types.blank?
   						# no indicators exist for this event and shape type
   						logger.debug "+++++++++ no indicators exist for this event and shape type"
   						flag_redirect = true
