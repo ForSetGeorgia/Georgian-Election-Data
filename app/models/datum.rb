@@ -207,7 +207,7 @@
     start = Time.now
     x = nil
 		if !shape_id.nil? && !event_id.nil? && !core_indicator_ids.nil? && !shape_type_id.nil? && !data_set_id.nil?
-			sql = "SELECT s.id as shape_id, i.id as indicator_id, i.core_indicator_id, "
+			sql = "SELECT s.id as shape_id, i.id as indicator_id, i.core_indicator_id, st.common_name, "
 			sql << "d.id, d.value, ci.number_format as number_format, cit.name as indicator_name_unformatted, "
 			sql << "if (ci.ancestry is null, cit.name, concat(cit.name, ' (', cit_parent.name_abbrv, ')')) as indicator_name, "
 			sql << "if (ci.ancestry is null, cit.name_abbrv, concat(cit.name_abbrv, ' (', cit_parent.name_abbrv, ')')) as indicator_name_abbrv, "
@@ -1355,6 +1355,7 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
           index = data.index{|x| x[:core_indicator_id] == core_id}
           if index.present?
             puts "index = #{index}"
+            h[:common_name] = data[index][:common_name]
             h[:value] = data[index].value
             h[:formatted_value] = data[index].formatted_value
             h[:number_format] = data[index].number_format

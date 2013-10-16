@@ -190,8 +190,8 @@ function save_generated_map_images(){
   fd.append("data_set_id", gon.data_set_id);
   fd.append("parent_shape_id", gon.parent_shape_id);
   fd.append("img", file);
-  fd.append("img_width", $('#summary_data_above_map > div:first-of-type > div:first-of-type .map_image img').data('width'));
-  fd.append("img_height", $('#summary_data_above_map > div:first-of-type > div:first-of-type .map_image img').data('height'));
+  fd.append("img_width", $('#summary_data_container > div  > div:first-of-type > div:first-of-type .map_image img').data('width'));
+  fd.append("img_height", $('#summary_data_container > div > div:first-of-type > div:first-of-type .map_image img').data('height'));
   // And send it
   $.ajax({
      url: "/" + I18n.locale + "/save_map_images",

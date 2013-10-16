@@ -115,6 +115,9 @@ logger.debug "////////////// getting current event for event type #{params[:even
 			@event_name = event.name
 			@event_description = event.description
 
+      # is event a voters list
+      @is_voters_list = event.is_voter_list?
+
       # save event custom shape nav
       @event_custom_shape_nav = event.custom_shape_navigations
 
@@ -404,41 +407,86 @@ logger.debug "////////////// - no default found"
 		params[:change_shape_type] = nil
 
     # get the summary data
-    if !flag_redirect && @indicator_types.index{|x| x.has_summary}.present?
-      # get the ind type id that has summary
-      ind_type_id = @indicator_types.select{|x| x.has_summary}.first.id
+    if !flag_redirect 
+      # if this is voters list and is showing the default ind id, 
+      # make sure the map image will be generated
+      if @is_voters_list && event.default_core_indicator_id.present? && @indicator.present? && 
+            event.default_core_indicator_id == @indicator.core_indicator_id
 
-      # get parent shape data
-      @parent_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], @parent_shape_type, 
-        params[:shape_id], ind_type_id, params[:data_type])
+        gon.is_voters_list_using_default_core_ind_id = true
+      end
 
-      if @parent_summary_data.present?
-        # get path to map images if exist
-        key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
-                .gsub('[data_set_id]', params[:data_set_id].to_s)
-                .gsub('[parent_id]', params[:shape_id].to_s)
+      if @indicator_types.index{|x| x.has_summary}.present?
+        # get the ind type id that has summary
+        ind_type_id = @indicator_types.select{|x| x.has_summary}.first.id
 
-        @parent_summary_img = JsonCache.get_image_path(key, 'png')
-        @parent_summary_img_json = JsonCache.read_data(key)
-        @parent_summary_img_json = JSON.parse(@parent_summary_img_json) if @parent_summary_img_json.present?
-        
-        # if this is not the default event shape, get the default event shape data too
-        if event.shape_id.to_s != params[:shape_id].to_s
-          root_shape = Shape.select('shape_type_id').find_by_id(event.shape_id)
-          if root_shape.present?
-            @root_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], root_shape.shape_type_id, 
-              event.shape_id, ind_type_id, params[:data_type])
-            if @root_summary_data.present?
-              key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
-                      .gsub('[data_set_id]', params[:data_set_id].to_s)
-                      .gsub('[parent_id]', event.shape_id.to_s)
+        # get parent shape data
+        @parent_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], @parent_shape_type, 
+          params[:shape_id], ind_type_id, params[:data_type])
 
-              @root_summary_img = JsonCache.get_image_path(key, 'png')
-              @root_summary_img_json = JsonCache.read_data(key)
-              @root_summary_img_json = JSON.parse(@root_summary_img_json) if @root_summary_img_json.present?
+        if @parent_summary_data.present?
+          # get path to map images if exist
+          key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
+                  .gsub('[data_set_id]', params[:data_set_id].to_s)
+                  .gsub('[parent_id]', params[:shape_id].to_s)
+
+          @parent_summary_img = JsonCache.get_image_path(key, 'png')
+          @parent_summary_img_json = JsonCache.read_data(key)
+          @parent_summary_img_json = JSON.parse(@parent_summary_img_json) if @parent_summary_img_json.present?
+          
+          # if this is not the default event shape, get the default event shape data too
+          if event.shape_id.to_s != params[:shape_id].to_s
+            root_shape = Shape.select('shape_type_id').find_by_id(event.shape_id)
+            if root_shape.present?
+              @root_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], root_shape.shape_type_id, 
+                event.shape_id, ind_type_id, params[:data_type])
+              if @root_summary_data.present?
+                key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
+                        .gsub('[data_set_id]', params[:data_set_id].to_s)
+                        .gsub('[parent_id]', event.shape_id.to_s)
+
+                @root_summary_img = JsonCache.get_image_path(key, 'png')
+                @root_summary_img_json = JsonCache.read_data(key)
+                @root_summary_img_json = JSON.parse(@root_summary_img_json) if @root_summary_img_json.present?
+              end
             end
           end
         end
+      elsif @is_voters_list
+        # this is a voters list, so get voter list summary data
+        # get parent shape data
+        @parent_summary_data = Datum.build_summary_voter_list_data_json(params[:shape_id], @parent_shape_type, 
+          params[:event_id], params[:data_set_id])
+
+        if @parent_summary_data.present?
+          # get path to map images if exist
+          key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
+                  .gsub('[data_set_id]', params[:data_set_id].to_s)
+                  .gsub('[parent_id]', params[:shape_id].to_s)
+
+          @parent_summary_img = JsonCache.get_image_path(key, 'png')
+          @parent_summary_img_json = JsonCache.read_data(key)
+          @parent_summary_img_json = JSON.parse(@parent_summary_img_json) if @parent_summary_img_json.present?
+          
+          # if this is not the default event shape, get the default event shape data too
+          if event.shape_id.to_s != params[:shape_id].to_s
+            root_shape = Shape.select('shape_type_id').find_by_id(event.shape_id)
+            if root_shape.present?
+              @root_summary_data = Datum.build_summary_voter_list_data_json(event.shape_id, root_shape.shape_type_id, 
+                                    params[:event_id], params[:data_set_id])
+              if @root_summary_data.present?
+                key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
+                        .gsub('[data_set_id]', params[:data_set_id].to_s)
+                        .gsub('[parent_id]', event.shape_id.to_s)
+
+                @root_summary_img = JsonCache.get_image_path(key, 'png')
+                @root_summary_img_json = JsonCache.read_data(key)
+                @root_summary_img_json = JSON.parse(@root_summary_img_json) if @root_summary_img_json.present?
+              end
+            end
+          end
+        end
+        
       end
     end
 

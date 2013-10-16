@@ -19,6 +19,16 @@ class Event < ActiveRecord::Base
   #do not require shape id for the geo data might not be loaded yet
 #  validates :shape_id, :presence => true
 
+
+  def is_voter_list?
+    x = false
+    type = EventType.select('is_voters_list').find(self.event_type_id)
+    x = type.present? && type.is_voters_list
+    return x
+  end
+
+
+
 	# get all events that have live menu records
 	def self.live_events_menu(order = "asc")
 		with_translations(I18n.locale)

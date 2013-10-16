@@ -94,9 +94,9 @@ console.log('new width = ' + new_width + '; new height = ' + new_height);
 /*
 console.log('************************************');
 console.log('scaling parent summary images');
-    apply_summary_image_scales('#summary_data_above_map .map_image:nth-child(1)');
+    apply_summary_image_scales('#summary_data_container .map_image:nth-child(1)');    
 console.log('scaling root summary images');
-    apply_summary_image_scales('#summary_data_above_map .map_image:nth-child(3)');
+    apply_summary_image_scales('#summary_data_container .map_image:nth-child(3)');
 */      
   }
 
@@ -405,8 +405,11 @@ console.log('scaling root summary images');
 			// load svg into canvas so can convert to img
       // copy path from child shapes into parent shapes
       // and then spit out as png
-      if ($('#summary_data_above_map > div:first-of-type > div:first-of-type .map_image img').length == 0 && gon.view_type == gon.summary_view_type_name)
+      if ($('#summary_data_container > div > div:first-of-type > div:first-of-type .map_image img').length == 0 && 
+          (gon.view_type == gon.summary_view_type_name || gon.is_voters_list_using_default_core_ind_id == true))
       {
+console.log('creating img');
+
         var canvas = generate_map_png();
 
         // scale image to fit in summary bar
@@ -415,16 +418,16 @@ console.log('scaling root summary images');
         var img_width;
         var img_height;
         if (bbox.width > bbox.height){
-          img_width = $('#summary_data_above_map > div:first-of-type .map_image').width();
+          img_width = $('#summary_data_container > div > div:first-of-type .map_image').width();
           img_height = bbox.height * img_width / bbox.width;
         } else{
-          img_height = $('#summary_data_above_map > div:first-of-type .map_image').height();
+          img_height = $('#summary_data_container > div > div:first-of-type .map_image').height();
           img_width = bbox.width * img_height / bbox.height;
         }
 
         // create img object
         var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
-        $('#summary_data_above_map > div:first-of-type > div:first-of-type .map_image').append(img_PNG);
+        $('#summary_data_container > div > div:first-of-type > div:first-of-type .map_image').append(img_PNG);
 
         
         // set flag so images are saved if this is not mobile device

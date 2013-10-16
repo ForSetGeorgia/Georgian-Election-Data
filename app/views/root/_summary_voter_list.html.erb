@@ -1,0 +1,105 @@
+    <% 
+      span1 = 'span12' 
+      span2 = nil
+    %>
+    <% if @root_summary_data.present? && @root_summary_data.length > 1 %>
+      <% 
+        span1 = 'span6' 
+        span2 = 'span6'
+      %>
+    <% end %>
+    <div id="summary_data_container">
+      <div id="summary_bar_voter_list">
+        <div class="row-fluid">
+          <div class="<%= span1 %>">
+          
+            <div class="map_image">
+              <% if @parent_summary_img.present? %>
+                <% 
+                 style_parent = ''
+                 style_child = ''
+                  if @parent_summary_img_json.present? 
+                     orig_width = @parent_summary_img_json['width'].present? ? @parent_summary_img_json['width'] : '0'
+                     orig_height = @parent_summary_img_json['height'].present? ? @parent_summary_img_json['height'] : '0'
+                     style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
+                     style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
+                     style_img = style_width + style_height
+                   end
+                 %>
+                <%= image_tag(@parent_summary_img, :style => style_img, 
+                    :'data-width' => orig_width, :'data-height' => orig_height) %>
+                
+              <% end %>
+            </div>     
+            <div class="group1">
+              <h3><%= t('.summary_data_above_map.header', :shape => @parent_summary_data[0]['common_name']) %></h3>
+              <div>
+                <strong><%= @parent_summary_data[0]['indicator_name'] %>:</strong>
+                <%= @parent_summary_data[0]['formatted_value'] %>
+              </div>
+              <div>
+                <strong><%= @parent_summary_data[1]['indicator_name'] %>:</strong>
+                <%= @parent_summary_data[1]['formatted_value'] %>
+              </div>
+            </div>
+            
+            <div class="group2">
+              <div>
+                <strong><%= @parent_summary_data[2]['indicator_name'] %>:</strong>
+                <%= @parent_summary_data[2]['formatted_value'] %>
+              </div>
+              <div>
+                <strong><%= @parent_summary_data[3]['indicator_name'] %>:</strong>
+                <%= @parent_summary_data[3]['formatted_value'] %>
+              </div>
+            </div>   
+          </div>   
+          
+          <% if @root_summary_data.present? && @root_summary_data.length > 1 %>
+            <div class="<%= span2 %>">
+            
+              <div class="map_image">
+                <% if @root_summary_img.present? %>
+                  <% 
+                   style_parent = ''
+                   style_child = ''
+                    if @root_summary_img_json.present? 
+                       orig_width = @root_summary_img_json['width'].present? ? @root_summary_img_json['width'] : '0'
+                       orig_height = @root_summary_img_json['height'].present? ? @root_summary_img_json['height'] : '0'
+                       style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
+                       style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
+                       style_img = style_width + style_height
+                     end
+                   %>
+                  <%= image_tag(@root_summary_img, :style => style_img, 
+                      :'data-width' => orig_width, :'data-height' => orig_height) %>
+                  
+                <% end %>
+              </div>     
+              <div class="group1">
+                <h3><%= t('.summary_data_above_map.header', :shape => @root_summary_data[0]['common_name']) %></h3>
+                <div>
+                  <strong><%= @root_summary_data[0]['indicator_name'] %>:</strong>
+                  <%= @root_summary_data[0]['formatted_value'] %>
+                </div>
+                <div>
+                  <strong><%= @root_summary_data[1]['indicator_name'] %>:</strong>
+                  <%= @root_summary_data[1]['formatted_value'] %>
+                </div>
+              </div>
+              
+              <div class="group2">
+                <div>
+                  <strong><%= @root_summary_data[2]['indicator_name'] %>:</strong>
+                  <%= @root_summary_data[2]['formatted_value'] %>
+                </div>
+                <div>
+                  <strong><%= @root_summary_data[3]['indicator_name'] %>:</strong>
+                  <%= @root_summary_data[3]['formatted_value'] %>
+                </div>
+              </div>   
+            </div>   
+          <% end %>        
+        </div>   
+      </div>   
+    </div>

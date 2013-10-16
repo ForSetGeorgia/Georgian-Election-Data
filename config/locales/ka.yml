@@ -389,6 +389,10 @@ ka:
       new_data_available_link: ახალი ინფორმაციის ნახვა.
       delay: "სამწუხაროდ, გაცნობებთ რომ არჩევნების შედეგების გამოცხადება გაჭიანურდა. ჩვენ მოგაწოდებთ შედეგებს მათი განთავსებისთანავე, თუმცა ამ დროისთვის არ არსებობს დაზუსტებული ინფორმაცია. ბოდიშს ვიხდით შეფერხებისთვის."
       follow: "თქვენ შეგიძლიათ მიადევნოთ თვალყური სამომავლო განახლებებს Twitter-ზე  (#gvote ან  @jsgeorgia) ან Facebook-ზე შემდეგ მისამართზე http://www.facebook.com/JumpStartGeorgia."
+    summary_ind_type:
+      summary_data_above_map:
+        header: "შედეგები - %{shape}"
+    summary_voter_list:
       summary_data_above_map:
         header: "შედეგები - %{shape}"
     indicator_menu_scales:
