@@ -380,11 +380,11 @@ ka:
       portal: საქართველოს არჩევნების პორტალი      
       show_all: ყველას ჩვენება 
     index2:
-      live_elections_header: Live Election Results
-      elections_header: Election Results
-      voters_lists_header: Latest Voters Lists
+      live_elections_header: მიმდინარე არჩევნების შედეგები
+      elections_header: არჩევნების შედეგები
+      voters_lists_header: უახლესი ამომრჩეველთა სიები
       news_header: სიახლეები
-      links_header: Links
+      links_header: ბმულები
       timeline: არჩევნები და პოლიტიკური ქრონიკა
       portal: საქართველოს არჩევნების პორტალი      
       show_all: ყველას ჩვენება 

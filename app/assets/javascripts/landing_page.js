@@ -3,6 +3,7 @@
 $(document).ready(function() {
   if (gon.landing_page){
 
+/*
     // get the max height for row 3 divs and set all other divs to match
     function adjust_landing_page_heights(){
       var heights = [];
@@ -18,7 +19,7 @@ $(document).ready(function() {
     });
 
     adjust_landing_page_heights();
-    
+*/
     $('a.landing_circle_link').click(function(){
       landing_circle_link_obj = this;
       $.fancybox({

@@ -1,7 +1,7 @@
 $(document).ready(function () {
 	$('div#events_menu_tabs').tabs();
 	
-	if (!gon.langing_page){
+	if (!gon.landing_page){
   	$('div#events_menu_tabs').hide();
 	}
 

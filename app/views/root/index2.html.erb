@@ -1,28 +1,5 @@
 <%= content_for :body_id, 'body_landing_page' %>
 
-<style>
-
-  #summary_data_above_map{
-    background-color: transparent;
-  }
-
-  #summary_data_above_map a{
-    text-decoration: underline;
-  }
-
-  #summary_data_above_map h2{
-    background-color: #B8B8B8;
-    text-align: center;
-    padding: 5px;
-  }
-  
-  #summary_data_above_map > div > div:first-of-type{
-    background-color: #fff;
-    
-  }
-</style>
-
-
 <div id="landing_page2">
   <div class="row-fluid">
     <div class="span9">
@@ -118,8 +95,23 @@
 -->
       <div class="header_bar" style="position: relative;">
         <h2><%= t('.elections_header') %></h2>
-        <a href="#" style="position:absolute; right: 5px; top: 5px;">View All</a>
       </div>
+      <div class="show_all_circle elections_show_all">
+        <%= link_to "#landing_menu", :class => "landing_circle_link" do %>
+          <div class="grey">
+            <div class="show_all">
+              <%= t('.show_all') %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="arrow">
+        <div class="arrow-down-shadow"></div>
+        <div class="arrow-down"></div>
+      </div>
+      
+      
+
         
       <% @summary_data.each do |data| %>
         <div class="election_item clear">
@@ -190,8 +182,21 @@
         <div id="voter_lists">
           <div class="header_bar" style="position: relative;">
             <h2><%= t('.voters_lists_header') %></h2>
-            <a href="#" style="position:absolute; right: 5px; top: 5px;">View All</a>
           </div>
+          <div class="show_all_circle lists_show_all">
+            <%= link_to "#landing_menu", :class => "landing_circle_link", :'data-type-id' => @voters_lists.first.event_type_id do %>
+              <div class="grey">
+                <div class="show_all">
+                  <%= t('.show_all') %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div class="arrow">
+            <div class="arrow-down-shadow"></div>
+            <div class="arrow-down"></div>
+          </div>
+
           
           <div id="list_items">
             <% @summary_lists.each do |data| %>
@@ -242,7 +247,17 @@
 
 
       <div id="news">
-        <h2><%= t('.news_header') %></h2>
+        <h2>
+          <div>
+            <div>
+              <%= t('.news_header') %>           
+            </div>
+          </div>
+        </h2>
+        <div class="arrow-sidebar">
+          <div class="arrow-down-shadow"></div>
+          <div class="arrow-down"></div>
+        </div>
         <div class="row2_links">
           <% if @news.present? %>
             <div id="news_section">
@@ -263,7 +278,7 @@
             </div>
           <% end %>
         </div>
-        <div id="news_circle">
+        <div class="show_all_circle news_show_all">
           <%= link_to news_path do %>
             <div class="grey">
               <div class="show_all">
@@ -276,7 +291,17 @@
 
 
       <div id="links">
-        <h2><%= t('.links_header') %></h2>
+        <h2>
+          <div>
+            <div>
+              <%= t('.links_header') %>
+            </div>
+          </div>
+        </h2>
+        <div class="arrow-sidebar">
+          <div class="arrow-down-shadow"></div>
+          <div class="arrow-down"></div>
+        </div>
         <div>
           <a href="http://timeline.electionportal.ge/<%= I18n.locale %>" target="_blank" title="<%= t('.timeline') %>">
             <%= image_tag("timeline_#{I18n.locale}.jpg") %>
