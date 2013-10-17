@@ -3,17 +3,21 @@
 <div id="landing_page2">
   <div class="row-fluid">
     <div class="span9">
-<!--
-      <div class="header_bar">
-        <h2 style="background-color: #e2494b; color: #fff;">
+
+      <div class="header_bar live_election">
+        <h2>
           <%= image_tag('live_icon.png') %>
           <%= t('.live_elections_header') %>
         </h2>
       </div>
+      <div class="arrow live_election">
+        <div class="arrow-down-shadow"></div>
+        <div class="arrow-down"></div>
+      </div>
         
       <% @summary_data.each_with_index do |data, i| %>
         <% break if i > 0 %>
-        <div class="clear">
+        <div class="election_item clear">
           <div class="map_image">
             <% if data[:parent_summary_img].present? %>
               <% 
@@ -71,17 +75,17 @@
                 </div>
               </div>
             </div>
-            <div class="bar_item">
-              <div class="bar_item_name" style="color: #000;">
-                Precincts Reporting
+            <div class="bar_item precincts_reported">
+              <div class="bar_item_name">
+                <%= t('.precincts_reported') %>
               </div>
-              <div class="bar_item_number" style="color: #000 %>;">
+              <div class="bar_item_number">
                 2,989
               </div>
               <div class="bar_item_charts">
-                <div class="bar_item_chart" style="width: 34%; background-color: #000;">
+                <div class="bar_item_chart" style="width: 34%;">
                 </div>
-                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow('34%')%> color: #000;">
+                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow('34%')%>;">
                   34%
                 </div>
               </div>
@@ -92,8 +96,8 @@
       
       <% end %>
 
--->
-      <div class="header_bar" style="position: relative;">
+
+      <div class="header_bar">
         <h2><%= t('.elections_header') %></h2>
       </div>
       <div class="show_all_circle elections_show_all">
@@ -180,7 +184,7 @@
 
       <% if @summary_lists.present? %>
         <div id="voter_lists">
-          <div class="header_bar" style="position: relative;">
+          <div class="header_bar">
             <h2><%= t('.voters_lists_header') %></h2>
           </div>
           <div class="show_all_circle lists_show_all">

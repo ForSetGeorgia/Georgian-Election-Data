@@ -32,6 +32,12 @@
         border-right: 20px solid transparent;
 
         border-top: 20px solid #dddddd;
+      }
+      
+      &.live_election{
+        .arrow-down {
+          border-top: 20px solid #e2494b;
+        }
       }    
     }
     
@@ -53,7 +59,7 @@
         position: absolute;
         top: -3px;
         left: 50%;
-        margin-left: -8px;
+        margin-left: -9px;
         width: 0; 
         height: 0; 
         border-left: 10px solid transparent;
@@ -143,11 +149,22 @@
         padding: 12px 0;
         border-top: solid 2px #c2c2c2;
         border-bottom: solid 5px #f5f5f5;
+        margin-top: 10px;
         h2{
           margin: 0 0 0 60px;
           color: #368bc2;
           font-size: 18px;
         }
+        
+        &.live_election{
+          margin-top: 0;
+          border-top: solid 2px #e2494b;
+          background-color: #e2494b; 
+          h2{
+            color: #fff;
+          }
+        }
+        
       }
       
       .election_item{
@@ -226,6 +243,25 @@
                 top: 2px;
                 line-height: 15px;
               }
+            }
+            &.precincts_reported{
+              margin-top: 20px;
+              & > .bar_item_name{
+                color: #000;
+                font-weight: bold;
+              }
+              & > .bar_item_number{
+                color: #958c6b;
+              }
+              & > .bar_item_charts {
+                .bar_item_chart{
+                  background-color: #eedea0;
+                }
+                & > .bar_item_chart_percent{
+                  color: #958c6b;
+                }
+              }
+
             }
           }
         }

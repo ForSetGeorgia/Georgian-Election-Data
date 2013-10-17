@@ -381,6 +381,7 @@ ka:
       show_all: ყველას ჩვენება 
     index2:
       live_elections_header: მიმდინარე არჩევნების შედეგები
+      precincts_reported: Precincts Reported
       elections_header: არჩევნების შედეგები
       voters_lists_header: უახლესი ამომრჩეველთა სიები
       news_header: სიახლეები
