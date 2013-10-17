@@ -379,6 +379,15 @@ ka:
       timeline: "არჩევნები<br /> და<br /> პოლიტიკური ქრონიკა"
       portal: საქართველოს არჩევნების პორტალი      
       show_all: ყველას ჩვენება 
+    index2:
+      live_elections_header: Live Election Results
+      elections_header: Election Results
+      voters_lists_header: Latest Voters Lists
+      news_header: სიახლეები
+      links_header: Links
+      timeline: არჩევნები და პოლიტიკური ქრონიკა
+      portal: საქართველოს არჩევნების პორტალი      
+      show_all: ყველას ჩვენება 
     map:
       export_link_text: ჩამოტვირთეთ მონაცემები
       footnote: "შენიშვნა: %{note}"

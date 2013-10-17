@@ -31,7 +31,8 @@ class RootController < ApplicationController
 	
 	  @about = Page.with_translations(I18n.locale).find_by_name("about_landing")
 	  @elections = Event.public_official_elections(3, [31,32,2])
-	  @voters_lists = Event.public_official_voters_lists
+	  @voters_lists = Event.public_official_voters_lists(4)
+	  @news = News.with_translations(I18n.locale).recent.limit(2)
     gon.landing_page = true
 
 
@@ -62,6 +63,34 @@ class RootController < ApplicationController
         h[:parent_summary_img_json] = JSON.parse(h[:parent_summary_img_json]) if h[:parent_summary_img_json].present?
       end
     end
+
+    @summary_lists = []
+
+    @voters_lists.each do |list|
+      h = Hash.new
+      h[:list] = list
+      @summary_lists << h
+      
+      dataset = DataSet.current_dataset(list.id, Datum::DATA_TYPE[:official])
+      
+      if dataset.present?
+        summary_item = Datum.build_summary_voter_list_data_json(list.shape_id, 1, list.id, dataset.first.id)
+      end
+      
+      if summary_item.present?
+        h[:summary_item] = summary_item
+        
+        # get path to map images if exist
+        key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', list.id.to_s)
+                .gsub('[data_set_id]', dataset.first.id.to_s)
+                .gsub('[parent_id]', list.shape_id.to_s)
+
+        h[:parent_summary_img] = JsonCache.get_image_path(key, 'png')
+        h[:parent_summary_img_json] = JsonCache.read_data(key)
+        h[:parent_summary_img_json] = JSON.parse(h[:parent_summary_img_json]) if h[:parent_summary_img_json].present?
+      end
+    end
+
 
     respond_to do |format|
       format.html 

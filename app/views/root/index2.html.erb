@@ -2,9 +2,6 @@
 
 <style>
 
-#body_landing_page #landing_page{
-  margin-top: 0;
-}
   #summary_data_above_map{
     background-color: transparent;
   }
@@ -23,21 +20,17 @@
     background-color: #fff;
     
   }
-
-  #summary_data_above_map > div > div:last-of-type > div:first-of-type{
-    font-style: italic;
-  }
 </style>
 
 
-<div id="summary_data_above_map">
+<div id="landing_page2">
   <div class="row-fluid">
     <div class="span9">
-
-      <div>
+<!--
+      <div class="header_bar">
         <h2 style="background-color: #e2494b; color: #fff;">
           <%= image_tag('live_icon.png') %>
-          Live Election Results
+          <%= t('.live_elections_header') %>
         </h2>
       </div>
         
@@ -56,11 +49,6 @@
                    style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
                    style_img = style_width + style_height
                  end
-                 
-                 
-                 # just so voters list has images
-                 @voter_list_image = data[:parent_summary_img]
-                 @voter_list_style = style_img
                %>
               <%= image_tag(data[:parent_summary_img], :style => style_img, 
                   :'data-width' => orig_width, :'data-height' => orig_height) %>
@@ -127,14 +115,14 @@
       
       <% end %>
 
-
-      <div style="position: relative;">
-        <h2>Election Results</h2>
+-->
+      <div class="header_bar" style="position: relative;">
+        <h2><%= t('.elections_header') %></h2>
         <a href="#" style="position:absolute; right: 5px; top: 5px;">View All</a>
       </div>
         
       <% @summary_data.each do |data| %>
-        <div class="clear">
+        <div class="election_item clear">
           <div class="map_image">
             <% if data[:parent_summary_img].present? %>
               <% 
@@ -147,11 +135,6 @@
                    style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
                    style_img = style_width + style_height
                  end
-                 
-                 
-                 # just so voters list has images
-                 @voter_list_image = data[:parent_summary_img]
-                 @voter_list_style = style_img
                %>
               <%= image_tag(data[:parent_summary_img], :style => style_img, 
                   :'data-width' => orig_width, :'data-height' => orig_height) %>
@@ -203,66 +186,111 @@
       
       <% end %>
 
-      <% if @voters_lists.present? %>
+      <% if @summary_lists.present? %>
         <div id="voter_lists">
-          <div style="position: relative;">
-            <h2>Latest Voters Lists</h2>
+          <div class="header_bar" style="position: relative;">
+            <h2><%= t('.voters_lists_header') %></h2>
             <a href="#" style="position:absolute; right: 5px; top: 5px;">View All</a>
           </div>
           
-          <% @voters_lists.each do |list| %>
-            <div class="clear" style="display: inline-block; width: 33%;">
-              <div class="map_image">
-                <%= image_tag(@voter_list_image, :style => @voter_list_style) %>
-              </div>        
+          <div id="list_items">
+            <% @summary_lists.each do |data| %>
+              <div class="list_item clear">
+                <div class="map_image">
+                  <% if data[:parent_summary_img].present? %>
+                    <% 
+                     style_parent = ''
+                     style_child = ''
+                      if data[:parent_summary_img_json].present? 
+                         orig_width = data[:parent_summary_img_json]['width'].present? ? data[:parent_summary_img_json]['width'] : '0'
+                         orig_height = data[:parent_summary_img_json]['height'].present? ? data[:parent_summary_img_json]['height'] : '0'
+                         style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
+                         style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
+                         style_img = style_width + style_height
+                       end
+                     %>
+                    <%= image_tag(data[:parent_summary_img], :style => style_img, 
+                        :'data-width' => orig_width, :'data-height' => orig_height) %>
+                    
+                  <% end %>
+                </div>        
 
-              <div class="bar_items">
-                <h3>
-                  <%= link_to list.name, 
-                    indicator_map_path(:event_id => list.id, :event_type_id => list.event_type_id) %>
-                </h3>
-                <div>
-                  <strong>Total Registered Voters:</strong> 3,450,234
-                </div>
-                <div>
-                  <strong>Number of Districts:</strong> 78
-                </div>
-                <div>
-                  <strong>Number of Precincts:</strong> 3,745
+                <div class="list_text">
+                  <h3>
+                    <%= link_to data[:list].name, 
+                      indicator_map_path(:event_id => data[:list].id, :event_type_id => data[:list].event_type_id) %>
+                  </h3>
+                  <% data[:summary_item].each do |item| %>
+                    <div>
+                      <strong><%= item['indicator_name_abbrv']%>:</strong>
+                      <%= item['formatted_value'] %>
+                    </div>
+                  <% end %>
                 </div>
               </div>
-            </div>
-          <% end %>
+            <% end %>
+          </div>
         </div>
       <% end %>
 
     </div>
 
     <div class="span3">
-      <div>
+      <div id="about">
         <%= simple_format(@about.description, {}, :sanitize => false) %>
+      </div>
+
+
+      <div id="news">
+        <h2><%= t('.news_header') %></h2>
+        <div class="row2_links">
+          <% if @news.present? %>
+            <div id="news_section">
+              <ul>
+                <% @news.each do |n| %>
+                  <li>
+                    <div class="news_date">
+                      <%= link_to news_path do %>
+                        <%= l Date.new(n.date_posted.year, n.date_posted.month, n.date_posted.day), :format => :long %>
+                      <% end %>
+                    </div>
+                    <div class="news_text">
+                      <%= truncate(strip_tags(n.description), :length => 125, :separator => ' ', :omission => '...')   %>
+                    </div>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </div>
+        <div id="news_circle">
+          <%= link_to news_path do %>
+            <div class="grey">
+              <div class="show_all">
+                <%= t('.show_all') %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+
+      <div id="links">
+        <h2><%= t('.links_header') %></h2>
+        <div>
+          <a href="http://timeline.electionportal.ge/<%= I18n.locale %>" target="_blank" title="<%= t('.timeline') %>">
+            <%= image_tag("timeline_#{I18n.locale}.jpg") %>
+          </a>
+        </div>
+        <div>
+          <a href="http://electionportal.ge/" target="_blank" title="<%= t('.portal') %>">
+            <%= image_tag("portal_#{I18n.locale}.jpg") %>
+          </a>
+        </div>
       </div>
       
     </div>  
 
-  </div>
-
-
-  <div id="landing_page">
-    <div id="row3">
-      <div>
-        <a href="http://timeline.electionportal.ge/<%= I18n.locale%>" target="_blank">
-          <div id="title"><%= t('.timeline').html_safe %></div>
-          <%= image_tag('landing_timeline.png') %>
-        </a>
-      </div>
-      <div>
-        <a href="http://electionportal.ge/" target="_blank">
-          <div id="title"><%= t('.portal').html_safe %></div>
-          <%= image_tag('landing_electionportal.png') %>
-        </a>
-      </div>
-    </div>
   </div>
 
   <div style="display: none;">

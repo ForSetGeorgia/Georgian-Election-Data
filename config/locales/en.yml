@@ -379,6 +379,15 @@ en:
       timeline: "Elections<br /> and<br /> Political<br /> Timeline"
       portal: Georgian Election Portal     
       show_all: Show All 
+    index2:
+      live_elections_header: Live Election Results
+      elections_header: Election Results
+      voters_lists_header: Latest Voters Lists
+      news_header: News
+      links_header: Links
+      timeline: Elections and Political Timeline
+      portal: Georgian Election Portal     
+      show_all: Show All 
     map:
       export_link_text: Export Map
       footnote: "Note: %{note}"
