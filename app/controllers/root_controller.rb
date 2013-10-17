@@ -117,6 +117,7 @@ logger.debug "////////////// getting current event for event type #{params[:even
 
       # is event a voters list
       @is_voters_list = event.is_voter_list?
+      gon.is_voters_list = @is_voters_list
 
       # save event custom shape nav
       @event_custom_shape_nav = event.custom_shape_navigations
