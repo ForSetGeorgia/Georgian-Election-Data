@@ -13,23 +13,6 @@ class RootController < ApplicationController
 	def index
 	
 	  @about = Page.with_translations(I18n.locale).find_by_name("about_landing")
-	  @stats = Event.election_type_stats
-	  @elections = Event.public_official_elections(3, [31,32,2])
-	  @voters_lists = Event.public_official_voters_lists
-	  @news = News.with_translations(I18n.locale).recent.limit(2)
-    gon.landing_page = true
-
-    respond_to do |format|
-      format.html 
-    end
-  end
-
-
-  # GET /
-  # GET /.json
-	def index2
-	
-	  @about = Page.with_translations(I18n.locale).find_by_name("about_landing")
 	  @elections = Event.public_official_elections(3, [31,32,2])
 	  @voters_lists = Event.public_official_voters_lists(4)
 	  @news = News.with_translations(I18n.locale).recent.limit(2)
@@ -91,6 +74,23 @@ class RootController < ApplicationController
       end
     end
 
+
+    respond_to do |format|
+      format.html 
+    end
+  end
+
+
+  # GET /
+  # GET /.json
+	def index2
+	
+	  @about = Page.with_translations(I18n.locale).find_by_name("about_landing")
+	  @stats = Event.election_type_stats
+	  @elections = Event.public_official_elections(3, [31,32,2])
+	  @voters_lists = Event.public_official_voters_lists
+	  @news = News.with_translations(I18n.locale).recent.limit(2)
+    gon.landing_page = true
 
     respond_to do |format|
       format.html 

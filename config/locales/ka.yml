@@ -368,6 +368,16 @@ ka:
       js_link_text: Built by
   root:
     index:
+      live_elections_header: მიმდინარე არჩევნების შედეგები
+      precincts_reported: Precincts Reported
+      elections_header: არჩევნების შედეგები
+      voters_lists_header: უახლესი ამომრჩეველთა სიები
+      news_header: სიახლეები
+      links_header: ბმულები
+      timeline: არჩევნები და პოლიტიკური ქრონიკა
+      portal: საქართველოს არჩევნების პორტალი      
+      show_all: ყველას ჩვენება 
+    index2:
       img_alt: არჩევნების რუკის ნიმუში
       stats_header: სტატისტიკა
       stats_elections: "%{total} არჩევნები %{total_data} ხმებით"
@@ -377,16 +387,6 @@ ka:
       voters_lists_header: ამომრჩეველთა სიები
       news_header: სიახლეები
       timeline: "არჩევნები<br /> და<br /> პოლიტიკური ქრონიკა"
-      portal: საქართველოს არჩევნების პორტალი      
-      show_all: ყველას ჩვენება 
-    index2:
-      live_elections_header: მიმდინარე არჩევნების შედეგები
-      precincts_reported: Precincts Reported
-      elections_header: არჩევნების შედეგები
-      voters_lists_header: უახლესი ამომრჩეველთა სიები
-      news_header: სიახლეები
-      links_header: ბმულები
-      timeline: არჩევნები და პოლიტიკური ქრონიკა
       portal: საქართველოს არჩევნების პორტალი      
       show_all: ყველას ჩვენება 
     map:
