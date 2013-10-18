@@ -94,6 +94,18 @@
               </ul>
             <% end %>
 
+          	<div id="social_links_header">
+        			<span class="f">
+        				<a href="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>" 
+                    target="_blank" title="facebook"
+                    class="facebook_link" data-url="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}" %>"></a>
+        			</span>
+        			<span class="t">
+        				<a href="https://twitter.com/share" target="_blank" title="twitter"></a>
+        			</span>
+            </div>
+
+
 		        <div class="header-nav-collapse nav-collapse">
 		          <ul class="nav pull-right">
                 <% if user_signed_in? %>
@@ -185,7 +197,7 @@
               			<span class="f">
               				<a href="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>" 
                           target="_blank" title="facebook"
-                          id="facebook_link" data-url="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}" %>"></a>
+                          class="facebook_link" data-url="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}" %>"></a>
               			</span>
               			<span class="t">
               				<a href="https://twitter.com/share" target="_blank" title="twitter"></a>

@@ -69,9 +69,9 @@ $(function(){
 	function update_link_parameters(link, id) {
     // update facebook share link, have to test for 1st page for url is different format
     if (link == gon.history_url) {
-      $('#facebook_link').attr('href', gon.history_url);
+      $('.facebook_link').attr('href', gon.history_url);
     }else {
-      $('#facebook_link').attr('href', $('#facebook_link').data('url') + link);
+      $('.facebook_link').attr('href', $('.facebook_link').data('url') + link);
     }
 
    if (link.search('summary') !== -1)
