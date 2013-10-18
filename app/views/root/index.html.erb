@@ -7,7 +7,9 @@
       <div class="header_bar live_election">
         <h2>
           <%= image_tag('live_icon.png') %>
+          <span>
           <%= t('.live_elections_header') %>
+          </span>
         </h2>
       </div>
       <div class="arrow live_election">
@@ -15,6 +17,7 @@
         <div class="arrow-down"></div>
       </div>
         
+      <div class="election_items live_election">
       <% @summary_data.each_with_index do |data, i| %>
         <% break if i > 0 %>
         <div class="election_item clear">
@@ -31,8 +34,9 @@
                    style_img = style_width + style_height
                  end
                %>
-              <%= image_tag(data[:parent_summary_img], :style => style_img, 
-                  :'data-width' => orig_width, :'data-height' => orig_height) %>
+              <%= link_to(image_tag(data[:parent_summary_img], :style => style_img, 
+                  :'data-width' => orig_width, :'data-height' => orig_height),
+                  indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id)) %>
               
             <% end %>
           </div>        
@@ -95,7 +99,7 @@
         </div>
       
       <% end %>
-
+      </div>
 
       <div class="header_bar">
         <h2><%= t('.elections_header') %></h2>
@@ -116,7 +120,7 @@
       
       
 
-        
+      <div class="election_items">
       <% @summary_data.each do |data| %>
         <div class="election_item clear">
           <div class="map_image">
@@ -132,8 +136,9 @@
                    style_img = style_width + style_height
                  end
                %>
-              <%= image_tag(data[:parent_summary_img], :style => style_img, 
-                  :'data-width' => orig_width, :'data-height' => orig_height) %>
+              <%= link_to(image_tag(data[:parent_summary_img], :style => style_img, 
+                  :'data-width' => orig_width, :'data-height' => orig_height),
+                  indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id)) %>
               
             <% end %>
           </div>        
@@ -181,6 +186,9 @@
         </div>
       
       <% end %>
+      </div>
+      
+      
 
       <% if @summary_lists.present? %>
         <div id="voter_lists">
@@ -201,41 +209,49 @@
             <div class="arrow-down"></div>
           </div>
 
-          
           <div id="list_items">
-            <% @summary_lists.each do |data| %>
-              <div class="list_item clear">
-                <div class="map_image">
-                  <% if data[:parent_summary_img].present? %>
-                    <% 
-                     style_parent = ''
-                     style_child = ''
-                      if data[:parent_summary_img_json].present? 
-                         orig_width = data[:parent_summary_img_json]['width'].present? ? data[:parent_summary_img_json]['width'] : '0'
-                         orig_height = data[:parent_summary_img_json]['height'].present? ? data[:parent_summary_img_json]['height'] : '0'
-                         style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
-                         style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
-                         style_img = style_width + style_height
-                       end
-                     %>
-                    <%= image_tag(data[:parent_summary_img], :style => style_img, 
-                        :'data-width' => orig_width, :'data-height' => orig_height) %>
-                    
-                  <% end %>
-                </div>        
+            <% list_rows = @summary_lists.length/2 + @summary_lists.length%2 %>
+            <% (0..list_rows-1).each do |row| %>
+              <div class="list_item_container">
+                <% (0..1).each do |row_item| %>
+                  <% index = 2*row + row_item %>
+                  <% if index < @summary_lists.length %>
+                    <div class="list_item clear">
+                      <div class="map_image">
+                        <% if @summary_lists[index][:parent_summary_img].present? %>
+                          <% 
+                           style_parent = ''
+                           style_child = ''
+                            if @summary_lists[index][:parent_summary_img_json].present? 
+                               orig_width = @summary_lists[index][:parent_summary_img_json]['width'].present? ? @summary_lists[index][:parent_summary_img_json]['width'] : '0'
+                               orig_height = @summary_lists[index][:parent_summary_img_json]['height'].present? ? @summary_lists[index][:parent_summary_img_json]['height'] : '0'
+                               style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
+                               style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
+                               style_img = style_width + style_height
+                             end
+                           %>
+                          <%= link_to(image_tag(@summary_lists[index][:parent_summary_img], :style => style_img, 
+                              :'@summary_lists[index]-width' => orig_width, :'@summary_lists[index]-height' => orig_height),
+                              indicator_map_path(:event_id => @summary_lists[index][:list].id, :event_type_id => @summary_lists[index][:list].event_type_id)) %>
+                          
+                        <% end %>
+                      </div>        
 
-                <div class="list_text">
-                  <h3>
-                    <%= link_to data[:list].name, 
-                      indicator_map_path(:event_id => data[:list].id, :event_type_id => data[:list].event_type_id) %>
-                  </h3>
-                  <% data[:summary_item].each do |item| %>
-                    <div>
-                      <strong><%= item['indicator_name_abbrv']%>:</strong>
-                      <%= item['formatted_value'] %>
+                      <div class="list_text">
+                        <h3>
+                          <%= link_to @summary_lists[index][:list].name, 
+                            indicator_map_path(:event_id => @summary_lists[index][:list].id, :event_type_id => @summary_lists[index][:list].event_type_id) %>
+                        </h3>
+                        <% @summary_lists[index][:summary_item].each do |item| %>
+                          <div>
+                            <strong><%= item['indicator_name_abbrv']%>:</strong>
+                            <%= item['formatted_value'] %>
+                          </div>
+                        <% end %>
+                      </div>
                     </div>
                   <% end %>
-                </div>
+                <% end %>
               </div>
             <% end %>
           </div>

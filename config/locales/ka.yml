@@ -369,14 +369,14 @@ ka:
   root:
     index:
       live_elections_header: მიმდინარე არჩევნების შედეგები
-      precincts_reported: Precincts Reported
+      precincts_reported: უბნები, საიდანაც მიღებულია შედეგები
       elections_header: არჩევნების შედეგები
       voters_lists_header: უახლესი ამომრჩეველთა სიები
       news_header: სიახლეები
       links_header: ბმულები
       timeline: არჩევნები და პოლიტიკური ქრონიკა
       portal: საქართველოს არჩევნების პორტალი      
-      show_all: ყველას ჩვენება 
+      show_all: ყველას ნახვა
     index2:
       img_alt: არჩევნების რუკის ნიმუში
       stats_header: სტატისტიკა
