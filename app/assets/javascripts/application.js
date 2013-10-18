@@ -40,7 +40,7 @@
 //= require district_profiles
 //= require search
 //= require landing_page
-//= require summary_bar
+
 
 
 $(document).ready(function(){
