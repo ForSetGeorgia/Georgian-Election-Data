@@ -192,15 +192,26 @@ a#footer_collapsed_menu {
 }
 
 .navbar-inner-bottom .navmenu {
-   width: 160px;
+   position: relative;
    height: 100%;
    float: left;
-   background: url("/assets/arrow.png") !important;
+   background-color: #E2E2E2;
    cursor: pointer;
    margin: 0;
-   padding: 0;
-   text-align: center;
+   padding: 0 0 0 25px;
 }
+.navbar-inner-bottom .navmenu .arrow {
+  position: absolute;
+  right: -17px;
+  top: 0;
+	width: 0; 
+	height: 0; 
+	border-top: 26px solid transparent;
+	border-bottom: 26px solid transparent;
+	
+	border-left: 17px solid #E2E2E2;
+}
+
 
 .navbar-inner-bottom .navmenu p {
    text-transform: uppercase;
@@ -228,7 +239,7 @@ a#footer_collapsed_menu {
 .navbar-inner-bottom .navmenu-select {
    float: left;
    height: 100%;
-   margin-left: 10px;
+   margin-left: 20px;
 }
 
 .navbar-inner-bottom .navmenu-select p {
