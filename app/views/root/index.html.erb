@@ -6,10 +6,12 @@
 
       <div class="header_bar live_election">
         <h2>
-          <%= image_tag('live_icon.png') %>
-          <span>
-          <%= t('.live_elections_header') %>
-          </span>
+          <div>
+            <%= image_tag('live_icon.png') %>
+            <span>
+            <%= t('.live_elections_header') %>
+            </span>
+          </div>
         </h2>
       </div>
       <div class="arrow_left_side">
@@ -101,7 +103,11 @@
       </div>
 
       <div class="header_bar">
-        <h2><%= t('.elections_header') %></h2>
+        <h2>
+          <div>
+            <%= t('.elections_header') %>
+          </div>
+        </h2>
       </div>
       <div class="show_all_circle elections_show_all">
         <%= link_to "#landing_menu", :class => "landing_circle_link" do %>
@@ -191,7 +197,11 @@
       <% if @summary_lists.present? %>
         <div id="voter_lists">
           <div class="header_bar">
-            <h2><%= t('.voters_lists_header') %></h2>
+            <h2>
+              <div>
+                <%= t('.voters_lists_header') %>
+              </div>
+            </h2>
           </div>
           <div class="show_all_circle lists_show_all">
             <%= link_to "#landing_menu", :class => "landing_circle_link", :'data-type-id' => @voters_lists.first.event_type_id do %>

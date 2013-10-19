@@ -6,6 +6,11 @@
   font-size: 11px;
 }
 
+#body_landing_page #landing_page > div > div:first-of-type .header_bar.live_election h2 div,
+#body_landing_page #landing_page > div > div:first-of-type #voter_lists .header_bar h2 div{
+  width: auto;
+}
+
 #body_landing_page #landing_page22 #row1 > div:nth-child(2) #row1_footer h3 {
   font-family: 'din_med';
   font-size: 17px;
