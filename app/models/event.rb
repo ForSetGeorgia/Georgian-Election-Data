@@ -15,10 +15,13 @@ class Event < ActiveRecord::Base
 		:event_translations_attributes, :has_official_data, :has_live_data, :default_core_indicator_id
 
   validates :event_type_id, :event_date, :presence => true
-  validates :default_core_indicator_id, :inclusion => {:in => CoreIndicator.ids}
+  validates_inclusion_of :default_core_indicator_id, :in => CoreIndicator.ids, :if => :default_core_indicator_id_present?
   #do not require shape id for the geo data might not be loaded yet
 #  validates :shape_id, :presence => true
 
+  def default_core_indicator_id_present?
+    self.default_core_indicator_id.present?
+  end
 
   def is_voter_list?
     x = false
@@ -185,7 +188,7 @@ class Event < ActiveRecord::Base
       if e.present?
         event = Event.new(:shape_id => e.shape_id, :event_type_id => e.event_type_id, 
           :event_date => event_date, :is_default_view => false,
-    		  :has_official_data => e.has_official_data, :has_live_data => e.has_live_data)
+    		  :has_official_data => false, :has_live_data => false)
         e.event_translations.each do |trans|
           event.event_translations.build(:locale => trans.locale, :name => trans.name, 
               :name_abbrv => trans.name_abbrv, :description => trans.description)
@@ -199,11 +202,12 @@ class Event < ActiveRecord::Base
 
   # copy everything from an existing event into into a new event
   # - if core indicator ids passed in, only copy those indicators
-  # copy: indicators, relationships, custom event views
+  # copy: indicators, relationships, custom event views, custom shape navigation
   def clone_event_components(event_id, core_indicator_ids=nil)
     if event_id.present?
       Event.transaction do
         # create indicators and the scales
+        # - indicator.clone_for_event will automatically get any children inds, so only need to get parents
         indicators = Indicator.includes(:indicator_scales => :indicator_scale_translations)
           .where(:indicators => {:event_id => event_id, :ancestry => nil})
         if core_indicator_ids.present?
