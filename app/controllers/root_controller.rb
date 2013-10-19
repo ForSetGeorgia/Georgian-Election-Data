@@ -18,7 +18,6 @@ class RootController < ApplicationController
 	  @news = News.with_translations(I18n.locale).recent.limit(2)
     gon.landing_page = true
 
-
     @summary_data = []
   
     @elections.each do |election|
@@ -74,6 +73,44 @@ class RootController < ApplicationController
       end
     end
 
+    # add live elections if exist
+    @summary_live = []
+    if @live_event_menu.present?
+      @live_event_menu.each do |live|
+        election = Event.find_by_id(live["id"])
+        
+        if election.present?
+          h = Hash.new
+          h[:election] = election
+          @summary_live << h
+          
+          dataset = DataSet.current_dataset(election.id, Datum::DATA_TYPE[:live])
+          
+          
+          if dataset.present?
+            h[:precincts_completed] = dataset.first.precincts_completed
+            h[:precincts_total] = dataset.first.precincts_total
+            h[:precincts_percentage] = dataset.first.precincts_percentage
+
+            summary_item = Datum.get_table_data_summary(election.id, dataset.first.id, 1, 
+              election.shape_id, 2, Datum::DATA_TYPE[:official]) 
+          end
+          
+          if summary_item.present?
+            h[:summary_item] = summary_item
+            
+            # get path to map images if exist
+            key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', election.id.to_s)
+                    .gsub('[data_set_id]', dataset.first.id.to_s)
+                    .gsub('[parent_id]', election.shape_id.to_s)
+
+            h[:parent_summary_img] = JsonCache.get_image_path(key, 'png')
+            h[:parent_summary_img_json] = JsonCache.read_data(key)
+            h[:parent_summary_img_json] = JSON.parse(h[:parent_summary_img_json]) if h[:parent_summary_img_json].present?
+          end
+        end
+      end
+    end
 
     respond_to do |format|
       format.html 
