@@ -8,68 +8,25 @@
   #landing_page{
 
     /* down arrow */
-    .arrow{
+    .arrow_left_side{
       position: relative;
-      .arrow-down-shadow {
+      img{
         position: absolute;
         top: -5px;
         left: 99px;
-	      width: 0; 
-	      height: 0; 
-	      border-left: 26px solid transparent;
-	      border-right: 26px solid transparent;
-	
-	      border-top: 26px solid #f5f5f5;
-	      
-      }    
-      .arrow-down {
-        position: absolute;
-        top: -5px;
-        left: 105px;
-        width: 0; 
-        height: 0; 
-        border-left: 20px solid transparent;
-        border-right: 20px solid transparent;
-
-        border-top: 20px solid #dddddd;
-      }
-      &.live_election{
-       .arrow-down-shadow {
-          border-top: 20px solid #eef0ef;
-        }
-       .arrow-down {
-          border-top: 20px solid #e2494b;
-        }
       }    
     }
-    
-    .arrow-sidebar{
+
+    .arrow_right_side{
       margin: 0;
       position: relative;
-      .arrow-down-shadow {
+      img{
         position: absolute;
-        top: -3px;
+        top: -4px;
         left: 50%;
-        margin-left: -16px;
-	      width: 0; 
-	      height: 0; 
-        border-left: 15px solid transparent;
-        border-right: 15px solid transparent;
-        border-top: 15px solid #dfdfdf;
+        margin-left: -14px;
       }    
-      .arrow-down {
-        position: absolute;
-        top: -3px;
-        left: 50%;
-        margin-left: -11px;
-        width: 0; 
-        height: 0; 
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-
-        border-top: 10px solid #b32b2f;
-      }    
-    }
+    }    
     
 
     /* circle styles */
@@ -351,10 +308,10 @@
           & > div{
             display:inline-block;
             background-color: #eeefef;
-            padding: 5px;
+            padding: 4px;
   /*          font-family: 'dejavu_extralight';*/
             & > div{
-              background-color: #949494;
+              background-color: #AAAAAA;
               color: #fff;
               padding: 8px;
               font-weight: normal;
@@ -362,25 +319,6 @@
               letter-spacing: 1px;
             }
           }
-        }
-
-        .arrow-sidebar{
-          .arrow-down-shadow {
-            position: absolute;
-            top: -5px;
-            margin-left: -16px;
-	          width: 0; 
-	          height: 0; 
-	          border-left: 15px solid transparent;
-	          border-right: 15px solid transparent;
-	          border-top: 15px solid #eeefef;
-          }    
-          .arrow-down {
-            position: absolute;
-            top: -5px;
-            margin-left: -11px;
-            border-top: 10px solid #949494;
-          }    
         }
 
         div#news_section{
@@ -434,9 +372,6 @@
         & > div{
           text-align: center;
           margin: 6px 0;
-          &.arrow-sidebar{
-            margin: 0;
-          }
           a {
             img{
               background-color: #d0d0d2;
@@ -452,6 +387,14 @@
         
         }
       
+        .arrow_right_side{
+          margin: 0;
+          img{
+            top: -3px;
+          }    
+        }    
+        
+
       }
     }
   

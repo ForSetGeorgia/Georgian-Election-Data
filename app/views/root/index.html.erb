@@ -12,9 +12,8 @@
           </span>
         </h2>
       </div>
-      <div class="arrow live_election">
-        <div class="arrow-down-shadow"></div>
-        <div class="arrow-down"></div>
+      <div class="arrow_left_side">
+        <%= image_tag('arrow_live.jpg') %>
       </div>
         
       <div class="election_items live_election">
@@ -113,9 +112,8 @@
           </div>
         <% end %>
       </div>
-      <div class="arrow">
-        <div class="arrow-down-shadow"></div>
-        <div class="arrow-down"></div>
+      <div class="arrow_left_side">
+        <%= image_tag('arrow_elections.jpg') %>
       </div>
       
       
@@ -204,9 +202,8 @@
               </div>
             <% end %>
           </div>
-          <div class="arrow">
-            <div class="arrow-down-shadow"></div>
-            <div class="arrow-down"></div>
+          <div class="arrow_left_side">
+            <%= image_tag('arrow_elections.jpg') %>
           </div>
 
           <div id="list_items">
@@ -274,10 +271,10 @@
             </div>
           </div>
         </h2>
-        <div class="arrow-sidebar">
-          <div class="arrow-down-shadow"></div>
-          <div class="arrow-down"></div>
+        <div class="arrow_right_side">
+          <%= image_tag('arrow_news.jpg') %>
         </div>
+
         <div class="row2_links">
           <% if @news.present? %>
             <div id="news_section">
@@ -318,10 +315,10 @@
             </div>
           </div>
         </h2>
-        <div class="arrow-sidebar">
-          <div class="arrow-down-shadow"></div>
-          <div class="arrow-down"></div>
+        <div class="arrow_right_side">
+          <%= image_tag('arrow_links.jpg') %>
         </div>
+
         <div>
           <a href="http://timeline.electionportal.ge/<%= I18n.locale %>" target="_blank" title="<%= t('.timeline') %>">
             <%= image_tag("timeline_#{I18n.locale}.jpg") %>
