@@ -7,7 +7,7 @@
   :class => 'btn' %>
 </div>
 
-<% if !@live_events_menu || @live_events_menu.empty?%>
+<% if @live_events_menu.blank? %>
 
   <p><%= t('.no_live_events')%></p>
 

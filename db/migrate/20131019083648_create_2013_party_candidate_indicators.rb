@@ -68,6 +68,10 @@ class Create2013PartyCandidateIndicators < ActiveRecord::Migration
           puts "-- creating indicators"
           Indicator.clone_from_core_indicator(clone_event_id, clone_core_ind_id, event_id, core.id)
             
+          # now clone the relationships for this new indciator
+          puts "-- creating relationships"
+          EventIndicatorRelationship.clone_from_core_indicator(clone_event_id, clone_core_ind_id, event_id, core.id)
+            
         end
         
 
@@ -116,6 +120,10 @@ class Create2013PartyCandidateIndicators < ActiveRecord::Migration
           # now clone the indicators and scales for this new indciator
           puts "-- creating indicators"
           Indicator.clone_from_core_indicator(clone_event_id, clone_core_ind_id, event_id, core.id)
+            
+          # now clone the relationships for this new indciator
+          puts "-- creating relationships"
+          EventIndicatorRelationship.clone_from_core_indicator(clone_event_id, clone_core_ind_id, event_id, core.id)
             
         end
         
@@ -177,6 +185,10 @@ class Create2013PartyCandidateIndicators < ActiveRecord::Migration
           puts "-- creating indicators"
           Indicator.clone_from_core_indicator(clone_event_id, clone_core_ind_id, event_id, core.id)
             
+          # now clone the relationships for this new indciator
+          puts "-- creating relationships"
+          EventIndicatorRelationship.clone_from_core_indicator(clone_event_id, clone_core_ind_id, event_id, core.id)
+            
         end
 
         I18n.available_locales.each do |locale|
@@ -219,6 +231,7 @@ class Create2013PartyCandidateIndicators < ActiveRecord::Migration
           puts "deleting everything for #{everything.length} cores: #{everything}"
           
           Indicator.where(:event_id => event_id, :core_indicator_id => indicators_only).destroy_all
+          EventIndicatorRelationship.where(:event_id => event_id, :core_indicator_id => indicators_only).destroy_all
           
           CoreIndicator.where(:id => everything).destroy_all        
         end        
