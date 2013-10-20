@@ -50,53 +50,57 @@
                   indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,
                     :data_type => Datum::DATA_TYPE[:live]) %>
               </h3>
-              <div class="bar_item">
-                <div class="bar_item_name" style="color: <%= data[:summary_item][1][:winner_color] %>;">
-                  <%= data[:summary_item][1][:winner_name] %>
-                </div>
-                <div class="bar_item_number" style="color: <%= data[:summary_item][1][:winner_color] %>;">
-                  <%= data[:summary_item][1][:winner_number] %>
-                </div>
-                <div class="bar_item_charts">
-                  <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:winner_percent]%>; background-color: <%= data[:summary_item][1][:winner_color] %>" 
-                      title="<%= "#{data[:summary_item][1][:winner_name]} - #{data[:summary_item][1][:winner_percent]}" %>">
+              <% if data[:summary_item].present? %>
+                <div class="bar_item">
+                  <div class="bar_item_name" style="color: <%= data[:summary_item][1][:winner_color] %>;">
+                    <%= data[:summary_item][1][:winner_name] %>
                   </div>
-                  <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:winner_percent])%> color: <%= data[:summary_item][1][:winner_color] %>">
-                    <%= data[:summary_item][1][:winner_percent] %>
+                  <div class="bar_item_number" style="color: <%= data[:summary_item][1][:winner_color] %>;">
+                    <%= data[:summary_item][1][:winner_number] %>
                   </div>
-                </div>
-              </div>
-              <div class="bar_item">
-                <div class="bar_item_name" style="color: <%= data[:summary_item][1][:second_color] %>;">
-                  <%= data[:summary_item][1][:second_name] %>
-                </div>
-                <div class="bar_item_number" style="color: <%= data[:summary_item][1][:second_color] %>;">
-                  <%= data[:summary_item][1][:second_number] %>
-                </div>
-                <div class="bar_item_charts">
-                  <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:second_percent]%>; background-color: <%= data[:summary_item][1][:second_color] %>" 
-                      title="<%= "#{data[:summary_item][1][:second_name]} - #{data[:summary_item][1][:second_percent]}" %>">
-                  </div>
-                  <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:second_percent])%> color: <%= data[:summary_item][1][:second_color] %>">
-                    <%= data[:summary_item][1][:second_percent] %>
+                  <div class="bar_item_charts">
+                    <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:winner_percent]%>; background-color: <%= data[:summary_item][1][:winner_color] %>" 
+                        title="<%= "#{data[:summary_item][1][:winner_name]} - #{data[:summary_item][1][:winner_percent]}" %>">
+                    </div>
+                    <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:winner_percent])%> color: <%= data[:summary_item][1][:winner_color] %>">
+                      <%= data[:summary_item][1][:winner_percent] %>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="bar_item precincts_reported">
-                <div class="bar_item_name">
-                  <%= t('.precincts_reported') %>
-                </div>
-                <div class="bar_item_number">
-                  <%= data[:precincts_completed] %>
-                </div>
-                <div class="bar_item_charts">
-                  <div class="bar_item_chart" style="width: <%= data[:precincts_percentage] %>;">
+                <div class="bar_item">
+                  <div class="bar_item_name" style="color: <%= data[:summary_item][1][:second_color] %>;">
+                    <%= data[:summary_item][1][:second_name] %>
                   </div>
-                  <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:precincts_percentage])%>;">
-                    <%= data[:precincts_percentage] %>
+                  <div class="bar_item_number" style="color: <%= data[:summary_item][1][:second_color] %>;">
+                    <%= data[:summary_item][1][:second_number] %>
+                  </div>
+                  <div class="bar_item_charts">
+                    <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:second_percent]%>; background-color: <%= data[:summary_item][1][:second_color] %>" 
+                        title="<%= "#{data[:summary_item][1][:second_name]} - #{data[:summary_item][1][:second_percent]}" %>">
+                    </div>
+                    <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:second_percent])%> color: <%= data[:summary_item][1][:second_color] %>">
+                      <%= data[:summary_item][1][:second_percent] %>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <% end %>
+              <% if data[:precincts_completed].present? && data[:precincts_percentage].present? %>
+                <div class="bar_item precincts_reported">
+                  <div class="bar_item_name">
+                    <%= t('.precincts_reported') %>
+                  </div>
+                  <div class="bar_item_number">
+                    <%= data[:precincts_completed] %>
+                  </div>
+                  <div class="bar_item_charts">
+                    <div class="bar_item_chart" style="width: <%= data[:precincts_percentage] %>;">
+                    </div>
+                    <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:precincts_percentage])%>;">
+                      <%= data[:precincts_percentage] %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
             </div>   
 
           </div>
@@ -157,40 +161,41 @@
               <%= link_to data[:election].name, 
                 indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id) %>
             </h3>
-            <div class="bar_item">
-              <div class="bar_item_name" style="color: <%= data[:summary_item][1][:winner_color] %>;">
-                <%= data[:summary_item][1][:winner_name] %>
-              </div>
-              <div class="bar_item_number" style="color: <%= data[:summary_item][1][:winner_color] %>;">
-                <%= data[:summary_item][1][:winner_number] %>
-              </div>
-              <div class="bar_item_charts">
-                <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:winner_percent]%>; background-color: <%= data[:summary_item][1][:winner_color] %>" 
-                    title="<%= "#{data[:summary_item][1][:winner_name]} - #{data[:summary_item][1][:winner_percent]}" %>">
+            <% if data[:summary_item].present? %>
+              <div class="bar_item">
+                <div class="bar_item_name" style="color: <%= data[:summary_item][1][:winner_color] %>;">
+                  <%= data[:summary_item][1][:winner_name] %>
                 </div>
-                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:winner_percent])%> color: <%= data[:summary_item][1][:winner_color] %>">
-                  <%= data[:summary_item][1][:winner_percent] %>
+                <div class="bar_item_number" style="color: <%= data[:summary_item][1][:winner_color] %>;">
+                  <%= data[:summary_item][1][:winner_number] %>
                 </div>
-              </div>
-            </div>
-            <div class="bar_item">
-              <div class="bar_item_name" style="color: <%= data[:summary_item][1][:second_color] %>;">
-                <%= data[:summary_item][1][:second_name] %>
-              </div>
-              <div class="bar_item_number" style="color: <%= data[:summary_item][1][:second_color] %>;">
-                <%= data[:summary_item][1][:second_number] %>
-              </div>
-              <div class="bar_item_charts">
-                <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:second_percent]%>; background-color: <%= data[:summary_item][1][:second_color] %>" 
-                    title="<%= "#{data[:summary_item][1][:second_name]} - #{data[:summary_item][1][:second_percent]}" %>">
-                </div>
-                <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:second_percent])%> color: <%= data[:summary_item][1][:second_color] %>">
-                  <%= data[:summary_item][1][:second_percent] %>
+                <div class="bar_item_charts">
+                  <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:winner_percent]%>; background-color: <%= data[:summary_item][1][:winner_color] %>" 
+                      title="<%= "#{data[:summary_item][1][:winner_name]} - #{data[:summary_item][1][:winner_percent]}" %>">
+                  </div>
+                  <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:winner_percent])%> color: <%= data[:summary_item][1][:winner_color] %>">
+                    <%= data[:summary_item][1][:winner_percent] %>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>   
-
+              <div class="bar_item">
+                <div class="bar_item_name" style="color: <%= data[:summary_item][1][:second_color] %>;">
+                  <%= data[:summary_item][1][:second_name] %>
+                </div>
+                <div class="bar_item_number" style="color: <%= data[:summary_item][1][:second_color] %>;">
+                  <%= data[:summary_item][1][:second_number] %>
+                </div>
+                <div class="bar_item_charts">
+                  <div class="bar_item_chart" style="width: <%= data[:summary_item][1][:second_percent]%>; background-color: <%= data[:summary_item][1][:second_color] %>" 
+                      title="<%= "#{data[:summary_item][1][:second_name]} - #{data[:summary_item][1][:second_percent]}" %>">
+                  </div>
+                  <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:summary_item][1][:second_percent])%> color: <%= data[:summary_item][1][:second_color] %>">
+                    <%= data[:summary_item][1][:second_percent] %>
+                  </div>
+                </div>
+              </div>
+            </div>   
+          <% end %>
         </div>
       
       <% end %>

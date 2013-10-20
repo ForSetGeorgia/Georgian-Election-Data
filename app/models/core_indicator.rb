@@ -146,7 +146,7 @@ class CoreIndicator < ActiveRecord::Base
               e[:name] = event.name
               e[:event_date] = event.event_date
               e[:shape_id] = event.shape_id
-              e[:shape_type_id] = event.shape.shape_type_id
+              e[:shape_type_id] = event.shape.shape_type_id if event.shape_id.present?
               e[:data_type] = Datum::DATA_TYPE[:official]
 	            dataset = DataSet.current_dataset(event.id, e[:data_type])
 	            if dataset && !dataset.empty?
