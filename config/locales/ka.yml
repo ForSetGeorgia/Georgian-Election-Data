@@ -369,6 +369,12 @@ ka:
   root:
     index:
       live_elections_header: მიმდინარე არჩევნების შედეგები
+      live_election_date: The election is on %{date}.
+      live_election_data_expectation: The CEC provides no promises on when data will be available, but we hope to have data to show around %{time} (%{time_est} EST).
+      live_election_update_explanation: If you keep this page open, a message will appear when the first set of election data has been loaded.
+      new_data_available_message: The election data has recently been updated.
+      new_data_available_link: View the election data.
+      new_data_refresh: Refresh to view election summary.
       precincts_reported: უბნები, საიდანაც მიღებულია შედეგები
       elections_header: არჩევნების შედეგები
       voters_lists_header: უახლესი ამომრჩეველთა სიები

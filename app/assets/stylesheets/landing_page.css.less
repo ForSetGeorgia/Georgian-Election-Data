@@ -147,8 +147,48 @@
         &.live_election{
           background-color: #f6f6f6;
 
-          .election_item .bar_items > .bar_item > .bar_item_charts{
-            background-color: #fff;
+          .election_item {
+            
+            .bar_items > .bar_item > .bar_item_charts{
+              background-color: #fff;
+            }
+            
+            .new_data_available{
+              display: none;
+              padding: 10px;
+              color: #fff;
+              background-color: #e2494b; 
+              a{
+                color: #fff;
+                text-decoration: underline;
+                &:hover{
+                  text-decoration: none;
+                  background-color: transparent;
+                }
+              }
+            }
+
+            .live_election_no_data{
+              margin-bottom: 25px;
+              & > h3{
+                font-family: din_med;
+                margin-top: 0;
+                font-size: 18px;
+                padding-left: 3px;
+                font-weight: normal;
+                a{
+                  text-decoration: underline;
+                  &:hover{
+                    text-decoration: none;
+                    background-color: transparent;
+                  }
+                }
+              }
+            }
+            
+            &:last-of-type .live_election_no_data{
+              margin-bottom: 0;
+            }
           }
         }
         .election_item{

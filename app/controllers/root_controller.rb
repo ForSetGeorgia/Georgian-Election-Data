@@ -76,6 +76,8 @@ class RootController < ApplicationController
     # add live elections if exist
     @summary_live = []
     if @live_event_menu.present?
+      gon.landing_live_election_ids = []
+      gon.landing_live_dataset_ids = []
       @live_event_menu.each do |live|
         election = Event.find_by_id(live["id"])
         
@@ -83,17 +85,27 @@ class RootController < ApplicationController
           h = Hash.new
           h[:election] = election
           @summary_live << h
+
+          gon.landing_live_election = true
+          gon.landing_live_election_data_type = Datum::DATA_TYPE[:live]
+          gon.landing_live_election_ids << election.id
+
+          # add live event info
+          h[:data_available_at] = live['data_available_at']
+          h[:data_available_at_est] = live['data_available_at'].in_time_zone('Eastern Time (US & Canada)')
           
           dataset = DataSet.current_dataset(election.id, Datum::DATA_TYPE[:live])
           
-          
           if dataset.present?
+            gon.landing_live_dataset_ids << dataset.first.id
             h[:precincts_completed] = dataset.first.precincts_completed
             h[:precincts_total] = dataset.first.precincts_total
             h[:precincts_percentage] = dataset.first.precincts_percentage
 
             summary_item = Datum.get_table_data_summary(election.id, dataset.first.id, 1, 
               election.shape_id, 2, Datum::DATA_TYPE[:official]) 
+          else
+            gon.landing_live_dataset_ids << 0
           end
           
           if summary_item.present?
@@ -474,7 +486,7 @@ logger.debug "////////////// - no default found"
 		params[:change_shape_type] = nil
 
     # get the summary data
-    if !flag_redirect 
+    if !flag_redirect && !@live_event_with_no_data
       # if this is voters list and is showing the default ind id, 
       # make sure the map image will be generated
       if @is_voters_list && event.default_core_indicator_id.present? && @indicator.present? && 

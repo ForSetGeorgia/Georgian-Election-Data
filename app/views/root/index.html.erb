@@ -22,35 +22,71 @@
         <div class="election_items live_election">
         <% @summary_live.each do |data| %>
           <div class="election_item clear">
-            <div class="map_image">
-              <% if data[:parent_summary_img].present? %>
-                <% 
-                 style_parent = ''
-                 style_child = ''
-                  if data[:parent_summary_img_json].present? 
-                     orig_width = data[:parent_summary_img_json]['width'].present? ? data[:parent_summary_img_json]['width'] : '0'
-                     orig_height = data[:parent_summary_img_json]['height'].present? ? data[:parent_summary_img_json]['height'] : '0'
-                     style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
-                     style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
-                     style_img = style_width + style_height
-                   end
-                 %>
-                <%= link_to(image_tag(data[:parent_summary_img], :style => style_img, 
-                    :'data-width' => orig_width, :'data-height' => orig_height),
+
+            <% if data[:summary_item].blank? %>
+              <div class="live_election_no_data">
+                <h3>
+                  <%= link_to data[:election].name, 
                     indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,
-                      :data_type => Datum::DATA_TYPE[:live])) %>
+                      :data_type => Datum::DATA_TYPE[:live]) %>
+                </h3>
                 
-              <% end %>
-            </div>        
+		            <div class="new_data_available" data-election-id="<%= data[:election].id%>">
+			            <%= t('.new_data_available_message') %>
+			            <%= link_to t('.new_data_refresh'), current_url %>
+			            <%= link_to t('.new_data_available_link'),
+                        indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,    
+                        :data_type => Datum::DATA_TYPE[:live], :data_set_id => 'xxx') %>
+		            </div>
+
+                <div>
+                  <p>
+                    <%= t('.live_election_date', :date => l(data[:election].event_date, :format => :long)) %>
+                    <%= t('.live_election_data_expectation', 
+                      :time => l(data[:data_available_at], :format => :default_no_tz),
+                      :time_est => l(data[:data_available_at_est], :format => :default_no_tz)) %>
+                  </p>
+                  <p>
+                    <%= t('.live_election_update_explanation') %>                
+                  </p>
+                </div>            
+              </div>
+            <% else %>
+              <div class="map_image">
+                <% if data[:parent_summary_img].present? %>
+                  <% 
+                   style_parent = ''
+                   style_child = ''
+                    if data[:parent_summary_img_json].present? 
+                       orig_width = data[:parent_summary_img_json]['width'].present? ? data[:parent_summary_img_json]['width'] : '0'
+                       orig_height = data[:parent_summary_img_json]['height'].present? ? data[:parent_summary_img_json]['height'] : '0'
+                       style_width = orig_width > '0' ? "width: #{orig_width}px; " : ''
+                       style_height = orig_height > '0' ? "height: #{orig_height}px; " : ''
+                       style_img = style_width + style_height
+                     end
+                   %>
+                  <%= link_to(image_tag(data[:parent_summary_img], :style => style_img, 
+                      :'data-width' => orig_width, :'data-height' => orig_height),
+                      indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,
+                        :data_type => Datum::DATA_TYPE[:live])) %>
+                  
+                <% end %>
+              </div>        
 
 
-            <div class="bar_items">
-              <h3>
-                <%= link_to data[:election].name, 
-                  indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,
-                    :data_type => Datum::DATA_TYPE[:live]) %>
-              </h3>
-              <% if data[:summary_item].present? %>
+              <div class="bar_items">
+                <h3>
+                  <%= link_to data[:election].name, 
+                    indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,
+                      :data_type => Datum::DATA_TYPE[:live]) %>
+                </h3>
+		            <div class="new_data_available" data-election-id="<%= data[:election].id%>">
+			            <%= t('.new_data_available_message') %>
+			            <%= link_to t('.new_data_refresh'), current_url %>
+			            <%= link_to t('.new_data_available_link'),
+                        indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,    
+                        :data_type => Datum::DATA_TYPE[:live], :data_set_id => 'xxx') %>
+		            </div>
                 <div class="bar_item">
                   <div class="bar_item_name" style="color: <%= data[:summary_item][1][:winner_color] %>;">
                     <%= data[:summary_item][1][:winner_name] %>
@@ -83,25 +119,26 @@
                     </div>
                   </div>
                 </div>
-              <% end %>
-              <% if data[:precincts_completed].present? && data[:precincts_percentage].present? %>
-                <div class="bar_item precincts_reported">
-                  <div class="bar_item_name">
-                    <%= t('.precincts_reported') %>
-                  </div>
-                  <div class="bar_item_number">
-                    <%= data[:precincts_completed] %>
-                  </div>
-                  <div class="bar_item_charts">
-                    <div class="bar_item_chart" style="width: <%= data[:precincts_percentage] %>;">
+
+                <% if data[:precincts_completed].present? && data[:precincts_percentage].present? %>
+                  <div class="bar_item precincts_reported">
+                    <div class="bar_item_name">
+                      <%= t('.precincts_reported') %>
                     </div>
-                    <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:precincts_percentage])%>;">
-                      <%= data[:precincts_percentage] %>
+                    <div class="bar_item_number">
+                      <%= data[:precincts_completed] %>
+                    </div>
+                    <div class="bar_item_charts">
+                      <div class="bar_item_chart" style="width: <%= data[:precincts_percentage] %>;">
+                      </div>
+                      <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:precincts_percentage])%>;">
+                        <%= data[:precincts_percentage] %>
+                      </div>
                     </div>
                   </div>
-                </div>
-              <% end %>
-            </div>   
+                <% end %>
+              </div>   
+            <% end %>
 
           </div>
         
