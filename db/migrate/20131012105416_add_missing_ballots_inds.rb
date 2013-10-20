@@ -283,7 +283,7 @@ class AddMissingBallotsInds < ActiveRecord::Migration
   end
 
   def down
-    ind_names = ['Precincts with More Ballots Than Votes (%)', 'Precincts with More Ballots Than Votes (#)', 'More Ballots Than Votes (Average)', 'More Ballots Than Votes (#)', 'Precincts with More Votes Than Ballots (%)', 'Precincts with More Votes Than Ballots (#)', 'More Votes Than Ballots (Average)', 'More Votes Than Ballots (#)']
+    ind_names = ['Precincts with More Ballots Than Votes (%)', 'Precincts with More Ballots Than Votes (#)', 'More Ballots Than Votes (Average)', 'More Ballots Than Votes (#)', 'Average Number of More Ballots Than Votes', 'Number of More Ballots Than Votes', 'Precincts with More Votes Than Ballots (%)', 'Precincts with More Votes Than Ballots (#)', 'More Votes Than Ballots (Average)', 'More Votes Than Ballots (#)', 'Average Number of More Votes Than Ballots', 'Number of More Votes Than Ballots']
     inds = CoreIndicatorTranslation.where(:name => ind_names, :locale => 'en')
     if inds.present?
       CoreIndicator.transaction do
