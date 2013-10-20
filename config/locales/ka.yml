@@ -265,6 +265,8 @@ ka:
       total_turnout_num: "ამომრჩეველთა აქტივობა  (#)"
       total_turnout_perc: "ამომრჩეველთა აქტივობა  (%)"
       is_election: Is Election?
+      last_update: last updated on %{time}
+      precincts_reported: უბნები, საიდანაც მიღებულია შედეგები
   highcharts:
     downloadPNG: "ჩამოტვირთე PNG გამოსახულება"
     downloadJPEG: "ჩამოტვირთე JPEG გამოსახულება"
@@ -375,7 +377,6 @@ ka:
       new_data_available_message: The election data has recently been updated.
       new_data_available_link: View the election data.
       new_data_refresh: Refresh to view election summary.
-      precincts_reported: უბნები, საიდანაც მიღებულია შედეგები
       elections_header: არჩევნების შედეგები
       voters_lists_header: უახლესი ამომრჩეველთა სიები
       news_header: სიახლეები

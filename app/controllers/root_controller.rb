@@ -101,6 +101,15 @@ class RootController < ApplicationController
             h[:precincts_completed] = dataset.first.precincts_completed
             h[:precincts_total] = dataset.first.precincts_total
             h[:precincts_percentage] = dataset.first.precincts_percentage
+            h[:last_updated] = dataset.first.timestamp
+            
+            # if the election has the precincts reported indicator, get the data
+						precincts_reporting = Datum.get_precincts_reported(election.shape_id, election.id, dataset.first.id)
+						if precincts_reporting.present?
+					    h[:precincts_completed] = precincts_reporting[:completed_number]
+              h[:precincts_total] = precincts_reporting[:num_precincts]
+              h[:precincts_percentage] = precincts_reporting[:completed_percent]
+            end						
 
             summary_item = Datum.get_table_data_summary(election.id, dataset.first.id, 1, 
               election.shape_id, 2, Datum::DATA_TYPE[:official]) 
@@ -329,7 +338,7 @@ logger.debug "////////////// getting current event for event type #{params[:even
 							# if this is live data, add the precincts reported numbers
 							if params[:data_type] == Datum::DATA_TYPE[:live]
 								precincts_reporting = Datum.get_precincts_reported(params[:shape_id], params[:event_id], params[:data_set_id])
-								if precincts_reporting && !precincts_reporting.empty?
+								if precincts_reporting.present?
 									if @show_precinct_percentages
 										@map_title_precincts = I18n.t('app.common.live_event_status',
 																		:completed => precincts_reporting[:completed_number],
@@ -502,8 +511,13 @@ logger.debug "////////////// - no default found"
         # get parent shape data
         @parent_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], @parent_shape_type, 
           params[:shape_id], ind_type_id, params[:data_type])
-
+          
         if @parent_summary_data.present?
+          # if the event is live, get precincts reported
+				  if params[:data_type] == Datum::DATA_TYPE[:live]
+			      @parent_precincts_reporting = Datum.get_precincts_reported(params[:shape_id], params[:event_id], params[:data_set_id])
+          end
+
           # get path to map images if exist
           key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
                   .gsub('[data_set_id]', params[:data_set_id].to_s)
@@ -520,6 +534,11 @@ logger.debug "////////////// - no default found"
               @root_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], root_shape.shape_type_id, 
                 event.shape_id, ind_type_id, params[:data_type])
               if @root_summary_data.present?
+                # if the event is live, get precincts reported
+				        if params[:data_type] == Datum::DATA_TYPE[:live]
+			            @root_precincts_reporting = Datum.get_precincts_reported(event.shape_id, params[:event_id], params[:data_set_id])
+                end
+
                 key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
                         .gsub('[data_set_id]', params[:data_set_id].to_s)
                         .gsub('[parent_id]', event.shape_id.to_s)

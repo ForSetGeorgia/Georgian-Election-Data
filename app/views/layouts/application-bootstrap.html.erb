@@ -163,6 +163,15 @@
                             <p><%= @live_event_name %></p>
                           <% else %>
                             <% if params[:data_type] == Datum::DATA_TYPE[:live] %>
+												      <p>
+				                        <%= @event_name %>
+													      <span>
+													      (<%= t('app.common.last_update',
+																      :time => l(@live_event_timestamp, :format => :long))%>)
+													      </span>
+												      </p>
+<%
+=begin %>                           
 												      <% if @show_precinct_percentages %>
 													      <div id="live_event_name_date_header">
 				                          <%= @event_name %>
@@ -186,6 +195,8 @@
 															      </span>
 														      </p>
 												      <% end %>
+<%
+=end %>												      
 											      <% else %>
                               <p><%= @event_name %></p>
 											      <% end %>

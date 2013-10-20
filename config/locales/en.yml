@@ -265,6 +265,8 @@ en:
       total_turnout_num: "Total Voter Turnout (#)"
       total_turnout_perc: "Total Voter Turnout (%)"
       is_election: Is Election?
+      last_update: last updated on %{time}
+      precincts_reported: Precincts Reported
   highcharts:
     downloadPNG: "Download PNG image"
     downloadJPEG: "Download JPEG image"
@@ -375,7 +377,6 @@ en:
       new_data_available_message: The election data has recently been updated.
       new_data_available_link: View the election data.
       new_data_refresh: Refresh to view election summary.
-      precincts_reported: Precincts Reported
       elections_header: Election Results
       voters_lists_header: Latest Voters Lists
       news_header: News

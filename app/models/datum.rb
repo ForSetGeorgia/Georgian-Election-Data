@@ -242,7 +242,7 @@
 			num = get_precincts_reported_value(shape_id, event_id, data_set_id, Datum::PRECINCTS_REPORTED[:number])
 			perc = get_precincts_reported_value(shape_id, event_id, data_set_id, Datum::PRECINCTS_REPORTED[:percent])
 
-			if num && !num.empty? && perc && !perc.empty?
+			if num.present? && perc.present?
 				hash = Hash.new
 				hash[:num_precincts] = ActionController::Base.helpers.number_with_delimiter(num.first["num_precincts"])
 				hash[:completed_number] = num.first.formatted_value

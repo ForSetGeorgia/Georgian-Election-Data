@@ -24,20 +24,23 @@
           <div class="election_item clear">
 
             <% if data[:summary_item].blank? %>
-              <div class="live_election_no_data">
+              <div class="map_image">
+              </div>        
+
+              <div class="bar_items">
                 <h3>
                   <%= link_to data[:election].name, 
                     indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,
                       :data_type => Datum::DATA_TYPE[:live]) %>
                 </h3>
                 
-		            <div class="new_data_available" data-election-id="<%= data[:election].id%>">
-			            <%= t('.new_data_available_message') %>
-			            <%= link_to t('.new_data_refresh'), current_url %>
-			            <%= link_to t('.new_data_available_link'),
+	              <div class="new_data_available" data-election-id="<%= data[:election].id%>">
+		              <%= t('.new_data_available_message') %>
+		              <%= link_to t('.new_data_refresh'), current_url %>
+		              <%= link_to t('.new_data_available_link'),
                         indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,    
                         :data_type => Datum::DATA_TYPE[:live], :data_set_id => 'xxx') %>
-		            </div>
+	              </div>
 
                 <div>
                   <p>
@@ -79,6 +82,7 @@
                   <%= link_to data[:election].name, 
                     indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,
                       :data_type => Datum::DATA_TYPE[:live]) %>
+                  <span>(<%= t('app.common.last_update', :time => l(data[:last_updated], :format => :long)) %>)</span>
                 </h3>
 		            <div class="new_data_available" data-election-id="<%= data[:election].id%>">
 			            <%= t('.new_data_available_message') %>
@@ -123,7 +127,7 @@
                 <% if data[:precincts_completed].present? && data[:precincts_percentage].present? %>
                   <div class="bar_item precincts_reported">
                     <div class="bar_item_name">
-                      <%= t('.precincts_reported') %>
+                      <%= t('app.common.precincts_reported') %>
                     </div>
                     <div class="bar_item_number">
                       <%= data[:precincts_completed] %>

@@ -65,6 +65,26 @@
                   </div>
                 </div>
               </div>
+
+              <% if @parent_precincts_reporting.present? %>
+                <div class="bar_item precincts_reported">
+                  <div class="bar_item_name">
+                    <%= t('app.common.precincts_reported') %>
+                  </div>
+                  <div class="bar_item_number">
+                    <%= @parent_precincts_reporting[:completed_number] %>
+                  </div>
+                  <div class="bar_item_charts">
+                    <div class="bar_item_chart" style="width: <%= @parent_precincts_reporting[:completed_percent] %>;">
+                    </div>
+                    <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(@parent_precincts_reporting[:completed_percent])%>;">
+                      <%= @parent_precincts_reporting[:completed_percent] %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+
+
             </div>          
           </div>
           <div class="<%= span2 %>">
@@ -121,6 +141,27 @@
                   </div>
                 </div>
               </div>
+              
+
+              <% if @root_precincts_reporting.present? %>
+                <div class="bar_item precincts_reported">
+                  <div class="bar_item_name">
+                    <%= t('app.common.precincts_reported') %>
+                  </div>
+                  <div class="bar_item_number">
+                    <%= @root_precincts_reporting[:completed_number] %>
+                  </div>
+                  <div class="bar_item_charts">
+                    <div class="bar_item_chart" style="width: <%= @root_precincts_reporting[:completed_percent] %>;">
+                    </div>
+                    <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(@root_precincts_reporting[:completed_percent])%>;">
+                      <%= @root_precincts_reporting[:completed_percent] %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+
+              
             </div>          
             <% else %>
               <div id="summary_total_turnout">
