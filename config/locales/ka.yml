@@ -371,7 +371,7 @@ ka:
   root:
     index:
       live_elections_header: მიმდინარე არჩევნების შედეგები
-      live_election_date: "The %{name} election occurs on %{date}."
+      live_election_date: "The %{name} election will be held on %{date}."
       live_election_data_expectation: The CEC provides no promises on when precinct-level election results will be available, however we hope to have results to show around %{time} (%{time_est} EST).
       live_election_update_explanation: If you keep this page open, a message will appear when the first set of election results, and all subsequent updates, has been loaded.
       new_data_available_message: The election data has recently been updated.
@@ -405,8 +405,11 @@ ka:
       live_event_countdown_header: ინფორმაციის განახლებამდე დარჩენილია
       new_data_available_message: საარჩევნო ინფორმაცია ახლახანს განახლდა.
       new_data_available_link: ახალი ინფორმაციის ნახვა.
+      live_election_date: "The %{name} election will be held on %{date}."
+      live_election_source: 'This application relies on the election results being released on the <a href="http://cec.gov.ge/" target="_blank">CEC website</a>.'
+      live_election_data_expectation: The CEC provides no promises on when precinct-level election results will be available, however we hope to have results to show around %{time} (%{time_est} EST).
+      follow: "თქვენ შეგიძლიათ მიადევნოთ თვალყური სამომავლო განახლებებს Twitter-ზე  (<a href='https://twitter.com/search?q=%23gvote&src=hash' target='_blank'>#gvote</a> ან  <a href='https://twitter.com/jsgeorgia' target='_blank'>@jsgeorgia</a>) ან Facebook-ზე შემდეგ მისამართზე <a href='http://www.facebook.com/JumpStartGeorgia' target='_blank'>JumpStartGeorgia</a>."
       delay: "სამწუხაროდ, გაცნობებთ რომ არჩევნების შედეგების გამოცხადება გაჭიანურდა. ჩვენ მოგაწოდებთ შედეგებს მათი განთავსებისთანავე, თუმცა ამ დროისთვის არ არსებობს დაზუსტებული ინფორმაცია. ბოდიშს ვიხდით შეფერხებისთვის."
-      follow: "თქვენ შეგიძლიათ მიადევნოთ თვალყური სამომავლო განახლებებს Twitter-ზე  (#gvote ან  @jsgeorgia) ან Facebook-ზე შემდეგ მისამართზე http://www.facebook.com/JumpStartGeorgia."
     summary_ind_type:
       summary_data_above_map:
         header: "შედეგები - %{shape}"
