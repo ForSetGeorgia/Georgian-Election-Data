@@ -72,7 +72,7 @@
 		<div id="new_data_available" style="display:none;">
 			<%= t('.new_data_available_message') %>
 			<%= link_to t('.new_data_available_link'),
-				params.merge(:data_set_id => @most_recent_dataset ? @most_recent_dataset.id : 'xxx') %>
+				current_url %>
 		</div>
 	<% end %>
 

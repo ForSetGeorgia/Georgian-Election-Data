@@ -993,8 +993,6 @@ console.log('creating img');
 					// if the response value is > current data set id,
 					// show msg that new data is available
 					if (response !== null && response > parseInt(gon.data_set_id)){
-						// update the url
-						$("#new_data_available a:first").attr('href',update_query_parameter($("#new_data_available a:first").attr('href'), "data_set_id", "data_set", response));
 						// show the message
 						$('#new_data_available').slideDown(500);
 					} else {

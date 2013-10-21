@@ -32,7 +32,6 @@ $(document).ready(function() {
 		        // show msg that new data is available
 		        if (response !== null && response > parseInt(gon.landing_live_dataset_ids[i])){
 			        // update the url
-			        $(text).find("a:last").attr('href',update_query_parameter($(text).find("a:last").attr('href'), "data_set_id", "data_set", response));
 			        // show the message
 			        $(text).slideDown(500);
 		        } else {

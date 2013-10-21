@@ -39,7 +39,7 @@
 		              <%= link_to t('.new_data_refresh'), current_url %>
 		              <%= link_to t('.new_data_available_link'),
                         indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,    
-                        :data_type => Datum::DATA_TYPE[:live], :data_set_id => 'xxx') %>
+                        :data_type => Datum::DATA_TYPE[:live]) %>
 	              </div>
 
                 <div>
@@ -89,7 +89,7 @@
 			            <%= link_to t('.new_data_refresh'), current_url %>
 			            <%= link_to t('.new_data_available_link'),
                         indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,    
-                        :data_type => Datum::DATA_TYPE[:live], :data_set_id => 'xxx') %>
+                        :data_type => Datum::DATA_TYPE[:live]) %>
 		            </div>
                 <div class="bar_item">
                   <div class="bar_item_name" style="color: <%= data[:summary_item][1][:winner_color] %>;">
