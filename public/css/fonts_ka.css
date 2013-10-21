@@ -15,6 +15,9 @@
   margin-bottom: 0 !important;
   line-height: 1 !important;
 }
+#body_landing_page #landing_page #news h2 > div > div, #body_landing_page #landing_page #links h2 > div > div{
+  letter-spacing: 0 !important;
+}
 
 #body_landing_page #landing_page h3{
   font-size: 14px !important;
