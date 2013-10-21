@@ -47,11 +47,11 @@
 		         <div class="span12">
                 <h1>Down for Maintenance</h1>
 								<p>&nbsp;</p>
-								<h2>18:15 - 9 October 2012</h2>
+								<h2>13:00 - 21 October 2013</h2>
 								<p>
 									The site is currently down for routine maintenance.
 									We expect the site to be operational again at
-									18:30 - 9 October 2012.
+									13:30 - 21 October 2013.
 								</p>
 		          </div>
 		      </div><!--/row-->
@@ -60,25 +60,25 @@
       <div class="push"><!--//--></div>
     </div><!--/wrapper-->
 
+
     <footer class="container-fluid">
 		  <div class="row-fluid">
-				<div class="ndi-logo span2">
-					<a href="http://www.ndi.org" target="_blank"><img alt="Ndi-logo" src="/assets/ndi-logo.png" /></a>
+				<div class="ndi-logo span4">
+					<%= link_to(image_tag("election_portal.jpg"), "http://electionportal.ge/", :target => "_blank") %>
+					<%= link_to(image_tag("ndi-logo.png", :style => 'height: 37px;'), "http://www.ndi.org", :target => "_blank") %>
 				</div>
-				<div class="footer-nav span8">
+				<div class="footer-nav span4">
+	        <a id="footer_collapsed_menu" class="btn btn-navbar" data-target=".footer-nav-collapse" data-toggle="collapse">
+						<%= image_tag("footer_collapsed_menu.png") %>
+					</a>
+	        <div class="footer-nav-collapse nav-collapse">
 					&nbsp;
+					</div>
 				</div>
-       <div class="js-logo span2">
-					<ul>
-						<li id="left">
-							Built by:
-						</li>
-						<li id="right">
-							<a href="http://www.jumpstart.ge" target="_blank"><img alt="Jumpstart-logo" src="/assets/jumpstart-logo.png" /></a>
-						</li>
-					</ul>
-				</div>
+       <div class="js-logo span4">
+		    <%= link_to(image_tag("jumpstart-logo.png"), "http://www.jumpstart.ge", :target => "_blank", :title => t('.js_slogan')) %>
 	    </div><!--/row-->
     </footer>
+
   </body>
 </html>
