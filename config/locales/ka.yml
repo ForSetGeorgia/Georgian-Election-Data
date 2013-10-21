@@ -265,7 +265,7 @@ ka:
       total_turnout_num: "ამომრჩეველთა აქტივობა  (#)"
       total_turnout_perc: "ამომრჩეველთა აქტივობა  (%)"
       is_election: Is Election?
-      last_update: last updated on %{time}
+      last_update: ბოლოს განახლებულია %{time}
       precincts_reported: უბნები, საიდანაც მიღებულია შედეგები
   highcharts:
     downloadPNG: "ჩამოტვირთე PNG გამოსახულება"
@@ -371,13 +371,13 @@ ka:
   root:
     index:
       live_elections_header: მიმდინარე არჩევნების შედეგები
-      live_election_date: "The %{name} election will be held on %{date}."
-      live_election_data_expectation: The CEC provides no promises on when precinct-level election results will be available, however we hope to have results to show around %{time} (%{time_est} EST).
-      live_election_update_explanation: If you keep this page open, a message will appear when the first set of election results, and all subsequent updates, has been loaded.
-      new_data_available_message: The election data has recently been updated.
-      new_data_refresh: Reload this page to view the updates
-      or: or
-      new_data_available_link: view the detailed election data.
+      live_election_date: "%{name} არჩევნები გაიმართება %{date}."
+      live_election_data_expectation: ცესკო არ იძლევა დაპირებებს უბნის დონეზე არჩევნების შედეგების განთავსების თარიღთან დაკავშირებით, თუმცა ვიმედოვნებთ, რომ შედეგები განთავსდება დაახლოებით %{time} (%{time_est} EST).
+      live_election_update_explanation: თუ თქვენ გაქვთ ეს გვერდი ღია,  მესიჯი გამოჩნდება, რომელიც გამცნობთ არჩევნების შედეგების პირველი ნაკრებისა და ყველა განახლების ჩატვირთვის შესახებ.
+      new_data_available_message: არჩევნების მონაცემები ცოტა ხნის წინ განახლდა.
+      new_data_refresh: ხელახლა ჩატვირთეთ ეს გვერდი განახლებების სანახავად
+      or: ან
+      new_data_available_link: იხილეთ არჩევნების დეტალური მონაცემები.
       elections_header: არჩევნების შედეგები
       voters_lists_header: უახლესი ამომრჩეველთა სიები
       news_header: სიახლეები
@@ -405,9 +405,9 @@ ka:
       live_event_countdown_header: ინფორმაციის განახლებამდე დარჩენილია
       new_data_available_message: საარჩევნო ინფორმაცია ახლახანს განახლდა.
       new_data_available_link: ახალი ინფორმაციის ნახვა.
-      live_election_date: "The %{name} election will be held on %{date}."
-      live_election_source: 'This application relies on the election results being released on the <a href="http://cec.gov.ge/" target="_blank">CEC website</a>.'
-      live_election_data_expectation: The CEC provides no promises on when precinct-level election results will be available, however we hope to have results to show around %{time} (%{time_est} EST).
+      live_election_date: "%{name} არჩევნები გაიმართება %{date}."
+      live_election_source: 'ეს აპლიკაცია ეყრდნობა <a href="http://cec.gov.ge/" target="_blank">ცესკოს ვებ-საიტზე</a> გამოქვეყნებულ არჩევნების შედეგებს.'
+      live_election_data_expectation: ცესკო არ იძლევა დაპირებებს უბნის დონეზე არჩევნების შედეგების განთავსების თარიღთან დაკავშირებით, თუმცა ვიმედოვნებთ, რომ შედეგები განთავსდება დაახლოებით %{time} (%{time_est} EST).
       follow: "თქვენ შეგიძლიათ მიადევნოთ თვალყური სამომავლო განახლებებს Twitter-ზე  (<a href='https://twitter.com/search?q=%23gvote&src=hash' target='_blank'>#gvote</a> ან  <a href='https://twitter.com/jsgeorgia' target='_blank'>@jsgeorgia</a>) ან Facebook-ზე შემდეგ მისამართზე <a href='http://www.facebook.com/JumpStartGeorgia' target='_blank'>JumpStartGeorgia</a>."
       delay: "სამწუხაროდ, გაცნობებთ რომ არჩევნების შედეგების გამოცხადება გაჭიანურდა. ჩვენ მოგაწოდებთ შედეგებს მათი განთავსებისთანავე, თუმცა ამ დროისთვის არ არსებობს დაზუსტებული ინფორმაცია. ბოდიშს ვიხდით შეფერხებისთვის."
     summary_ind_type:
