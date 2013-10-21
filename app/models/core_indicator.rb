@@ -108,7 +108,25 @@ class CoreIndicator < ActiveRecord::Base
 #TODO
     # hard code the shape type ids for now
     shape_type_ids = [1,3,7]
+    
+=begin    
+    # get ids of indicators that have relationships
+    ids = CoreIndicator.select('distinct core_indicators.id, core_indicators.ancestry').joins(:event_indicator_relationships, :indicators).where("indicators.shape_type_id in (?)", shape_type_ids)
+    
+    # merge the id and ancestry ids into one array
+    core_ids = []
+    if ids.present?
+      core_ids = ids.map{|x| x.id}
+      core_ids << ids.select{|x| x.ancestry.present?}.map{|x| x.root_id}.uniq
+      core_ids.flatten!
+    end
+        
+    where("core_indicators.id in (?)", core_ids)
+      .order_by_type_name(true)
+=end      
+
     joins(:event_indicator_relationships, :indicators).where("indicators.shape_type_id in (?)", shape_type_ids).order_by_type_name(true)
+
   end
 
   # get all core indicators that have a relationship

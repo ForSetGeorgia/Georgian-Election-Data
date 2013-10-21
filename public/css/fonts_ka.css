@@ -2,6 +2,29 @@
   font-family: din_medium;
 }
 
+#body_landing_page #landing_page h2{
+  font-size: 17px !important;
+  font-family: dejavu_regular !important;
+  line-height: 1.5 !important;
+  margin-bottom: -6px !important;
+}
+
+#body_landing_page #landing_page #news h2, #body_landing_page #landing_page #links h2{
+  font-size: 17px !important;
+  font-family: dejavu_regular !important;
+  margin-bottom: 0 !important;
+  line-height: 1 !important;
+}
+
+#body_landing_page #landing_page h3{
+  font-size: 14px !important;
+  font-family: dejavu_regular !important;
+}
+
+#body_landing_page #landing_page h3 span{
+  font-size: 12px !important;
+}
+
 #body_landing_page #landing_page .show_all_circle a > .grey .show_all{
   font-size: 11px;
 }
