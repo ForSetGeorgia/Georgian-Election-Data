@@ -78,11 +78,13 @@ logger.debug "////////////////////////// BROWSER NOT SUPPORTED"
 
 	def set_data_type
 		# get the data type
-		params[:data_type] = Datum::DATA_TYPE[:official] if params[:data_type].nil? || Datum::DATA_TYPE.values.index(params[:data_type]) == nil
+		if params[:contorller] == "root" && params[:action] == 'map'
+		  params[:data_type] = Datum::DATA_TYPE[:official] if params[:data_type].nil? || Datum::DATA_TYPE.values.index(params[:data_type]) == nil
 
-		if params[:data_type] == Datum::DATA_TYPE[:live]
-			@show_precinct_percentages = false
-		end
+		  if params[:data_type] == Datum::DATA_TYPE[:live]
+			  @show_precinct_percentages = false
+		  end
+    end
 	end
 
   def set_event_types
