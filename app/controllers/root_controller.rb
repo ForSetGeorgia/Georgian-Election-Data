@@ -189,6 +189,7 @@ logger.debug "////////////// getting current event for event type #{params[:even
 			  logger.debug "+++++++++ this is live event but no data has been loaded yet"
         @live_event_with_no_data = true
         @live_event_name = live_event.first["name"]
+        @live_event_date = live_event.first["date"]
         @live_event_data_available = live_event.first["data_available_at"]
         @live_event_data_available_est = live_event.first["data_available_at"].in_time_zone('Eastern Time (US & Canada)')
         @page_title = "#{@live_event_name} - #{l(@live_event_data_available, :format => :default_no_tz)}".html_safe

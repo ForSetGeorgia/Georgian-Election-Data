@@ -5,11 +5,17 @@
     <h2>
       <%= @live_event_name %>
     </h2>
+    <p>
+      <%= t('.live_election_date', :name => @live_event_name, :date => l(@live_event_date, :format => :long)) %>
+    </p>
+    <p>
+      <%= t('.live_election_source').html_safe %> 
+      <%= t('.live_election_data_expectation', 
+        :time => l(@live_event_data_available, :format => :default_no_tz),
+        :time_est => l(@live_event_data_available_est, :format => :default_no_tz)) %>
+    </p>
 		<p>
-			<%= t('.delay') %>
-		</p>
-		<p>
-			<%= t('.follow') %>
+			<%= t('.follow').html_safe %>
 		</p>
 		<% if false %>
 	  <p>

@@ -371,12 +371,13 @@ en:
   root:
     index:
       live_elections_header: Live Election Results
-      live_election_date: The election is on %{date}.
-      live_election_data_expectation: The CEC provides no promises on when data will be available, but we hope to have data to show around %{time} (%{time_est} EST).
-      live_election_update_explanation: If you keep this page open, a message will appear when the first set of election data has been loaded.
+      live_election_date: "The %{name} election occurs on %{date}."
+      live_election_data_expectation: The CEC provides no promises on when precinct-level election results will be available, however we hope to have results to show around %{time} (%{time_est} EST).
+      live_election_update_explanation: If you keep this page open, a message will appear when the first set of election results, and all subsequent updates, has been loaded.
       new_data_available_message: The election data has recently been updated.
-      new_data_available_link: View the election data.
-      new_data_refresh: Refresh to view election summary.
+      new_data_refresh: Reload this page to view the updates
+      or: or
+      new_data_available_link: view the detailed election data.
       elections_header: Election Results
       voters_lists_header: Latest Voters Lists
       news_header: News
@@ -404,8 +405,11 @@ en:
       live_event_countdown_header: Time to Live Updates
       new_data_available_message: The election data has recently been updated.
       new_data_available_link: View the new data.
+      live_election_date: "The %{name} election occurs on %{date}."
+      live_election_source: 'This application relies on the election results being released on the <a href="http://cec.gov.ge/" target="_blank">CEC website</a>.'
+      live_election_data_expectation: The CEC provides no promises on when precinct-level election results will be available, however we hope to have results to show around %{time} (%{time_est} EST).
+      follow: "You can follow future updates on Twitter at <a href='https://twitter.com/search?q=%23gvote&src=hash' target='_blank'>#gvote</a> or <a href='https://twitter.com/jsgeorgia' target='_blank'>@jsgeorgia</a> or on Facebook at <a href='http://www.facebook.com/JumpStartGeorgia' target='_blank'>JumpStartGeorgia</a>."
       delay: "We regret to inform you that the release of the official election results has been delayed. We will post the results as soon as they are available, but nothing is certain right now.	We apologize for the delay."
-      follow: "You can follow future updates on Twitter at #gvote or @jsgeorgia or on Facebook at http://www.facebook.com/JumpStartGeorgia."
     summary_ind_type:
       summary_data_above_map:
         header: "%{shape} Results"

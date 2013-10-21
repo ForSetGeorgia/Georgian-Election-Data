@@ -163,6 +163,7 @@ logger.debug "---********----- event type cache"
 						:data_type => Datum::DATA_TYPE[:live],
 						:only_path => false))
 					e["name"] = event.name
+					e["date"] = event.event_date
 					e["description"] = event.description
           e["data_available_at"] = nil
 					e["data_available_at"] = event.menu_live_events.first.data_available_at if event.menu_live_events && !event.menu_live_events.empty?

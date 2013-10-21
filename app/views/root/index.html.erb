@@ -37,6 +37,7 @@
 	              <div class="new_data_available" data-election-id="<%= data[:election].id%>">
 		              <%= t('.new_data_available_message') %>
 		              <%= link_to t('.new_data_refresh'), current_url %>
+		              <%= t('.or') %>
 		              <%= link_to t('.new_data_available_link'),
                         indicator_map_path(:event_id => data[:election].id, :event_type_id => data[:election].event_type_id,    
                         :data_type => Datum::DATA_TYPE[:live]) %>
@@ -44,7 +45,7 @@
 
                 <div>
                   <p>
-                    <%= t('.live_election_date', :date => l(data[:election].event_date, :format => :long)) %>
+                    <%= t('.live_election_date', :name => data[:election].name, :date => l(data[:election].event_date, :format => :long)) %>
                     <%= t('.live_election_data_expectation', 
                       :time => l(data[:data_available_at], :format => :default_no_tz),
                       :time_est => l(data[:data_available_at_est], :format => :default_no_tz)) %>
@@ -376,7 +377,7 @@
           </div>
         </h2>
         <div class="arrow_right_side">
-          <%= image_tag('arrow_links.jpg') %>
+          <%= image_tag('arrow_links.png') %>
         </div>
 
         <div>
