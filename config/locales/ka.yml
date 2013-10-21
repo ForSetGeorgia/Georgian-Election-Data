@@ -371,9 +371,9 @@ ka:
   root:
     index:
       live_elections_header: მიმდინარე არჩევნების შედეგები
-      live_election_date: "%{name} არჩევნები გაიმართება %{date}."
+      live_election_date: "%{name} გაიმართება %{date}."
       live_election_data_expectation: ცესკო არ იძლევა დაპირებებს უბნის დონეზე არჩევნების შედეგების განთავსების თარიღთან დაკავშირებით, თუმცა ვიმედოვნებთ, რომ შედეგები განთავსდება დაახლოებით %{time} (%{time_est} EST).
-      live_election_update_explanation: თუ თქვენ გაქვთ ეს გვერდი ღია,  მესიჯი გამოჩნდება, რომელიც გამცნობთ არჩევნების შედეგების პირველი ნაკრებისა და ყველა განახლების ჩატვირთვის შესახებ.
+      live_election_update_explanation: თუ თქვენ გაქვთ ეს გვერდი ღია,  მესიჯი გამოჩნდება, რომელიც გამცნობთ არჩევნების შედეგების და ყველა განახლების ჩატვირთვის შესახებ.
       new_data_available_message: არჩევნების მონაცემები ცოტა ხნის წინ განახლდა.
       new_data_refresh: ხელახლა ჩატვირთეთ ეს გვერდი განახლებების სანახავად
       or: ან
@@ -405,10 +405,10 @@ ka:
       live_event_countdown_header: ინფორმაციის განახლებამდე დარჩენილია
       new_data_available_message: საარჩევნო ინფორმაცია ახლახანს განახლდა.
       new_data_available_link: ახალი ინფორმაციის ნახვა.
-      live_election_date: "%{name} არჩევნები გაიმართება %{date}."
+      live_election_date: "%{name} გაიმართება %{date}."
       live_election_source: 'ეს აპლიკაცია ეყრდნობა <a href="http://cec.gov.ge/" target="_blank">ცესკოს ვებ-საიტზე</a> გამოქვეყნებულ არჩევნების შედეგებს.'
       live_election_data_expectation: ცესკო არ იძლევა დაპირებებს უბნის დონეზე არჩევნების შედეგების განთავსების თარიღთან დაკავშირებით, თუმცა ვიმედოვნებთ, რომ შედეგები განთავსდება დაახლოებით %{time} (%{time_est} EST).
-      follow: "თქვენ შეგიძლიათ მიადევნოთ თვალყური სამომავლო განახლებებს Twitter-ზე  (<a href='https://twitter.com/search?q=%23gvote&src=hash' target='_blank'>#gvote</a> ან  <a href='https://twitter.com/jsgeorgia' target='_blank'>@jsgeorgia</a>) ან Facebook-ზე შემდეგ მისამართზე <a href='http://www.facebook.com/JumpStartGeorgia' target='_blank'>JumpStartGeorgia</a>."
+      follow: "განახლებებს თვალყური შეგიძლიათ მიადევნოთ Twitter-ზე  (<a href='https://twitter.com/search?q=%23gvote&src=hash' target='_blank'>#gvote</a> ან  <a href='https://twitter.com/jsgeorgia' target='_blank'>@jsgeorgia</a>) ან Facebook-ზე შემდეგ მისამართზე <a href='http://www.facebook.com/JumpStartGeorgia' target='_blank'>JumpStartGeorgia</a>."
       delay: "სამწუხაროდ, გაცნობებთ რომ არჩევნების შედეგების გამოცხადება გაჭიანურდა. ჩვენ მოგაწოდებთ შედეგებს მათი განთავსებისთანავე, თუმცა ამ დროისთვის არ არსებობს დაზუსტებული ინფორმაცია. ბოდიშს ვიხდით შეფერხებისთვის."
     summary_ind_type:
       summary_data_above_map:
