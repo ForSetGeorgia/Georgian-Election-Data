@@ -302,6 +302,7 @@ en:
       data_archives: Download Data
       indicators: Indicators
       districts: Districts
+      tutorial: Tutorial
       feed-title: Georgia Election Data News Feed
     ajax_data_table:
       links: Click on a data point to view it on the map.
@@ -420,6 +421,8 @@ en:
       indicator_header: Indicators
       view_indicator: view indicator
   other:
+    tutorial:
+      title: Tutorial
     news:
       title_feed: Georgia Election Data News
       title: News

@@ -129,6 +129,7 @@ ElectionMap::Application.routes.draw do
 		match '/data_table/event_type/:event_type_id/event/:event_id/shape/:shape_id/shape_type/:shape_type_id/child_shape_type/:child_shape_type_id/indicator/:indicator_id/view_type/:view_type/summary_view_type/:summary_view_type_name(/custom_view/:custom_view)', :to => 'root#data_table', :as => :data_table, :via => :get
 
     # other
+    match '/tutorial', :to => 'other#tutorial', :as => :tutorial, :via => :get
     match '/data_archives', :to => 'other#data_archives', :as => :data_archives, :via => :get
     match '/data_archives/:data_archive_folder', :to => 'other#data_archive', :as => :data_archive, :via => :get
     match '/news', :to => 'other#news', :as => :news, :via => :get

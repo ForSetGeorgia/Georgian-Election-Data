@@ -302,6 +302,7 @@ ka:
       data_archives: მონაცემების ჩამოტვირთვა
       indicators: მაჩვენებლები
       districts: ოლქები
+      tutorial: ინსტრუქცია
       feed-title: საქართველოს საარჩევნო მონაცემთა სიახლეები
     ajax_data_table:
       links: რუკის სანახავად დააჭირეთ მონაცემების ღილაკს.
@@ -420,6 +421,8 @@ ka:
       indicator_header: ინდიკატორები
       view_indicator: მაჩვენებლის ნახვა
   other:
+    tutorial:
+      title: ინსტრუქცია
     news:
       title_feed: საქართველოს საარჩევნო მონაცემთა სიახლეები
       title: სიახლეები
