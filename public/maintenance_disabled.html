@@ -64,21 +64,37 @@
     <footer class="container-fluid">
 		  <div class="row-fluid">
 				<div class="ndi-logo span4">
-					<%= link_to(image_tag("election_portal.jpg"), "http://electionportal.ge/", :target => "_blank") %>
-					<%= link_to(image_tag("ndi-logo.png", :style => 'height: 37px;'), "http://www.ndi.org", :target => "_blank") %>
+          <a href="http://electionportal.ge/" target="_blank"><img alt="Election_portal" src="/assets/election_portal.jpg" /></a>
+					<a href="http://www.ndi.org" target="_blank"><img alt="Ndi-logo" src="/assets/ndi-logo.png" style="height: 37px;" /></a>
 				</div>
 				<div class="footer-nav span4">
-	        <a id="footer_collapsed_menu" class="btn btn-navbar" data-target=".footer-nav-collapse" data-toggle="collapse">
-						<%= image_tag("footer_collapsed_menu.png") %>
-					</a>
 	        <div class="footer-nav-collapse nav-collapse">
 					&nbsp;
 					</div>
 				</div>
        <div class="js-logo span4">
-		    <%= link_to(image_tag("jumpstart-logo.png"), "http://www.jumpstart.ge", :target => "_blank", :title => t('.js_slogan')) %>
+		    <a href="http://www.jumpstart.ge" target="_blank"><img alt="Jumpstart-logo" src="/assets/jumpstart-logo.png" /></a>
 	    </div><!--/row-->
     </footer>
 
+    <footer class="container-fluid">
+		  <div class="row-fluid">
+				<div class="ndi-logo span2">
+					<a href="http://www.ndi.org" target="_blank"><img alt="Ndi-logo" src="/assets/ndi-logo.png" /></a>
+				</div>
+				<div class="footer-nav span8">
+					&nbsp;
+				</div>
+       <div class="js-logo span4">
+					<ul>
+						<li id="left">
+						</li>
+						<li id="right">
+							<a href="http://www.jumpstart.ge" target="_blank"><img alt="Jumpstart-logo" src="/assets/jumpstart-logo.png" /></a>
+						</li>
+					</ul>
+				</div>
+	    </div><!--/row-->
+    </footer>
   </body>
 </html>
