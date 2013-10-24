@@ -64,12 +64,14 @@ Rails.logger.debug "************* missing params"
         return_msg = I18n.t('app.msgs.missing_parameters')
       end
   
-Rails.logger.debug "************* sending response to #{params[:respond_to_url]}"    
+#Rails.logger.debug "************* sending response to #{params[:respond_to_url]}"    
       # send notification back of result
-      uri = URI(params[:respond_to_url])
-      res = Net::HTTP.post_form(uri, {'success' => success, 'msg' => return_msg, 'file_url' => params[:file_url]})
+#      uri = URI(params[:respond_to_url])
+#      res = Net::HTTP.post_form(uri, {'success' => success, 'msg' => return_msg, 'file_url' => params[:file_url]})
     end
-    render text: "OK"
+    respond_to do |format|
+      format.json { render json: {'success' => success, 'msg' => return_msg, 'file_url' => params[:file_url]}.to_json}
+    end
   end
 
 end
