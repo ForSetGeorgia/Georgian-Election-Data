@@ -142,6 +142,10 @@ ElectionMap::Application.routes.draw do
     match '/districts', :to => 'other#districts', :as => :district_profiles, :via => :get
     match '/districts/:id', :to => 'other#district', :as => :district_profile, :via => :get
 
+    #migration
+    match '/migration/load_data/from_protocols_app', :to => 'migration#from_protocols_app', :as => :migration_load_data_from_protocols_app, :via => :post
+    
+
     # json routes
 		# core indicator events
 		match '/json/core_indicator_events', :to => 'json#core_indicator_events', :as => :json_core_indicator_events, :via => :get, :defaults => {:format => 'json'}
