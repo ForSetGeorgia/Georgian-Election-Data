@@ -143,7 +143,7 @@ ElectionMap::Application.routes.draw do
     match '/districts/:id', :to => 'other#district', :as => :district_profile, :via => :get
 
     #migration
-    match '/migration/load_data/from_protocols_app', :to => 'migration#from_protocols_app', :as => :migration_load_data_from_protocols_app, :via => :get, :defaults => {:format => 'json'}
+    match '/migration/load_data/from_protocols_app', :to => 'migration#from_protocols_app', :as => :migration_load_data_from_protocols_app, :via => [:get, :post], :defaults => {:format => 'json'}
     
 
     # json routes
