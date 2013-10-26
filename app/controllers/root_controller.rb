@@ -600,7 +600,11 @@ logger.debug "//////////////////////////////////////////////////////// done with
     if flag_redirect
 			# either data could not be found or param is missing and page could not be loaded
 			logger.debug "+++++++++ either data could not be found or param is missing and page could not be loaded, redirecting to home page"
-			redirect_to map_path
+			if (params[:event_id].present? && params[:event_type_id].present?)
+  			redirect_to indicator_map_path(:event_id => params[:event_id], :event_type_id => params[:event_type_id])
+			else
+			  redirect_to root_path
+			end
     else
       respond_to do |format|
         format.html 
