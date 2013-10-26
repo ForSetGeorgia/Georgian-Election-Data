@@ -10,7 +10,7 @@ class Party2013Desc < ActiveRecord::Migration
         trans = CoreIndicatorTranslation.where(:core_indicator_id => id.first.core_indicator_id, :locale => 'en')
         if trans.present?
           trans.first.summary = 'Founded in 1990
-          
+
 Political views: Center right
 
 The chairman of the party is Akaki Asatiani'
@@ -21,7 +21,7 @@ The chairman of the party is Akaki Asatiani'
         trans = CoreIndicatorTranslation.where(:core_indicator_id => id.first.core_indicator_id, :locale => 'ka')
         if trans.present?
           trans.first.summary = 'დაარსდა 1990 წელს
-          
+
 მიმართულება: მემარჯვენე-ცენტრისტული
 
 პარტიის თავმჯდომარეა აკაკი ასათიანი'
@@ -67,7 +67,7 @@ The chairwoman of the party Nino Burjanadze'
         trans = CoreIndicatorTranslation.where(:core_indicator_id => id.first.core_indicator_id, :locale => 'en')
         if trans.present?
           trans.first.summary = 'The successor of political party "We Ourselves"
-          
+
 Founded in 2006
 
 Political views: Center right
