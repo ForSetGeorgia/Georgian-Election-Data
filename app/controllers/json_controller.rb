@@ -375,6 +375,7 @@ class JsonController < ApplicationController
     logger.debug "@ time to render children_data json: #{Time.now-start} seconds"
   end
 
+
   # GET /json/custom_children_data/:parent_id/shape_type/:shape_type_id/event/:event_id/indicator_id/:indicator_id
   def custom_children_data
     # if the ind id is not a number, do not continue

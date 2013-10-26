@@ -211,7 +211,7 @@ logger.debug "////////////// getting current event for event type #{params[:even
       @event_custom_shape_nav = event.custom_shape_navigations
 
   		# get data set info
-			dataset = DataSet.find(params[:data_set_id]) if params[:data_set_id].present?
+			dataset = DataSet.find_by_id(params[:data_set_id]) if params[:data_set_id].present?
 
 			# get the most recent dataset for this event
       most_recent_dataset = DataSet.current_dataset(event.id, params[:data_type])
@@ -452,10 +452,10 @@ logger.debug "////////////// - no default found"
   							else
   logger.debug "////////////// - getting indicator using id passed in"
   								# get the selected indicator
-  								@indicator = Indicator.find(params[:indicator_id])
+  								@indicator = Indicator.find_by_id(params[:indicator_id])
   logger.debug "////////////// -- indicator = #{@indicator.inspect}"
   							end
-  							if @indicator
+  							if @indicator.present?
     							# save the indicator type id so the indicator menu works
     							params[:indicator_type_id] = @indicator.core_indicator.indicator_type_id if params[:indicator_type_id].nil?
 							  elsif !no_match_indicator_using_summary

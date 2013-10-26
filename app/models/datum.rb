@@ -967,29 +967,29 @@ protected
 Rails.logger.debug("************* shape type is precinct = '#{shape_type.is_precinct}'")
 
   	  # get the event
-  	  event = Event.find(event_id)
+  	  event = Event.find_by_id(event_id)
 
   	  # get indicator type
-  	  indicator_type = IndicatorType.find(indicator_type_id)
-
-      # add info about this data
-  	  # add the indicator info
-  	  results["indicator"] = Hash.new
-      results["indicator"]["name"] = nil
-		  results["indicator"]["name_abbrv"] = indicator_type.nil? ? nil : indicator_type.summary_name
-		  results["indicator"]["description"] = indicator_type.nil? ? nil : indicator_type.summary_name
-		  results["indicator"]["number_format"] = nil
-      results["indicator"]["scales"] = [{:name => IndicatorScale.no_data_text, :color => IndicatorScale::NO_DATA_COLOR }]
-		  results["indicator"]["scale_colors"] = [IndicatorScale::NO_DATA_COLOR]
-		  results["indicator"]["switcher_indicator_id"] = nil
-
-      # indicate this is summary data
-      results["view_type"] = "summary"
-
-      # add the data
-      results["shape_data"] = []
+  	  indicator_type = IndicatorType.find_by_id(indicator_type_id)
 
       if shapes.present? && event.present? && shape_type.present?
+        # add info about this data
+    	  # add the indicator info
+    	  results["indicator"] = Hash.new
+        results["indicator"]["name"] = nil
+		    results["indicator"]["name_abbrv"] = indicator_type.nil? ? nil : indicator_type.summary_name
+		    results["indicator"]["description"] = indicator_type.nil? ? nil : indicator_type.summary_name
+		    results["indicator"]["number_format"] = nil
+        results["indicator"]["scales"] = [{:name => IndicatorScale.no_data_text, :color => IndicatorScale::NO_DATA_COLOR }]
+		    results["indicator"]["scale_colors"] = [IndicatorScale::NO_DATA_COLOR]
+		    results["indicator"]["switcher_indicator_id"] = nil
+
+        # indicate this is summary data
+        results["view_type"] = "summary"
+
+        # add the data
+        results["shape_data"] = []
+
         shapes.each do |shape|
       	  # get all of the related json data for this indicator type
       	  data = build_related_indicator_json(shape.id, shape_type_id, shape_type.is_precinct, event_id, data_set_id, data_type,
@@ -1030,42 +1030,42 @@ Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
 		  shape_type = ShapeType.find_by_id(shape_type_id)
 
 			# get the indicator
-			indicator = Indicator.find(indicator_id)
-
-      # add info about this data
-  	  # add the indicator info
-  	  results["indicator"] = Hash.new
-      results["indicator"]["name"] = indicator.name
-			results["indicator"]["name_abbrv"] = indicator.name_abbrv_w_parent
-			results["indicator"]["description"] = indicator.description_w_parent
-			results["indicator"]["number_format"] = indicator.number_format.nil? ? "" : indicator.number_format
-      results["indicator"]["scales"] = IndicatorScale.for_indicator(indicator.id)
-			results["indicator"]["scale_colors"] = IndicatorScale.get_colors(indicator.id)
-			results["indicator"]["switcher_indicator_id"] = nil
-
-			# if this event has a custom view at this level, get indicator id for other shape live
-			new_indicator = nil
-			custom_view = indicator.event.event_custom_views.where(:shape_type_id => shape_type_id)
-			if custom_view.present?
-				new_indicator = Indicator.find_new_id(indicator_id, custom_view.first.descendant_shape_type_id)
-			else
-				custom_view = indicator.event.event_custom_views.where(:descendant_shape_type_id => shape_type_id)
-  			if custom_view.present?
-					new_indicator = Indicator.find_new_id(indicator_id, custom_view.first.shape_type.child_ids.first)
-				end
-			end
-			if new_indicator
-				# is custom view, update switcher indicator id
-				results["indicator"]["switcher_indicator_id"] = new_indicator.id
-			end
-
-      # indicate this is not summary data
-      results["view_type"] = "normal"
-
-      # add the data
-      results["shape_data"] = []
+			indicator = Indicator.find_by_id(indicator_id)
 
       if shapes.present? && indicator.present? && shape_type.present?
+        # add info about this data
+    	  # add the indicator info
+    	  results["indicator"] = Hash.new
+        results["indicator"]["name"] = indicator.name
+			  results["indicator"]["name_abbrv"] = indicator.name_abbrv_w_parent
+			  results["indicator"]["description"] = indicator.description_w_parent
+			  results["indicator"]["number_format"] = indicator.number_format.nil? ? "" : indicator.number_format
+        results["indicator"]["scales"] = IndicatorScale.for_indicator(indicator.id)
+			  results["indicator"]["scale_colors"] = IndicatorScale.get_colors(indicator.id)
+			  results["indicator"]["switcher_indicator_id"] = nil
+
+			  # if this event has a custom view at this level, get indicator id for other shape live
+			  new_indicator = nil
+			  custom_view = indicator.event.event_custom_views.where(:shape_type_id => shape_type_id)
+			  if custom_view.present?
+				  new_indicator = Indicator.find_new_id(indicator_id, custom_view.first.descendant_shape_type_id)
+			  else
+				  custom_view = indicator.event.event_custom_views.where(:descendant_shape_type_id => shape_type_id)
+    			if custom_view.present?
+					  new_indicator = Indicator.find_new_id(indicator_id, custom_view.first.shape_type.child_ids.first)
+				  end
+			  end
+			  if new_indicator
+				  # is custom view, update switcher indicator id
+				  results["indicator"]["switcher_indicator_id"] = new_indicator.id
+			  end
+
+        # indicate this is not summary data
+        results["view_type"] = "normal"
+
+        # add the data
+        results["shape_data"] = []
+
   			event = indicator.event
         shapes.each do |shape|
       	  # get all of the related json data for this indicator
