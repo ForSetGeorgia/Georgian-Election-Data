@@ -114,12 +114,22 @@ class UniqueShapeName < ActiveRecord::Base
                 e[:event_date] = event.event_date
                 e[:shape_id] = event.shape_id
                 e[:shape_type_id] = event.shape.shape_type_id
-                e[:data_type] = Datum::DATA_TYPE[:official]
-	              dataset = DataSet.current_dataset(event.id, e[:data_type])
-	              if dataset && !dataset.empty?
-		              e[:data_set_id] =  dataset.first.id
+                # see if event has official data
+                # if not, see if have live data
+                # if not, default to official
+	              dataset = DataSet.current_dataset(event.id, Datum::DATA_TYPE[:official])
+	              if dataset.present?
+                  e[:data_type] = Datum::DATA_TYPE[:official]
+#		              e[:data_set_id] =  dataset.first.id
 	              else
-		              e[:data_set_id] =  nil
+    	            dataset = DataSet.current_dataset(event.id, Datum::DATA_TYPE[:live])
+	                if dataset.present?
+                    e[:data_type] = Datum::DATA_TYPE[:live]
+#		                e[:data_set_id] =  dataset.first.id
+	                else
+                    e[:data_type] = Datum::DATA_TYPE[:official]
+#    		            e[:data_set_id] =  nil
+	                end
 	              end
               end
             end

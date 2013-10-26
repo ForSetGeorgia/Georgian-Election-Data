@@ -566,9 +566,11 @@ class JsonController < ApplicationController
             shape_type_id = shapes[s_index][:shape_type_id].to_s
           end
 
-          if shape_id.present? && shape_type_id.present?
-		        x = Datum.build_summary_json(shape_id, shape_type_id, event["id"], 
-                    indicator["type_id"], event["data_set_id"], event["data_type"])
+          data_set_id = get_data_set_id(event["id"], event["data_type"])
+
+          if shape_id.present? && shape_type_id.present? && data_set_id.present?
+	          x = Datum.build_summary_json(shape_id, shape_type_id, event["id"], 
+                    indicator["type_id"], data_set_id, event["data_type"])
           end
           # add event info
           y = Hash.new
@@ -616,8 +618,10 @@ class JsonController < ApplicationController
           # get the indicator for this event and shape type 
           indicator_id = Indicator.find_by_event_shape_type(event["id"],shape_type_id).where(:core_indicator_id => params[:core_indicator_id]).map{|x| x.id}.first
 
-          if shape_id.present? && shape_type_id.present? && indicator_id.present?
-		        x = Datum.build_json(shape_id, shape_type_id, event["id"], indicator_id, event["data_set_id"], event["data_type"], true)
+          data_set_id = get_data_set_id(event["id"], event["data_type"])
+
+          if shape_id.present? && shape_type_id.present? && indicator_id.present? && data_set_id.presenet?
+		        x = Datum.build_json(shape_id, shape_type_id, event["id"], indicator_id, data_set_id, event["data_type"], true)
           end
           # add event info
           y = Hash.new
@@ -660,9 +664,11 @@ class JsonController < ApplicationController
             shape_type_id = shapes[s_index][:shape_type_id].to_s
           end
 
-          if shape_id.present? && shape_type_id.present?
+          data_set_id = get_data_set_id(event["id"], event["data_type"])
+
+          if shape_id.present? && shape_type_id.present? && data_set_id.present?
 		        x = Datum.build_summary_json(shape_id, shape_type_id, event["id"], 
-                    params["indicator_type_id"], event["data_set_id"], event["data_type"])
+                    params["indicator_type_id"], data_set_id, event["data_type"])
           end
           # add event info
           y = Hash.new
@@ -706,9 +712,12 @@ class JsonController < ApplicationController
 
           # get the indicator for this event and shape type 
           indicator_id = Indicator.find_by_event_shape_type(event["id"],shape_type_id).where(:core_indicator_id => params[:core_indicator_id]).map{|x| x.id}.first
+          
+          data_set_id = get_data_set_id(event["id"], event["data_type"])
 
-          if shape_id.present? && shape_type_id.present? && indicator_id.present?
-		        x = Datum.build_json(shape_id, shape_type_id, event["id"], indicator_id, event["data_set_id"], event["data_type"], true)
+
+          if shape_id.present? && shape_type_id.present? && indicator_id.present? && data_set_id.present?
+		        x = Datum.build_json(shape_id, shape_type_id, event["id"], indicator_id, data_set_id, event["data_type"], true)
           end
 
           # add event info

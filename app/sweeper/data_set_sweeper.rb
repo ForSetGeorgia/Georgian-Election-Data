@@ -21,5 +21,14 @@ class DataSetSweeper < ActionController::Caching::Sweeper
 ## - don't need since each dataset gets their own unique cache folder
 #Rails.logger.debug "............... clearing all cache because of change to dataset"
 #		JsonCache.clear_all
+
+    # remove 
+    I18n.available_locales.each do |locale|
+  		JsonCache.clear_data_file("profiles/core_indicator_events_#{locale}")
+  		JsonCache.clear_data_file("profiles/core_indicator_events_table_#{locale}")
+  		JsonCache.clear_data_file("profiles/district_events_#{locale}")
+  		JsonCache.clear_data_file("profiles/district_events_table_#{locale}")
+    end
+
   end
 end

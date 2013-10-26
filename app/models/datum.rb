@@ -1189,7 +1189,7 @@ Rails.logger.debug("*********************** - found data, adding it to results")
               end
 
               # add the winner if this record is not it and if value != no data or 0
-							if index > 0 &&
+							if index.present? && index > 0 &&
 									data["summary_data"]["data"][0]["value"] != "0" &&
 									data["summary_data"]["data"][0]["value"] != I18n.t('app.msgs.no_data')
 

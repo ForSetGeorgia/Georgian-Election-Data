@@ -109,7 +109,6 @@ class CoreIndicator < ActiveRecord::Base
     # hard code the shape type ids for now
     shape_type_ids = [1,3,7]
     
-=begin    
     # get ids of indicators that have relationships
     ids = CoreIndicator.select('distinct core_indicators.id, core_indicators.ancestry').joins(:event_indicator_relationships, :indicators).where("indicators.shape_type_id in (?)", shape_type_ids)
     
@@ -123,9 +122,8 @@ class CoreIndicator < ActiveRecord::Base
         
     where("core_indicators.id in (?)", core_ids)
       .order_by_type_name(true)
-=end      
 
-    joins(:event_indicator_relationships, :indicators).where("indicators.shape_type_id in (?)", shape_type_ids).order_by_type_name(true)
+#    joins(:event_indicator_relationships, :indicators).where("indicators.shape_type_id in (?)", shape_type_ids).order_by_type_name(true)
 
   end
 
@@ -165,12 +163,22 @@ class CoreIndicator < ActiveRecord::Base
               e[:event_date] = event.event_date
               e[:shape_id] = event.shape_id
               e[:shape_type_id] = event.shape.shape_type_id if event.shape_id.present?
-              e[:data_type] = Datum::DATA_TYPE[:official]
-	            dataset = DataSet.current_dataset(event.id, e[:data_type])
-	            if dataset && !dataset.empty?
-		            e[:data_set_id] =  dataset.first.id
+              # see if event has official data
+              # if not, see if have live data
+              # if not, default to official
+	            dataset = DataSet.current_dataset(event.id, Datum::DATA_TYPE[:official])
+	            if dataset.present?
+                e[:data_type] = Datum::DATA_TYPE[:official]
+#		            e[:data_set_id] =  dataset.first.id
 	            else
-		            e[:data_set_id] =  nil
+  	            dataset = DataSet.current_dataset(event.id, Datum::DATA_TYPE[:live])
+	              if dataset.present?
+                  e[:data_type] = Datum::DATA_TYPE[:live]
+#		              e[:data_set_id] =  dataset.first.id
+	              else
+                  e[:data_type] = Datum::DATA_TYPE[:official]
+#  		            e[:data_set_id] =  nil
+	              end
 	            end
             end
           end
@@ -205,24 +213,37 @@ class CoreIndicator < ActiveRecord::Base
 
               # add events
               events.each do |event|
-                e = Hash.new
-                parent[:event_types][type_index][:events] << e
-                e[:id] = event.id
-                e[:name] = event.name
-                e[:event_date] = event.event_date
-                e[:shape_id] = event.shape_id
-                e[:shape_type_id] = event.shape.shape_type_id
-                e[:data_type] = Datum::DATA_TYPE[:official]
-	              dataset = DataSet.current_dataset(event.id, e[:data_type])
-	              if dataset && !dataset.empty?
-		              e[:data_set_id] =  dataset.first.id
-	              else
-		              e[:data_set_id] =  nil
-	              end
+                # add event if it does not already exist
+                if parent[:event_types][type_index][:events].index{|x| x[:id] == event.id}.blank?
+                  e = Hash.new
+                  parent[:event_types][type_index][:events] << e
+                  e[:id] = event.id
+                  e[:name] = event.name
+                  e[:event_date] = event.event_date
+                  e[:shape_id] = event.shape_id
+                  e[:shape_type_id] = event.shape.shape_type_id
+                  # see if event has official data
+                  # if not, see if have live data
+                  # if not, default to official
+	                dataset = DataSet.current_dataset(event.id, Datum::DATA_TYPE[:official])
+	                if dataset.present?
+                    e[:data_type] = Datum::DATA_TYPE[:official]
+  #		              e[:data_set_id] =  dataset.first.id
+	                else
+      	            dataset = DataSet.current_dataset(event.id, Datum::DATA_TYPE[:live])
+	                  if dataset.present?
+                      e[:data_type] = Datum::DATA_TYPE[:live]
+  #		                e[:data_set_id] =  dataset.first.id
+	                  else
+                      e[:data_type] = Datum::DATA_TYPE[:official]
+  #    		            e[:data_set_id] =  nil
+	                  end
+	                end
+                end
               end
 
               # resort the events
-              parent[:event_types][type_index][:events].sort_by!{|x| x[:event_date]}
+             parent[:event_types][type_index][:events] = parent[:event_types][type_index][:events].sort_by{|x| x[:event_date]}.reverse
             end
           end
         end
