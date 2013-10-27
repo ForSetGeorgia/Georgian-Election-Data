@@ -150,7 +150,8 @@
   			<div id="footnote">
 		  		<% if params[:data_type] == Datum::DATA_TYPE[:live] %>
 						<p>
-							<%= t('.footnote_live_data', :date => l(@live_event_timestamp, :format => :long)) %>
+							<%= t('.footnote_live_data', :date => l(@live_event_timestamp, :format => :long)).html_safe %>
+							<%= t('.footnote_live_data_amend') %>
 						</p>
 		  		<% end %>
 		  		<% if @custom_view_note %>

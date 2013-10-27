@@ -401,7 +401,8 @@ ka:
     map:
       export_link_text: ჩამოტვირთეთ მონაცემები
       footnote: "შენიშვნა: %{note}"
-      footnote_live_data: "შენიშვნა: ეს წინასწარი მონაცემებია ცესკო-დან, ბოლოს განახლდა %{date}"
+      footnote_live_data: "შენიშვნა: ეს წინასწარი მონაცემებია <a href='http://results.cec.gov.ge' target='_blank'>ცესკო-დან</a>, ბოლოს განახლდა %{date}."
+      footnote_live_data_amend: "The CEC can amend protocol data after protocols have been released to the public."
       live_event_available: "%{tbilisi_time} (%{est_time} EST) გვესტუმრეთ და იხილეთ, ცესკოს  მიმდინარე მონაცებები საარჩევნო ხმების დათვლის პროცესში."
       live_event_countdown_header: ინფორმაციის განახლებამდე დარჩენილია
       new_data_available_message: საარჩევნო ინფორმაცია ახლახანს განახლდა.
