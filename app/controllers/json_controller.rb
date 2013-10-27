@@ -620,7 +620,7 @@ class JsonController < ApplicationController
 
           data_set_id = get_data_set_id(event["id"], event["data_type"])
 
-          if shape_id.present? && shape_type_id.present? && indicator_id.present? && data_set_id.presenet?
+          if shape_id.present? && shape_type_id.present? && indicator_id.present? && data_set_id.present?
 		        x = Datum.build_json(shape_id, shape_type_id, event["id"], indicator_id, data_set_id, event["data_type"], true)
           end
           # add event info
