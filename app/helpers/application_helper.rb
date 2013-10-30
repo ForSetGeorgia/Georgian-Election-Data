@@ -68,12 +68,12 @@ module ApplicationHelper
 	end
 
 
-  def barchart_no_overflow (left)
+  def barchart_no_overflow (left, color = '#fff')
     left = left.to_f;
     styles = ''
     if left > 87
       styles << 'right: ' + (100 - left).to_s + '%;'
-      styles << 'color: #fff !important;'# text-shadow: 1px 0px #fff;'
+      styles << 'color: ' + color + ' !important;'# text-shadow: 1px 0px #fff;'
     else
       styles << 'left: ' + left.to_s + '%;'
     end

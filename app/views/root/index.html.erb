@@ -136,7 +136,7 @@
                     <div class="bar_item_charts">
                       <div class="bar_item_chart" style="width: <%= data[:precincts_percentage] %>;">
                       </div>
-                      <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:precincts_percentage])%>;">
+                      <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(data[:precincts_percentage], '#333')%>;">
                         <%= data[:precincts_percentage] %>
                       </div>
                     </div>
