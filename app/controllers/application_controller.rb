@@ -84,7 +84,7 @@ logger.debug "++++++++++++++++++ contr = #{params[:contorller]}; action = #{para
 		  params[:data_type] = Datum::DATA_TYPE[:official] if params[:data_type].nil? || Datum::DATA_TYPE.values.index(params[:data_type]) == nil
 
 		  if params[:data_type] == Datum::DATA_TYPE[:live]
-			  @show_precinct_percentages = false
+			  @show_precinct_percentages = true
 		  end
     end
 logger.debug "++++++++++++++++++ data type = #{params[:data_type] }"

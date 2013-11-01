@@ -1228,7 +1228,8 @@ Rails.logger.debug("*********************** - found data, adding it to results")
 #                        :percentage => precincts_reporting[:completed_percent])
 
 					shape_values["title_precincts_completed"] =
-								I18n.t('app.common.live_event_status_no_percent', :completed => precincts_reporting[:completed_number])
+								I18n.t('app.common.live_event_status', :completed => precincts_reporting[:completed_number], :percentage => precincts_reporting[:completed_percent])
+#								I18n.t('app.common.live_event_status_no_percent', :completed => precincts_reporting[:completed_number])
 
 				end
 			end

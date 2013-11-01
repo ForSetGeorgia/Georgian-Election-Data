@@ -243,7 +243,8 @@ ka:
       is_precinct: არის საარჩევნო უბანი
       live_data: მიმდინარე მონაცემები
       official_data: ოფიციალური მონაცემები
-      live_event_status: "უბნის მონაცემები მიღებულია: %{completed} / %{total} - %{percentage}"
+      live_event_status: "უბნის მონაცემები მიღებულია: %{completed} (%{percentage})"
+      live_event_status_old: "უბნის მონაცემები მიღებულია: %{completed} / %{total} - %{percentage}"
       live_event_status_timestamp: " (უბნის მონაცემები მიღებულია: %{completed} / %{total} - %{percentage} - %{timestamp})"
       live_event_status_no_percent: "უბნის მონაცემები მიღებულია: %{completed}"
       live_event_status_timestamp_no_percent: " (უბნის მონაცემები მიღებულია: %{completed} - %{timestamp})"
