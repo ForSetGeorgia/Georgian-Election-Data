@@ -41,7 +41,11 @@ if (gon.openlayers){
   function download_map_png(){    
     // send img object
     var link = $('a#download_png');
-    $(link).attr('download', gon.event_name + '--' + gon.indicator_name_abbrv + '.png').attr('href', generate_map_png().toDataURL());
+    if (gon.is_ie){
+      $(link).attr('target', '_blank').attr('href', generate_map_png().toDataURL());
+    }else{
+      $(link).attr('download', gon.event_name + '--' + gon.indicator_name_abbrv + '.png').attr('href', generate_map_png().toDataURL());
+    }
     link[0].click();
   }
 
