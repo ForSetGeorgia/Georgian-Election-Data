@@ -55,6 +55,7 @@ logger.debug "////////////////////////// BROWSER NOT SUPPORTED"
 		end
 		
 		gon.is_mobile = user_agent.mobile?
+		gon.is_bot = user_agent.bot?
 		gon.is_ie = user_agent.browser == "Internet Explorer"
 		
 	end

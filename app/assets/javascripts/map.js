@@ -405,7 +405,7 @@ console.log('scaling root summary images');
 			// load svg into canvas so can convert to img
       // copy path from child shapes into parent shapes
       // and then spit out as png
-      if ($('#summary_data_container > div > div:first-of-type > div:first-of-type .map_image img').length == 0 && 
+      if (!gon.is_bot && $('#summary_data_container > div > div:first-of-type > div:first-of-type .map_image img').length == 0 && 
           (gon.view_type == gon.summary_view_type_name || gon.is_voters_list_using_default_core_ind_id == true))
       {
 console.log('creating img');
