@@ -5,6 +5,7 @@ $(document).ready(function() {
 
     $('a.landing_circle_link').click(function(){
       landing_circle_link_obj = this;
+      console.log($($(landing_circle_link_obj).attr('href')).html());
       $.fancybox({
         transitionIn: 'elastic',
         transitionOut: 'elastic',

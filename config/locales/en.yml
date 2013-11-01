@@ -387,18 +387,6 @@ en:
       timeline: Elections and Political Timeline
       portal: Georgian Election Portal     
       show_all: Show All 
-    index2:
-      img_alt: Sample of what map of elections looks like
-      stats_header: Stats
-      stats_elections: "%{total} elections with %{total_data} votes"
-      stats_voters_lists: "%{total} voters lists with %{total_data} registered voters"
-      download_data: Download Data
-      elections_header: Elections
-      voters_lists_header: Voters Lists
-      news_header: News
-      timeline: "Elections<br /> and<br /> Political<br /> Timeline"
-      portal: Georgian Election Portal     
-      show_all: Show All 
     map:
       export_link_text: Export Map
       footnote: "Note: %{note}"
@@ -413,6 +401,7 @@ en:
       live_election_data_expectation: The CEC provides no promises on when precinct-level election results will be available, however we hope to have results to show around %{time} (%{time_est} EST).
       follow: "You can follow future updates on Twitter at <a href='https://twitter.com/search?q=%23gvote&src=hash' target='_blank'>#gvote</a> or <a href='https://twitter.com/jsgeorgia' target='_blank'>@jsgeorgia</a> or on Facebook at <a href='http://www.facebook.com/JumpStartGeorgia' target='_blank'>JumpStartGeorgia</a>."
       delay: "We regret to inform you that the release of the official election results has been delayed. We will post the results as soon as they are available, but nothing is certain right now.	We apologize for the delay."
+      download_image_instructions: "Please right click on the image and select 'Save Picture As...'."
     summary_ind_type:
       summary_data_above_map:
         header: "%{shape} Results"

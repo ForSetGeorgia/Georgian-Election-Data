@@ -387,18 +387,6 @@ ka:
       timeline: არჩევნები და პოლიტიკური ქრონიკა
       portal: საქართველოს არჩევნების პორტალი      
       show_all: ყველას ნახვა
-    index2:
-      img_alt: არჩევნების რუკის ნიმუში
-      stats_header: სტატისტიკა
-      stats_elections: "%{total} არჩევნები %{total_data} ხმებით"
-      stats_voters_lists: "%{total} ამომრჩეველთა სიები %{total_data} დარეგისტრირებული ამომრჩევლებით"
-      download_data: მონაცემების ჩამოტვირთვა
-      elections_header: არჩევნები
-      voters_lists_header: ამომრჩეველთა სიები
-      news_header: სიახლეები
-      timeline: "არჩევნები<br /> და<br /> პოლიტიკური ქრონიკა"
-      portal: საქართველოს არჩევნების პორტალი      
-      show_all: ყველას ჩვენება 
     map:
       export_link_text: ჩამოტვირთეთ მონაცემები
       footnote: "შენიშვნა: %{note}"
@@ -413,6 +401,7 @@ ka:
       live_election_data_expectation: ცესკო არ იძლევა დაპირებებს უბნის დონეზე არჩევნების შედეგების განთავსების თარიღთან დაკავშირებით, თუმცა ვიმედოვნებთ, რომ შედეგები განთავსდება დაახლოებით %{time} (%{time_est} EST).
       follow: "განახლებებს თვალყური შეგიძლიათ მიადევნოთ Twitter-ზე  (<a href='https://twitter.com/search?q=%23gvote&src=hash' target='_blank'>#gvote</a> ან  <a href='https://twitter.com/jsgeorgia' target='_blank'>@jsgeorgia</a>) ან Facebook-ზე შემდეგ მისამართზე <a href='http://www.facebook.com/JumpStartGeorgia' target='_blank'>JumpStartGeorgia</a>."
       delay: "სამწუხაროდ, გაცნობებთ რომ არჩევნების შედეგების გამოცხადება გაჭიანურდა. ჩვენ მოგაწოდებთ შედეგებს მათი განთავსებისთანავე, თუმცა ამ დროისთვის არ არსებობს დაზუსტებული ინფორმაცია. ბოდიშს ვიხდით შეფერხებისთვის."
+      download_image_instructions: "დააჭირეთ მარჯვენა ღილაკს გამოსახულებაზე და აირჩიეთ 'Save Picture As...'."
     summary_ind_type:
       summary_data_above_map:
         header: "შედეგები - %{shape}"

@@ -41,12 +41,20 @@ if (gon.openlayers){
   function download_map_png(){    
     // send img object
     var link = $('a#download_png');
+
     if (gon.is_ie){
-      $(link).attr('target', '_blank').attr('href', generate_map_png().toDataURL());
+      $('#download_png_img').attr('src', generate_map_png().toDataURL());
+
+      $.fancybox({
+        transitionIn: 'elastic',
+        transitionOut: 'elastic',
+        type: 'inline',
+        href: '#download_map_png_container'
+      });
     }else{
       $(link).attr('download', gon.event_name + '--' + gon.indicator_name_abbrv + '.png').attr('href', generate_map_png().toDataURL());
+      link[0].click();
     }
-    link[0].click();
   }
 
 

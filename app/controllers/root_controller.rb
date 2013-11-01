@@ -139,23 +139,6 @@ class RootController < ApplicationController
   end
 
 
-  # GET /
-  # GET /.json
-	def index2
-	
-	  @about = Page.with_translations(I18n.locale).find_by_name("about_landing")
-	  @stats = Event.election_type_stats
-	  @elections = Event.public_official_elections(3, [31,32,2])
-	  @voters_lists = Event.public_official_voters_lists
-	  @news = News.with_translations(I18n.locale).recent.limit(2)
-    gon.landing_page = true
-
-    respond_to do |format|
-      format.html 
-    end
-  end
-
-
 
 
 	def map
@@ -759,6 +742,7 @@ logger.debug ">>>>>>>>>>>>>>>> format = xls"
     end
     render nothing: true
   end
+  
 
 #########################################################
 #########################################################
@@ -1025,6 +1009,7 @@ logger.debug " - no matching event found!"
 
 		# load openlayers js
 		gon.openlayers = true
+		
   end
 
   # build an array of indicator scales that will be used in js
