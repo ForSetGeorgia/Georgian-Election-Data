@@ -204,6 +204,8 @@ logger.debug "---********----- shape type cache"
 		@header_img_name = "header-text_#{I18n.locale}.png"
 		@header_img_name = "header-text.png" if Rails.application.assets.find_asset(@header_img_name).blank?
     
+    # color for % in precinct reporting summary bar for live events
+    @precinct_reporting_summary_text_color = '#333'
   end
 
 	def set_gon_data

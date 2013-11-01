@@ -77,7 +77,7 @@
                   <div class="bar_item_charts">
                     <div class="bar_item_chart" style="width: <%= @parent_precincts_reporting[:completed_percent] %>;">
                     </div>
-                    <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(@parent_precincts_reporting[:completed_percent])%>;">
+                    <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(@parent_precincts_reporting[:completed_percent], @precinct_reporting_summary_text_color)%>;">
                       <%= @parent_precincts_reporting[:completed_percent] %>
                     </div>
                   </div>
@@ -154,7 +154,7 @@
                   <div class="bar_item_charts">
                     <div class="bar_item_chart" style="width: <%= @root_precincts_reporting[:completed_percent] %>;">
                     </div>
-                    <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(@root_precincts_reporting[:completed_percent])%>;">
+                    <div class="bar_item_chart_percent" style="<%= barchart_no_overflow(@root_precincts_reporting[:completed_percent], @precinct_reporting_summary_text_color)%>;">
                       <%= @root_precincts_reporting[:completed_percent] %>
                     </div>
                   </div>
