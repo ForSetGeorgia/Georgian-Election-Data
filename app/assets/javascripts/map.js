@@ -867,6 +867,9 @@ console.log('creating img');
       });
 
 			$("#export-map").click(function(){
+        // merage the two layers together applying the correct offset
+        generate_map_png();
+
 				// get the indicator names and colors
 				var scales = [];
 				var colors = [];
@@ -878,9 +881,7 @@ console.log('creating img');
 					  colors[i] = json_data["indicator"]["scale_colors"][i];
 					}
 				}
-
-				$("#hidden_form_parent_layer").val($("#map").find("svg:eq(0)").parent().html());
-				$("#hidden_form_child_layer").val($("#map").find("svg:eq(1)").parent().html());
+				$("#hidden_form_map_layer").val($('#svg_placeholder').html());
 		    $("#hidden_form_map_title").val(gon.map_title);
 				$("#hidden_form_indicator_name").val(gon.indicator_name);
 				$("#hidden_form_indicator_name_abbrv").val(gon.indicator_name_abbrv);

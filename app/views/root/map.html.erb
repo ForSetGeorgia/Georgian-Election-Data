@@ -185,8 +185,7 @@
 
 
   <%= form_tag "/#{I18n.locale}/export.svg", :method => :post, :id => "hidden_form" do %>
-  	<%=	hidden_field_tag "hidden_form_parent_layer" %>
-  	<%= hidden_field_tag "hidden_form_child_layer" %>
+  	<%= hidden_field_tag "hidden_form_map_layer" %>
   	<%=	hidden_field_tag "hidden_form_map_title" %>
   	<%=	hidden_field_tag "hidden_form_indicator_name" %>
   	<%=	hidden_field_tag "hidden_form_indicator_name_abbrv" %>
@@ -221,7 +220,13 @@
       <%= image_tag('loading.gif', :id => 'download_image_loading')%>
     </div>
   </div>
-  <div id="svg_test" style="display:none;">
+  <div id="svg_placeholder" style="display:none;">
+    <svg>
+      <g>
+      </g>
+    </svg>
+  </div>
+  <div id="svg_template" style="display:none;">
     <svg>
       <g>
       </g>

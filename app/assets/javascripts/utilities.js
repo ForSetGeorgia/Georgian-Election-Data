@@ -205,12 +205,15 @@ function save_generated_map_images(){
 
 function generate_map_png(){
   // get copy of shape svgs
-  var svg1 = $("#map").find("svg:eq(0)").parent() .clone();
+  var svg1 = $("#map").find("svg:eq(0)").parent().clone();
   var svg2 = $("#map").find("svg:eq(1)").parent().clone();
   // get how much child shapes are offset
   var svg_child_offset = $(svg2).css('left').replace('px', '');
 
-  var svg = $('#svg_test');
+  var svg = $('#svg_placeholder');
+  // reset the svg placeholder in case it was already used
+  $(svg).html($('#svg_template > svg').clone());
+  // add map svg to placeholder
   $(svg1).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
   $(svg2).find('svg > g > g:first-of-type').attr('transform', 'translate(' + svg_child_offset + ')');
   $(svg2).find('svg > g > g:first-of-type').appendTo($(svg).find('g:first-of-type'));
