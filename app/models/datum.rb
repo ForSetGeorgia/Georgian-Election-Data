@@ -520,13 +520,13 @@
 				shape_types.each_with_index do |shape_type, index|
 					d = get_table_data(event_id, data_set_id, shape_type.id, event.shape_id )
 
-					if d && !d.empty? && !d[:data].empty?
+					if d.present? && d.has_key?('data') && d['data'].present?
 						if index == 0
 							# keep the header row
-							data << d[:data]
+							data << d['data']
 						else
 							# header row already in data so skip it
-							data << d[:data][1..-1]
+							data << d['data'][1..-1]
 						end
 					end
 				end

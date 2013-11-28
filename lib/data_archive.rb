@@ -56,7 +56,9 @@ module DataArchive
 	###########################################
 	### create download files
 	###########################################
-  def self.create_files
+
+  ### create complete set of data archives	
+  def self.create_files(event_id = nil)
 		start_time = Time.now
 		timestamp = "#{I18n.l(start_time, :format => :file)}"
 		logs = []
@@ -64,10 +66,14 @@ module DataArchive
 		original_locale = I18n.locale
 
     # get all events
-		events = Event.where("shape_id is not null")
-#		events = Event.where(:id => 20)
+    events = nil
+    if event_id.present?
+      events = Event.where(:id => event_id)
+    else
+  		events = Event.where("shape_id is not null")
+    end
 
-    if events && !events.empty?
+    if events.present?
 			# create folder for zip files
 			create_directory(archive_file_path(timestamp))
 
@@ -87,7 +93,7 @@ module DataArchive
 		        # get the data for this event
 						data = Datum.get_all_data_for_event(event.id, most_recent_dataset.first.id)
 
-						if data && !data.empty?
+						if data.present?
 					    # csv
 					    csv_filename = spreadsheet_file_name(timestamp, event.name, "CSV")
 							files[locale]["CSV"] << csv_filename
