@@ -9,10 +9,10 @@
 		<%= t('.no_archive') %>
 	</p>
 <% else %>
-	<div id="archive_item">
+	<div class="archive_item">
 		<h3><%= @archive["date"] %></h3>
 		<%= simple_format_no_tags @archive["news"], {}, :sanitize => false %>
-		<ul id="archive_links" class="clear">
+		<ul class="archive_links" class="clear">
 		<% @archive["files"].each do |file| %>
 			<li>
 				<% lang = "app.language.#{file["locale"].downcase}" %>
