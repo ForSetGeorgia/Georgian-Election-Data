@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'bundler', '~> 1.3.0'
+gem 'bundler', '~> 1.6.0'
 gem "rails", "3.1.10"
 gem "mysql2", "~> 0.3.11" # this gem works better with utf-8
 
@@ -28,6 +28,7 @@ gem "json", "~> 1.7.4" # json parser faster than default
 #gem "useragent", :git => "https://github.com/jilion/useragent.git" # browser detection
 gem "useragent", "~> 0.7.0"
 gem "rubyzip", "~> 0.9.9" # generate zip files
+gem 'rack-utf8_sanitizer', '~> 1.2.2' # prevent invalid encoding error
 
 group :development do
 	gem 'mailcatcher', '0.5.10' # small smtp server for dev, http://mailcatcher.me/
