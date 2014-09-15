@@ -168,12 +168,7 @@ console.log('scaling root summary images');
 
 		// include tileOptions to avoid getting cross-origin image load errors
     map_layer = new OpenLayers.Layer.OSM("baseMap", gon.tile_url, {isBaseLayer: true, opacity: map_opacity, tileOptions: {crossOriginKeyword: null} });
-/*    if (gon.is_development){
-  		map_layer = new OpenLayers.Layer.OSM("baseMap", gon.tile_url, {isBaseLayer: true, opacity: map_opacity, tileOptions: {crossOriginKeyword: null} });
-    } else {
-  		map_layer = new OpenLayers.Layer.XYZ("baseMap", gon.tile_url, {isBaseLayer: true, opacity: map_opacity, tileOptions: {crossOriginKeyword: null} });
-    }
-*/
+
 		vector_parent = new OpenLayers.Layer.Vector("Base Layer", {styleMap: vectorBaseStyle});
 
 		vector_child = new OpenLayers.Layer.Vector("Child Layer");
