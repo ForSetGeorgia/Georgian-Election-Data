@@ -213,17 +213,18 @@ logger.debug "---********----- shape type cache"
 		# set no data label text and color for legend
 		gon.no_data_text = I18n.t('app.msgs.no_data')
 		gon.no_data_color = "#CCCCCC"
+
     # tile url
-    lang = I18n.locale.to_s == 'ka' ? 'ka' : 'en'
-#    gon.tile_url = "http://tile.mapspot.ge/new_#{lang}/${z}/${x}/${y}.png"
-#    gon.tile_url = "http://91.212.213.147/new_#{lang}/${z}/${x}/${y}.png"
     if Rails.env.development?
   		gon.tile_url = "http://tile.openstreetmap.org/${z}/${x}/${y}.png"
       gon.is_development = true
     else
-      gon.tile_url = "http://a.tiles.mapbox.com/v3/jsgeorgia.map-mdl2hre2/${z}/${x}/${y}.png"
+      # use jeff hack's tiles
+      gon.tile_url = "http://ec2-54-76-157-122.eu-west-1.compute.amazonaws.com/open-en/${z}/${x}/${y}.png"
+      if I18n.locale == :ka
+        gon.tile_url = "http://ec2-54-76-157-122.eu-west-1.compute.amazonaws.com/open-ka/${z}/${x}/${y}.png"
+      end
     end
-
     gon.openlayers_img_path = "/assets/img/"
 
 		if I18n.locale == :ka
