@@ -1,5 +1,10 @@
 <% title t('.title') %>
 
+<div class="form-actions">
+	<%= link_to t('app.buttons.admin'), admin_path,
+  :class => 'btn' %>
+</div>
+
 <%= form_tag admin_cache_clear_map_images_path do %>
 	<p>
 		<%= t('.explanation') %>
@@ -9,7 +14,3 @@
 	</p>
 <% end %>
 
-<div class="form-actions">
-	<%= link_to t('app.buttons.admin'), admin_path,
-  :class => 'btn' %>
-</div>

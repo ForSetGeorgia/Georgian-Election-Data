@@ -1,5 +1,12 @@
 <% title t('.title') %>
 
+<div class="form-actions">
+  <%= link_to t('app.buttons.new_core_indicators'), new_admin_core_indicator_path,
+  :class => 'btn btn-primary' %>
+  <%= link_to t('app.buttons.admin'), admin_path,
+  :class => 'btn' %>
+</div>
+
 <table class="table table-striped">
 <thead>
   <tr>
@@ -32,11 +39,4 @@
 <% end %>
 </tbody>
 </table>
-
-<div class="form-actions">
-	<%= link_to t('app.buttons.new_core_indicators'), new_admin_core_indicator_path,
-  :class => 'btn btn-primary' %>
-	<%= link_to t('app.buttons.admin'), admin_path,
-  :class => 'btn' %>
-</div>
 

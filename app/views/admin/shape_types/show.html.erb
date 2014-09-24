@@ -1,5 +1,14 @@
 <% title t('.title') %>
 
+<div class="form-actions">
+  <%= link_to t('app.buttons.edit'), edit_admin_shape_type_path(@shape_type),
+  :class => 'btn btn-primary' %>
+  <%= link_to t('app.buttons.list'), admin_shape_types_path,
+  :class => 'btn' %>
+  <%= link_to t('app.buttons.admin'), admin_path,
+  :class => 'btn' %>
+</div>
+
 <p>
   <strong><%= t('app.common.name_singular')%>:</strong>
   <%= @shape_type.name_singular %>
@@ -25,11 +34,3 @@
   <%= @shape_type.parent.name_singular if !@shape_type.parent.nil? %>
 </p>
 
-<div class="form-actions">
-	<%= link_to t('app.buttons.edit'), edit_admin_shape_type_path(@shape_type),
-  :class => 'btn btn-primary' %>
-	<%= link_to t('app.buttons.list'), admin_shape_types_path,
-  :class => 'btn' %>
-	<%= link_to t('app.buttons.admin'), admin_path,
-  :class => 'btn' %>
-</div>

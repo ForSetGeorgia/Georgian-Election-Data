@@ -1,5 +1,12 @@
 <% title t('.title') %>
 
+<div class="form-actions">
+  <%= link_to t('app.buttons.new_core_indicators'), new_admin_core_indicator_path,
+  :class => 'btn btn-primary' %>
+  <%= link_to t('app.buttons.admin'), admin_path,
+  :class => 'btn' %>
+</div>
+
 <div id="indicator_colors">
   <% row_count = 1%>
   <% @core_indicators.each_with_index do |core, i| %>
@@ -17,11 +24,4 @@
   <% end %>  
 </div>  
 
-
-<div class="form-actions">
-	<%= link_to t('app.buttons.new_core_indicators'), new_admin_core_indicator_path,
-  :class => 'btn btn-primary' %>
-	<%= link_to t('app.buttons.admin'), admin_path,
-  :class => 'btn' %>
-</div>
 

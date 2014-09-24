@@ -471,6 +471,7 @@ ka:
     index:
       title: Administration Section
       basic_header: Basic
+      event_header: Event Tasks
       core_indicator_text: Indicator Profile Text
       shape_text: District Profile Text
       users: Users
@@ -607,6 +608,8 @@ ka:
       load_data:
         title: Load Event Data
         no_live_events: Data cannot be loaded until an event is marked as being live.
+        download_link_text: Download the CSV template file for Data
+        instructions: Please note that you can add as many 'Indicator' columns as you need.
     event_custom_views:
       edit:
         title: Editing Event Custom View

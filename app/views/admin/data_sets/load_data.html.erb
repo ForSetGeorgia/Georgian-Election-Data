@@ -14,6 +14,12 @@
 <% else %>
 
   <%= form_tag(load_data_admin_data_sets_path, :multipart => true) do %>
+	<div>
+		<p>
+			<%= link_to t('.download_link_text'), export_admin_data_sets_path %>.
+			<%= t('.instructions') %>
+		</p>
+	</div>
   	<div>
   		<p>
   			<%= t('activerecord.attributes.data_sets.data_type') %>

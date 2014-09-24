@@ -55,6 +55,7 @@ ElectionMap::Application.routes.draw do
 			  collection do
 	        get :load_data
 	        post :load_data
+          get :export
 			  end
 			  member do
 				  get :create_cache

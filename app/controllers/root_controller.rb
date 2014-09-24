@@ -199,7 +199,7 @@ logger.debug "////////////// getting current event for event type #{params[:even
 			# get the most recent dataset for this event
       most_recent_dataset = DataSet.current_dataset(event.id, params[:data_type])
 			@most_recent_dataset = most_recent_dataset.first if most_recent_dataset
-      if @most_recent_dataset.present? && dataset.present? && @most_recent_dataset.id != dataset.id && params[:data_type] == Datum::DATA_TYPE[:official]
+      if @most_recent_dataset.present? && dataset.present? && @most_recent_dataset.id != dataset.id && params[:data_type] == Datum::DATA_TYPE[:official] && params[:preview_data_set] != 'true'
         # the passed in official data set is not the most recent, 
         # redirect to the most recent data set
         redirect_to indicator_map_path(:event_id => params[:event_id], :event_type_id => params[:event_type_id]),
@@ -773,9 +773,11 @@ private
           # find the event that matches the passed in id
 	        event = event_type.first.events.select{|x| x.id.to_s == event_id.to_s}
 	        if event.present?
+            logger.debug "////////////// get_current_event - found event: #{event}"
 	          # check if have correct data type
 	          return event.first if (event.first.has_official_data && data_type == Datum::DATA_TYPE[:official]) ||
-	                                (event.first.has_live_data && data_type == Datum::DATA_TYPE[:live])
+	                                (event.first.has_live_data && data_type == Datum::DATA_TYPE[:live]) ||
+                                  params[:preview_data_set] == 'true'
           end
         else
           # no id provided, so get first one with correct data type
@@ -788,6 +790,8 @@ private
             end
           end
         end
+      else
+        logger.debug "////////////// get_current_event - event type not found or not have events"
       end
     end
 		# if get to here then no matching event was found

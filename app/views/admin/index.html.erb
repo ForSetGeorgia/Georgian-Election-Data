@@ -11,6 +11,7 @@
    			<li>
    				<%= link_to t('.shape_text'), admin_shape_text_path %>
    			</li>
+         </ul>
     </div>
   </div>
 <% elsif current_user.role == User::ROLES[:admin] %>
@@ -28,38 +29,43 @@
    				<%= link_to t('.shape_text'), admin_shape_text_path %>
    			</li>
    			<li>
-   				<%= link_to t('.events'), admin_events_path %>
-   			</li>
-   			<li>
-   				<%= link_to t('.event_types'), admin_event_types_path %>
-   			</li>
-   			<li>
-   				<%= link_to t('.custom_views'), admin_event_custom_views_path %>
-   			</li>
-			  <li>
-				  <%= link_to t('.indicator_relationships'), admin_event_indicator_relationships_path %>
-			  </li>
-   			<li>
-   				<%= link_to t('.indicator_types'), admin_indicator_types_path %>
-   			</li>
-   			<li>
-   				<%= link_to t('.core_indicators'), admin_core_indicators_path %>
-   			</li>
-   			<li>
-   				<%= link_to t('.core_indicator_colors'), colors_admin_core_indicators_path %>
-   			</li>
-   			<li>
-   				<%= link_to t('.shape_types'), admin_shape_types_path %>
-   			</li>
-   			<li>
    				<%= link_to t('.pages'), admin_pages_path %>
-   			</li>
-   			<li>
-   				<%= link_to t('.menu_live_events'), admin_menu_live_events_path %>
    			</li>
    			<li>
    				<%= link_to t('.news'), admin_news_index_path %>
    			</li>
+         </ul>
+
+         <h3><%= t('.event_header')%></h3>
+         <ul class="standard">
+            <li>
+               <%= link_to t('.events'), admin_events_path %>
+            </li>
+            <li>
+               <%= link_to t('.event_types'), admin_event_types_path %>
+            </li>
+            <li>
+               <%= link_to t('.custom_views'), admin_event_custom_views_path %>
+            </li>
+           <li>
+              <%= link_to t('.indicator_relationships'), admin_event_indicator_relationships_path %>
+           </li>
+            <li>
+               <%= link_to t('.indicator_types'), admin_indicator_types_path %>
+            </li>
+            <li>
+               <%= link_to t('.core_indicators'), admin_core_indicators_path %>
+            </li>
+            <li>
+               <%= link_to t('.core_indicator_colors'), colors_admin_core_indicators_path %>
+            </li>
+            <li>
+               <%= link_to t('.shape_types'), admin_shape_types_path %>
+            </li>
+            <li>
+               <%= link_to t('.menu_live_events'), admin_menu_live_events_path %>
+            </li>
+         </ul>         
     </div>
      <div class="span4">
    		<h3><%= t('.csv_header')%></h3>
@@ -78,26 +84,10 @@
    			</li>
    		</ul>
 
-   		<h3><%= t('.cache_create_header')%></h3>
-   		<ul class="standard">
-   			<li>
-   				<%= link_to t('.cache_default_event'), admin_cache_default_custom_event_path %>
-   			</li>
-   			<li>
-   				<%= link_to t('.cache_indicators'), admin_cache_custom_event_indicators_path %>
-   			</li>
-   			<li>
-   				<%= link_to t('.cache_summary_data'), admin_cache_summary_data_path %>
-   			</li>
-   		</ul>
-
    		<h3><%= t('.download_header')%></h3>
    		<ul class="standard">
    			<li>
    			<%= link_to t('.download_indicators'), download_admin_indicators_path %>
-   			</li>
-   			<li>
-   			<%= link_to t('.data_archives'), admin_data_archives_path %>
    			</li>
    		</ul>
     </div>

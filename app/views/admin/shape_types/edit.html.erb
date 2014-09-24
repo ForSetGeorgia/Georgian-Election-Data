@@ -1,7 +1,5 @@
 <% title t('.title') %>
 
-<%= render 'form' %>
-
 <div class="form-actions">
 	<%= link_to t('app.buttons.show'), admin_shape_type_path(@shape_type),
   :class => 'btn' %>
@@ -10,4 +8,6 @@
 	<%= link_to t('app.buttons.admin'), admin_path,
   :class => 'btn' %>
 </div>
+
+<%= render 'form' %>
 

@@ -80,6 +80,19 @@ class Admin::DataSetsController < ApplicationController
     end
   end
 
+  # GET /data_sets/export
+  def export
+    filename ="data_template"
+    csv_data = CSV.generate(:col_sep=>',') do |csv|
+      csv << Datum.csv_header
+    end
+    send_data csv_data,
+      :type => 'text/csv; charset=utf-8; header=present',
+      :disposition => "attachment; filename=#{filename}.csv"
+  end
+
+
+
   # GET /data_sets
   # GET /data_sets.json
   def index
