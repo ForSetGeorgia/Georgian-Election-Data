@@ -425,8 +425,8 @@ ka:
     data_archives:
       title: ჩამოტვირთეთ მონაცემები
       no_archives: ბოდიშს გიხდით, მაგრამ ამჟამად არ გვაქვს ჩამოსატვირთი მონაცემები.
-      explanation: This is a collection of all data from every election and voters list contained in this application.  You can download the data in CSV or XLS format and in English or Georgian languages.
-      slow_download: If you are the first person requesting the file, the download may take a few seconds while all of the data is being retrieved and formatted.
+      explanation: აქ არის წარმოდგენილი ამ აპლიკაციაში  არსებული ყველა არჩევნების მონაცემთა ბაზები და საარჩევნო სიები. თქვენ შეგიძლიათ მონაცემები ჩამოტვირთოთ CSV ან XLS ფორმატში ინგლისურ ან ქართულ ენაზე.
+      slow_download: თუ თქვენ ხართ პირველი ადამიანი, ვინც მოითხოვა ეს ფაილი, ჩამოტვირთვას შეიძლება დასჭირდეს გარკვეული დრო, სანამ არ მოხდება ყველა მონაცემთა ბაზის მოძიება და დაფორმატება.
     data_archive:
       title: ჩამოტვირთეთ მონაცემები
       view_all: ყველა მონაცემის ნახვა ჩამოსატვირთად

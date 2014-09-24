@@ -24,6 +24,14 @@ module DataArchive
     spreadsheet_file_name(event_name, file_locale, file_type)
   end
 
+  ######################
+  ## delete the existing files for an event
+  def self.delete_archive(event_id)
+    FileUtils.rm_rf(archive_file_path(event_id))
+  end
+
+
+
   ###########################################
   ### create download files
   ###########################################
