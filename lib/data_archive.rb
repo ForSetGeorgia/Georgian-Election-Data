@@ -3,6 +3,76 @@ module DataArchive
   require 'zip/zip'
 	require 'utf8_converter'
 
+  ###########################################
+  ### get archive on file
+  ### - event_id: id of event
+  ### - locale: locale to get data in
+  ### - file_type: type of file (csv or xls)
+  ###########################################
+  def self.get_archive(event_id, locale, file_type)
+    file_path = "#{archive_file_path(event_id)}/#{locale}.#{file_type.downcase}"
+    # if file does not exist, create it
+    create_file(event_id, locale) if !File.exists?(file_path)
+
+    # return file path
+    return file_path
+  end
+
+  ######################
+  ## generate the file name for the archive file that is to be downloaded to user
+  def self.create_archive_filename(event_name, file_locale, file_type)
+    spreadsheet_file_name(event_name, file_locale, file_type)
+  end
+
+  ###########################################
+  ### create download files
+  ###########################################
+
+  ### create data archive CSV and XLS file for the provided event and locale
+  def self.create_file(event_id, locale)
+    original_locale = I18n.locale
+    I18n.locale = locale.to_sym
+
+    events = Event.where(:id => event_id)
+    
+    if events.present?
+      event = events.first
+
+      # create folder for to store files
+      path = archive_file_path(event_id)
+      create_directory(path)
+
+      # get the most recent official data set
+      most_recent_dataset = DataSet.current_dataset(event.id, 'official')
+      if most_recent_dataset.present?
+        # get the data for this event
+        data = Datum.get_all_data_for_event(event.id, most_recent_dataset.first.id)
+
+        if data.present?
+          # csv
+          csv_filename = "#{locale}.csv"
+          # create the csv file
+          File.open(path + "/" + csv_filename, 'w') do |f|
+            f.puts create_csv_formatted_string(data)
+          end
+
+          # xls
+          xls_filename = "#{locale}.xls"
+          # create the xls file
+          File.open(path + "/" + xls_filename, 'w') do |f|
+            f.puts create_excel_formatted_string(data)
+          end
+
+        end
+      end
+    end
+
+    # reset the locale
+    I18n.locale = original_locale
+
+  end
+
+=begin old way
 	###########################################
 	### get archives on file
 	### - format = [ { "folder" => "folder_name" , "date" => "date", "files" => [  {  "url", "file_size", "locale", "file_type"  }  ]  }  ]
@@ -53,10 +123,6 @@ module DataArchive
   end
 
 
-	###########################################
-	### create download files
-	###########################################
-
   ### create complete set of data archives	
   def self.create_files(event_id = nil)
 		start_time = Time.now
@@ -75,7 +141,7 @@ module DataArchive
 
     if events.present?
 			# create folder for zip files
-			create_directory(archive_file_path(timestamp))
+			create_directory(archive_file_time_path(timestamp))
 
       # create a zip file for each locale
       I18n.available_locales.each do |locale|
@@ -95,18 +161,18 @@ module DataArchive
 
 						if data.present?
 					    # csv
-					    csv_filename = spreadsheet_file_name(timestamp, event.name, "CSV")
+					    csv_filename = spreadsheet_file_time_name(timestamp, event.name, "CSV")
 							files[locale]["CSV"] << csv_filename
 							# create the csv file
-							File.open(archive_file_path(timestamp) + "/" + csv_filename, 'w') do |f|
+							File.open(archive_file_time_path(timestamp) + "/" + csv_filename, 'w') do |f|
 								f.puts create_csv_formatted_string(data)
 							end
 
 					    # xls
-					    xls_filename = spreadsheet_file_name(timestamp, event.name, "XLS")
+					    xls_filename = spreadsheet_file_time_name(timestamp, event.name, "XLS")
 							files[locale]["XLS"] << xls_filename
 							# create the csv file
-							File.open(archive_file_path(timestamp) + "/" + xls_filename, 'w') do |f|
+							File.open(archive_file_time_path(timestamp) + "/" + xls_filename, 'w') do |f|
 								f.puts create_excel_formatted_string(data)
 							end
 						end
@@ -115,20 +181,20 @@ module DataArchive
         end
 				# csv zip file
 				zip_start = Time.now
-				zip_file = archive_file_path(timestamp) + "/" + zip_file_name(timestamp, "CSV")
+				zip_file = archive_file_time_path(timestamp) + "/" + zip_file_name(timestamp, "CSV")
 		    Zip::ZipFile.open(zip_file, Zip::ZipFile::CREATE) do |z|
 					files[locale]["CSV"].each do |file|
-						z.add(file, archive_file_path(timestamp) + "/" + file)
+						z.add(file, archive_file_time_path(timestamp) + "/" + file)
 					end
 				end
 				# set read permissions on the file
 				File.chmod(0644, zip_file)
 
 				# xls zip file
-				zip_file = archive_file_path(timestamp) + "/" + zip_file_name(timestamp, "XLS")
+				zip_file = archive_file_time_path(timestamp) + "/" + zip_file_name(timestamp, "XLS")
 		    Zip::ZipFile.open(zip_file, Zip::ZipFile::CREATE) do |z|
 					files[locale]["XLS"].each do |file|
-						z.add(file, archive_file_path(timestamp) + "/" + file)
+						z.add(file, archive_file_time_path(timestamp) + "/" + file)
 					end
 				end
 				# set read permissions on the file
@@ -138,23 +204,18 @@ module DataArchive
       end
     end
 		# delete the csv/xls files that are no longer needed
-		delete_files(archive_file_path(timestamp), files)
+		delete_files(archive_file_time_path(timestamp), files)
 
 		logs << ">>>>>>>>>>> total time to create zip files was #{Time.now - start_time} seconds"
 
-=begin
-		# delete the cache of data_archives
-		I18n.available_locales.each do |locale|
-			I18n.locale = locale
-			Rails.cache.delete(cache_key)
-		end
-=end
 		# reset the locale
 		I18n.locale = original_locale
 
 		logs.each {|x| Rails.logger.debug x}
 
   end
+
+=end
 
 	###########################################
 	### create spreadsheet formated string
@@ -244,7 +305,11 @@ protected
   	"#{Rails.root}/public/#{url_path}"
   end
 
-  def self.archive_file_path(timestamp)
+  def self.archive_file_path(event_id)
+    clean_filename("#{archive_root}/#{event_id}")
+  end
+
+  def self.archive_file_time_path(timestamp)
   	clean_filename("#{archive_root}/#{timestamp}")
   end
 
@@ -252,7 +317,11 @@ protected
   	clean_filename("#{I18n.t('app.common.app_name')}_#{I18n.t('app.common.data_archive')}_#{I18n.locale.to_s.upcase}_#{file_type}_#{timestamp}") + ".zip"
   end
 
-  def self.spreadsheet_file_name(timestamp, event, file_type)
+  def self.spreadsheet_file_name(event, file_locale, file_type)
+    clean_filename("#{I18n.t('app.common.app_name', :locale => file_locale.to_sym)}_#{event}_#{file_locale.upcase}_#{file_type.upcase}") + ".#{file_type.downcase}"
+  end
+
+  def self.spreadsheet_file_time_name(timestamp, event, file_type)
   	clean_filename("#{I18n.t('app.common.app_name')}_#{event}_#{I18n.locale.to_s.upcase}_#{file_type}_#{timestamp}") + ".#{file_type.downcase}"
   end
 

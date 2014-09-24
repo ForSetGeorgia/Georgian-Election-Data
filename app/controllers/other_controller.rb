@@ -79,9 +79,6 @@ class OtherController < ApplicationController
   end
 
   def data_archives
-		@archives = available_archives
-		@archives = @archives.paginate(:page => params[:page]) if @archives.present?
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @archives }
@@ -89,16 +86,40 @@ class OtherController < ApplicationController
   end
 
   def data_archive
-		@archive = available_archives.select{|x| x["folder"] == params[:data_archive_folder]}
-		if @archive.present?
-			@archive = @archive.first
-		else
-			@archive = nil
-		end
+    sent_file = false
+    event = EventTranslation.where(:locale => params[:file_locale], :event_id => params[:event_id])
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @archive }
+    if event.present?
+      file_path = DataArchive.get_archive(params[:event_id], params[:file_locale], params[:format])
+      if file_path.present?
+        filename = DataArchive.create_archive_filename(event.first.name, params[:file_locale], params[:format])
+
+        # send the file
+        respond_to do |format|
+          format.csv {
+  logger.debug ">>>>>>>>>>>>>>>> format = csv"
+            send_file file_path, 
+              :filename => filename,
+              :type => 'text/csv; header=present',
+              :disposition => "attachment"
+
+            sent_file = true
+          }
+
+          format.xls{
+  logger.debug ">>>>>>>>>>>>>>>> format = xls"
+            send_file file_path, 
+              :filename => filename,
+              :disposition => "attachment"
+
+            sent_file = true
+          }
+        end
+      end
+    end
+
+    if !sent_file
+      render nothing: true
     end
   end
 

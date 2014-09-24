@@ -1,34 +1,62 @@
 <% title t('.title') %>
 
-<% if @archives.nil? || @archives.empty? %>
-	<p>
-		<%= t('.no_archives') %>
-	</p>
+<% if @event_menu.present? && !@event_menu.select{|x| x["events"].length > 0}.empty? %>
+  <p>
+    <%= t('.explanation') %>
+  </p>
+  <p>
+    <%= t('.slow_download') %>
+  </p>
+  <div id="data_archive_items_tabs">
+    <ul>
+      <% set_active = false %>
+      <% @event_menu.each do |event_type| %>
+        <% if !event_type["events"].empty? %>
+          <% is_active = set_active == true ? "" : "ui-tabs-selected ui-state-active" %>
+          <% set_active = true %>
+          <li class="<%=is_active%>"><%= link_to event_type["name"], "#event_type_#{event_type["id"]}", :'data-type-id' => event_type["id"] %></li>
+        <% end %>
+      <% end %>
+    </ul>
+    <% @event_menu.each do |event_type| %>
+      <% if !event_type["events"].empty? %>
+        <div id="<%= "event_type_#{event_type["id"]}"%>">
+          <ul class="data_archive_items">
+            <% set_active = false %>
+            <% event_type["events"].each do |event| %>
+              <% is_active = set_active == true ? "not_active" : "active" %>
+              <% set_active = true %>
+              <li>
+                <ul class="data_archive_item clear">
+                  <li>
+                    <h3><%= event["name"] %></h3>
+                    <ul class="data_archive_links clear">
+                      <% I18n.available_locales.each do |locale| %>
+                        <% lang = "app.language.#{locale}" %>
+                        <li>
+                          <%= link_to "#{t(lang)} - CSV", 
+                              data_archive_path(:event_id => event["id"], :file_locale => locale, :format => 'csv'), 
+                              :class => "btn btn-mini" %>
+                        </li>
+                        <li>
+                          <%= link_to "#{t(lang)} - XLS", 
+                              data_archive_path(:event_id => event["id"], :file_locale => locale, :format => 'xls'), 
+                              :class => "btn btn-mini" %>
+                        </li>
+                      <% end %>
+                    </ul>
+
+                  </li>
+                </ul>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
 <% else %>
   <p>
-		<%= t('.explanation') %>
+    <%= t('.no_archives') %>
   </p>
-
-	<% @archives.each do |archive| %>
-		<div class="archive_item">
-			<h3><%= archive["date"] %></h3>
-			<div class="archive_text">
-  			<%= simple_format_no_tags archive["news"], {}, :sanitize => false %>
-			</div>
-			<ul class="archive_links clear">
-			<% archive["files"].each do |file| %>
-				<li>
-					<% lang = "app.language.#{file["locale"].downcase}" %>
-					<%= link_to "#{t(lang)} - #{file["file_type"]} (#{number_to_human_size(file["file_size"])})",
-							file["url"], :class => "btn btn-mini" %>
-				</li>
-			<% end %>
-			</ul>
-		</div>
-	<% end %>
-
-	<%= page_navigation_links @archives %>
 <% end %>
-
-
-

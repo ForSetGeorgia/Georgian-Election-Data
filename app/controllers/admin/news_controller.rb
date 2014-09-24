@@ -31,9 +31,6 @@ class Admin::NewsController < ApplicationController
   # GET /news/new.json
   def new
     @news = News.new
-		@news_types = News::NEWS_TYPES
-    # get list of data archive folders that do not have news tied to them already
-		@availabe_archives = available_archives
 
     # create the translation object for however many locales there are
     # so the form will properly create all of the nested form fields
@@ -41,10 +38,7 @@ class Admin::NewsController < ApplicationController
 			@news.news_translations.build(:locale => locale)
 		end
 
-		# turn the datetime picker js on
-		# have to format dates this way so js datetime picker read them properly
 		gon.edit_news = true
-		gon.data_archive = @news_types[:data_archive]
 
     respond_to do |format|
       format.html # new.html.erb
@@ -55,9 +49,6 @@ class Admin::NewsController < ApplicationController
   # GET /news/1/edit
   def edit
     @news = News.find(params[:id])
-		@news_types = News::NEWS_TYPES
-    # get list of data archive folders that do not have news tied to them already
-		@availabe_archives = available_archives
 
 		# turn the datetime picker js on
 		# have to format dates this way so js datetime picker read them properly
@@ -128,30 +119,4 @@ class Admin::NewsController < ApplicationController
     end
   end
 
-	protected
-
-	# get all archives and mark which ones already have news about them
-	def available_archives
-		available = []
-		archives = DataArchive.get_archives
-		news = News.data_archives
-
-		if archives && !archives.empty?
-			# now determine which archives do not have a news story
-			if news && !news.empty?
-				# news items with archives, determine which ones have news story
-				archives.each do |archive|
-					text = archive["date"]
-					text << " *" if !news.index{|n| n.data_archive_folder == archive["folder"]}.nil?
-					available << {:id => archive["folder"], :name => text}
-				end
-			else
-				# there are no news items with archives
-				archives.each do |archive|
-					available << {:id => archive["folder"], :name => archive["date"]}
-				end
-			end
-		end
-		return available
-	end
 end

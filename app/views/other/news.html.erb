@@ -14,11 +14,6 @@
       <div class="news_text">
   			<%= simple_format_no_tags news.description, {}, :sanitize => false %>
 			</div>
-			<% if news.news_type == News::NEWS_TYPES[:data_archive] && !news.data_archive_folder.nil? && !news.data_archive_folder.empty? %>
-				<p>
-					<%= link_to t('.data_archives_link'), data_archive_path(news.data_archive_folder), :class => "btn btn-mini" %>
-				</p>
-			<% end %>
 		</div>
 	<% end %>
 

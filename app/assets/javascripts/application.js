@@ -20,6 +20,7 @@
 //= require jquery.slimscroll
 
 //= require data
+//= require data_archive
 //= require event_custom_views
 //= require event_indicator_relationships
 //= require event_menu

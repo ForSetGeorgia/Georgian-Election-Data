@@ -132,7 +132,7 @@ ElectionMap::Application.routes.draw do
     # other
     match '/tutorial', :to => 'other#tutorial', :as => :tutorial, :via => :get
     match '/data_archives', :to => 'other#data_archives', :as => :data_archives, :via => :get
-    match '/data_archives/:data_archive_folder', :to => 'other#data_archive', :as => :data_archive, :via => :get
+    match '/data_archives/:event_id/:file_locale', :to => 'other#data_archive', :as => :data_archive, :via => :get, :default => {:format => 'csv'}
     match '/news', :to => 'other#news', :as => :news, :via => :get
     match '/news/:id', :to => 'other#news_show', :as => :news_show, :via => :get
     match '/about', :to => 'other#about', :as => :about, :via => :get
