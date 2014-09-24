@@ -1,0 +1,13 @@
+SELECT 
+a.distr, 
+avg(a.[avg age]) as [avg age],
+sum(a.[# > 99]) as [# > 99], 
+sum(a.[85-99]) as [85-99], 
+sum(a.[# < 85]) as [# < 85], 
+sum(a.[# no wdabceli]) as [# no wdabceli], 
+sum(a.[total voters]) as [total voters],
+sum(a.[# of duplicates]) as [# of duplicates]
+FROM [qryAnalysis Precinct] as a
+group by a.distr
+ORDER BY a.distr
+;

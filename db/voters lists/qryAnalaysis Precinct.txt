@@ -1,0 +1,41 @@
+SELECT a.precid, a.distr, a.prec, e.average AS [avg age], 
+iif(isnull(b.count), 0, b.count ) AS [# > 99], 
+iif(isnull(c.count), 0, c.count ) AS [85-99], 
+iif(isnull(d.count), 0, d.count ) AS [# < 85], 
+iif(isnull(f.count), 0, f.count ) AS [# no wdabceli], 
+([# > 99] + [85-99] + [# < 85] + [# no wdabceli]) AS [total voters],
+iif(isnull(dup.count), 0, dup.count ) AS [# of duplicates]
+FROM ((((((SELECT distr, prec, precid
+  FROM Table1
+  GROUP BY distr, prec, precid
+)  AS a LEFT JOIN (SELECT distr, prec, Count(*) AS [count]
+  FROM table1
+  WHERE DateDiff("yyyy",[wdabceli],[voter_list_date])>99
+  GROUP BY distr, prec
+)  AS b ON a.distr = b.distr and a.prec = b.prec) LEFT JOIN (SELECT distr, prec, Count(*) AS [count]
+  FROM table1
+  WHERE DateDiff("yyyy",[wdabceli],[voter_list_date]) between 85 and 99  
+  GROUP BY distr, prec
+)  AS c ON a.distr = c.distr and a.prec = c.prec) LEFT JOIN (SELECT distr, prec, Count(*) AS [count]
+  FROM table1
+  WHERE DateDiff("yyyy",[wdabceli],[voter_list_date])<85
+  GROUP BY distr, prec
+)  AS d ON a.distr = d.distr and a.prec = d.prec) LEFT JOIN (SELECT distr, prec, Avg(DateDiff("yyyy",[wdabceli],[voter_list_date])) as [average]
+  FROM table1
+  GROUP BY distr, prec
+)  AS e ON a.distr = e.distr and a.prec = e.prec) LEFT JOIN (SELECT distr, prec, Count(*) AS [count]
+  FROM table1
+  WHERE isnull(wdabceli)
+  GROUP BY distr, prec
+)  AS f ON a.distr = f.distr and a.prec = f.prec) left join (select a.distr, a.prec, count(*) as [count]
+ from table1 as a
+  inner join (
+   SELECT dup.wgvari, dup.wsaxeli, dup.wdabceli
+   FROM Table1 as dup
+   GROUP BY dup.wgvari, dup.wsaxeli, dup.wdabceli
+   HAVING Count(dup.wgvari)>1 AND Count(dup.wsaxeli)>1 AND Count(dup.wdabceli)>1
+  ) as dup on a.wgvari = dup.wgvari and a.wsaxeli = dup.wsaxeli and a.wdabceli = dup.wdabceli
+  group by a.distr, a.prec
+  order by a.distr, a.prec
+) as dup on a.distr = dup.distr and a.prec = dup.prec
+ORDER BY a.distr, a.prec, a.precid;
