@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'bundler', '~> 1.6.0'
+gem 'bundler'
 gem "rails", "3.1.10"
 gem "mysql2", "~> 0.3.11" # this gem works better with utf-8
 
@@ -53,10 +53,6 @@ group :assets do
   gem 'jquery-ui-rails'
 end
 
-group :staging do
-	gem 'unicorn', '4.2.1' # http server
-end
-
-group :production do
+group :staging, :production do
 	gem 'unicorn', '4.2.1' # http server
 end

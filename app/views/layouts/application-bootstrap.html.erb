@@ -8,11 +8,11 @@
 				t('app.common.app_name') %></title>
 
 		<!-- for social sites -->
-		<meta itemprop="name" content="<%= content_for?(:title) ? "#{yield(:title)} » #{t('app.common.app_name')}" :
+		<meta itemprop="name" content="<%= content_for?(:title) ? "#{yield(:title)} | #{t('app.common.app_name')}" :
 				t('app.common.app_name') %>">
 		<meta itemprop="description" content="<%= @event_description.nil? ? '' : strip_tags(@event_description) %>">
 
-	  <meta property="og:title" content="<%= content_for?(:title) ? "#{yield(:title)} » #{t('app.common.app_name')}" :
+	  <meta property="og:title" content="<%= content_for?(:title) ? "#{yield(:title)} | #{t('app.common.app_name')}" :
 			  t('app.common.app_name') %>" />
 		<meta property="og:description" content="<%= @event_description.nil? ? '' : strip_tags(@event_description) %>" />
 	  <meta property="og:type" content="non_profit" />
