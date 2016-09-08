@@ -77,7 +77,7 @@ class AddVpm < ActiveRecord::Migration
 
 		# delete the relationships
 		[31,32].each do |event_id|
-			trans.collect(&:core_indicator_id).each_with_index do |new_id,i|
+			trans.map{|x| x[:core_indicator_id]}.each_with_index do |new_id,i|
 				EventIndicatorRelationship.where(:event_id => event_id, :core_indicator_id => new_id).each do |relationship|
 					relationship.core_indicator_id = old_ids[i]
 					relationship.save
@@ -90,7 +90,7 @@ class AddVpm < ActiveRecord::Migration
 		end
 
 		# delete the core indicators
-		CoreIndicator.where(:id => trans.collect(&:core_indicator_id)).destroy_all
+		CoreIndicator.where(:id => trans.map{|x| x[:core_indicator_id]}).destroy_all
 
   end
 end

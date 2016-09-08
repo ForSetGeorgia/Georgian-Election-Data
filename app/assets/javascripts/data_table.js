@@ -6,7 +6,7 @@ function update_selected_cols(){
   var selected = [];
   var data_table = $('#map_data_table').dataTable();
   var index;
-  
+
   // get all options that are selected
   $('select#data_table_filter').find(":selected").each(function() { selected.push($(this).data('id')) });
 
@@ -20,9 +20,9 @@ function update_selected_cols(){
       index = table_ind_ids.indexOf(was_selected_map[i]);
       if (index > -1)
         data_table.fnSetColumnVis(index+1, false);
-    } 
-  }      
-   
+    }
+  }
+
   lookup = {};
   // find what was selected and turn col on
   for (var j in was_selected_map) {
@@ -34,8 +34,8 @@ function update_selected_cols(){
       index = table_ind_ids.indexOf(selected[i]);
       if (index > -1)
         data_table.fnSetColumnVis(index+1, true);
-    } 
-  }      
+    }
+  }
 
   // update what items are selected
   was_selected_map = selected;
@@ -51,19 +51,19 @@ $(document).ready(function() {
 
     // when indicator filter changes, update what indicators to show
     // - compare list of what was selected vs what is selected and only update the items that don't match
-    $('select#data_table_filter').live('change', function(){
+    $('select#data_table_filter').on('change', function(){
 
       update_selected_cols();
 
       // update the chosen list so that the items selected are in the correct order
       $(this).trigger("liszt:updated");
     });
-    
+
     // update the url for the download data link
     $("#export-data-xls2").attr('href',update_query_parameter($("#export-data-xls").attr('href'), "event_name", "event_name", gon.event_name));
     $("#export-data-xls2").attr('href',update_query_parameter($("#export-data-xls").attr('href'), "map_title", "map_title", gon.map_title));
     $("#export-data-csv2").attr('href',update_query_parameter($("#export-data-csv").attr('href'), "event_name", "event_name", gon.event_name));
-    $("#export-data-csv2").attr('href',update_query_parameter($("#export-data-csv").attr('href'), "map_title", "map_title", gon.map_title));    
+    $("#export-data-csv2").attr('href',update_query_parameter($("#export-data-csv").attr('href'), "map_title", "map_title", gon.map_title));
 
   }
 });

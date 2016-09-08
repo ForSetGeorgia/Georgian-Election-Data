@@ -271,25 +271,25 @@
 		      build_summary_from_db(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type).to_json
 		    })
 
-        # if limit passed in, filter out the data		    
+        # if limit passed in, filter out the data
         if limit.present? && limit > 0 && data.present? && data.has_key?('shape_data') && data["shape_data"]
           data["shape_data"].each do |shape|
             summary_data = nil
-            summary_index = shape.index{|x| x.has_key?('summary_data')} 
+            summary_index = shape.index{|x| x.has_key?('summary_data')}
             summary_data = shape[summary_index] if summary_index.present?
-          
+
             if summary_data.present? && summary_data["summary_data"].has_key?('data') && summary_data["summary_data"]["data"].length > limit
               summary_data["summary_data"]["data"] = summary_data["summary_data"]["data"][0..limit-1]
             end
           end
     	  end
       else
-        data = build_summary_from_db(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit)        
+        data = build_summary_from_db(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, limit)
       end
     end
     return data
   end
-  
+
   # get data for json use
   # if use_cache = false, the data will be pulled from db
 	def self.build_json(shape_id, shape_type_id, event_id, indicator_id, data_set_id, data_type, use_cache=true)
@@ -308,12 +308,12 @@
 		      build_from_db(shape_id, shape_type_id, indicator_id, data_set_id, data_type).to_json
 		    })
       else
-        data = build_from_db(shape_id, shape_type_id, indicator_id, data_set_id, data_type)        
+        data = build_from_db(shape_id, shape_type_id, indicator_id, data_set_id, data_type)
       end
     end
     return data
   end
-  
+
 
 	###################################
 	## load from csv
@@ -541,14 +541,14 @@
 		start = Time.now
 		data = []
 
-    if event_id.present? && data_set_id.present? && shape_type_id.present? && shape_id.present? && 
+    if event_id.present? && data_set_id.present? && shape_type_id.present? && shape_id.present? &&
         indicator_type_id.present? && data_type.present?
-        
+
       shape_type_name = ShapeTypeTranslation.select('name_singular, name_singular_in')
         .where(:locale => I18n.locale, :shape_type_id => shape_type_id)
-        
+
       if shape_type_name.present?
-      
+
     		row = nil
         json = build_summary_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, data_type, 2)
         if json.present? && json["shape_data"].present?
@@ -599,29 +599,29 @@
 
               if d.length > 1 && d[1].has_key?("summary_data")
                 # winner
-                row[:winner_name] = d[1]["summary_data"]["data"][0]["indicator_name"] 
+                row[:winner_name] = d[1]["summary_data"]["data"][0]["indicator_name"]
                 cell = d[1]["summary_data"]["data"][0]["formatted_value"]
-                cell << d[1]["summary_data"]["data"][0]["number_format"] if d[1]["summary_data"]["data"][0]["number_format"].present? 
+                cell << d[1]["summary_data"]["data"][0]["number_format"] if d[1]["summary_data"]["data"][0]["number_format"].present?
                 row[:winner_percent] = cell
-                row[:winner_color] = d[1]["summary_data"]["data"][0]["color"] 
+                row[:winner_color] = d[1]["summary_data"]["data"][0]["color"]
                 # 2nd place
-                row[:second_name] = d[1]["summary_data"]["data"][1]["indicator_name"] 
+                row[:second_name] = d[1]["summary_data"]["data"][1]["indicator_name"]
                 cell = d[1]["summary_data"]["data"][1]["formatted_value"]
-                cell << d[1]["summary_data"]["data"][1]["number_format"] if d[1]["summary_data"]["data"][1]["number_format"].present? 
+                cell << d[1]["summary_data"]["data"][1]["number_format"] if d[1]["summary_data"]["data"][1]["number_format"].present?
                 row[:second_percent] = cell
-                row[:second_color] = d[1]["summary_data"]["data"][1]["color"] 
+                row[:second_color] = d[1]["summary_data"]["data"][1]["color"]
               end
-              
+
               # total turnout #
               tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"]["core_indicator_id"] == 15}
               if tt_num.present?
                 cell = tt_num.first["data_item"]["formatted_value"]
-                cell << tt_num.first["data_item"]["number_format"] if tt_num.first["data_item"]["number_format"].present? 
+                cell << tt_num.first["data_item"]["number_format"] if tt_num.first["data_item"]["number_format"].present?
                 row[:total_turnout_number] = cell
 #TODO
-################################              
-###  hack!!!!!!!!!!!  ##########              
-################################              
+################################
+###  hack!!!!!!!!!!!  ##########
+################################
 
 # compute number from percent * total turnout #
 num = tt_num.first["data_item"]["value"].present? ? tt_num.first["data_item"]["value"].to_f : 0
@@ -631,34 +631,36 @@ perc = d[1]["summary_data"]["data"][1]["value"].present? ? d[1]["summary_data"][
 row[:second_number] = ActionController::Base.helpers.number_with_delimiter((num * perc / 100).floor)
 
 
-################################              
-################################              
-################################              
+################################
+################################
+################################
 
               end
-              
+
               # total turnout %
               tt_num = d.select{|x| x.has_key?("data_item") && x["data_item"]["core_indicator_id"] == 16}
               if tt_num.present?
                 cell = tt_num.first["data_item"]["formatted_value"]
-                cell << tt_num.first["data_item"]["number_format"] if tt_num.first["data_item"]["number_format"].present? 
+                cell << tt_num.first["data_item"]["number_format"] if tt_num.first["data_item"]["number_format"].present?
                 row[:total_turnout_percent] = cell
               end
-              
-              
+
+
             end
           end
         end
       end
     end
-    
+
 		puts "/////// total time = #{Time.now-start} seconds"
     return data
   end
 
-  # returns: 
+  # returns:
   #  {data => [table data], indicator_types => [ {id name has_summary indicators => [{id name desc}, {}, {}, ...], {}, ...   ] }
 	def self.get_table_data(event_id, data_set_id, shape_type_id, shape_id, parent_shape_type_id=nil)
+    logger.debug "====================="
+    logger.debug "= shape id = #{shape_id}, shape_type_id = #{shape_type_id}"
 		start = Time.now
     data = nil
 
@@ -684,7 +686,7 @@ row[:second_number] = ActionController::Base.helpers.number_with_delimiter((num 
 			  # get all of the indicators for this event at this shape type
   #			ind_types = IndicatorType.find_by_event_shape_type(event_id, shape_type_id)
 			  ind_types = IndicatorType.with_summary_rank(shape_id, shape_type_id, event_id, data_set_id, parent_shape_type_id)
-			
+
 
   #      ind_ids = []
 			  core_ind_names = []
@@ -727,7 +729,7 @@ row[:second_number] = ActionController::Base.helpers.number_with_delimiter((num 
                 ind_h['description'] = ind.core_indicator_translations[0].description
                 ind_h['rank'] = ind.rank
                 ind_h['color'] = ind.color
-              end          
+              end
 
 						  summary << s
 
@@ -757,7 +759,7 @@ row[:second_number] = ActionController::Base.helpers.number_with_delimiter((num 
                 ind_h['name'] = ind.core_indicator_translations[0].name
                 ind_h['description'] = ind.core_indicator_translations[0].description
                 ind_h['color'] = ind.color
-              end          
+              end
 					  end
 				  end
 			  end
@@ -805,8 +807,8 @@ row[:second_number] = ActionController::Base.helpers.number_with_delimiter((num 
 
 				  data = Datum.find_by_sql([sql, :event_id => event_id, :data_set_id => data_set_id,
 					  :shape_type_id => shape_type_id, :locale => I18n.locale,
-					  :common_ids => shapes.collect(&:shape_common_id),
-					  :common_names => shapes.collect(&:shape_common_name)])
+					  :common_ids => shapes.map{|x| x[:shape_common_id]},
+					  :common_names => shapes.map{|x| x[:shape_common_name]}])
 
 				  if data && !data.empty?
 					  # create header row
@@ -961,7 +963,7 @@ protected
 
       # get the shapes
 	    shapes = Shape.get_shapes_by_type(shape_id, shape_type_id, false)
-	    
+
 	    # get the shape type
 	    shape_type = ShapeType.find_by_id(shape_type_id)
 Rails.logger.debug("************* shape type is precinct = '#{shape_type.is_precinct}'")
@@ -1128,7 +1130,7 @@ Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
 	  results << data_hash
 
 Rails.logger.debug("*********************** building related indicator")
-	  if shape_id.present? && event_id.present? && shape_type_id.present? && data_set_id.present? && 
+	  if shape_id.present? && event_id.present? && shape_type_id.present? && data_set_id.present? &&
 	        data_type.present? && relationships.present?
 Rails.logger.debug("*********************** all data provided!")
       has_duplicates = false
@@ -1246,7 +1248,7 @@ Rails.logger.debug("*********************** - found data, adding it to results")
     end
 	  return results
   end
-  
+
   # get the summary data for an indicator type in an event for a shape
 	def self.build_summary_data_json(shape_id, shape_type_id, event_id, indicator_type_id, data_set_id, limit=nil)
 		start = Time.now
@@ -1290,7 +1292,7 @@ logger.debug "************* - has_openlayers_rule_value = #{relationship.first.h
 
           # add the ranking of each item
           d_index = 0
-          while d_index < data.length do 
+          while d_index < data.length do
             h = compute_placement(data, data[d_index][:value])
 		        data[d_index].rank = h[:rank]
             if d_index == 0
@@ -1323,8 +1325,8 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
     end
 #		puts "******* time to get_related_indicator_type_data: #{Time.now-start} seconds for event #{event_id}"
     return results
-  end  
-  
+  end
+
 
   # get the summary data for a voters list at a particular shape
 	def self.build_summary_voter_list_data_json(shape_id, shape_type_id, event_id, data_set_id)
@@ -1350,9 +1352,9 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
           puts "core id = #{core_id}"
           h = Hash.new
           results << h
-        
+
           h[:core_indicator_id] = core_id
-          
+
           index = data.index{|x| x[:core_indicator_id] == core_id}
           if index.present?
             puts "index = #{index}"
@@ -1365,16 +1367,16 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 			      h[:indicator_name] = data[index][:indicator_name]
 			      h[:indicator_name_abbrv] = data[index][:indicator_name_abbrv]
           end
-        end      
+        end
       end
       results.to_json
     })
-    
+
 #		puts "******* time to get_related_indicator_type_data: #{Time.now-start} seconds for event #{event_id}"
     return json
   end
 
-  
+
 	# determine overall placement of value in array
 	# assume array is already sorted in desired order
 	# if tie, the rank will be adjusted:
@@ -1431,5 +1433,5 @@ logger.debug "************* has_openlayers_rule_value flag from cache = #{json['
 		return h
 	end
 
-  
+
 end

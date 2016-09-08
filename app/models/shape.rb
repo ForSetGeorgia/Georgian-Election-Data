@@ -51,7 +51,7 @@ class Shape < ActiveRecord::Base
         if event.shape_id.present?
           shape = Shape.find(event.shape_id).subtree.select("shapes.id")
                   .joins(:shape_translations)
-                  .where(["shapes.shape_type_id = ? and shape_translations.common_id = ? and shape_translations.common_name = ? and shape_translations.locale = ?", 
+                  .where(["shapes.shape_type_id = ? and shape_translations.common_id = ? and shape_translations.common_name = ? and shape_translations.locale = ?",
                     shape_type_id, common_id, common_name, I18n.locale])
           if shape.present?
             h[:shape_type_id] = shape_type_id
@@ -594,8 +594,8 @@ logger.debug "**************************************"
 							# delete the shapes
 							shapes = Shape.select("id").where(["id in (:shape_ids) and shape_type_id in (:shape_type_ids)",
 								:shape_ids => event.shape.subtree_ids, :shape_type_ids => shape_type.subtree_ids])
-							error1 = ShapeTranslation.delete_all(["shape_id in (?)", shapes.collect(&:id)])
-							error2 = Shape.delete_all(["id in (?)", shapes.collect(&:id)])
+							error1 = ShapeTranslation.delete_all(["shape_id in (?)", shapes.map{|x| x[:id]}])
+							error2 = Shape.delete_all(["id in (?)", shapes.map{|x| x[:id]}])
               logger.debug "############## - error1 = #{error1} | error2 = #{error2}"
 		          if error1 == 0 || error2 == 0
 								msg = "error occurred while deleting records"
@@ -631,7 +631,7 @@ logger.debug "**************************************"
 				shape.save
 
 				# process each descendant that is not a precinct
-				descendants = shape.descendants.where("shape_type_id not in (:ids)", :ids => shape_types.collect(&:id))
+				descendants = shape.descendants.where("shape_type_id not in (:ids)", :ids => shape_types.map{|x| x[:id]})
 				descendants.each do |descendant|
 					descendant.num_precincts = compute_number_precincts(descendant.id, shape_types)
 					descendant.save
@@ -644,7 +644,7 @@ logger.debug "**************************************"
 		def self.compute_number_precincts(shape_id, shape_types)
 			number = nil
 			if shape_types && !shape_types.empty?
-				number = Shape.find(shape_id).descendants.where("shape_type_id in (:ids)", :ids => shape_types.collect(&:id)).length
+				number = Shape.find(shape_id).descendants.where("shape_type_id in (:ids)", :ids => shape_types.map{|x| x[:id]}).length
 			end
 			return number
 		end

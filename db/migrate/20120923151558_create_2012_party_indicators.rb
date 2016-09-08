@@ -61,7 +61,7 @@ class Create2012PartyIndicators < ActiveRecord::Migration
 		names = ['Free Georgia', 'Public Movement', 'People\'s Party', 'Merab Kostava Society', 'Labour Council of Georgia', 'Georgian Dream']
 		trans = CoreIndicatorTranslation.where("locale = 'en' and name in (?)", names)
 
-		CoreIndicator.where("id in (?)", trans.collect(&:core_indicator_id)).destroy_all
+		CoreIndicator.where("id in (?)", trans.map{|x| x[:core_indicator_id]}).destroy_all
 
   end
 end

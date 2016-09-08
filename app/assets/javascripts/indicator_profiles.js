@@ -103,11 +103,11 @@ function adjust_indicator_profile_height(){
 
 function set_indicator_profile_table_visibility(visible){
   if (visible){
-    $('.indicator_table_container .indicator_table_no_data').hide(); 
-    $('.indicator_table_container .indicator_table').show(); 
+    $('.indicator_table_container .indicator_table_no_data').hide();
+    $('.indicator_table_container .indicator_table').show();
   } else{
-    $('.indicator_table_container .indicator_table_no_data').show(); 
-    $('.indicator_table_container .indicator_table').hide(); 
+    $('.indicator_table_container .indicator_table_no_data').show();
+    $('.indicator_table_container .indicator_table').hide();
   }
 }
 
@@ -130,7 +130,7 @@ function build_indicator_profile_table(json_data){
       var rows = [];
       // holds list of unique indicators
       // the index of the indicator + 1 = the array of values for that indicator in rows
-      var indicators = []; 
+      var indicators = [];
 
       // holds list of events ids so can assign to table cells
       var event_ids = new Array(json_data.length);
@@ -138,7 +138,7 @@ function build_indicator_profile_table(json_data){
 
       // get event ids
       for (var i=0;i<json_data.length;i++){
-        event_ids[i] = json_data[i].event.id;      
+        event_ids[i] = json_data[i].event.id;
       }
 
       // create the header row
@@ -146,9 +146,9 @@ function build_indicator_profile_table(json_data){
       rows.push(row);
       row[0] = gon.profile_table_indicator_header;
       for (var i=0;i<json_data.length;i++){
-        row[i+1] = json_data[i].event.name;      
+        row[i+1] = json_data[i].event.name;
       }
-      
+
       // add data rows
       // format: [ [ind, event 1 name, event 2 name, etc], [ind 1, event 1 value, event 2, value, etc ], [ind 2, event 1 value, event 2, value, etc ], etc. ]
       // for each event
@@ -160,12 +160,12 @@ function build_indicator_profile_table(json_data){
               for (var k=0;k<json_data[i].data[j].summary_data.data.length;k++){
                 ind = json_data[i].data[j].summary_data.data[k];
 
-                // see if this is a new indicator 
+                // see if this is a new indicator
                 ind_index = indicators.indexOf(ind.indicator_name)
                 if (ind_index == -1){
                   // add the new indicator to the list
                   indicators.push(ind.indicator_name);
-                  ind_index = indicators.length-1;            
+                  ind_index = indicators.length-1;
                   // create a new row for this indicator
                   row = new Array(json_data.length+1);
                   rows.push(row);
@@ -177,12 +177,12 @@ function build_indicator_profile_table(json_data){
               }
             } else if (json_data[i].data[j].hasOwnProperty("data_item")){
               ind = json_data[i].data[j].data_item;
-              // see if this is a new indicator 
+              // see if this is a new indicator
               ind_index = indicators.indexOf(ind.indicator_name)
               if (ind_index == -1){
                 // add the new indicator to the list
                 indicators.push(ind.indicator_name);
-                ind_index = indicators.length-1;            
+                ind_index = indicators.length-1;
                 // create a new row for this indicator
                 row = new Array(json_data.length+1);
                 rows.push(row);
@@ -197,8 +197,8 @@ function build_indicator_profile_table(json_data){
             }
           }
         }
-      }  
-    
+      }
+
       // now build table using rows array
       if (rows.length > 1){
         var html = "";
@@ -265,7 +265,7 @@ function build_indicator_profile_table(json_data){
         html += "</td></tr></tfoot>";
 
         html += "</tbody></table>";
-        
+
         // create table
         $('.tab-pane.active .indicator_table').html(html);
 
@@ -304,7 +304,7 @@ function build_indicator_profile_table(json_data){
 
         // add datatable fn
         $('#indicator_profile .tab-pane.active .indicator_table table').dataTable({
-          "sDom": "<'row-fluid'<'span6'f><'span6'T>r>t",    
+          "sDom": "<'row-fluid'<'span6'f><'span6'T>r>t",
           "bLengthChange": false,
           "bJQueryUI": false,
           "bProcessing": true,
@@ -432,13 +432,13 @@ function build_summary_indicator_profile_charts(){
     for (var i=0;i<indicator_profile_data.length;i++){
       if (indicator_profile_data[i].event.id.toString() == $(this).data('id')){
         if (indicator_profile_data[i].data == null){
-          detail_data.push(null);  
+          detail_data.push(null);
         } else {
           for (var j=0;j<indicator_profile_data[i].data.length;j++){
             if (indicator_profile_data[i].data[j].hasOwnProperty("summary_data")){
               for (var k=0;k<indicator_profile_data[i].data[j].summary_data.data.length;k++){
                 ind = indicator_profile_data[i].data[j].summary_data.data[k];
-                if (ind.core_indicator_id.toString() == gon.indicator_profile.id.toString() || 
+                if (ind.core_indicator_id.toString() == gon.indicator_profile.id.toString() ||
                       (gon.indicator_profile.child_ids.length > 0 && gon.indicator_profile.child_ids.indexOf(ind.core_indicator_id) > -1)){
                   indicator_data = ind;
                   indicator_name = ind.indicator_name;
@@ -451,7 +451,7 @@ function build_summary_indicator_profile_charts(){
         }
         break;
       }
-    }  
+    }
 
     build_summary_indicator_profile_summary_charts($(this), indicator_data);
     var ths_detail = $('#indicator_profile .tab-pane.active .indicator_detail_chart[data-id="' + event_id.toString() + '"]')
@@ -513,12 +513,12 @@ function build_item_indicator_profile_charts(){
     for (var i=0;i<indicator_profile_data.length;i++){
       if (indicator_profile_data[i].event.id.toString() == $(this).data('id')){
         if (indicator_profile_data[i].data == null){
-          detail_data.push(null);  
+          detail_data.push(null);
         } else {
           for (var j=0;j<indicator_profile_data[i].data.length;j++){
             if (indicator_profile_data[i].data[j].hasOwnProperty("data_item")){
               ind = indicator_profile_data[i].data[j].data_item;
-              if (ind.core_indicator_id.toString() == gon.indicator_profile.id.toString() || 
+              if (ind.core_indicator_id.toString() == gon.indicator_profile.id.toString() ||
                     (gon.indicator_profile.child_ids.length > 0 && gon.indicator_profile.child_ids.indexOf(ind.core_indicator_id) > -1)){
                 indicator_data = ind;
                 indicator_name = ind.indicator_name;
@@ -530,7 +530,7 @@ function build_item_indicator_profile_charts(){
         }
         break;
       }
-    }  
+    }
 
 
     build_item_indicator_profile_summary_charts($(this), indicator_data);
@@ -613,7 +613,7 @@ $(document).ready(function() {
     });
 
     // when district filter selected, update the charts
-    $('#indicator_profile .tab-pane.active select.district_filter_select').live('change', function(){
+    $('#indicator_profile .tab-pane.active select.district_filter_select').on('change', function(){
       var selected_index = $(this).prop("selectedIndex");
       var selected_option = $(this).children()[selected_index];
 
@@ -627,7 +627,7 @@ $(document).ready(function() {
 
 
     // when event filter changes, update what events to show
-    $('#indicator_profile .tab-pane.active .event_filter select').live('change', function(){
+    $('#indicator_profile .tab-pane.active .event_filter select').on('change', function(){
       show_appropriate_indicator_events(this);
     });
 

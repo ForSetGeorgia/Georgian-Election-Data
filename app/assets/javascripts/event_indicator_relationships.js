@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	if (gon.load_js_event_indicator_relationship_form) {
     // when the remove button is clicked, remove the content in that block
-		$('button.remove').live('click', function(){
+		$('button.remove').on('click', function(){
       $('div#' + this.id).fadeTo('slow', 0).slideUp(function(){
         jQuery(this).empty();
 	    });

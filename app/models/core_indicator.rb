@@ -22,9 +22,9 @@ class CoreIndicator < ActiveRecord::Base
 	def reset_ancestry
 		self.ancestry = nil if self.ancestry && self.ancestry.empty?
 	end
-	
+
   def self.order_by_type_name(include_ancestry = false)
-    sort = "core_indicators.indicator_type_id ASC, core_indicator_translations.name ASC"  
+    sort = "core_indicators.indicator_type_id ASC, core_indicator_translations.name ASC"
     if include_ancestry
       sort = "core_indicators.indicator_type_id ASC, core_indicators.ancestry asc, core_indicator_translations.name ASC"
     end
@@ -58,7 +58,7 @@ class CoreIndicator < ActiveRecord::Base
   def self.generate_rank_name(name, rank)
     if rank.present?
       "##{rank} - #{name}"
-    else 
+    else
       name
     end
   end
@@ -73,7 +73,7 @@ class CoreIndicator < ActiveRecord::Base
 			nil
 		end
 	end
-	
+
 	# get array of ids
 	# - used for validation in :default_core_indicator_id in event
 	def self.ids
@@ -89,7 +89,7 @@ class CoreIndicator < ActiveRecord::Base
 							.where(:indicators => {:event_id => event_id})
 
 			self.order_by_type_name
-				.where("core_indicators.id in (?)", ids.collect(&:id))
+				.where("core_indicators.id in (?)", ids.map{|x| x[:id]})
 		end
 	end
 
@@ -108,10 +108,10 @@ class CoreIndicator < ActiveRecord::Base
 #TODO
     # hard code the shape type ids for now
     shape_type_ids = [1,3,7]
-    
+
     # get ids of indicators that have relationships
     ids = CoreIndicator.select('distinct core_indicators.id, core_indicators.ancestry').joins(:event_indicator_relationships, :indicators).where("indicators.shape_type_id in (?)", shape_type_ids)
-    
+
     # merge the id and ancestry ids into one array
     core_ids = []
     if ids.present?
@@ -119,7 +119,7 @@ class CoreIndicator < ActiveRecord::Base
       core_ids << ids.select{|x| x.ancestry.present?}.map{|x| x.root_id}.uniq
       core_ids.flatten!
     end
-        
+
     where("core_indicators.id in (?)", core_ids)
       .order_by_type_name(true)
 
@@ -138,10 +138,10 @@ class CoreIndicator < ActiveRecord::Base
         ind = Hash.new
         json << ind
         ind[:id] = core.id
-        ind[:name] = core.name  
+        ind[:name] = core.name
         ind[:name_abbrv] = core.name_abbrv
         ind[:summary] = core.summary
-        ind[:type_id] = core.indicator_type_id    
+        ind[:type_id] = core.indicator_type_id
         ind[:child_ids] = []
         event_types = []
         ind[:event_types] = event_types
@@ -183,7 +183,7 @@ class CoreIndicator < ActiveRecord::Base
             end
           end
         end
-      else      
+      else
         # indicators belongs to a parent
         # add the event types/events from this to the parent
         index = json.index{|x| x[:id].to_s == core.ancestry}

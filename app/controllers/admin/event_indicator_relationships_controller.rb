@@ -181,10 +181,10 @@ logger.debug "++++++++++ error = relationship.errors.inspect"
 
 		existing_indicator_relationships = EventIndicatorRelationship.core_indicator_ids_in_event(params[:id])
     @unused_indicators = Array.new(@core_indicators)
-			.delete_if{|x| !existing_indicator_relationships.collect(&:core_indicator_id).index(x.id).nil?}
+			.delete_if{|x| !existing_indicator_relationships.map{|x| x[:core_indicator_id]}.index(x.id).nil?}
 		existing_indicator_type_relationships = EventIndicatorRelationship.indicator_type_ids_in_event(params[:id])
     @unused_indicator_types = Array.new(@indicator_types)
-			.delete_if{|x| !existing_indicator_type_relationships.collect(&:indicator_type_id).index(x.id).nil?}
+			.delete_if{|x| !existing_indicator_type_relationships.map{|x| x[:indicator_type_id]}.index(x.id).nil?}
 
 		gon.load_js_event_indicator_relationship_form = true
 logger.debug "/////////////////////////////////////////"

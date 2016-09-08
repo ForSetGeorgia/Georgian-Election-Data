@@ -29,8 +29,8 @@ $(function(){
 
 
   // download data links cannot submit as normal links due to geo language and event name/titles being long (too many characters for url)
-  // so use hidden form  
-  $('.download-link').live('click', function(event) {
+  // so use hidden form
+  $('.download-link').on('click', function(event) {
     event.preventDefault();
 
 		$("#hidden_form_data #type").val($(this).data('type'));
@@ -38,6 +38,6 @@ $(function(){
 		// submit the hidden form
 		$('#hidden_form_data').submit();
   });
-  
+
 });
 

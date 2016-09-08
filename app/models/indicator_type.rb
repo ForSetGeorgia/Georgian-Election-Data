@@ -16,7 +16,7 @@ class IndicatorType < ActiveRecord::Base
     with_translations(I18n.locale).order("indicator_types.sort_order, indicator_type_translations.name")
   end
 
-  # get all indicators 
+  # get all indicators
   # if summary exists, sort indicators by rank in summary
   # - rank will also be included in the core_indicator object
   # - color value will also be updated from summary so that if ind is child, it will have parent color
@@ -27,7 +27,7 @@ class IndicatorType < ActiveRecord::Base
     if ind_types.present?
       # see if summary exists for this event
       summaries = ind_types.select{|x| x.has_summary == true}
-      
+
       if summaries.present?
         summaries.each do |type|
           # summary exists, get it for parent shape
@@ -48,9 +48,9 @@ class IndicatorType < ActiveRecord::Base
         end
       end
     end
-    
+
     return ind_types
-  end  
+  end
 
 
 	# get all indicators by type for an event and shape type
@@ -113,7 +113,7 @@ class IndicatorType < ActiveRecord::Base
 							.where(:indicators => {:event_id => event_id})
 			# only get names of ones that have summaries
 			self.with_translations(I18n.locale).has_summary
-				.where("indicator_types.id in (?)", ids.collect(&:id))
+				.where("indicator_types.id in (?)", ids.map{|x| x[:id]})
 				.order("indicator_type_translations.name ASC")
 		end
 	end

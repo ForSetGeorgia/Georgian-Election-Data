@@ -102,11 +102,11 @@ function adjust_district_profile_height(){
 
 function set_district_profile_table_visibility(visible){
   if (visible){
-    $('.district_table_container .district_table_no_data').hide(); 
-    $('.district_table_container .district_table').show(); 
+    $('.district_table_container .district_table_no_data').hide();
+    $('.district_table_container .district_table').show();
   } else{
-    $('.district_table_container .district_table_no_data').show(); 
-    $('.district_table_container .district_table').hide(); 
+    $('.district_table_container .district_table_no_data').show();
+    $('.district_table_container .district_table').hide();
   }
 }
 
@@ -129,14 +129,14 @@ function build_district_profile_table(json_data){
       var rows = [];
       // holds list of unique indicators
       // the index of the indicator + 1 = the array of values for that indicator in rows
-      var indicators = []; 
+      var indicators = [];
       // holds list of events ids so can assign to table cells
       var event_ids = new Array(json_data.length);
       var row, ind, ind_index, footnote;
 
       // get event ids
       for (var i=0;i<json_data.length;i++){
-        event_ids[i] = json_data[i].event.id;      
+        event_ids[i] = json_data[i].event.id;
       }
 
       // create the header row
@@ -144,9 +144,9 @@ function build_district_profile_table(json_data){
       rows.push(row);
       row[0] = gon.profile_table_indicator_header;
       for (var i=0;i<json_data.length;i++){
-        row[i+1] = json_data[i].event.name;      
+        row[i+1] = json_data[i].event.name;
       }
-      
+
       // add data rows
       // format: [ [ind, event 1 name, event 2 name, etc], [ind 1, event 1 value, event 2, value, etc ], [ind 2, event 1 value, event 2, value, etc ], etc. ]
       // for each event
@@ -158,12 +158,12 @@ function build_district_profile_table(json_data){
               for (var k=0;k<json_data[i].data[j].summary_data.data.length;k++){
                 ind = json_data[i].data[j].summary_data.data[k];
 
-                // see if this is a new indicator 
+                // see if this is a new indicator
                 ind_index = indicators.indexOf(ind.indicator_name)
                 if (ind_index == -1){
                   // add the new indicator to the list
                   indicators.push(ind.indicator_name);
-                  ind_index = indicators.length-1;            
+                  ind_index = indicators.length-1;
                   // create a new row for this indicator
                   row = new Array(json_data.length+1);
                   rows.push(row);
@@ -175,12 +175,12 @@ function build_district_profile_table(json_data){
               }
             } else if (json_data[i].data[j].hasOwnProperty("data_item")){
               ind = json_data[i].data[j].data_item;
-              // see if this is a new indicator 
+              // see if this is a new indicator
               ind_index = indicators.indexOf(ind.indicator_name)
               if (ind_index == -1){
                 // add the new indicator to the list
                 indicators.push(ind.indicator_name);
-                ind_index = indicators.length-1;            
+                ind_index = indicators.length-1;
                 // create a new row for this indicator
                 row = new Array(json_data.length+1);
                 rows.push(row);
@@ -195,7 +195,7 @@ function build_district_profile_table(json_data){
             }
           }
         }
-      }  
+      }
       // now build table using rows array
       if (rows.length > 1){
         var html = "";
@@ -262,7 +262,7 @@ function build_district_profile_table(json_data){
         html += "</td></tr></tfoot>";
 
         html += "</tbody></table>";
-        
+
         // create table
         $('.tab-pane.active .district_table').html(html);
 
@@ -300,7 +300,7 @@ function build_district_profile_table(json_data){
 
         // add datatable fn
         $('#district_profile .tab-pane.active .district_table table').dataTable({
-          "sDom": "<'row-fluid'<'span6'f><'span6'T>r>t",    
+          "sDom": "<'row-fluid'<'span6'f><'span6'T>r>t",
           "bLengthChange": false,
           "bJQueryUI": false,
           "bProcessing": true,
@@ -433,7 +433,7 @@ function build_summary_district_profile_charts(){
     for (var i=0;i<district_profile_data.length;i++){
       if (district_profile_data[i].event.id.toString() == $(this).data('id')){
         if (district_profile_data[i].data == null){
-          detail_data.push(null);  
+          detail_data.push(null);
         } else {
           for (var j=0;j<district_profile_data[i].data.length;j++){
             if (district_profile_data[i].data[j].hasOwnProperty("summary_data")){
@@ -451,7 +451,7 @@ function build_summary_district_profile_charts(){
         }
         break;
       }
-    }  
+    }
 
     build_summary_district_profile_summary_charts($(this), summary_colors, summary_data);
     var ths_detail = $('#district_profile .tab-pane.active .district_detail_chart[data-id="' + event_id.toString() + '"]')
@@ -515,7 +515,7 @@ function build_item_district_profile_charts(indicator_id){
     for (var i=0;i<district_profile_data.length;i++){
       if (district_profile_data[i].event.id.toString() == $(this).data('id')){
         if (district_profile_data[i].data == null){
-          detail_data.push(null);  
+          detail_data.push(null);
         } else {
           for (var j=0;j<district_profile_data[i].data.length;j++){
             if (district_profile_data[i].data[j].hasOwnProperty("data_item")){
@@ -531,7 +531,7 @@ function build_item_district_profile_charts(indicator_id){
         }
         break;
       }
-    }  
+    }
 
     build_item_district_profile_summary_charts($(this), indicator_data);
     var ths_detail = $('#district_profile .tab-pane.active .district_detail_chart[data-id="' + event_id.toString() + '"]')
@@ -587,7 +587,7 @@ function get_district_event_type_data(ths_event_type, is_summary, indicator_id){
         }
         build_district_profile_table(data);
 
-        adjust_district_profile_height(); 
+        adjust_district_profile_height();
 
         assign_district_no_left_margin_class();
 
@@ -623,7 +623,7 @@ $(document).ready(function() {
     });
 
     // when indicator filter selected, update the charts
-    $('#district_profile .tab-pane.active select.indicator_filter_select').live('change', function(){
+    $('#district_profile .tab-pane.active select.indicator_filter_select').on('change', function(){
       var selected_index = $(this).prop("selectedIndex");
       // have to do children.children because using optgroups
       var selected_option = $(this).children().children()[selected_index];
@@ -644,7 +644,7 @@ $(document).ready(function() {
     });
 
     // when event filter changes, update what events to show
-    $('#district_profile .tab-pane.active .event_filter select').live('change', function(){
+    $('#district_profile .tab-pane.active .event_filter select').on('change', function(){
       show_appropriate_district_events(this);
     });
 

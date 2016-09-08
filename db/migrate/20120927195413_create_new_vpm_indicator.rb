@@ -92,7 +92,7 @@ class CreateNewVpmIndicator < ActiveRecord::Migration
               vpm_indicators = Indicator.where(["event_id = ? and shape_type_id = ? and core_indicator_id in (?)", event.id, shape_type.id, vpm_id_parents])
               DataSet.where(:event_id => event.id).each do |dataset|
                 # get all data records in this dataset for these indicators
-                data = Datum.where(["data_set_id = ? and indicator_id in (?)", dataset.id, vpm_indicators.collect(&:id)])
+                data = Datum.where(["data_set_id = ? and indicator_id in (?)", dataset.id, vpm_indicators.map{|x| x[:id]}])
                 # for each unique common_name (shape)
                 data.map{|x| x.en_common_name}.uniq.each do |common_name|
                   data_record = data.select{|x| x.en_common_name == common_name}.first

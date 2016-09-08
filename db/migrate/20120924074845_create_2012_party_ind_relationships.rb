@@ -19,7 +19,7 @@ class Create2012PartyIndRelationships < ActiveRecord::Migration
 
 			# copy the 2008 relationships for 'other' indicators and summary
 			indicators = CoreIndicator.where(:indicator_type_id => 1)
-		  relationships = EventIndicatorRelationship.where("event_id = 3 and (indicator_type_id = 2 or core_indicator_id in (?))", indicators.collect(&:id))
+		  relationships = EventIndicatorRelationship.where("event_id = 3 and (indicator_type_id = 2 or core_indicator_id in (?))", indicators.map{|x| x[:id]})
 		  relationships.each do |r|
 		    EventIndicatorRelationship.create(:event_id => event_id,
 		      :indicator_type_id => r.indicator_type_id,

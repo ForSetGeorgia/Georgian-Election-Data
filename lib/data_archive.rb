@@ -1,6 +1,6 @@
 module DataArchive
   require 'fileutils'
-  require 'zip/zip'
+  require 'zip'
 	require 'utf8_converter'
 
   ###########################################
@@ -42,7 +42,7 @@ module DataArchive
     I18n.locale = locale.to_sym
 
     events = Event.where(:id => event_id)
-    
+
     if events.present?
       event = events.first
 
@@ -131,7 +131,7 @@ module DataArchive
   end
 
 
-  ### create complete set of data archives	
+  ### create complete set of data archives
   def self.create_files(event_id = nil)
 		start_time = Time.now
 		timestamp = "#{I18n.l(start_time, :format => :file)}"

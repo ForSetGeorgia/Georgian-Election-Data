@@ -287,7 +287,7 @@ $(function(){
             $('#data_table_filter_container select#data_table_filter option[data-id="' + ind_col_filters[i] + '"]').prop('selected', true);
           }
           $('#data_table_filter_container select#data_table_filter').trigger("liszt:updated");
-          
+
           // show the correct table columns
           update_selected_cols();
 
@@ -308,8 +308,8 @@ $(function(){
 //					$('table#map_data_table td').removeClass('highlighted');
 					$('table#map_data_table th[data-id="' + dataid + '"]').addClass('highlighted');
 //					$('table#map_data_table td[data-id="' + dataid + '"]').addClass('highlighted');
-					
-				
+
+
 				}
 
 
@@ -388,7 +388,7 @@ $(function(){
 		gon.dt_highlight_shape = null;
 
 		var dataid = $(this).data('id');
-		
+
 		// if the title does not exist, use the link text
 		if (title == undefined || title == null){
 			title = $(this).text().trim();
@@ -432,7 +432,7 @@ $(function(){
 	// add click functions to all links in data table
 	var jq_data_table = $("table#map_data_table");
 	window.a_clicks_bound = false;
-	jq_data_table.live({
+	jq_data_table.on({
     'DOMNodeInserted': function()
     {
      if (window.a_clicks_bound)

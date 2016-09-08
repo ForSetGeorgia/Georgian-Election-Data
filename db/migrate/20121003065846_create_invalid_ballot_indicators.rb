@@ -258,7 +258,7 @@ class CreateInvalidBallotIndicators < ActiveRecord::Migration
 		# delete core indicators
 		trans = CoreIndicatorTranslation.where("name like '%invalid ballot%'")
 		if trans && !trans.empty?
-			CoreIndicator.where(:id => trans.collect(&:core_indicator_id)).destroy_all
+			CoreIndicator.where(:id => trans.map{|x| x[:core_indicator_id]}).destroy_all
 		end
 	end
 end
