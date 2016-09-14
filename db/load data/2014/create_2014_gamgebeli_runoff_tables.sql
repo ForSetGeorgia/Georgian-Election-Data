@@ -155,8 +155,8 @@ sum(`raw`.`14 - Georgian Party`) AS `14 - Georgian Party count`,
 sum(`raw`.`18 - Way of Georgia`) AS `18 - Way of Georgia count`,
 (100 * (sum(`raw`.`18 - Way of Georgia`) / sum(`raw`.`num_valid_votes`))) AS `18 - Way of Georgia`,
 sum(`raw`.`41 - Georgian Dream`) AS `41 - Georgian Dream count`,
-(100 * (sum(`raw`.`41 - Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `41 - Georgian Dream` 
-from ((((((((`2014 election gamgebeli runoff - raw` `raw` left join `2014 election gamgebeli runoff - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) join `2012 election parl - precinct count by country` `precinct_count`);
+(100 * (sum(`raw`.`41 - Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `41 - Georgian Dream`
+from ((((((((`2014 election gamgebeli runoff - raw` `raw` left join `2014 election gamgebeli runoff - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) join `2014 election - precinct count by country` `precinct_count`);
 
 
 
@@ -224,8 +224,8 @@ sum(`raw`.`14 - Georgian Party`) AS `14 - Georgian Party count`,
 sum(`raw`.`18 - Way of Georgia`) AS `18 - Way of Georgia count`,
 (100 * (sum(`raw`.`18 - Way of Georgia`) / sum(`raw`.`num_valid_votes`))) AS `18 - Way of Georgia`,
 sum(`raw`.`41 - Georgian Dream`) AS `41 - Georgian Dream count`,
-(100 * (sum(`raw`.`41 - Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `41 - Georgian Dream` 
-from ((((((((`2014 election gamgebeli runoff - raw` `raw` join `2012 election parl - precinct count by district` `precinct_count` on((`raw`.`district_id` = `precinct_count`.`district_id`))) left join `2014 election gamgebeli runoff - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) where (`raw`.`district_id` not between 1 and 10) group by `raw`.`region`,
+(100 * (sum(`raw`.`41 - Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `41 - Georgian Dream`
+from ((((((((`2014 election gamgebeli runoff - raw` `raw` join `2014 election - precinct count by district` `precinct_count` on((`raw`.`district_id` = `precinct_count`.`district_id`))) left join `2014 election gamgebeli runoff - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) where (`raw`.`district_id` not between 1 and 10) group by `raw`.`region`,
 `raw`.`district_name`,
 `raw`.`district_id` union select `raw`.`region` AS `region`,
 999 AS `district_id`,
@@ -289,8 +289,8 @@ sum(`raw`.`14 - Georgian Party`) AS `14 - Georgian Party count`,
 sum(`raw`.`18 - Way of Georgia`) AS `18 - Way of Georgia count`,
 (100 * (sum(`raw`.`18 - Way of Georgia`) / sum(`raw`.`num_valid_votes`))) AS `18 - Way of Georgia`,
 sum(`raw`.`41 - Georgian Dream`) AS `41 - Georgian Dream count`,
-(100 * (sum(`raw`.`41 - Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `41 - Georgian Dream` 
-from ((((((((`2014 election gamgebeli runoff - raw` `raw` join `2012 election parl - precinct count by region` `precinct_count` on((`raw`.`region` = `precinct_count`.`region`))) left join `2014 election gamgebeli runoff - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) where (`raw`.`district_id` between 1 and 10) group by `raw`.`region`;
+(100 * (sum(`raw`.`41 - Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `41 - Georgian Dream`
+from ((((((((`2014 election gamgebeli runoff - raw` `raw` join `2014 election - precinct count by region` `precinct_count` on((`raw`.`region` = `precinct_count`.`region`))) left join `2014 election gamgebeli runoff - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) where (`raw`.`district_id` between 1 and 10) group by `raw`.`region`;
 
 
 
@@ -334,7 +334,7 @@ cast(`raw`.`precinct_id` as char charset utf8)) AS `precinct_name`,
 `raw`.`18 - Way of Georgia` AS `18 - Way of Georgia count`,
 (100 * (`raw`.`18 - Way of Georgia` / `raw`.`num_valid_votes`)) AS `18 - Way of Georgia`,
 `raw`.`41 - Georgian Dream` AS `41 - Georgian Dream count`,
-(100 * (`raw`.`41 - Georgian Dream` / `raw`.`num_valid_votes`)) AS `41 - Georgian Dream` 
+(100 * (`raw`.`41 - Georgian Dream` / `raw`.`num_valid_votes`)) AS `41 - Georgian Dream`
 from `2014 election gamgebeli runoff - raw` `raw` where (`raw`.`district_id` not between 1 and 10);
 
 
@@ -402,8 +402,8 @@ sum(`raw`.`14 - Georgian Party`) AS `14 - Georgian Party count`,
 sum(`raw`.`18 - Way of Georgia`) AS `18 - Way of Georgia count`,
 (100 * (sum(`raw`.`18 - Way of Georgia`) / sum(`raw`.`num_valid_votes`))) AS `18 - Way of Georgia`,
 sum(`raw`.`41 - Georgian Dream`) AS `41 - Georgian Dream count`,
-(100 * (sum(`raw`.`41 - Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `41 - Georgian Dream` 
-from ((((((((`2014 election gamgebeli runoff - raw` `raw` join `2012 election parl - precinct count by region` `precinct_count` on((`raw`.`region` = `precinct_count`.`region`))) left join `2014 election gamgebeli runoff - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) group by `raw`.`region`;
+(100 * (sum(`raw`.`41 - Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `41 - Georgian Dream`
+from ((((((((`2014 election gamgebeli runoff - raw` `raw` join `2014 election - precinct count by region` `precinct_count` on((`raw`.`region` = `precinct_count`.`region`))) left join `2014 election gamgebeli runoff - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) group by `raw`.`region`;
 
 
 
@@ -472,8 +472,8 @@ sum(`raw`.`14 - Georgian Party`) AS `14 - Georgian Party count`,
 sum(`raw`.`18 - Way of Georgia`) AS `18 - Way of Georgia count`,
 (100 * (sum(`raw`.`18 - Way of Georgia`) / sum(`raw`.`num_valid_votes`))) AS `18 - Way of Georgia`,
 sum(`raw`.`41 - Georgian Dream`) AS `41 - Georgian Dream count`,
-(100 * (sum(`raw`.`41 - Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `41 - Georgian Dream` 
-from ((((((((`2014 election gamgebeli runoff - raw` `raw` join `2012 election parl - precinct count by district` `precinct_count` on((`raw`.`district_id` = `precinct_count`.`district_id`))) left join `2014 election gamgebeli runoff - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) where (`raw`.`district_id` between 1 and 10) group by `raw`.`region`,
+(100 * (sum(`raw`.`41 - Georgian Dream`) / sum(`raw`.`num_valid_votes`))) AS `41 - Georgian Dream`
+from ((((((((`2014 election gamgebeli runoff - raw` `raw` join `2014 election - precinct count by district` `precinct_count` on((`raw`.`district_id` = `precinct_count`.`district_id`))) left join `2014 election gamgebeli runoff - vpm 8-12>2` `vpm1` on(((`raw`.`region` = `vpm1`.`region`) and (`raw`.`district_id` = `vpm1`.`district_id`) and (`raw`.`precinct_id` = `vpm1`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 12-17>2` `vpm2` on(((`raw`.`region` = `vpm2`.`region`) and (`raw`.`district_id` = `vpm2`.`district_id`) and (`raw`.`precinct_id` = `vpm2`.`precinct_id`)))) left join `2014 election gamgebeli runoff - vpm 17-20>2` `vpm3` on(((`raw`.`region` = convert(`vpm3`.`region` using utf8)) and (`raw`.`district_id` = `vpm3`.`district_id`) and (`raw`.`precinct_id` = `vpm3`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 0-1` `invalid_ballots_01` on(((`raw`.`region` = `invalid_ballots_01`.`region`) and (`raw`.`district_id` = `invalid_ballots_01`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_01`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 1-3` `invalid_ballots_13` on(((`raw`.`region` = `invalid_ballots_13`.`region`) and (`raw`.`district_id` = `invalid_ballots_13`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_13`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots 3-5` `invalid_ballots_35` on(((`raw`.`region` = `invalid_ballots_35`.`region`) and (`raw`.`district_id` = `invalid_ballots_35`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_35`.`precinct_id`)))) left join `2014 election gamgebeli runoff - invalid ballots >5` `invalid_ballots_>5` on(((`raw`.`region` = `invalid_ballots_>5`.`region`) and (`raw`.`district_id` = `invalid_ballots_>5`.`district_id`) and (`raw`.`precinct_id` = `invalid_ballots_>5`.`precinct_id`)))) where (`raw`.`district_id` between 1 and 10) group by `raw`.`region`,
 `raw`.`district_name`,
 `raw`.`district_id`;
 
@@ -518,7 +518,7 @@ cast(`raw`.`precinct_id` as char charset utf8)) AS `precinct_name`,
 `raw`.`18 - Way of Georgia` AS `18 - Way of Georgia count`,
 (100 * (`raw`.`18 - Way of Georgia` / `raw`.`num_valid_votes`)) AS `18 - Way of Georgia`,
 `raw`.`41 - Georgian Dream` AS `41 - Georgian Dream count`,
-(100 * (`raw`.`41 - Georgian Dream` / `raw`.`num_valid_votes`)) AS `41 - Georgian Dream` 
+(100 * (`raw`.`41 - Georgian Dream` / `raw`.`num_valid_votes`)) AS `41 - Georgian Dream`
 from `2014 election gamgebeli runoff - raw` `raw` where (`raw`.`district_id` between 1 and 10);
 
 
@@ -539,15 +539,15 @@ create view `2014 election gamgebeli runoff - csv` as
 NULL AS `Invalid Ballots (%)`,
 -- `2014 election gamgebeli runoff - country`.`num precincts logic fail` AS `Precincts with Validation Errors (#)`,
 -- `2014 election gamgebeli runoff - country`.`percent precincts logic fail` AS `Precincts with Validation Errors (%)`,
--- `2014 election gamgebeli runoff - country`.`avg precinct logic fail difference` AS `Average Number of Validation Errors`, 
+-- `2014 election gamgebeli runoff - country`.`avg precinct logic fail difference` AS `Average Number of Validation Errors`,
 -- NULL AS `Number of Validation Errors`,
 `2014 election gamgebeli runoff - country`.`num precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (#)`,
 `2014 election gamgebeli runoff - country`.`percent precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (%)`,
-`2014 election gamgebeli runoff - country`.`avg precinct difference more ballots than votes` AS `More Ballots Than Votes (Average)`, 
+`2014 election gamgebeli runoff - country`.`avg precinct difference more ballots than votes` AS `More Ballots Than Votes (Average)`,
 NULL AS `More Ballots Than Votes (#)`,
 `2014 election gamgebeli runoff - country`.`num precincts more votes than ballots` AS `Precincts with More Votes than Ballots (#)`,
 `2014 election gamgebeli runoff - country`.`percent precincts more votes than ballots` AS `Precincts with More Votes than Ballots (%)`,
-`2014 election gamgebeli runoff - country`.`avg precinct difference more votes than ballots` AS `More Votes than Ballots (Average)`, 
+`2014 election gamgebeli runoff - country`.`avg precinct difference more votes than ballots` AS `More Votes than Ballots (Average)`,
 NULL AS `More Votes than Ballots (#)`,
 NULL AS `Average votes per minute (08:00-12:00)`,
 NULL AS `Average votes per minute (12:00-17:00)`,
@@ -579,15 +579,15 @@ union
 NULL AS `Invalid Ballots (%)`,
 -- `2014 election gamgebeli runoff - region`.`num precincts logic fail` AS `Precincts with Validation Errors (#)`,
 -- `2014 election gamgebeli runoff - region`.`percent precincts logic fail` AS `Precincts with Validation Errors (%)`,
--- `2014 election gamgebeli runoff - region`.`avg precinct logic fail difference` AS `Average Number of Validation Errors`, 
+-- `2014 election gamgebeli runoff - region`.`avg precinct logic fail difference` AS `Average Number of Validation Errors`,
 -- NULL AS `Number of Validation Errors`,
 `2014 election gamgebeli runoff - region`.`num precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (#)`,
 `2014 election gamgebeli runoff - region`.`percent precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (%)`,
-`2014 election gamgebeli runoff - region`.`avg precinct difference more ballots than votes` AS `More Ballots Than Votes (Average)`, 
+`2014 election gamgebeli runoff - region`.`avg precinct difference more ballots than votes` AS `More Ballots Than Votes (Average)`,
 NULL AS `More Ballots Than Votes (#)`,
 `2014 election gamgebeli runoff - region`.`num precincts more votes than ballots` AS `Precincts with More Votes than Ballots (#)`,
 `2014 election gamgebeli runoff - region`.`percent precincts more votes than ballots` AS `Precincts with More Votes than Ballots (%)`,
-`2014 election gamgebeli runoff - region`.`avg precinct difference more votes than ballots` AS `More Votes than Ballots (Average)`, 
+`2014 election gamgebeli runoff - region`.`avg precinct difference more votes than ballots` AS `More Votes than Ballots (Average)`,
 NULL AS `More Votes than Ballots (#)`,
 NULL AS `Average votes per minute (08:00-12:00)`,
 NULL AS `Average votes per minute (12:00-17:00)`,
@@ -619,15 +619,15 @@ union
 NULL AS `Invalid Ballots (%)`,
 -- `2014 election gamgebeli runoff - districts`.`num precincts logic fail` AS `Precincts with Validation Errors (#)`,
 -- `2014 election gamgebeli runoff - districts`.`percent precincts logic fail` AS `Precincts with Validation Errors (%)`,
--- `2014 election gamgebeli runoff - districts`.`avg precinct logic fail difference` AS `Average Number of Validation Errors`, 
+-- `2014 election gamgebeli runoff - districts`.`avg precinct logic fail difference` AS `Average Number of Validation Errors`,
 -- NULL AS `Number of Validation Errors`,
 `2014 election gamgebeli runoff - districts`.`num precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (#)`,
 `2014 election gamgebeli runoff - districts`.`percent precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (%)`,
-`2014 election gamgebeli runoff - districts`.`avg precinct difference more ballots than votes` AS `More Ballots Than Votes (Average)`, 
+`2014 election gamgebeli runoff - districts`.`avg precinct difference more ballots than votes` AS `More Ballots Than Votes (Average)`,
 NULL AS `More Ballots Than Votes (#)`,
 `2014 election gamgebeli runoff - districts`.`num precincts more votes than ballots` AS `Precincts with More Votes than Ballots (#)`,
 `2014 election gamgebeli runoff - districts`.`percent precincts more votes than ballots` AS `Precincts with More Votes than Ballots (%)`,
-`2014 election gamgebeli runoff - districts`.`avg precinct difference more votes than ballots` AS `More Votes than Ballots (Average)`, 
+`2014 election gamgebeli runoff - districts`.`avg precinct difference more votes than ballots` AS `More Votes than Ballots (Average)`,
 NULL AS `More Votes than Ballots (#)`,
 NULL AS `Average votes per minute (08:00-12:00)`,
 NULL AS `Average votes per minute (12:00-17:00)`,
@@ -659,15 +659,15 @@ NULL AS `Number of Precincts with Invalid Ballots > 5%`,
 `2014 election gamgebeli runoff - precincts`.`percent invalid ballots` AS `Invalid Ballots (%)`,
 -- NULL AS `Precincts with Validation Errors (#)`,
 -- NULL AS `Precincts with Validation Errors (%)`,
--- NULL AS `Average Number of Validation Errors`, 
+-- NULL AS `Average Number of Validation Errors`,
 -- `2014 election gamgebeli runoff - precincts`.`logic_check_difference` AS `Number of Validation Errors`,
 null AS `Precincts with More Ballots Than Votes (#)`,
 null AS `Precincts with More Ballots Than Votes (%)`,
-null AS `More Ballots Than Votes (Average)`, 
+null AS `More Ballots Than Votes (Average)`,
 `2014 election gamgebeli runoff - precincts`.`more_ballots_than_votes` AS `More Ballots Than Votes (#)`,
 null AS `Precincts with More Votes than Ballots (#)`,
 null AS `Precincts with More Votes than Ballots (%)`,
-null AS `More Votes than Ballots (Average)`, 
+null AS `More Votes than Ballots (Average)`,
 `2014 election gamgebeli runoff - precincts`.`more_votes_than_ballots` AS `More Votes than Ballots (#)`,
 `2014 election gamgebeli runoff - precincts`.`vpm 8-12` AS `Average votes per minute (08:00-12:00)`,
 `2014 election gamgebeli runoff - precincts`.`vpm 12-17` AS `Average votes per minute (12:00-17:00)`,
@@ -699,15 +699,15 @@ union
 NULL AS `Invalid Ballots (%)`,
 -- `2014 election gamgebeli runoff - tbilisi district`.`num precincts logic fail` AS `Precincts with Validation Errors (#)`,
 -- `2014 election gamgebeli runoff - tbilisi district`.`percent precincts logic fail` AS `Precincts with Validation Errors (%)`,
--- `2014 election gamgebeli runoff - tbilisi district`.`avg precinct logic fail difference` AS `Average Number of Validation Errors`, 
+-- `2014 election gamgebeli runoff - tbilisi district`.`avg precinct logic fail difference` AS `Average Number of Validation Errors`,
 -- NULL AS `Number of Validation Errors`,
 `2014 election gamgebeli runoff - tbilisi district`.`num precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (#)`,
 `2014 election gamgebeli runoff - tbilisi district`.`percent precincts more ballots than votes` AS `Precincts with More Ballots Than Votes (%)`,
-`2014 election gamgebeli runoff - tbilisi district`.`avg precinct difference more ballots than votes` AS `More Ballots Than Votes (Average)`, 
+`2014 election gamgebeli runoff - tbilisi district`.`avg precinct difference more ballots than votes` AS `More Ballots Than Votes (Average)`,
 NULL AS `More Ballots Than Votes (#)`,
 `2014 election gamgebeli runoff - tbilisi district`.`num precincts more votes than ballots` AS `Precincts with More Votes than Ballots (#)`,
 `2014 election gamgebeli runoff - tbilisi district`.`percent precincts more votes than ballots` AS `Precincts with More Votes than Ballots (%)`,
-`2014 election gamgebeli runoff - tbilisi district`.`avg precinct difference more votes than ballots` AS `More Votes than Ballots (Average)`, 
+`2014 election gamgebeli runoff - tbilisi district`.`avg precinct difference more votes than ballots` AS `More Votes than Ballots (Average)`,
 NULL AS `More Votes than Ballots (#)`,
 NULL AS `Average votes per minute (08:00-12:00)`,
 NULL AS `Average votes per minute (12:00-17:00)`,
@@ -739,15 +739,15 @@ NULL AS `Number of Precincts with Invalid Ballots > 5%`,
 `2014 election gamgebeli runoff - tbilisi precincts`.`percent invalid ballots` AS `Invalid Ballots (%)`,
 -- NULL AS `Precincts with Validation Errors (#)`,
 -- NULL AS `Precincts with Validation Errors (%)`,
--- NULL AS `Average Number of Validation Errors`, 
+-- NULL AS `Average Number of Validation Errors`,
 -- `2014 election gamgebeli runoff - tbilisi precincts`.`logic_check_difference` AS `Number of Validation Errors`,
 null AS `Precincts with More Ballots Than Votes (#)`,
 null AS `Precincts with More Ballots Than Votes (%)`,
-null AS `More Ballots Than Votes (Average)`, 
+null AS `More Ballots Than Votes (Average)`,
 `2014 election gamgebeli runoff - tbilisi precincts`.`more_ballots_than_votes` AS `More Ballots Than Votes (#)`,
 null AS `Precincts with More Votes than Ballots (#)`,
 null AS `Precincts with More Votes than Ballots (%)`,
-null AS `More Votes than Ballots (Average)`, 
+null AS `More Votes than Ballots (Average)`,
 `2014 election gamgebeli runoff - tbilisi precincts`.`more_votes_than_ballots` AS `More Votes than Ballots (#)`,
 `2014 election gamgebeli runoff - tbilisi precincts`.`vpm 8-12` AS `Average votes per minute (08:00-12:00)`,
 `2014 election gamgebeli runoff - tbilisi precincts`.`vpm 12-17` AS `Average votes per minute (12:00-17:00)`,
