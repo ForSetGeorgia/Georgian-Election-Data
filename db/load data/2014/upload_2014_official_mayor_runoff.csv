@@ -1,5 +1,21 @@
 shape,common_id,common_name,Total Voter Turnout (#),Total Voter Turnout (%),Number of Precincts with Invalid Ballots from 0-1%,Number of Precincts with Invalid Ballots from 1-3%,Number of Precincts with Invalid Ballots from 3-5%,Number of Precincts with Invalid Ballots > 5%,Invalid Ballots (%),Precincts with More Ballots Than Votes (#),Precincts with More Ballots Than Votes (%),More Ballots Than Votes (Average),More Ballots Than Votes (#),Precincts with More Votes than Ballots (#),Precincts with More Votes than Ballots (%),More Votes than Ballots (Average),More Votes than Ballots (#),Average votes per minute (08:00-12:00),Average votes per minute (12:00-17:00),Average votes per minute (17:00-20:00),Number of Precincts with votes per minute > 2 (08:00-12:00),Number of Precincts with votes per minute > 2 (12:00-17:00),Number of Precincts with votes per minute > 2 (17:00-20:00),Number of Precincts with votes per minute > 2,Precincts Reported (#),Precincts Reported (%),United Opposition,United National Movement,Greens Party,Alliance of Patriots,Georgian Party,Way of Georgia,Georgian Dream
-Country,Georgia,Georgia,420429,32.88,12,436,489,70,,0,0.0,,,0,0.0,,,,,,0,0,1,1,1011,,,25.2,0.29,1.55,1.41,,71.53
+Country,Georgia,Georgia,420429,32.88,12,436,489,70,,0,0.0,,,0,0.0,,,,,,0,0,1,1,1011,5.56,,25.2,0.29,1.55,1.41,,71.53
+Region,Adjara,Adjara,33488,25.3,1,46,46,8,,0,0.0,,,0,0.0,,,,,,0,0,0,0,101,5.82,,22.02,,,,,77.95
+Region,Guria,Guria,7495,49.32,0,7,6,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,13,1.88,,,,41.04,,,58.83
+Region,Kakheti,Kakheti,6968,37.04,0,7,7,2,,0,0.0,,,0,0.0,,,,,,0,0,0,0,16,1.04,,29.39,,,,,70.61
+Region,Kvemo Kartli,Kvemo Kartli,34552,33.14,1,47,34,2,,0,0.0,,,0,0.0,,,,,,0,0,0,0,84,3.88,,35.22,,,,,64.75
+Region,Mtskheta-Mtianeti,Mtskheta-Mtianeti,3242,46.73,2,4,0,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,6,0.93,,,37.01,,,,62.99
+Region,Samegrelo-Zemo Svaneti,Samegrelo-Zemo Svaneti,12505,30.73,1,19,10,2,,0,0.0,,,0,0.0,,,,,,0,0,0,0,32,1.72,,,,27.61,,,72.38
+Region,Shida Kartli,Shida Kartli,15691,38.77,0,16,15,1,,0,0.0,,,0,0.0,,,,,,0,0,0,0,32,2.7,,,,,37.73,,62.16
+Region,Tbilisi,Tbilisi,306488,33.31,7,290,371,55,,0,0.0,,,0,0.0,,,,,,0,0,1,1,727,19.95,,27.52,,,,,72.46
+District,79,Batumi,33488,25.3,1,46,46,8,,0,0.0,,,0,0.0,,,,,,0,0,0,0,101,19.61,,22.02,,,,,77.95
+District,60,Ozurgeti,7495,49.32,0,7,6,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,13,4.19,,,,41.04,,,58.83
+District,17,Telavi,6968,37.04,0,7,7,2,,0,0.0,,,0,0.0,,,,,,0,0,0,0,16,5.93,,29.39,,,,,70.61
+District,20,Rustavi,34552,33.14,1,47,34,2,,0,0.0,,,0,0.0,,,,,,0,0,0,0,84,19.53,,35.22,,,,,64.75
+District,27,Mtskheta,3242,46.73,2,4,0,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,6,2.61,,,37.01,,,,62.99
+District,70,Poti,12505,30.73,1,19,10,2,,0,0.0,,,0,0.0,,,,,,0,0,0,0,32,20.0,,,,27.61,,,72.38
+District,32,Gori,15691,38.77,0,16,15,1,,0,0.0,,,0,0.0,,,,,,0,0,0,0,32,5.98,,,,,37.73,,62.16
+District,999,Tbilisi,306488,33.31,7,290,371,55,,0,0.0,,,0,0.0,,,,,,0,0,1,1,727,19.95,,27.52,,,,,72.46
 Precinct,1,17-1,645,45.91,,,,,2.71,,,,0,,,,0,1.04,0.92,0.77,,,,,,,,22.17,,,,,77.83
 Precinct,2,17-2,510,39.53,,,,,2.86,,,,0,,,,0,0.8,0.77,0.57,,,,,,,,22.75,,,,,77.25
 Precinct,3,17-3,409,45.9,,,,,3.99,,,,0,,,,0,0.58,0.64,0.52,,,,,,,,18.58,,,,,81.42
@@ -284,6 +300,16 @@ Precinct,101,79-101,141,26.7,,,,,2.08,,,,0,,,,0,0.28,0.16,0.16,,,,,,,,31.21,,,,,
 Precinct,102,79-102,256,20.51,,,,,1.54,,,,0,,,,0,0.6,0.21,0.28,,,,,,,,47.66,,,,,51.95
 Precinct,103,79-103,418,26.83,,,,,1.88,,,,0,,,,0,0.85,0.41,0.55,,,,,,,,33.49,,,,,66.51
 Precinct,104,79-104,380,26.13,,,,,3.31,,,,0,,,,0,0.72,0.46,0.46,,,,,,,,21.84,,,,,78.16
+Tbilisi District,7,Chugureti,19636,34.95,0,14,23,6,,0,0.0,,,0,0.0,,,,,,0,0,0,0,43,20.0,,27.59,,,,,72.41
+Tbilisi District,8,Didube,24359,37.28,0,16,34,4,,0,0.0,,,0,0.0,,,,,,0,0,0,0,54,20.0,,25.79,,,,,74.16
+Tbilisi District,10,Gldani,41041,30.96,3,50,48,8,,0,0.0,,,0,0.0,,,,,,0,0,1,1,111,20.0,,28.88,,,,,71.09
+Tbilisi District,5,Isani,30405,29.06,2,38,32,4,,0,0.0,,,0,0.0,,,,,,0,0,0,0,76,20.0,,31.51,,,,,68.48
+Tbilisi District,4,Krtsanisi,13679,33.16,0,18,12,2,,0,0.0,,,0,0.0,,,,,,0,0,0,0,33,20.0,,30.21,,,,,69.79
+Tbilisi District,1,Mtatsminda,20345,40.52,0,17,20,1,,0,0.0,,,0,0.0,,,,,,0,0,0,0,38,20.0,,34.36,,,,,65.62
+Tbilisi District,9,Nadzaladevi,41581,32.97,1,46,41,7,,0,0.0,,,0,0.0,,,,,,0,0,0,0,96,20.0,,25.15,,,,,74.82
+Tbilisi District,3,Saburtalo,40998,34.82,0,22,55,8,,0,0.0,,,0,0.0,,,,,,0,0,0,0,85,20.0,,24.46,,,,,75.53
+Tbilisi District,6,Samgori,39225,29.52,0,50,56,8,,0,0.0,,,0,0.0,,,,,,0,0,0,0,114,19.66,,27.17,,,,,72.82
+Tbilisi District,2,Vake,35219,37.83,1,19,50,7,,0,0.0,,,0,0.0,,,,,,0,0,0,0,77,20.0,,25.43,,,,,74.54
 Tbilisi Precinct,1,1-1,549,38.1,,,,,4.02,,,,0,,,,0,1.1,0.69,0.56,,,,,,,,26.96,,,,,73.04
 Tbilisi Precinct,2,1-2,487,39.5,,,,,4.7,,,,0,,,,0,0.84,0.76,0.45,,,,,,,,36.96,,,,,63.04
 Tbilisi Precinct,3,1-3,573,40.21,,,,,2.88,,,,0,,,,0,0.88,0.84,0.72,,,,,,,,38.74,,,,,61.26

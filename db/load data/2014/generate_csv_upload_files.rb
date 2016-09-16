@@ -10,7 +10,42 @@ require 'mysql2'
 @user = 'root'
 @password = 'root'
 @db = 'election_data-elections'
-@common_headers = ['shape', 'common_id', 'common_name', 'Total Voter Turnout (#)', 'Total Voter Turnout (%)', 'Number of Precincts with Invalid Ballots from 0-1%', 'Number of Precincts with Invalid Ballots from 1-3%', 'Number of Precincts with Invalid Ballots from 3-5%', 'Number of Precincts with Invalid Ballots > 5%', 'Invalid Ballots (%)', 'Precincts with More Ballots Than Votes (#)', 'Precincts with More Ballots Than Votes (%)', 'More Ballots Than Votes (Average)', 'More Ballots Than Votes (#)','Precincts with More Votes than Ballots (#)', 'Precincts with More Votes than Ballots (%)', 'More Votes than Ballots (Average)', 'More Votes than Ballots (#)','Average votes per minute (08:00-12:00)', 'Average votes per minute (12:00-17:00)', 'Average votes per minute (17:00-20:00)', 'Number of Precincts with votes per minute > 2 (08:00-12:00)', 'Number of Precincts with votes per minute > 2 (12:00-17:00)', 'Number of Precincts with votes per minute > 2 (17:00-20:00)', 'Number of Precincts with votes per minute > 2', 'Precincts Reported (#)', 'Precincts Reported (%)']
+@year = '2014'
+# indicate which election should be used to load precinct counts
+# - note - this election should be run first so it is available to all other elections
+@precinct_count_table = "#{@year} election local major - raw"
+
+# if there is a majoritarian election,
+# then set the param to true so the count includes a majoritarian id field
+@is_majoritarian = true
+
+@common_headers = [
+  'shape',
+  'common_id',
+  'common_name',
+  'Total Voter Turnout (#)',
+  'Total Voter Turnout (%)',
+  'Number of Precincts with Invalid Ballots from 0-1%',
+  'Number of Precincts with Invalid Ballots from 1-3%',
+  'Number of Precincts with Invalid Ballots from 3-5%',
+  'Number of Precincts with Invalid Ballots > 5%',
+  'Invalid Ballots (%)',
+  'Precincts with More Ballots Than Votes (#)',
+  'Precincts with More Ballots Than Votes (%)',
+  'More Ballots Than Votes (Average)',
+  'More Ballots Than Votes (#)','Precincts with More Votes than Ballots (#)',
+  'Precincts with More Votes than Ballots (%)',
+  'More Votes than Ballots (Average)',
+  'More Votes than Ballots (#)','Average votes per minute (08:00-12:00)',
+  'Average votes per minute (12:00-17:00)',
+  'Average votes per minute (17:00-20:00)',
+  'Number of Precincts with votes per minute > 2 (08:00-12:00)',
+  'Number of Precincts with votes per minute > 2 (12:00-17:00)',
+  'Number of Precincts with votes per minute > 2 (17:00-20:00)',
+  'Number of Precincts with votes per minute > 2',
+  'Precincts Reported (#)',
+  'Precincts Reported (%)'
+]
 
 @client = Mysql2::Client.new(:host => "localhost", :username => @user, password: @password, database: @db)
 
@@ -23,7 +58,9 @@ end
 # load the csv data into a table
 def load_data(table, file)
   data = CSV.read(file, {quote_char: '"', force_quotes: true} )
+  total = data.length
   data.each_with_index do |row, index|
+    puts "--> #{index} out of #{total}" if index % 500 == 0
     # skip header
     if index > 0
       values = ""
@@ -107,6 +144,22 @@ def download_data(table, file, party_names)
   end
 end
 
+def load_precinct_counts
+  sql = "insert into `#{@year} election - precinct count`
+                select region, district_id, "
+  if @is_majoritarian
+    sql << "major_district_id, "
+  end
+  sql << "count(*) as num_precints
+          from `#{@precinct_count_table}`
+          group by region, district_id"
+  if @is_majoritarian
+    sql << ", major_district_id"
+  end
+
+  @client.query(sql)
+end
+
 
 # process an election
 def run_processing(table_raw, table_csv, input_csv, output_csv, parties)
@@ -125,6 +178,11 @@ def run_processing(table_raw, table_csv, input_csv, output_csv, parties)
   puts "  - running special scripts"
   run_custom_queries(table_raw, parties)
 
+  # load precinct count data
+  # - this needs to be done before downloading so the views get the correct data
+  puts "  - loading precinct counts"
+  load_precinct_counts
+
   # download the data
   puts "  - downloading"
   download_data(table_csv, output_csv, parties.map{|x| x[:name]})
@@ -133,6 +191,9 @@ def run_processing(table_raw, table_csv, input_csv, output_csv, parties)
   puts "===================="
 end
 
+###################################################3
+###################################################3
+###################################################3
 ###################################################3
 
 def gamgebeli
@@ -238,12 +299,86 @@ def mayor_runoff
   run_processing(table_raw, table_csv, input_csv, output_csv, parties)
 end
 
+###################################################3
+
+def local_party
+  table_raw = '2014 election local party - raw'
+  table_csv = '2014 election local party - csv'
+  input_csv = '2014_official_local_party.csv'
+  output_csv = 'upload_2014_official_local_party.csv'
+  parties = [
+    {id: 1, name: 'Non-Parliamentary Opposition'},
+    {id: 2, name: 'Armed Veterans Patriots'},
+    {id: 3, name: 'United Opposition'},
+    {id: 5, name: 'United National Movement'},
+    {id: 6, name: 'Greens Party'},
+    {id: 7, name: 'Name of the Lord'},
+    {id: 8, name: 'Alliance of Patriots'},
+    {id: 9, name: 'Self-governance to People'},
+    {id: 10, name: 'Peoples Party'},
+    {id: 11, name: 'Reformers'},
+    {id: 12, name: 'Our Georgia'},
+    {id: 13, name: 'Future Georgia'},
+    {id: 14, name: 'Georgian Party'},
+    {id: 15, name: 'Peoples Movement'},
+    {id: 16, name: 'Christian Democrats'},
+    {id: 17, name: 'Unity Hall'},
+    {id: 18, name: 'Way of Georgia'},
+    {id: 19, name: 'Freedom'},
+    {id: 20, name: 'Labour Party'},
+    {id: 26, name: 'Party of People'},
+    {id: 30, name: 'Merab Kostava Society'},
+    {id: 36, name: 'Labour Council'},
+    {id: 41, name: 'Georgian Dream'}
+  ]
+
+  run_processing(table_raw, table_csv, input_csv, output_csv, parties)
+end
+
+###################################################3
+
+def local_major
+  table_raw = '2014 election local major - raw'
+  table_csv = '2014 election local major - csv'
+  input_csv = '2014_official_local_major.csv'
+  output_csv = 'upload_2014_official_local_major.csv'
+  parties = [
+    {id: 1, name: 'Non-Parliamentary Opposition'},
+    {id: 2, name: 'Armed Veterans Patriots'},
+    {id: 3, name: 'United Opposition'},
+    {id: 4, name: 'National Democratic Party'},
+    {id: 5, name: 'United National Movement'},
+    {id: 6, name: 'Greens Party'},
+    {id: 7, name: 'Name of the Lord'},
+    {id: 8, name: 'Alliance of Patriots'},
+    {id: 9, name: 'Self-governance to People'},
+    {id: 10, name: 'Peoples Party'},
+    {id: 11, name: 'Reformers'},
+    {id: 12, name: 'Our Georgia'},
+    {id: 13, name: 'Future Georgia'},
+    {id: 14, name: 'Georgian Party'},
+    {id: 16, name: 'Christian Democrats'},
+    {id: 17, name: 'Unity Hall'},
+    {id: 18, name: 'Way of Georgia'},
+    {id: 19, name: 'Freedom'},
+    {id: 20, name: 'Labour Party'},
+    {id: 26, name: 'Party of People'},
+    {id: 30, name: 'Merab Kostava Society'},
+    {id: 36, name: 'Labour Council'},
+    {id: 41, name: 'Georgian Dream'}
+  ]
+
+  run_processing(table_raw, table_csv, input_csv, output_csv, parties)
+end
+
 #################################
 #################################
 #################################
 
 # process the elections
+local_major
 gamgebeli
 gamgebeli_runoff
 mayor
 mayor_runoff
+local_party

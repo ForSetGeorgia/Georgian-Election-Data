@@ -1,5 +1,25 @@
 shape,common_id,common_name,Total Voter Turnout (#),Total Voter Turnout (%),Number of Precincts with Invalid Ballots from 0-1%,Number of Precincts with Invalid Ballots from 1-3%,Number of Precincts with Invalid Ballots from 3-5%,Number of Precincts with Invalid Ballots > 5%,Invalid Ballots (%),Precincts with More Ballots Than Votes (#),Precincts with More Ballots Than Votes (%),More Ballots Than Votes (Average),More Ballots Than Votes (#),Precincts with More Votes than Ballots (#),Precincts with More Votes than Ballots (%),More Votes than Ballots (Average),More Votes than Ballots (#),Average votes per minute (08:00-12:00),Average votes per minute (12:00-17:00),Average votes per minute (17:00-20:00),Number of Precincts with votes per minute > 2 (08:00-12:00),Number of Precincts with votes per minute > 2 (12:00-17:00),Number of Precincts with votes per minute > 2 (17:00-20:00),Number of Precincts with votes per minute > 2,Precincts Reported (#),Precincts Reported (%),United Opposition,United National Movement,Greens Party,Alliance of Patriots,Georgian Party,Way of Georgia,Georgian Dream
-Country,Georgia,Georgia,181588,41.58,65,346,85,18,,0,0.0,,,0,0.0,,,,,,0,0,0,0,514,,6.86,13.09,,6.06,4.87,2.43,66.65
+Country,Georgia,Georgia,181588,41.58,65,346,85,18,,0,0.0,,,0,0.0,,,,,,0,0,0,0,514,4.71,6.86,13.09,,6.06,4.87,2.43,66.65
+Region,Adjara,Adjara,29093,31.67,23,70,21,5,,0,0.0,,,0,0.0,,,,,,0,0,0,0,119,11.43,,15.1,,14.7,,,70.16
+Region,Guria,Guria,15340,51.27,2,32,4,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,38,9.18,,,,43.88,,,56.11
+Region,Imereti,Imereti,52631,50.49,17,97,11,4,,0,0.0,,,0,0.0,,,,,,0,0,0,0,129,7.13,5.61,25.08,,,,8.37,60.9
+Region,Kakheti,Kakheti,39400,40.66,13,67,14,3,,0,0.0,,,0,0.0,,,,,,0,0,0,0,97,10.5,15.13,15.65,,,,,69.15
+Region,Mtskheta-Mtianeti,Mtskheta-Mtianeti,6018,55.18,4,14,2,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,20,5.17,35.49,,,,,,64.49
+Region,Samegrelo-Zemo Svaneti,Samegrelo-Zemo Svaneti,12321,36.57,2,24,10,3,,0,0.0,,,0,0.0,,,,,,0,0,0,0,39,3.49,11.35,,,,,,88.6
+Region,Shida Kartli,Shida Kartli,26785,38.7,4,42,23,3,,0,0.0,,,0,0.0,,,,,,0,0,0,0,72,10.13,,,,,33.0,,66.86
+District,84,Khulo,10546,44.1,15,30,6,3,,0,0.0,,,0,0.0,,,,,,0,0,0,0,54,33.33,,,,40.57,,,59.41
+District,81,Kobuleti,18547,27.29,8,40,15,2,,0,0.0,,,0,0.0,,,,,,0,0,0,0,65,33.33,,23.69,,,,,76.27
+District,61,Lanchkhuti,15340,51.27,2,32,4,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,38,33.33,,,,43.88,,,56.11
+District,52,Bagdati,10125,44.14,2,24,4,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,30,32.26,,,,,,43.53,56.4
+District,55,Khoni,14529,61.7,6,22,1,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,29,33.33,,41.74,,,,,58.19
+District,49,Terjola,18512,53.52,4,28,1,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,33,33.33,,38.55,,,,,61.44
+District,57,Tkibuli,9465,40.83,5,23,5,4,,0,0.0,,,0,0.0,,,,,,0,0,0,0,37,33.33,31.18,,,,,,68.78
+District,18,Akhmeta,14621,47.96,3,24,1,1,,0,0.0,,,0,0.0,,,,,,0,0,0,0,29,33.33,40.78,,,,,,59.15
+District,16,Kvareli,11443,39.17,5,22,3,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,30,33.33,,20.04,,,,,79.89
+District,17,Telavi,13336,35.86,5,21,10,2,,0,0.0,,,0,0.0,,,,,,0,0,0,0,38,23.46,,29.06,,,,,70.89
+District,19,Tianeti,6018,55.18,4,14,2,0,,0,0.0,,,0,0.0,,,,,,0,0,0,0,20,33.33,35.49,,,,,,64.49
+District,65,Martvili,12321,36.57,2,24,10,3,,0,0.0,,,0,0.0,,,,,,0,0,0,0,39,33.33,11.35,,,,,,88.6
+District,32,Gori,26785,38.7,4,42,23,3,,0,0.0,,,0,0.0,,,,,,0,0,0,0,72,22.43,,,,,33.0,,66.86
 Precinct,1,16-1,561,42.31,,,,,2.6,,,,0,,,,0,0.86,0.66,0.95,,,,,,,,17.65,,,,,82.35
 Precinct,2,16-2,606,43.41,,,,,2.1,,,,0,,,,0,1.18,0.71,0.68,,,,,,,,17.16,,,,,82.84
 Precinct,3,16-3,564,44.41,,,,,3.09,,,,0,,,,0,0.82,0.86,0.71,,,,,,,,20.74,,,,,78.01
