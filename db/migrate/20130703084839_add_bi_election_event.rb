@@ -26,8 +26,8 @@ class AddBiElectionEvent < ActiveRecord::Migration
         # - get the indicators that existed before
         names = ['Total Turnout (#)', 'Total Turnout (%)', 'Free Georgia', 'National Democratic Party of Georgia', 'United National Movement', 'Movement for Fair Georgia', 'Freedom Party', 'Merab Kostava Society', 'Labour Council of Georgia', 'Labour', 'Georgian Dream']
         inds = CoreIndicator.includes(:core_indicator_translations).where(:core_indicator_translations => {:locale => 'en', :name => names})
-        # -clone this indicators    
-        event.clone_event_components(component_clone, inds.map{|x| x.id}) if inds.present?
+        # -clone this indicators
+        event.clone_event_components(component_clone, core_indicator_ids: inds.map{|x| x.id}) if inds.present?
 
         # now create the components for the new indicators
         # - get the new indicators

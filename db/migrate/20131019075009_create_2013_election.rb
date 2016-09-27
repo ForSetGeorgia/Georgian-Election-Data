@@ -6,12 +6,12 @@ class Create2013Election < ActiveRecord::Migration
 
     Event.transaction do
       event = Event.clone_from_event(clone_pres_event_id, '2013-10-27')
-      
+
       puts event.inspect
-      
+
       if event.present?
         puts "event created with id of #{event.id}"
-        
+
         # update values
         event.shape_id = nil
         event.event_translations.each do |trans|
@@ -25,12 +25,12 @@ class Create2013Election < ActiveRecord::Migration
         # - get 'other' indciators from 2012 party list
         inds = Indicator.select('distinct core_indicator_id').joins(:core_indicator)
                 .where(:indicators => {:event_id => clone_ind_event_id}, :core_indicators => {:indicator_type_id => 1})
-                
+
         if inds.present?
           puts 'cloning event components'
-          event.clone_event_components(clone_ind_event_id, inds.map{|x| x.core_indicator_id})
+          event.clone_event_components(clone_ind_event_id, core_indicator_ids: inds.map{|x| x.core_indicator_id})
         end
-      end    
+      end
     end
   end
 

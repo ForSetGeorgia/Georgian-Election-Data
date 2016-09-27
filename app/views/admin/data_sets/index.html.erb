@@ -34,11 +34,11 @@
           <td><%= data_set.precincts_percentage %></td>
           <td><%= data_set.precincts_completed %></td>
           <td><%= data_set.precincts_total %></td>
-          <td><%= data_set.show_to_public %></td>
+          <td><%= format_boolean_flag(data_set.show_to_public?) %></td>
           <td>
             <%= link_to t('app.buttons.view'),
                         indicator_map_path(:event_id => data_set.event_id, :event_type_id => data_set.event.event_type_id,
-                        :data_type => data_set.data_type, :data_set_id => data_set.id, :preview_data_set => true), 
+                        :data_type => data_set.data_type, :data_set_id => data_set.id, :preview_data_set => true),
                         :class => 'btn btn-mini btn-primary', :target => :blank %>
             <%= link_to t('app.buttons.edit'),
                         edit_admin_data_set_path(data_set), :class => 'btn btn-mini' %>

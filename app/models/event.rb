@@ -114,13 +114,13 @@ class Event < ActiveRecord::Base
     .where(:has_official_data => true, :event_type_id => EventType.ids_with_elections)
 		.order("event_date DESC, event_translations.name ASC")
 		.limit(limit)
-		
+
 		if ids.present?
 		  x = x.where(:id => ids)
 		end
-		
+
 	  return x
-  end  
+  end
 
   # get events that are voters lists and public
   def self.public_official_voters_lists(limit = 3)
@@ -128,9 +128,9 @@ class Event < ActiveRecord::Base
     .where(:has_official_data => true, :event_type_id => EventType.ids_with_voters_lists)
 		.order("event_date DESC, event_translations.name ASC")
 		.limit(limit)
-  end  
+  end
 
-  # get the number of each event type that is public and 
+  # get the number of each event type that is public and
   # how many data items are in each event type
   ###########################
   ###### NOTE: values are hardcoded into this method
@@ -138,7 +138,7 @@ class Event < ActiveRecord::Base
   def self.election_type_stats()
 		Rails.cache.fetch("election_type_stats") {
       data = Hash.new
-      
+
       sql = "select x.event_type_id, x.id, x.data_set_id "
       sql << "from (select e.event_type_id, e.id, ds.id as data_set_id, ds.data_type, ds.timestamp "
       sql << "from events as e inner join data_sets as ds on ds.event_id = e.id "
@@ -154,7 +154,7 @@ class Event < ActiveRecord::Base
         voter_list_types = EventType.ids_with_voters_lists
         voter_list_ind_id = 17
         shape_type_ids = ShapeType.precint_ids
-        
+
         # get election stats
         ids = x.select{|x| election_types.index(x.event_type_id).present?}.map{|x| x[:data_set_id]}
         total_data = Datum.joins(:indicator)
@@ -164,7 +164,7 @@ class Event < ActiveRecord::Base
         hash['total'] = ids.length
         hash['total_data'] = ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(total_data, :precision => 0))
         data['elections'] = hash
-        
+
         # get voter list stats
         ids = x.select{|x| voter_list_types.index(x.event_type_id).present?}.map{|x| x[:data_set_id]}
         total_data = Datum.joins(:indicator)
@@ -175,7 +175,7 @@ class Event < ActiveRecord::Base
         hash['total_data'] = ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(total_data, :precision => 0))
         data['voters_list'] = hash
       end
-      
+
       data
     }
   end
@@ -186,11 +186,11 @@ class Event < ActiveRecord::Base
     if event_id.present? && event_date.present?
       e = Event.find_by_id(event_id)
       if e.present?
-        event = Event.new(:shape_id => e.shape_id, :event_type_id => e.event_type_id, 
+        event = Event.new(:shape_id => e.shape_id, :event_type_id => e.event_type_id,
           :event_date => event_date, :is_default_view => false,
     		  :has_official_data => false, :has_live_data => false)
         e.event_translations.each do |trans|
-          event.event_translations.build(:locale => trans.locale, :name => trans.name, 
+          event.event_translations.build(:locale => trans.locale, :name => trans.name,
               :name_abbrv => trans.name_abbrv, :description => trans.description)
         end
         event.save
@@ -200,39 +200,120 @@ class Event < ActiveRecord::Base
   end
 
 
-  # copy everything from an existing event into into a new event
+  # copy everything from an existing event into a new event
   # - if core indicator ids passed in, only copy those indicators
   # copy: indicators, relationships, custom event views, custom shape navigation
-  def clone_event_components(event_id, core_indicator_ids=nil)
+  def clone_event_components(event_id, options={})
+    core_indicator_ids = options[:core_indicator_ids]
+    clone_indicators = options[:clone_indicators].nil? ? true : options[:clone_indicators]
+
     if event_id.present?
       Event.transaction do
-        # create indicators and the scales
-        # - indicator.clone_for_event will automatically get any children inds, so only need to get parents
-        indicators = Indicator.includes(:indicator_scales => :indicator_scale_translations)
-          .where(:indicators => {:event_id => event_id, :ancestry => nil})
-        if core_indicator_ids.present?
-          indicators = indicators.where(:indicators => {:core_indicator_id => core_indicator_ids})
-        end
-        if indicators.present?
-          indicators.each do |ind|
-            ind.clone_for_event(self.id)
-          end          
-        end        
 
+        if clone_indicators
+          found_ind_ids = []
+          # create indicators and the scales
+          # - indicator.clone_for_event will automatically get any children inds, so only need to get parents
+          indicators = Indicator.includes(:indicator_scales => :indicator_scale_translations)
+            .where(:indicators => {:event_id => event_id, :ancestry => nil})
+          if core_indicator_ids.present?
+            indicators = indicators.where(:indicators => {:core_indicator_id => core_indicator_ids})
+          end
+          if indicators.present?
+            puts "-> cloning #{indicators.length} indicators"
+            indicators.each do |ind|
+              found_ind_ids << ind.core_indicator_id
+              ind.clone_for_event(self.id)
+            end
+          end
+
+          puts "@@@@@@@@@@@@@@@@@@"
+          puts "found ids = #{found_ind_ids.uniq.sort}"
+          puts "exist ids = #{core_indicator_ids.sort}"
+          puts "@@@@@@@@@@@@@@@@@@"
+
+          # if found_ind_ids length != core_indicator_ids length
+          # - then the core ind was not in the event and has to be pulled from another election
+          if core_indicator_ids.present? && core_indicator_ids.length > found_ind_ids.uniq.length
+            missing_ids = core_indicator_ids - found_ind_ids.uniq
+            puts "----------"
+            puts "--> #{missing_ids.length} core indicators do not exist for the provided event, looking for indicators to clone from another event"
+
+            missing_ids.each do |missing_id|
+              puts "---> looking for core ind #{missing_id}"
+              possible_match = Indicator.select('event_id, max(created_at) as created_at')
+                                        .where(core_indicator_id: missing_id)
+                                        .group(:event_id).order('created_at desc').first
+              if possible_match.present?
+                puts "----> looking for match in event #{possible_match.event_id}"
+                indicators = Indicator.includes(:indicator_scales => :indicator_scale_translations)
+                  .where(:indicators => {:event_id => possible_match.event_id, :ancestry => nil, :core_indicator_id => missing_id})
+                if indicators.present?
+                  puts "---> cloning #{indicators.length} indicators"
+                  indicators.each do |ind|
+                    ind.clone_for_event(self.id)
+                  end
+                end
+              else
+                puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                puts "---> WARNING - the indicator could not be found in another event to clone indicators"
+                puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+              end
+            end
+            puts "----------"
+          end
+        end
+
+        puts "----------"
         # create relationships
+        found_ind_ids = []
         relationships = EventIndicatorRelationship.where(:event_id => event_id)
         if core_indicator_ids.present?
           relationships = relationships.where(["core_indicator_id in (?) or indicator_type_id is not null", core_indicator_ids])
         end
         if relationships.present?
-          relationships.each do |rel|
+          puts "-> cloning #{relationships.length} relationships"
+          relationships.each_with_index do |rel, reli|
+            found_ind_ids << rel.core_indicator_id
             rel.clone_for_event(self.id)
           end
         end
 
+        # if found_ind_ids length != core_indicator_ids length
+        # - then the core ind was not in the event and has to be pulled from another election
+        if core_indicator_ids.present? && core_indicator_ids.length > found_ind_ids.uniq.length
+          missing_ids = core_indicator_ids - found_ind_ids
+          puts "----------"
+          puts "--> #{missing_ids.length} core indicator relationships do not exist for the provided event, looking for relationships to clone from another event"
+
+          missing_ids.each do |missing_id|
+            puts "---> looking for core ind #{missing_id}"
+            possible_match = EventIndicatorRelationship.select('event_id, max(created_at) as created_at')
+                                      .where(core_indicator_id: missing_id, indicator_type_id: nil)
+                                      .group(:event_id).order('created_at desc').first
+            if possible_match.present?
+              puts "----> looking for match in event #{possible_match.event_id}"
+              relationships = EventIndicatorRelationship.where(["event_id = ? and core_indicator_id = ? and indicator_type_id is null", possible_match.event_id, missing_id])
+              if relationships.present?
+                puts "---> cloning #{relationships.length} relationships"
+                relationships.each do |rel|
+                  rel.clone_for_event(self.id)
+                end
+              end
+            else
+              puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+              puts "---> WARNING - the indicator could not be found in another event to clone relationships; could be that this core ind does not have it's own relationship"
+              puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            end
+          end
+        end
+
+
+
         # create custom views
         views = EventCustomView.includes(:event_custom_view_translations).where(:event_id => event_id)
         if views.present?
+          puts "---> cloning #{views.length} views"
           views.each do |view|
             view.clone_for_event(self.id)
           end
@@ -241,6 +322,7 @@ class Event < ActiveRecord::Base
         # create custom shape navigation
         navs = CustomShapeNavigation.includes(:custom_shape_navigation_translations).where(:event_id => event_id)
         if navs.present?
+          puts "---> cloning #{navs.length} custom shape nav"
           navs.each do |nav|
             nav.clone_for_event(self.id)
           end
@@ -249,10 +331,53 @@ class Event < ActiveRecord::Base
       end
     end
   end
-  
+
   # determine if this event contains a summary indicator type
   def has_summary_indicator?
     types = IndicatorType.select('distinct has_summary').joins(:indicators => :event).where('events.id = ?', self.id)
     return types.present? && types.map{|x| x.has_summary}.index(true).present? ? true : false
+  end
+
+
+  # doing event.destroy takes a long time due to all the indciators and data
+  # this method will be quicker for it uses delete instead of destroy when there can be lots of records to delete
+  def destroy
+
+    # get core ids only in event
+    # - have to get it here before indicators are deleted
+    core_ids_in_event = Indicator.where(:event_id => self.id).pluck(:core_indicator_id).uniq.sort
+    core_ids_not_in_event = Indicator.where(['event_id != ? and core_indicator_id in (?)', self.id, core_ids_in_event]).pluck(:core_indicator_id).uniq.sort
+    puts "core_ids_in_event       #{core_ids_in_event}"
+    puts "core_ids_not_in_event   #{core_ids_not_in_event}"
+    core_ids_only_in_event = core_ids_in_event - core_ids_not_in_event
+    puts "core_ids_only_in_event  #{core_ids_only_in_event}"
+
+
+    puts "deleting event indicators and data"
+    indicator_ids = Indicator.where(:event_id => self.id).pluck(:id)
+    Datum.where(indicator_id: indicator_ids).delete_all
+    IndicatorScale.where(indicator_id: indicator_ids).destroy_all
+    Indicator.where(id: indicator_ids).delete_all
+
+    puts "deleting event indicator relationships"
+    EventIndicatorRelationship.where(:event_id => self.id).destroy_all
+
+    puts "deleting core indicators that are just for this event"
+    CoreIndicatorTranslation.where(core_indicator_id: core_ids_only_in_event).delete_all
+    CoreIndicator.where(id: core_ids_only_in_event).delete_all
+
+    puts "deleting misc (translations, live events, custom views, custom shape nav)"
+    self.event_translations.delete_all
+    self.menu_live_events.delete_all
+    self.event_custom_views.destroy_all
+    self.custom_shape_navigations.destroy_all
+
+    puts "deleting the event"
+    self.delete
+
+    I18n.available_locales.each do |locale|
+      JsonCache.clear_data_file("profiles/core_indicator_events_#{locale}")
+      JsonCache.clear_data_file("profiles/core_indicator_events_table_#{locale}")
+    end
   end
 end

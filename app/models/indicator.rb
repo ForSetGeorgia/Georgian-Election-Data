@@ -43,12 +43,12 @@ class Indicator < ActiveRecord::Base
   def clone_for_event(event_id, parent_indicator_id=nil)
     new_ind = nil
     if event_id.present?
-      new_ind = Indicator.create(:event_id => event_id, :core_indicator_id => self.core_indicator_id, 
+      new_ind = Indicator.create(:event_id => event_id, :core_indicator_id => self.core_indicator_id,
           :shape_type_id => self.shape_type_id, :visible => self.visible)
       self.indicator_scales.each do |scale|
         new_scale = new_ind.indicator_scales.create(:color => scale.color)
         scale.indicator_scale_translations.each do |trans|
-          new_scale.indicator_scale_translations.create(:locale => trans.locale, :name => trans.name)          
+          new_scale.indicator_scale_translations.create(:locale => trans.locale, :name => trans.name)
         end
       end
 
@@ -80,16 +80,16 @@ class Indicator < ActiveRecord::Base
 
         # add each indicator
         from.each do |ind|
-          new_ind = Indicator.create(:event_id => to_event_id, :core_indicator_id => to_core_indicator_id, 
+          new_ind = Indicator.create(:event_id => to_event_id, :core_indicator_id => to_core_indicator_id,
               :shape_type_id => ind.shape_type_id, :visible => ind.visible)
           ind.indicator_scales.each do |scale|
             new_scale = new_ind.indicator_scales.create(:color => scale.color)
             scale.indicator_scale_translations.each do |trans|
-              new_scale.indicator_scale_translations.create(:locale => trans.locale, :name => trans.name)          
+              new_scale.indicator_scale_translations.create(:locale => trans.locale, :name => trans.name)
             end
           end
 
-          # if ind has parent - produce matching parent for new ind 
+          # if ind has parent - produce matching parent for new ind
           parent_id = nil
           if ind.parent_id.present?
             # look for parent_id in from array
@@ -98,10 +98,10 @@ class Indicator < ActiveRecord::Base
               # now find matching ind in new_inds
               new_match = new_inds.select{|x| x.shape_type_id == match.first.shape_type_id}
               if new_match.present?
-                parent_id = new_match.first.id                
+                parent_id = new_match.first.id
               end
             else
-              # this ind is not in the from list, 
+              # this ind is not in the from list,
               # so see if to_event has matching parent
               # if so, add it
               new_parent_ind = Indicator.where(:event_id => to_event_id, :core_indicator_id => ind.parent.core_indicator_id, :shape_type_id => ind.parent.shape_type_id)
@@ -119,13 +119,19 @@ class Indicator < ActiveRecord::Base
             end
           end
 
-          if parent_id.present?  
+          if parent_id.present?
             new_ind.parent_id = parent_id
             new_ind.save
           end
-          
+
           new_inds << new_ind
         end
+      else
+        puts "**************************************"
+        puts "**************************************"
+        puts " --> could not find core id: #{from_core_indicator_id} in event #{from_event_id}"
+        puts "**************************************"
+        puts "**************************************"
       end
     end
   end
@@ -242,10 +248,12 @@ class Indicator < ActiveRecord::Base
 						# see if indicator already exists for the provided event and shape_type
 						alreadyExists = Indicator.select("indicators.id").includes(:core_indicator)
 						  .where('indicators.event_id = ? and indicators.shape_type_id = ? and indicators.core_indicator_id = ? and core_indicators.indicator_type_id = ? ',
-						    event.id, shape_type.id, indicator_type.id, core_indicator.id)
-
+						    event.id, shape_type.id, core_indicator.id, indicator_type.id)
+# logger.debug "-> event = #{event.id}; shape = #{shape_type.id}; indicator type = #{indicator_type.id}; core = #{core_indicator.id}"
+# logger.debug "-> already exists #{alreadyExists.present?}; delete existing = #{deleteExistingRecord}"
+# logger.debug "--> should delete = #{!alreadyExists.nil? && alreadyExists.length > 0 && deleteExistingRecord}"
 	          # if the indicator already exists and deleteExistingRecord is true, delete the indicator
-	          if !alreadyExists.nil? && alreadyExists.length > 0 && deleteExistingRecord
+	          if alreadyExists.present? && deleteExistingRecord
 	logger.debug "+++++++ deleting existing indicator"
               alreadyExists.each do |exists|
 	              Indicator.destroy (exists.id)

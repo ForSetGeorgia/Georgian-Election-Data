@@ -4,10 +4,10 @@ set -e
 ##################################
 ##### SET THESE VARIABLES ########
 ##################################
-AS_USER=electiondata-staging # name of user on server
-APP_ROOT=/home/electiondata-staging/Election-Map-Staging/current # path to application current folder
+AS_USER=election-data-staging # name of user on server
+APP_ROOT=/home/election-data-staging/Election-Data-Staging/current # path to application current folder
 # update the name of the enviroment at '-E _____' to production, staging, etc
-CMD="cd $APP_ROOT; bundle exec unicorn -D -c $APP_ROOT/config/deploy/staging/unicorn.rb -E staging" 
+CMD="cd $APP_ROOT; bundle exec unicorn -D -c $APP_ROOT/config/deploy/staging/unicorn.rb -E staging"
 ##################################
 
 PID=$APP_ROOT/tmp/pids/unicorn.pid

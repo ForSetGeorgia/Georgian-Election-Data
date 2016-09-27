@@ -53,11 +53,11 @@ logger.debug "////////////////////////// BROWSER NOT SUPPORTED"
 			render "layouts/error", :layout => false
 			return
 		end
-		
+
 		gon.is_mobile = user_agent.mobile?
 		gon.is_bot = user_agent.bot?
 		gon.is_ie = user_agent.browser == "Internet Explorer"
-		
+
 	end
 
   def valid_role?(role)
@@ -200,11 +200,11 @@ logger.debug "---********----- shape type cache"
   def set_default_values
 		@svg_directory_path = File.dirname(__FILE__)+"/../../public/assets/svg/"
     @shape_type_ids_for_ind_profile = [1,3,7]
-    
+
 		# see if banner for this election exists, if not load default
 		@header_img_name = "header-text_#{I18n.locale}.png"
 		@header_img_name = "header-text.png" if Rails.application.assets.find_asset(@header_img_name).blank?
-    
+
     # color for % in precinct reporting summary bar for live events
     @precinct_reporting_summary_text_color = '#333'
   end

@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	$('div#events_menu_tabs').tabs();
-	
+
 	if (!gon.landing_page){
   	$('div#events_menu_tabs').hide();
 	}
@@ -17,7 +17,7 @@ $(document).ready(function () {
 		   $('div#events_menu_tabs').slideToggle(200, function(){
 
             $(document).click(function(){
-               $('div#events_menu_tabs').slideToggle(200);
+               // $('div#events_menu_tabs').slideToggle(200);
                $(document).unbind('click');
             });
 

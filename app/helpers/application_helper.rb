@@ -80,6 +80,11 @@ module ApplicationHelper
     styles.html_safe
   end
 
+  def format_boolean_flag(flag, small=false)
+    css_small = small == true ? 'small-status' : ''
+    return "<div class='boolean-flag #{flag} #{css_small}'>#{flag == true ? t('formtastic.yes') : t('formtastic.no')}</div>".html_safe
+  end
+
 
 
 

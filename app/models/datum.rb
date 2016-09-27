@@ -328,7 +328,7 @@
 
   # csv must have the columns listed in csv_header var
   #
-  def self.build_from_csv(event_id, data_type, precincts_completed, precincts_total, timestamp, file)
+  def self.build_from_csv(event_id, data_type, precincts_completed, precincts_total, timestamp, file, show_to_public=false)
 		start = Time.now
     infile = file.read
     n, msg = 0, ""
@@ -351,6 +351,7 @@
 				dataset.precincts_completed = precincts_completed
 				dataset.precincts_total = precincts_total
 				dataset.timestamp = timestamp
+        dataset.show_to_public = show_to_public
 				if !dataset.save
   #logger.debug "++++could not save the dataset"
     		  msg = I18n.t('models.data_set.msgs.dataset_not_save')

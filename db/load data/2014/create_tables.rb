@@ -992,7 +992,7 @@ def create_csv(election, parties, is_majoritarian)
   # major district
   if is_majoritarian
 
-    sql << "(select 'Major District' AS `@common_headers[0]`,
+    sql << "(select 'Majoritarian District' AS `@common_headers[0]`,
             `#{election_name} - #{@shapes[:major_district]}`.`major_district_id` AS `@common_headers[1]`,
             `#{election_name} - #{@shapes[:major_district]}`.`major_district_Name` AS `@common_headers[2]`,
             `#{election_name} - #{@shapes[:major_district]}`.`total valid ballots cast` AS `@common_headers[3]`,
@@ -1120,7 +1120,7 @@ def create_csv(election, parties, is_majoritarian)
 
   # major tbilisi district
   if is_majoritarian
-    sql << "(select 'Major Tbilisi District' AS `@common_headers[0]`,
+    sql << "(select 'Majoritarian Tbilisi District' AS `@common_headers[0]`,
             `#{election_name} - #{@shapes[:major_tbilisi_district]}`.`major_district_id` AS `@common_headers[1]`,
             `#{election_name} - #{@shapes[:major_tbilisi_district]}`.`major_district_Name` AS `@common_headers[2]`,
             `#{election_name} - #{@shapes[:major_tbilisi_district]}`.`total valid ballots cast` AS `@common_headers[3]`,
@@ -1340,7 +1340,7 @@ def gamgebeli
     {id: 16, name: 'Christian Democrats'},
     {id: 17, name: 'Unity Hall'},
     {id: 18, name: 'Way of Georgia'},
-    {id: 20, name: 'Labour Party'},
+    {id: 20, name: 'Labour'},
     {id: 26, name: 'Party of People'},
     {id: 30, name: 'Merab Kostava Society'},
     {id: 41, name: 'Georgian Dream'}
@@ -1379,17 +1379,17 @@ def mayor
     {id: 7, name: 'Name of the Lord'},
     {id: 8, name: 'Alliance of Patriots'},
     {id: 9, name: 'Self-governance to People'},
-    {id: 10, name: 'Peoples Party'},
+    {id: 10, name: 'People\'s Party'},
     {id: 11, name: 'Reformers'},
     {id: 12, name: 'Our Georgia'},
     {id: 13, name: 'Future Georgia'},
     {id: 14, name: 'Georgian Party'},
     {id: 17, name: 'Unity Hall'},
     {id: 18, name: 'Way of Georgia'},
-    {id: 20, name: 'Labour Party'},
+    {id: 20, name: 'Labour'},
     {id: 26, name: 'Party of People'},
     {id: 30, name: 'Merab Kostava Society'},
-    {id: 36, name: 'Labour Council'},
+    {id: 36, name: 'Labour Council of Georgia'},
     {id: 41, name: 'Georgian Dream'}
   ]
 
@@ -1427,20 +1427,20 @@ def local_party
     {id: 7, name: 'Name of the Lord'},
     {id: 8, name: 'Alliance of Patriots'},
     {id: 9, name: 'Self-governance to People'},
-    {id: 10, name: 'Peoples Party'},
+    {id: 10, name: 'People\'s Party'},
     {id: 11, name: 'Reformers'},
     {id: 12, name: 'Our Georgia'},
     {id: 13, name: 'Future Georgia'},
     {id: 14, name: 'Georgian Party'},
-    {id: 15, name: 'Peoples Movement'},
+    {id: 15, name: 'People\'s Movement'},
     {id: 16, name: 'Christian Democrats'},
     {id: 17, name: 'Unity Hall'},
     {id: 18, name: 'Way of Georgia'},
-    {id: 19, name: 'Freedom'},
-    {id: 20, name: 'Labour Party'},
+    {id: 19, name: 'Freedom Party'},
+    {id: 20, name: 'Labour'},
     {id: 26, name: 'Party of People'},
     {id: 30, name: 'Merab Kostava Society'},
-    {id: 36, name: 'Labour Council'},
+    {id: 36, name: 'Labour Council of Georgia'},
     {id: 41, name: 'Georgian Dream'}
   ]
 
@@ -1455,13 +1455,13 @@ def local_major
     {id: 1, name: 'Non-Parliamentary Opposition'},
     {id: 2, name: 'Armed Veterans Patriots'},
     {id: 3, name: 'United Opposition'},
-    {id: 4, name: 'National Democratic Party'},
+    {id: 4, name: 'National Democratic Party of Georgia'},
     {id: 5, name: 'United National Movement'},
     {id: 6, name: 'Greens Party'},
     {id: 7, name: 'Name of the Lord'},
     {id: 8, name: 'Alliance of Patriots'},
     {id: 9, name: 'Self-governance to People'},
-    {id: 10, name: 'Peoples Party'},
+    {id: 10, name: 'People\'s Party'},
     {id: 11, name: 'Reformers'},
     {id: 12, name: 'Our Georgia'},
     {id: 13, name: 'Future Georgia'},
@@ -1469,11 +1469,11 @@ def local_major
     {id: 16, name: 'Christian Democrats'},
     {id: 17, name: 'Unity Hall'},
     {id: 18, name: 'Way of Georgia'},
-    {id: 19, name: 'Freedom'},
-    {id: 20, name: 'Labour Party'},
+    {id: 19, name: 'Freedom Party'},
+    {id: 20, name: 'Labour'},
     {id: 26, name: 'Party of People'},
     {id: 30, name: 'Merab Kostava Society'},
-    {id: 36, name: 'Labour Council'},
+    {id: 36, name: 'Labour Council of Georgia'},
     {id: 41, name: 'Georgian Dream'}
   ]
 
