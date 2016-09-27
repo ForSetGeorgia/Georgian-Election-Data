@@ -651,7 +651,7 @@ logger.debug "==========--------- event.nil? = #{event.nil?}; dataset.event_id =
 				data = LiveDatum.find_by_sql([sql, :event_id => event_id,
 					:shape_type_id => shape_type_id, :locale => I18n.locale,
 					:common_ids => shapes.map{|x| x[:shape_common_id]},
-					:common_names => shapes.map{|x| x[:shape_common_name]})
+					:common_names => shapes.map{|x| x[:shape_common_name]}])
 
 				if data && !data.empty?
 					# create header row
