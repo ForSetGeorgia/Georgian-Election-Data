@@ -76,9 +76,8 @@ GEM
       warden (~> 1.1.1)
     dynamic_form (1.1.4)
     erubis (2.7.0)
-    exception_notification (4.1.1)
+    exception_notification (2.5.2)
       actionmailer (>= 3.0.4)
-      activesupport (>= 3.0.4)
     execjs (2.7.0)
     fancybox-rails (0.3.1)
       railties (>= 3.1.0)
@@ -220,7 +219,7 @@ DEPENDENCIES
   dalli (~> 2.7, >= 2.7.6)
   devise (= 2.0.4)
   dynamic_form (= 1.1.4)
-  exception_notification
+  exception_notification (= 2.5.2)
   fancybox-rails (~> 0.3.1)
   formtastic (= 2.1.1)
   formtastic-bootstrap!

@@ -17,8 +17,8 @@ gem "gon", "5.2.3" # push data into js
 gem 'dynamic_form', '1.1.4' # to see form error messages
 gem 'ancestry', '~> 2.1' # control parent/child relationships with shapes
 gem 'nokogiri', '~> 1.6', '>= 1.6.8' # xml parser
-#gem 'exception_notification', '2.5.2' # send an email when exception occurs
-gem 'exception_notification', :require => 'exception_notifier'
+gem 'exception_notification', '2.5.2' # send an email when exception occurs
+#gem 'exception_notification', :require => 'exception_notifier'
 gem "capistrano", "~> 2.12.0" # to deploy to server
 gem 'fancybox-rails', '~> 0.3.1' # to open pop-up windows
 gem "i18n-js", "~> 2.1.2" # to show translations in javascript
