@@ -8,7 +8,7 @@ class Admin::MenuLiveEventsController < ApplicationController
   # GET /menu_live_events
   # GET /menu_live_events.json
   def index
-    @live_events = MenuLiveEvent.all
+    @live_events = MenuLiveEvent.order('id desc')
 
     respond_to do |format|
       format.html # index.html.erb
