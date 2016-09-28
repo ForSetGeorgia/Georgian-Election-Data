@@ -145,7 +145,7 @@ ElectionMap::Application.routes.draw do
 
     #migration
     match '/migration/load_data/from_protocols_app', :to => 'migration#from_protocols_app', :as => :migration_load_data_from_protocols_app, :via => [:get, :post], :defaults => {:format => 'json'}
-    
+
 
     # json routes
 		# core indicator events

@@ -286,7 +286,9 @@ logger.debug "////////////// getting current event for event type #{params[:even
   logger.debug "////////////// getting child shape type"
   						logger.debug("+++++++++ parent shape type is not root or it should not be clickable")
   						# this is not the root, so reset parent shape clickable
-  						params[:parent_shape_clickable] = nil
+              # - NOTE - had to change the following to false instead of nil so that the helper paths
+              #          will be properly created due to changes in rails 3.2 from 3.1
+  						params[:parent_shape_clickable] = "false"#nil
   #						child_shape_type = get_child_shape_type(params[:shape_type_id])
   						child_shape_type = get_child_shape_type(@shape)
   					else
