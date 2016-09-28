@@ -11,30 +11,30 @@ class RootController < ApplicationController
   # GET /
   # GET /.json
 	def index
-	
+
 	  @about = Page.with_translations(I18n.locale).find_by_name("about_landing")
-	  @elections = Event.public_official_elections(3, [38,31,32])
+	  @elections = Event.public_official_elections(3, [39,41,42])
 	  @voters_lists = Event.public_official_voters_lists(4)
 	  @news = News.with_translations(I18n.locale).recent.limit(2)
     gon.landing_page = true
 
     @summary_data = []
-  
+
     @elections.each do |election|
       h = Hash.new
       h[:election] = election
       @summary_data << h
-      
+
       dataset = DataSet.current_dataset(election.id, Datum::DATA_TYPE[:official])
-      
+
       if dataset.present?
-        summary_item = Datum.get_table_data_summary(election.id, dataset.first.id, 1, 
-          election.shape_id, 2, Datum::DATA_TYPE[:official]) 
+        summary_item = Datum.get_table_data_summary(election.id, dataset.first.id, 1,
+          election.shape_id, 2, Datum::DATA_TYPE[:official])
       end
-      
+
       if summary_item.present?
         h[:summary_item] = summary_item
-        
+
         # get path to map images if exist
         key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', election.id.to_s)
                 .gsub('[data_set_id]', dataset.first.id.to_s)
@@ -52,16 +52,16 @@ class RootController < ApplicationController
       h = Hash.new
       h[:list] = list
       @summary_lists << h
-      
+
       dataset = DataSet.current_dataset(list.id, Datum::DATA_TYPE[:official])
-      
+
       if dataset.present?
         summary_item = Datum.build_summary_voter_list_data_json(list.shape_id, 1, list.id, dataset.first.id)
       end
-      
+
       if summary_item.present?
         h[:summary_item] = summary_item
-        
+
         # get path to map images if exist
         key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', list.id.to_s)
                 .gsub('[data_set_id]', dataset.first.id.to_s)
@@ -80,7 +80,7 @@ class RootController < ApplicationController
       gon.landing_live_dataset_ids = []
       @live_event_menu.each do |live|
         election = Event.find_by_id(live["id"])
-        
+
         if election.present?
           h = Hash.new
           h[:election] = election
@@ -93,33 +93,33 @@ class RootController < ApplicationController
           # add live event info
           h[:data_available_at] = live['data_available_at']
           h[:data_available_at_est] = live['data_available_at'].in_time_zone('Eastern Time (US & Canada)')
-          
+
           dataset = DataSet.current_dataset(election.id, Datum::DATA_TYPE[:live])
-          
+
           if dataset.present?
             gon.landing_live_dataset_ids << dataset.first.id
             h[:precincts_completed] = dataset.first.precincts_completed
             h[:precincts_total] = dataset.first.precincts_total
             h[:precincts_percentage] = dataset.first.precincts_percentage
             h[:last_updated] = dataset.first.timestamp
-            
+
             # if the election has the precincts reported indicator, get the data
 						precincts_reporting = Datum.get_precincts_reported(election.shape_id, election.id, dataset.first.id)
 						if precincts_reporting.present?
 					    h[:precincts_completed] = precincts_reporting[:completed_number]
               h[:precincts_total] = precincts_reporting[:num_precincts]
               h[:precincts_percentage] = precincts_reporting[:completed_percent]
-            end						
+            end
 
-            summary_item = Datum.get_table_data_summary(election.id, dataset.first.id, 1, 
-              election.shape_id, 2, Datum::DATA_TYPE[:official]) 
+            summary_item = Datum.get_table_data_summary(election.id, dataset.first.id, 1,
+              election.shape_id, 2, Datum::DATA_TYPE[:official])
           else
             gon.landing_live_dataset_ids << 0
           end
-          
+
           if summary_item.present?
             h[:summary_item] = summary_item
-            
+
             # get path to map images if exist
             key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', election.id.to_s)
                     .gsub('[data_set_id]', dataset.first.id.to_s)
@@ -134,7 +134,7 @@ class RootController < ApplicationController
     end
 
     respond_to do |format|
-      format.html 
+      format.html
     end
   end
 
@@ -200,7 +200,7 @@ logger.debug "////////////// getting current event for event type #{params[:even
       most_recent_dataset = DataSet.current_dataset(event.id, params[:data_type])
 			@most_recent_dataset = most_recent_dataset.first if most_recent_dataset
       if @most_recent_dataset.present? && dataset.present? && @most_recent_dataset.id != dataset.id && params[:data_type] == Datum::DATA_TYPE[:official] && params[:preview_data_set] != 'true'
-        # the passed in official data set is not the most recent, 
+        # the passed in official data set is not the most recent,
         # redirect to the most recent data set
         redirect_to indicator_map_path(:event_id => params[:event_id], :event_type_id => params[:event_type_id]),
           :notice => I18n.t('app.msgs.newer_data')
@@ -480,9 +480,9 @@ logger.debug "////////////// - no default found"
 
     # get the summary data
     if !flag_redirect && !@live_event_with_no_data
-      # if this is voters list and is showing the default ind id, 
+      # if this is voters list and is showing the default ind id,
       # make sure the map image will be generated
-      if @is_voters_list && event.default_core_indicator_id.present? && @indicator.present? && 
+      if @is_voters_list && event.default_core_indicator_id.present? && @indicator.present? &&
             event.default_core_indicator_id == @indicator.core_indicator_id
 
         gon.is_voters_list_using_default_core_ind_id = true
@@ -493,9 +493,9 @@ logger.debug "////////////// - no default found"
         ind_type_id = @indicator_types.select{|x| x.has_summary}.first.id
 
         # get parent shape data
-        @parent_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], @parent_shape_type, 
+        @parent_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], @parent_shape_type,
           params[:shape_id], ind_type_id, params[:data_type])
-          
+
         if @parent_summary_data.present?
           # if the event is live, get precincts reported
 				  if params[:data_type] == Datum::DATA_TYPE[:live]
@@ -510,12 +510,12 @@ logger.debug "////////////// - no default found"
           @parent_summary_img = JsonCache.get_image_path(key, 'png')
           @parent_summary_img_json = JsonCache.read_data(key)
           @parent_summary_img_json = JSON.parse(@parent_summary_img_json) if @parent_summary_img_json.present?
-          
+
           # if this is not the default event shape, get the default event shape data too
           if event.shape_id.to_s != params[:shape_id].to_s
             root_shape = Shape.select('shape_type_id').find_by_id(event.shape_id)
             if root_shape.present?
-              @root_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], root_shape.shape_type_id, 
+              @root_summary_data = Datum.get_table_data_summary(params[:event_id], params[:data_set_id], root_shape.shape_type_id,
                 event.shape_id, ind_type_id, params[:data_type])
               if @root_summary_data.present?
                 # if the event is live, get precincts reported
@@ -537,7 +537,7 @@ logger.debug "////////////// - no default found"
       elsif @is_voters_list
         # this is a voters list, so get voter list summary data
         # get parent shape data
-        @parent_summary_data = Datum.build_summary_voter_list_data_json(params[:shape_id], @parent_shape_type, 
+        @parent_summary_data = Datum.build_summary_voter_list_data_json(params[:shape_id], @parent_shape_type,
           params[:event_id], params[:data_set_id])
 
         if @parent_summary_data.present?
@@ -549,12 +549,12 @@ logger.debug "////////////// - no default found"
           @parent_summary_img = JsonCache.get_image_path(key, 'png')
           @parent_summary_img_json = JsonCache.read_data(key)
           @parent_summary_img_json = JSON.parse(@parent_summary_img_json) if @parent_summary_img_json.present?
-          
+
           # if this is not the default event shape, get the default event shape data too
           if event.shape_id.to_s != params[:shape_id].to_s
             root_shape = Shape.select('shape_type_id').find_by_id(event.shape_id)
             if root_shape.present?
-              @root_summary_data = Datum.build_summary_voter_list_data_json(event.shape_id, root_shape.shape_type_id, 
+              @root_summary_data = Datum.build_summary_voter_list_data_json(event.shape_id, root_shape.shape_type_id,
                                     params[:event_id], params[:data_set_id])
               if @root_summary_data.present?
                 key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id].to_s)
@@ -568,15 +568,15 @@ logger.debug "////////////// - no default found"
             end
           end
         end
-        
+
       end
     end
 
 		# set js variables
 logger.debug "////////////// setting gon variables"
     set_gon_variables if !flag_redirect && !@live_event_with_no_data
-    
-    
+
+
 
 logger.debug "//////////////////////////////////////////////////////// done with index action"
 
@@ -590,7 +590,7 @@ logger.debug "//////////////////////////////////////////////////////// done with
 			end
     else
       respond_to do |format|
-        format.html 
+        format.html
       end
 		end
 	end
@@ -604,19 +604,19 @@ logger.debug "//////////////////////////////////////////////////////// done with
 		if params[:data_type] == Datum::DATA_TYPE[:live] && params[:data_set_id].blank?
 			params_ok = false
 		end
-  
+
 		if params_ok
 		  # get summary data
 			@summary_data = nil
       if params[:indicator_type_id].present?
-        @summary_data = Datum.get_table_data_summary(params[:event_id], 
-          params[:data_set_id], 
-          params[:child_shape_type_id], 
-          params[:shape_id], 
+        @summary_data = Datum.get_table_data_summary(params[:event_id],
+          params[:data_set_id],
+          params[:child_shape_type_id],
+          params[:shape_id],
           params[:indicator_type_id],
           params[:data_type])
       end
-		
+
 			# get the detailed data
 		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:child_shape_type_id], params[:shape_id], params[:shape_type_id])
 
@@ -643,7 +643,7 @@ logger.debug "//////////////////////////////////////////////////////// done with
 				  @table_selected_id = params[:indicator_id].to_s
 				end
       end
-    end  
+    end
 
     render :layout => 'ajax_data_table'
   end
@@ -668,9 +668,9 @@ logger.debug "//////////////////////////////////////////////////////// done with
   # GET /download.json
   def download
     sent_data = false
-		if params[:event_id].present? && params[:data_set_id].present? && params[:shape_type_id].present? && 
+		if params[:event_id].present? && params[:data_set_id].present? && params[:shape_type_id].present? &&
 		      params[:child_shape_type_id].present? && params[:shape_id].present?
-		      
+
       #get the data
 		  get_data = Datum.get_table_data(params[:event_id], params[:data_set_id], params[:child_shape_type_id], params[:shape_id], params[:shape_type_id])
 
@@ -686,7 +686,7 @@ logger.debug "//////////////////////////////////////////////////////// done with
 				  format.csv {
 logger.debug ">>>>>>>>>>>>>>>> format = csv"
    					spreadsheet = DataArchive.create_csv_formatted_string(get_data['data'])
-            send_data spreadsheet, 
+            send_data spreadsheet,
 				      :type => 'text/csv; header=present',
 				      :disposition => "attachment; filename=#{clean_filename(filename)}.csv"
 
@@ -721,11 +721,11 @@ logger.debug ">>>>>>>>>>>>>>>> format = xls"
   # save the png images rendered from the map svg
   def save_map_images
     if request.xhr? && params[:img].present? && params[:event_id].present? && params[:data_set_id].present? && params[:parent_shape_id].present?
-        
+
       key = FILE_CACHE_KEY_MAP_IMAGE.gsub('[event_id]', params[:event_id])
               .gsub('[data_set_id]', params[:data_set_id])
               .gsub('[parent_id]', params[:parent_shape_id])
-      
+
       JsonCache.write_image(key, 'png'){
         params[:img]
       }
@@ -738,11 +738,11 @@ logger.debug ">>>>>>>>>>>>>>>> format = xls"
         h[:height] = params[:img_height]
         h.to_json
       }
-      
+
     end
     render nothing: true
   end
-  
+
 
 #########################################################
 #########################################################
@@ -975,9 +975,9 @@ logger.debug " - no matching event found!"
           :event_id => params[:event_id],
           :shape_type_id => params[:shape_type_id],
           :shape_id => params[:shape_id],
-          :indicator_type_id => params[:indicator_type_id], 
+          :indicator_type_id => params[:indicator_type_id],
           :view_type => @summary_view_type_name,
-          :custom_view => params[:custom_view]            
+          :custom_view => params[:custom_view]
         )
         gon.history_id = params[:indicator_type_id]
       else
@@ -987,7 +987,7 @@ logger.debug " - no matching event found!"
           :shape_type_id => params[:shape_type_id],
           :shape_id => params[:shape_id],
           :indicator_id => params[:indicator_id],
-          :custom_view => params[:custom_view]            
+          :custom_view => params[:custom_view]
         )
         gon.history_id = params[:indicator_id]
       end
@@ -1013,7 +1013,7 @@ logger.debug " - no matching event found!"
 
 		# load openlayers js
 		gon.openlayers = true
-		
+
   end
 
   # build an array of indicator scales that will be used in js
