@@ -31,6 +31,9 @@ gem 'useragent', '~> 0.16.8'
 gem 'rubyzip', '~> 1.2' # generate zip files
 gem 'rack-utf8_sanitizer', '~> 1.3.2' # prevent invalid encoding error
 
+
+gem 'test-unit', '~> 3.0' # required for running rails console
+
 group :assets do
   gem "sass-rails", "3.2.6"
   gem "coffee-rails", "~> 3.2.2"
@@ -54,7 +57,6 @@ group :development do
   gem 'rb-inotify', '~> 0.9.7' # rails dev boost needs this
   gem 'rails-dev-boost', :git => 'git://github.com/thedarkone/rails-dev-boost.git' # speed up loading page in dev mode
 
-  gem 'test-unit', '~> 3.0'
 end
 
 group :staging, :production do
