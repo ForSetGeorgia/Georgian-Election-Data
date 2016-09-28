@@ -92,13 +92,13 @@ NEW_PARTIES = {
         event.shape_id = 69898
         event.event_translations.each do |trans|
           if trans.locale == 'ka'
-            trans.name = '2014 Runoff Governor Election'
-            trans.name_abbrv = '2014 Runoff გამგებელის'
-            trans.description = 'The results of the June 28, 2014 election for Governor. Governors are elected for four year terms. Runoff.'
+            trans.name = '2014 წლის გამგებლის არჩევნების მეორე ტური'
+            trans.name_abbrv = '2014 წლის გამგებლის მეორე ტური'
+            trans.description = '2014 წლის 28 ივნისის გამგებლის არჩევნების მეორე ტურის შედეგები. 2014 წლის 15 ივნისს 13 ქალაქში ხმების 50%-ზე მეტის მიღება ვერც ერთმა კანდიდატმა შეძლო, რის გამოც მეორე ტური დაინიშნა. გამგებლები არჩეულია 4 წლის ვადით.'
           elsif trans.locale == 'en'
-            trans.name = '2014 Runoff Governor Election'
-            trans.name_abbrv = '2014 Runoff Governor'
-            trans.description = 'The results of the June 28, 2014 election for Governor. Governors are elected for four year terms. Runoff.'
+            trans.name = '2014 Governor Runoff Election'
+            trans.name_abbrv = '2014 Governor Runoff'
+            trans.description = 'The results of the June 28, 2014 runoff election for Governor. For 13 governor races, no candidate received more than 50% of the vote on June 15, 2014 so a runoff was held. Governors are elected for four year terms.'
           end
         end
         event.save

@@ -90,14 +90,15 @@ NEW_PARTIES = {
         # update values
         event.shape_id = 69898
         event.event_translations.each do |trans|
-          trans.name = trans.name.gsub('2010', '2014').gsub('Tbilisi ', 'Runoff ').gsub('თბილისის ', 'Runoff ')
-          trans.name_abbrv = trans.name_abbrv.gsub('2010', '2014').gsub('Tbilisi ', 'Runoff ').gsub('თბილისის ', 'Runoff ')
-          trans.description = trans.description.gsub('May 30, 2010', 'June 28, 2014').gsub('2010 წლის 30 მაისის', '2014 წლის 28 ივნისის')
-                                                .gsub('The Tbilisi Mayor is elected', 'Mayors are elected')
-                                                .gsub(' This was the first ever direct election for Mayor of Tbilisi.', ' This was a runoff.')
-                                                .gsub('Mayor of Tbilisi', 'Mayor').gsub('Tbilisi Mayor', 'Mayor')
-                                                .gsub(' თბილისის მერი პირდაპირი არჩევნების წესით პირველად იქნა არჩეული.', ' This was a runoff.')
-                                                .gsub('თბილისის მერის', 'მერის').gsub('თბილისის მერი', 'მერი')
+          if trans.locale == 'ka'
+            trans.name = '2014 წლის მერის არჩევნების მეორე ტური'
+            trans.name_abbrv = '2014 წლის მერის მეორე ტური'
+            trans.description = '2014 წლის 28 მაისის მერი არჩევნების მეორე ტურის შედეგები. 2014 წლის 15 ივნისს, 8 ქალაქში ხმების 50%ზე მეტის მიღება ვერც ერთმა კანდიდატმა შეძლო, რის გამოც მეორე ტური დაინიშნა. მერები არჩეულია 4 წლის ვადით.'
+          elsif trans.locale == 'en'
+            trans.name = '2014 Mayor Runoff Election'
+            trans.name_abbrv = '2014 Mayor Runoff'
+            trans.description = 'The results of the June 28, 2014 runoff election for Mayor. For 8 mayor races, no candidate received more than 50% of the vote on June 15, 2014, so a runoff was held. Mayors are elected for four year terms.'
+          end
         end
         event.save
 

@@ -90,14 +90,15 @@ NEW_PARTIES = {
         # update values
         event.shape_id = 69898
         event.event_translations.each do |trans|
-          trans.name = trans.name.gsub('2010', '2014').gsub('Tbilisi ', '').gsub('თბილისის ', '')
-          trans.name_abbrv = trans.name_abbrv.gsub('2010', '2014').gsub('Tbilisi ', '').gsub('თბილისის ', '')
-          trans.description = trans.description.gsub('May 30, 2010', 'June 15, 2014').gsub('2010 წლის 30 მაისის', '2014 წლის 15 ივნისის')
-                                                .gsub('The Tbilisi Mayor is elected', 'Mayors are elected')
-                                                .gsub(' This was the first ever direct election for Mayor of Tbilisi.', '')
-                                                .gsub('Mayor of Tbilisi', 'Mayor').gsub('Tbilisi Mayor', 'Mayor')
-                                                .gsub(' თბილისის მერი პირდაპირი არჩევნების წესით პირველად იქნა არჩეული.', '')
-                                                .gsub('თბილისის მერის', 'მერის').gsub('თბილისის მერი', 'მერი')
+          if trans.locale == 'ka'
+            trans.name = '2014 წლის მერის არჩევნები'
+            trans.name_abbrv = '2014 წელი მერი'
+            trans.description = '2014 წლის 15 ივნისის 12 ქალაქის მერის არჩევნები. მერები არჩეულია ოთხი წლის ვადით. '
+          elsif trans.locale == 'en'
+            trans.name = '2014 Mayor Election'
+            trans.name_abbrv = '2014 Mayor'
+            trans.description = 'The results of the June 15, 2014 election for Mayor of 12 cities. Mayors are elected for four year terms.'
+          end
         end
         event.save
 

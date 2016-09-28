@@ -92,13 +92,13 @@ NEW_PARTIES = {
         event.shape_id = 69898
         event.event_translations.each do |trans|
           if trans.locale == 'ka'
-            trans.name = '2014 Governor Election'
-            trans.name_abbrv = '2014 გამგებელის'
-            trans.description = 'The results of the June 15, 2014 election for Governor. Governors are elected for four year terms.'
+            trans.name = '2014 წლის გამგებლის არჩევნები'
+            trans.name_abbrv = '2014 წლის გამგებელი'
+            trans.description = '2014 წლის 15 ივნისის გამგებლების არჩევნების შედეგები 59 ქალაქში. გამგებლები არჩეულია 4 წლის ვადით.'
           elsif trans.locale == 'en'
             trans.name = '2014 Governor Election'
             trans.name_abbrv = '2014 Governor'
-            trans.description = 'The results of the June 15, 2014 election for Governor. Governors are elected for four year terms.'
+            trans.description = 'The results of the June 15, 2014 election for Governor of 59 cities. Governors are elected for four year terms.'
           end
         end
         event.save
