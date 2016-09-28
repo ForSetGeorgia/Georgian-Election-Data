@@ -150,7 +150,7 @@ NEW_PARTIES = {
               Datum::DATA_TYPE[:official],
               nil,
               nil,
-              Time.now,
+              '2014-08-29',
               File.new(file_path),
               true
         )

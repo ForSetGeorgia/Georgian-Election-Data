@@ -161,7 +161,7 @@ NEW_PARTIES = {
               Datum::DATA_TYPE[:official],
               nil,
               nil,
-              Time.now,
+              '2014-08-29',
               File.new(file_path),
               true
         )
@@ -183,7 +183,7 @@ NEW_PARTIES = {
 
   def down
     Event.transaction do
-      event = Event.includes(:event_translations).where(:event_date => '2014-06-28', event_translations: {name: '2014 Runoff Mayor Election'}).first
+      event = Event.includes(:event_translations).where(:event_date => '2014-06-28', event_translations: {name: '2014 Mayor Runoff Election'}).first
       if event.present?
         puts "deleting the event"
         event.destroy
