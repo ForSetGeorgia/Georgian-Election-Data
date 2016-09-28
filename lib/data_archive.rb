@@ -1,6 +1,6 @@
 module DataArchive
   require 'fileutils'
-  require 'zip'
+  # require 'zip'
 	require 'utf8_converter'
 
   ###########################################
