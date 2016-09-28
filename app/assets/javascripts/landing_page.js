@@ -4,13 +4,16 @@ $(document).ready(function() {
   if (gon.landing_page){
 
     $('a.landing_circle_link').click(function(){
+      console.log('a.landing_circle_link click!!!');
       landing_circle_link_obj = this;
       console.log($($(landing_circle_link_obj).attr('href')).html());
-      $.fancybox({
+      $.fancybox(
+        {
         transitionIn: 'elastic',
         transitionOut: 'elastic',
         type: 'inline',
-        href: $(landing_circle_link_obj).attr('href'),
+        content: $(landing_circle_link_obj).attr('href'),
+        // href: $(landing_circle_link_obj).attr('href'),
         onStart: function () {
           if ($(landing_circle_link_obj).data('type-id') != undefined){
             $('div#events_menu_tabs .ui-tabs-nav li a[data-type-id="' + $(landing_circle_link_obj).data('type-id') + '"]').click();
@@ -23,7 +26,7 @@ $(document).ready(function() {
     });
 
     if (gon.landing_live_election && gon.landing_live_election_ids && gon.landing_live_election_ids.length > 0){
-    
+
       // process json request when looking if new live data exists
       function process_json_response(i){
         return function (response){
@@ -52,5 +55,5 @@ $(document).ready(function() {
 
 
   }
-  
+
 });

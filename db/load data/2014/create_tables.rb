@@ -8,7 +8,7 @@ require 'mysql2'
 @year = '2014'
 @vpm_limit = 2
 
-# if there is a majoritarian election,
+# if there is a local majoritarian election that requiest additional levels,
 # then set the param to true so the count includes a majoritarian id field
 @is_majoritarian = true
 
@@ -1209,6 +1209,57 @@ def create_csv(election, parties, is_majoritarian)
   results = @client.query(sql)
 end
 
+#################################
+
+def precinct_counts(is_majoritarian=false)
+  puts "===================="
+  puts '> creating precinct count tables/views'
+  puts "===================="
+
+  @client.query("drop table if exists `#{@year} election - precinct count`")
+  sql = "CREATE TABLE `#{@year} election - precinct count` (
+      `region` VARCHAR(255) NULL DEFAULT NULL,
+      `district_id` INT(10) NOT NULL DEFAULT '0',"
+
+  if is_majoritarian
+    sql << "`major_district_id` INT(10) NOT NULL DEFAULT '0',"
+  end
+
+  sql << "`num_precincts` INT(11) NULL DEFAULT NULL,
+      INDEX `region` (`region`),
+      INDEX  `district` (`district_id`)"
+  if is_majoritarian
+    sql << ", INDEX `major_district_id` (`major_district_id`) "
+  end
+  sql << " )
+    COLLATE='utf8_general_ci'
+    ENGINE=MyISAM"
+  @client.query(sql)
+
+  # total precincts
+  @client.query("drop view if exists `#{@year} election - precinct count by #{@shapes[:country]}`")
+  @client.query("create view `#{@year} election - precinct count by #{@shapes[:country]}` as
+                select sum(`num_precincts`) AS `num_precincts` from `#{@year} election - precinct count`")
+
+  # precincts by region
+  @client.query("drop view if exists `#{@year} election - precinct count by #{@shapes[:region]}`")
+  @client.query("create view `#{@year} election - precinct count by #{@shapes[:region]}` as
+                select `region` AS `region`,sum(`num_precincts`) AS `num_precincts` from `#{@year} election - precinct count` group by `region`")
+
+  # precincts by district
+  @client.query("drop view if exists `#{@year} election - precinct count by #{@shapes[:district]}`")
+  @client.query("create view `#{@year} election - precinct count by #{@shapes[:district]}` as
+                select `district_id` AS `district_id`,sum(`num_precincts`) AS `num_precincts` from `#{@year} election - precinct count` group by `district_id`")
+
+
+  if is_majoritarian
+    # precincts by major district
+    @client.query("drop view if exists `#{@year} election - precinct count by major district`")
+    @client.query("create view `#{@year} election - precinct count by major district` as
+                  select `district_id` AS `district_id`,`major_district_id` AS `major_district_id`,sum(`num_precincts`) AS `num_precincts` from `#{@year} election - precinct count` group by `district_id`,`major_district_id`")
+  end
+end
+
 ################################################
 
 # process an election
@@ -1269,57 +1320,6 @@ def create_all_for_election(election, parties, is_majoritarian=false)
   puts "===================="
 end
 
-#################################
-
-def precinct_counts(is_majoritarian=false)
-  puts "===================="
-  puts '> creating precinct count tables/views'
-  puts "===================="
-
-  @client.query("drop table if exists `#{@year} election - precinct count`")
-  sql = "CREATE TABLE `#{@year} election - precinct count` (
-      `region` VARCHAR(255) NULL DEFAULT NULL,
-      `district_id` INT(10) NOT NULL DEFAULT '0',"
-
-  if is_majoritarian
-    sql << "`major_district_id` INT(10) NOT NULL DEFAULT '0',"
-  end
-
-  sql << "`num_precincts` INT(11) NULL DEFAULT NULL,
-      INDEX `region` (`region`),
-      INDEX  `district` (`district_id`)"
-  if is_majoritarian
-    sql << ", INDEX `major_district_id` (`major_district_id`) "
-  end
-  sql << " )
-    COLLATE='utf8_general_ci'
-    ENGINE=MyISAM"
-  @client.query(sql)
-
-  # total precincts
-  @client.query("drop view if exists `#{@year} election - precinct count by #{@shapes[:country]}`")
-  @client.query("create view `#{@year} election - precinct count by #{@shapes[:country]}` as
-                select sum(`num_precincts`) AS `num_precincts` from `#{@year} election - precinct count`")
-
-  # precincts by region
-  @client.query("drop view if exists `#{@year} election - precinct count by #{@shapes[:region]}`")
-  @client.query("create view `#{@year} election - precinct count by #{@shapes[:region]}` as
-                select `region` AS `region`,sum(`num_precincts`) AS `num_precincts` from `#{@year} election - precinct count` group by `region`")
-
-  # precincts by district
-  @client.query("drop view if exists `#{@year} election - precinct count by #{@shapes[:district]}`")
-  @client.query("create view `#{@year} election - precinct count by #{@shapes[:district]}` as
-                select `district_id` AS `district_id`,sum(`num_precincts`) AS `num_precincts` from `#{@year} election - precinct count` group by `district_id`")
-
-
-  if is_majoritarian
-    # precincts by major district
-    @client.query("drop view if exists `#{@year} election - precinct count by major district`")
-    @client.query("create view `#{@year} election - precinct count by major district` as
-                  select `district_id` AS `district_id`,`major_district_id` AS `major_district_id`,sum(`num_precincts`) AS `num_precincts` from `#{@year} election - precinct count` group by `district_id`,`major_district_id`")
-  end
-end
-
 ################################################
 ################################################
 ################################################
@@ -1376,7 +1376,7 @@ def mayor
     {id: 3, name: 'United Opposition'},
     {id: 5, name: 'United National Movement'},
     {id: 6, name: 'Greens Party'},
-    {id: 7, name: 'Name of the Lord'},
+    {id: 7, name: 'In the Name of the Lord'},
     {id: 8, name: 'Alliance of Patriots'},
     {id: 9, name: 'Self-governance to People'},
     {id: 10, name: 'People\'s Party'},
@@ -1424,7 +1424,7 @@ def local_party
     {id: 3, name: 'United Opposition'},
     {id: 5, name: 'United National Movement'},
     {id: 6, name: 'Greens Party'},
-    {id: 7, name: 'Name of the Lord'},
+    {id: 7, name: 'In the Name of the Lord'},
     {id: 8, name: 'Alliance of Patriots'},
     {id: 9, name: 'Self-governance to People'},
     {id: 10, name: 'People\'s Party'},
@@ -1458,7 +1458,7 @@ def local_major
     {id: 4, name: 'National Democratic Party of Georgia'},
     {id: 5, name: 'United National Movement'},
     {id: 6, name: 'Greens Party'},
-    {id: 7, name: 'Name of the Lord'},
+    {id: 7, name: 'In the Name of the Lord'},
     {id: 8, name: 'Alliance of Patriots'},
     {id: 9, name: 'Self-governance to People'},
     {id: 10, name: 'People\'s Party'},

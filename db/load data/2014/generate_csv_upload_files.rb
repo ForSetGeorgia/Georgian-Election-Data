@@ -15,7 +15,7 @@ require 'mysql2'
 # - note - this election should be run first so it is available to all other elections
 @precinct_count_table = "#{@year} election local major - raw"
 
-# if there is a majoritarian election,
+# if there is a local majoritarian election that requiest additional levels,
 # then set the param to true so the count includes a majoritarian id field
 @is_majoritarian = true
 
@@ -258,7 +258,7 @@ def mayor
     {id: 3, name: 'United Opposition'},
     {id: 5, name: 'United National Movement'},
     {id: 6, name: 'Greens Party'},
-    {id: 7, name: 'Name of the Lord'},
+    {id: 7, name: 'In the Name of the Lord'},
     {id: 8, name: 'Alliance of Patriots'},
     {id: 9, name: 'Self-governance to People'},
     {id: 10, name: 'People\'s Party'},
@@ -312,7 +312,7 @@ def local_party
     {id: 3, name: 'United Opposition'},
     {id: 5, name: 'United National Movement'},
     {id: 6, name: 'Greens Party'},
-    {id: 7, name: 'Name of the Lord'},
+    {id: 7, name: 'In the Name of the Lord'},
     {id: 8, name: 'Alliance of Patriots'},
     {id: 9, name: 'Self-governance to People'},
     {id: 10, name: 'People\'s Party'},
@@ -349,7 +349,7 @@ def local_major
     {id: 4, name: 'National Democratic Party of Georgia'},
     {id: 5, name: 'United National Movement'},
     {id: 6, name: 'Greens Party'},
-    {id: 7, name: 'Name of the Lord'},
+    {id: 7, name: 'In the Name of the Lord'},
     {id: 8, name: 'Alliance of Patriots'},
     {id: 9, name: 'Self-governance to People'},
     {id: 10, name: 'People\'s Party'},
