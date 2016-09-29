@@ -1,37 +1,37 @@
 $(document).ready(function () {
-	$('div#events_menu_tabs').tabs();
+	$('div.events_menu_tabs').tabs(); // jquery-ui tabs
 
 	if (!gon.landing_page){
-  	$('div#events_menu_tabs').hide();
+  	$('div.events_menu_tabs').hide();
 	}
 
-	$('#navmenu').click(function () {
+	$('#navmenu').click(function (e) {
+	  var t = $(".events_menu_tabs[data-id='main']"), state = t.hasClass("open");
 
-	   if ($('div#events_menu_tabs').css('display') === "block")
-	   {
-	      $(document).unbind('click');
-	      $('div#events_menu_tabs').slideToggle(200);
-	   }
-	   else
-	   {
-		   $('div#events_menu_tabs').slideToggle(200, function(){
+	  if (state)
+	  {
+	    $(document).off('click.navmenu_document');
+	  }
+	  else
+	  {
+	    $(document).on("click.navmenu_document", function () {
+	      t.toggleClass("open");
+	      t.slideToggle(200);
+	      $(document).off('click.navmenu_document');
+	    });
+	  }
+	  t.toggleClass("open");
+	  t.slideToggle(200);
 
-            $(document).click(function(){
-               // $('div#events_menu_tabs').slideToggle(200);
-               $(document).unbind('click');
-            });
-
-		   });
-		}
-
+	  e.stopPropagation();
 	});
 
 	// tipsy tooltips
-	$('#events_menu_tabs .ui-tabs-panel .menu_list ul.menu_item li a').tipsy({
+	$('.events_menu_tabs .ui-tabs-panel .menu_list ul.menu_item li a').tipsy({
 		gravity: 'w'
 	});
 
-	$('#events_menu_tabs .ui-tabs-panel .menu_list ul.menu_item li.event_name span').tipsy({
+	$('.events_menu_tabs .ui-tabs-panel .menu_list ul.menu_item li.event_name span').tipsy({
 		gravity: 'w'
 	});
 

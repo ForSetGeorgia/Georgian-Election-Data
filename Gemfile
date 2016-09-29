@@ -6,7 +6,7 @@ gem 'bundler'
 gem "rails", "3.2.22.2"
 gem "mysql2", "~> 0.3.18" # this gem works better with utf-8
 
-gem "jquery-rails", "3.1.2"
+gem 'jquery-rails', '1.0.19' #gem "jquery-rails", "3.1.2"
 gem 'devise', '2.0.4' # user authentication
 gem 'formtastic', '2.1.1' # create forms easier
 gem "formtastic-bootstrap", :git => "https://github.com/cgunther/formtastic-bootstrap.git", :branch => "bootstrap-2"
@@ -41,7 +41,7 @@ group :assets do
   gem 'therubyracer'
   gem 'less-rails', "~> 2.6.0"
   gem "twitter-bootstrap-rails", "~> 2.2.8"
-  gem 'jquery-ui-rails', '~> 5.0', '>= 5.0.5'
+  gem 'jquery-ui-rails', '2.0.2'#  gem 'jquery-ui-rails', '~> 5.0', '>= 5.0.5'
   #gem 'jquery-datatables-rails', git: 'git://github.com/rweng/jquery-datatables-rails.git'
   gem 'jquery-datatables-rails', '~> 1.12', '>= 1.12.2'
 end

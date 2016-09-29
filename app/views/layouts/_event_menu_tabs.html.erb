@@ -1,5 +1,8 @@
+<%
+  data_id ||= 'main'
+%>
 <% if @event_menu.present? && !@event_menu.select{|x| x["events"].length > 0}.empty? %>
-	<div id="events_menu_tabs">
+	<div class="events_menu_tabs" data-id="<%= data_id %>">
 		<ul>
 			<% @event_menu.each do |event_type| %>
 			  <% if !event_type["events"].empty? %>
