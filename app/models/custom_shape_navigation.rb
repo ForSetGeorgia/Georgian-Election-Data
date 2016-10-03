@@ -6,10 +6,14 @@ class CustomShapeNavigation < ActiveRecord::Base
 
   has_many :custom_shape_navigation_translations, :dependent => :destroy
   accepts_nested_attributes_for :custom_shape_navigation_translations
-  attr_accessible :event_id, :shape_type_id, :sort_order, :always_visible, 
+  attr_accessible :event_id, :shape_type_id, :sort_order, :always_visible,
     :show_at_shape_type_id, :custom_shape_navigation_translations_attributes
 
   validates :event_id, :shape_type_id, :presence => true
+
+  def self.for_event_shape_type(event_id, shape_type_id)
+    where(event_id: event_id, shape_type_id: shape_type_id).first
+  end
 
   def self.with_sort_order
     with_translations(I18n.locale)
@@ -18,8 +22,8 @@ class CustomShapeNavigation < ActiveRecord::Base
 
   def clone_for_event(event_id)
     if event_id.present?
-      new_view = CustomShapeNavigation.new(:event_id => event_id, :shape_type_id => self.shape_type_id, 
-            :sort_order => self.sort_order, :always_visible => self.always_visible, 
+      new_view = CustomShapeNavigation.new(:event_id => event_id, :shape_type_id => self.shape_type_id,
+            :sort_order => self.sort_order, :always_visible => self.always_visible,
             :show_at_shape_type_id => self.show_at_shape_type_id)
       self.custom_shape_navigation_translations.each do |trans|
         new_view.custom_shape_navigation_translations.build(:locale => trans.locale, :link_text => trans.link_text)

@@ -339,6 +339,7 @@ logger.debug "**************************************"
 		    		else
 		  logger.debug "++++found event and shape type, get root shape"
               startPhase = Time.now
+
 		          # get the root shape
 		          root = Shape.joins(:shape_translations)
 		                  .where(:shapes => {:id => event.shape_id}, :shape_translations => {:locale => 'en'}).first
@@ -445,8 +446,24 @@ logger.debug "**************************************"
 		                if alreadyExists.nil? || alreadyExists.empty?
 		    logger.debug "++++row is not in db, get parent shape type"
 		                  # record does not exist yet
-		                  # find parent shape type so we can find parent shape
-		                  parent_shape_type = shape_type.parent
+
+                      # see if this event has custom shape nav for this type
+                      # - if so, use it!
+                      custome_shape_type = CustomShapeNavigation.for_event_shape_type(event.id, shape_type.id)
+                      if custome_shape_type.present?
+          logger.debug "++++ - this event and shape type have custom nav -> using it to get correct parent"
+                        if custome_shape_type.show_at_shape_type_id.nil?
+          logger.debug "++++ --> parent is root"
+                          parent_shape_type = root.shape_type
+                        else
+          logger.debug "++++ --> parent is #{custome_shape_type.show_at_shape_type_id}"
+                          parent_shape_type = ShapeType.find(custome_shape_type.show_at_shape_type_id)
+                        end
+                      else
+                        # find parent shape type so we can find parent shape
+                        parent_shape_type = shape_type.parent
+                      end
+
 		                  if parent_shape_type.nil?
 		                    # did not find parent shape type
 		              		  msg = I18n.t('models.shape.msgs.parent_shape_type_not_found', :row_num => n)
@@ -457,7 +474,7 @@ logger.debug "**************************************"
 		      logger.debug "++++getting parent shape"
 		                    startPhase = Time.now
 		                    # check if the root has descendants
-		                    # have to check the root object by iteself and then check for through the descendants
+		                    # have to check the root object by iteself and then check for the descendants
 		                    parentRoot = root.shape_type_id == parent_shape_type.id &&
 		                      root.common_id == row[idx_parent_id].strip && root.common_name == row[idx_parent_name].strip ? root : nil
 		                    if root.has_children?

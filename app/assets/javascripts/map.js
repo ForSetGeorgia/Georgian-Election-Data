@@ -38,7 +38,7 @@ if (gon.openlayers){
 	OpenLayers.ImgPath = gon.openlayers_img_path;
 
   // download a png version of what the map is currently showing
-  function download_map_png(){    
+  function download_map_png(){
 
     if (gon.is_ie){
       $.fancybox({
@@ -74,7 +74,7 @@ if (gon.openlayers){
     }
     $('#map').css('height', mapHeight);
   }
-  
+
   // the container of the img may be less than the img width, so adjust the img size
   function apply_summary_image_scales(el){
     if ($(el).find('img').length == 1){
@@ -108,10 +108,10 @@ console.log('new width = ' + new_width + '; new height = ' + new_height);
 /*
 console.log('************************************');
 console.log('scaling parent summary images');
-    apply_summary_image_scales('#summary_data_container .map_image:nth-child(1)');    
+    apply_summary_image_scales('#summary_data_container .map_image:nth-child(1)');
 console.log('scaling root summary images');
     apply_summary_image_scales('#summary_data_container .map_image:nth-child(3)');
-*/      
+*/
   }
 
 	// Function called from body tag
@@ -142,8 +142,8 @@ console.log('scaling root summary images');
 
     // adjust map height
     resize_map();
-    
-    // adjust summary image offset if necessary    
+
+    // adjust summary image offset if necessary
     adjust_summary_images();
 
 
@@ -411,11 +411,11 @@ console.log('scaling root summary images');
 		      console.log('highlight_shape function not found, check the script that loads it');
 		    }
 			}
-			
+
 			// load svg into canvas so can convert to img
       // copy path from child shapes into parent shapes
       // and then spit out as png
-      if (!gon.is_bot && $('#summary_data_container > div > div:first-of-type > div:first-of-type .map_image img').length == 0 && 
+      if (!gon.is_bot && $('#summary_data_container > div > div:first-of-type > div:first-of-type .map_image img').length == 0 &&
           (gon.view_type == gon.summary_view_type_name || gon.is_voters_list_using_default_core_ind_id == true))
       {
 console.log('creating img');
@@ -439,12 +439,12 @@ console.log('creating img');
         var img_PNG = "<img style='height: " + img_height + "px; width: " + img_width + "px;' src='" + canvas.toDataURL() + "' data-width='" + img_width + "' data-height='" + img_height + "'/>";
         $('#summary_data_container > div > div:first-of-type > div:first-of-type .map_image').append(img_PNG);
 
-        
+
         // set flag so images are saved if this is not mobile device
         if (!gon.is_mobile){
           generated_map_images = true;
         }
-        
+
         // adjust the images to fit in space
         adjust_summary_images();
       }
@@ -788,7 +788,7 @@ console.log('creating img');
       {
         popup_text = '<div style="padding: 10px; font-size: 15px; font-weight: bold;">' + json[index].shape_values.title_location + '</div>';
       }
-    }    
+    }
 
     popup = new OpenLayers.Popup.FramedCloud("Feature Popup",
 		  feature_center,
@@ -819,7 +819,7 @@ console.log('creating img');
 		    "cursor": "pointer"
 		  }).click(close_button_func);
 		}
-		
+
 		// turn on main popup
 		create_popup(feature_data);
   }
@@ -1022,5 +1022,5 @@ console.log('creating img');
     adjust_summary_images();
 		setTimeout(set_map_extent, 1);
   }
-    
+
 }
