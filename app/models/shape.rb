@@ -521,12 +521,15 @@ logger.debug "**************************************"
 													  # - the khobi district geo that has something bad in it and the string gets cut off
 													  #################################
 													  startPhase = Time.now
-													  if row[idx_common_name].strip.downcase == "khobi"
-            logger.debug "++++++++++++++ found khobi, using geo data hardcoded into app"
-			                        shape = parent.children.create :shape_type_id => shape_type.id, :geometry => khobi_district_geometry
-													  else
-			                        shape = parent.children.create :shape_type_id => shape_type.id, :geometry => row[idx_geo].strip
-													  end
+												# 	  if row[idx_common_name].strip.downcase == "khobi"
+            # logger.debug "++++++++++++++ found khobi, using geo data hardcoded into app"
+			         #                shape = parent.children.create :shape_type_id => shape_type.id, :geometry => khobi_district_geometry
+												# 	  else
+			         #                shape = parent.children.create :shape_type_id => shape_type.id, :geometry => row[idx_geo].strip
+												# 	  end
+
+                              shape = parent.children.create :shape_type_id => shape_type.id, :geometry => row[idx_geo].strip
+
 													  # add translations
 													  I18n.available_locales.each do |locale|
 														  shape.shape_translations.create(:locale => locale, :common_id => row[idx_common_id].strip, :common_name => row[idx_common_name].strip)

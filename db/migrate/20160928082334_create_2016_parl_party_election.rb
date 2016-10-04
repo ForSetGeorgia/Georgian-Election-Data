@@ -44,21 +44,21 @@ EXISTING_PARTIES = [
 
 NEW_PARTIES = {
   :en => [
-    ['State for the People', 'State for People', 'Vote share State for the People (%)', ''],
-    ['Progressive Democratic Movement', 'Progressive Dem Mvmnt', 'Vote share Progressive Democratic Movement (%)', ''],
-    ['Democratic Movement', 'Dem Mvmnt', 'Vote share Democratic Movement (%)', ''],
-    ['For United Georgia', 'United Georgia', 'Vote share For United Georgia (%)', ''],
-    ['People\'s Government', 'People\'s Govt', 'Vote share People\'s Government (%)', ''],
-    ['Communist Party - Stalin', 'Communist - Stalin', 'Vote share Communist Party - Stalin (%)', ''],
-    ['Georgia for Peace', 'Geo for Peace', 'Vote share Georgia for Peace (%)', ''],
-    ['Socialist Workers Party', 'Socialist Workers', 'Vote share Socialist Workers Party (%)', ''],
-    ['Georgia', 'Georgia', 'Vote share Georgia (%)', ''],
-    ['Georgian Idea', 'Georgian Idea', 'Vote share Georgian Idea (%)', ''],
-    ['Industrialists - Our Homeland', 'Indust - Homeland', 'Vote share Industrialists - Our Homeland (%)', ''],
-    ['Ours - People\'s Party', 'Ours - Ppl Party', 'Vote share Ours - People\'s Party (%)', ''],
-    ['Leftist Alliance', 'Left Alliance', 'Vote share Leftist Alliance (%)', ''],
-    ['National Forum', 'National Forum', 'Vote share National Forum (%)', ''],
-    ['Free Democrats', 'Free Dems', 'Vote share Free Democrats (%)', '']
+    ['State for the People', 'State for People', 'Vote share State for the People (%)', '#993767'],
+    ['Progressive Democratic Movement', 'Progressive Dem Mvmnt', 'Vote share Progressive Democratic Movement (%)', '#f19670'],
+    ['Democratic Movement', 'Dem Mvmnt', 'Vote share Democratic Movement (%)', '#079fe2'],
+    ['For United Georgia', 'United Georgia', 'Vote share For United Georgia (%)', '#4e2472'],
+    ['People\'s Government', 'People\'s Govt', 'Vote share People\'s Government (%)', '#9163b6'],
+    ['Communist Party - Stalin', 'Communist - Stalin', 'Vote share Communist Party - Stalin (%)', '#e0598b'],
+    ['Georgia for Peace', 'Geo for Peace', 'Vote share Georgia for Peace (%)', '#e9d78e'],
+    ['Socialist Workers Party', 'Socialist Workers', 'Vote share Socialist Workers Party (%)', '#51574a'],
+    ['Georgia', 'Georgia', 'Vote share Georgia (%)', '#8e8c6d'],
+    ['Georgian Idea', 'Georgian Idea', 'Vote share Georgian Idea (%)', '#74c493'],
+    ['Industrialists - Our Homeland', 'Indust - Homeland', 'Vote share Industrialists - Our Homeland (%)', '#545f52'],
+    ['Ours - People\'s Party', 'Ours - Ppl Party', 'Vote share Ours - People\'s Party (%)', '#b8afba'],
+    ['Leftist Alliance', 'Left Alliance', 'Vote share Leftist Alliance (%)', '#9abf88'],
+    ['National Forum', 'National Forum', 'Vote share National Forum (%)', '#5698c4'],
+    ['Free Democrats', 'Free Dems', 'Vote share Free Democrats (%)', '#447c69']
   ],
   :ka => [
     ['სახელმწიფო ხალხისთვის', 'სახელმწ. ხალხისთვის', 'ხმების გადანაწილება, სახელმწიფო ხალხისთვის (%)'],

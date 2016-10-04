@@ -15,8 +15,8 @@ class Create2016VotersList < ActiveRecord::Migration
         event.default_core_indicator_id = 17
         event.event_translations.each do |trans|
           if trans.locale == 'ka'
-            trans.name = '2013 წლის სექტემბერის ამომრჩეველთა სია'
-            trans.name_abbrv = '2013 სექტემბერის'
+            trans.name = '2016 წლის სექტემბერის ამომრჩეველთა სია'
+            trans.name_abbrv = '2016 სექტემბერის'
           elsif trans.locale == 'en'
             trans.name = '2016 September Voters List'
             trans.name_abbrv = '2016 September'
