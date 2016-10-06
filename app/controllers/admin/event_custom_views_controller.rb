@@ -8,7 +8,7 @@ class Admin::EventCustomViewsController < ApplicationController
   def index
 		@event_custom_views = EventCustomView
 			.includes({:event => :event_translations}, :shape_type, :descendant_shape_type)
-			.order("events.event_type_id asc, events.event_date desc, event_translations.name asc")
+			.order("events.event_date desc, event_translations.name asc")
   end
 
   def new

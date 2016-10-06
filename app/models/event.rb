@@ -126,6 +126,7 @@ class Event < ActiveRecord::Base
   def self.public_official_voters_lists(limit = 3)
 		with_translations(I18n.locale)
     .where(:has_official_data => true, :event_type_id => EventType.ids_with_voters_lists)
+    .where('shape_id is not null')
 		.order("event_date DESC, event_translations.name ASC")
 		.limit(limit)
   end
