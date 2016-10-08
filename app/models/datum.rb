@@ -374,20 +374,20 @@
 					event = Event.find(event_id)
 
 					if event.nil?
-			#logger.debug "++++event or shape type was not found"
+			logger.debug "++++event or shape type was not found"
 		  		  msg = I18n.t('models.datum.msgs.no_event_db')
 				    raise ActiveRecord::Rollback
 		  		  return msg
           end
 
           # get all shape types now instead of doing a query for every row
-#logger.debug "****************getting all shape types"
+logger.debug "****************getting all shape types"
           shape_types = ShapeType.all
 
           # get the indicators for all shape types
-#logger.debug "****************getting all indicators between columns #{index_first_ind} and #{row.length-1}"
+logger.debug "****************getting all indicators between columns #{index_first_ind} and #{row.length-1}"
           (index_first_ind..row.length-1).each do |ind_index|
-#logger.debug "****************indicator index = #{ind_index}"
+logger.debug "****************indicator index = #{ind_index}"
   					indicator = Indicator.select("indicators.id, indicators.shape_type_id")
   						.includes(:core_indicator => :core_indicator_translations)
   						.where('indicators.event_id=:event_id and core_indicator_translations.locale=:locale and core_indicator_translations.name=:name',
@@ -395,7 +395,7 @@
 
             if !indicator || indicator.empty?
               # indicator not found
-		#logger.debug "++++indicator was not found"
+		logger.debug "++++indicator was not found"
 							msg = I18n.t('models.datum.msgs.indicator_not_found', :name => row[ind_index])
 							raise ActiveRecord::Rollback
 							return msg
@@ -411,7 +411,7 @@
 
 
         if row[idx_shape_type].nil? || row[idx_shape_type].strip.length == 0
-  #logger.debug "++++shape type was not found in spreadsheet"
+  logger.debug "++++shape type was not found in spreadsheet"
     		  msg = I18n.t('models.datum.msgs.no_shape_spreadsheet', :row_num => n)
 		      raise ActiveRecord::Rollback
           return msg
@@ -421,7 +421,7 @@
 				shape_type = shape_types.select{|x| x.name_singular == row[idx_shape_type].strip}
 
 				if shape_type.nil? || shape_type.empty?
-		#logger.debug "++++ shape type was not found"
+		logger.debug "++++ shape type was not found"
 	  		  msg = I18n.t('models.datum.msgs.no_shape_db', :row_num => n)
 			    raise ActiveRecord::Rollback
 	  		  return msg
@@ -429,15 +429,15 @@
 
 	  		shape_type = shape_type.first
 
-	#logger.debug "++++shape found, checking for common values"
+	logger.debug "++++shape found, checking for common values"
         if row[idx_common_id].nil? || row[idx_common_name].nil?
     		  msg = I18n.t('models.datum.msgs.missing_data_spreadsheet', :row_num => n)
-#logger.debug "++++**missing data in row"
+logger.debug "++++**missing data in row"
           raise ActiveRecord::Rollback
           return msg
 	      end
 
-	#logger.debug "++++ common values found, processing indicators"
+	logger.debug "++++ common values found, processing indicators"
 				i = index_first_ind
         (index_first_ind..row.length-1).each do |ind_index|
           if !row[ind_index].nil?
@@ -450,7 +450,7 @@
 
 						if (indicator.nil? || indicator.empty?)
 							if !has_no_data_value
-			#logger.debug "++++indicator was not found"
+			logger.debug "++++indicator was not found"
 								msg = I18n.t('models.datum.msgs.indicator_not_found_with_data',
 									:row_num => n, :name => indicators[ind_index-index_first_ind].first.name)
 								raise ActiveRecord::Rollback
@@ -486,7 +486,7 @@
 	      puts "************************ total time so far : #{Time.now-start} seconds"
       end
 
-  #logger.debug "++++updating ka records with ka text in shape_names"
+  logger.debug "++++updating ka records with ka text in shape_names"
       startPhase = Time.now
 			# ka translation is hardcoded as en in the code above
 			# update all ka records with the apropriate ka translation
@@ -497,7 +497,7 @@
       puts "************ time to update 'ka' common id and common name: #{Time.now-startPhase} seconds"
 
 		end
-    #logger.debug "++++procssed #{n} rows in CSV file"
+    logger.debug "++++procssed #{n} rows in CSV file"
   	puts "****************** time to build_from_csv: #{Time.now-start} seconds"
 
 		# reset the locale

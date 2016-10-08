@@ -329,7 +329,7 @@ logger.debug "**************************************"
 		    		event = Event.find_by_name(row[idx_event].strip)
 		    		# get the shape type id
 		    		shape_type = ShapeType.find_by_name_singular(row[idx_shape_type].strip)
-          	logger.debug "**** time to load event and shape type: #{Time.now-startPhase} seconds"
+          	logger.debug "**** time to load event and shape type: #{Time.now-startPhase} seconds; event = #{event.id}; shape type = #{shape_type.id}"
 
 		    		if event.nil? || shape_type.nil?
 		  logger.debug "++++event or shape type was not found"
@@ -449,15 +449,15 @@ logger.debug "**************************************"
 
                       # see if this event has custom shape nav for this type
                       # - if so, use it!
-                      custome_shape_type = EventCustomView.get_by_descendant(event.id, shape_type.id).first
-                      if custome_shape_type.present?
+                      custom_shape_type = EventCustomView.get_by_descendant(event.id, shape_type.id).first
+                      if custom_shape_type.present?
           logger.debug "++++ - this event and shape type have custom nav -> using it to get correct parent"
-                        if custome_shape_type.shape_type_id == root.shape_type_id
+                        if custom_shape_type.shape_type_id == root.shape_type_id
           logger.debug "++++ --> parent is root"
                           parent_shape_type = root.shape_type
                         else
-          logger.debug "++++ --> parent is #{custome_shape_type.show_at_shape_type_id}"
-                          parent_shape_type = ShapeType.find(custome_shape_type.shape_type_id)
+          logger.debug "++++ --> parent is #{custom_shape_type.show_at_shape_type_id}"
+                          parent_shape_type = ShapeType.find(custom_shape_type.shape_type_id)
                         end
                       else
                         # find parent shape type so we can find parent shape

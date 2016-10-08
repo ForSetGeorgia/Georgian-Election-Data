@@ -175,7 +175,7 @@ class Indicator < ActiveRecord::Base
     "Event, Shape Type, en: Indicator Type, OLD en: Indicator Name, NEW en: Indicator Name, NEW en: Indicator Abbrv, NEW en: Indicator Description, NEW ka: Indicator Name, NEW ka: Indicator Abbrv, NEW ka: Indicator Description, Number Format (optional - e.g., %)".split(",")
   end
 
-  def self.build_from_csv(file, deleteExistingRecord)
+  def self.build_from_csv(file, deleteExistingRecord=false)
     infile = file.read
     n, msg = 0, ""
     idx_event = 0
@@ -222,6 +222,18 @@ class Indicator < ActiveRecord::Base
       		  return msg
   				else
 		logger.debug "++++found event, shape type, indicator type and core indicator - now looking for parent indicator"
+
+            # see if this event has custom shape nav for this type
+            # - if so, use it!
+            custom_shape_type = EventCustomView.get_by_descendant(event.id, shape_type.id).first
+            if custom_shape_type.present?
+logger.debug "++++ - this event and shape type have custom nav -> using it to get correct parent"
+              parent_shape_type = ShapeType.find(custom_shape_type.shape_type_id)
+            else
+              # find parent shape type so we can find parent shape
+              parent_shape_type = shape_type.parent
+            end
+
 						# get the parent indicator
 						# if this is root and no name given, that is ok
 						if shape_type.is_root? && (row[idx_en_parent_ind_name].nil? || row[idx_en_parent_ind_name].empty?)
@@ -235,7 +247,7 @@ class Indicator < ActiveRecord::Base
 				  		  return msg
 							end
 							parent_indicator = Indicator.where(:event_id => event.id,
-								:shape_type_id => shape_type.parent_id, :core_indicator_id => parent_core_indicator.id)
+								:shape_type_id => parent_shape_type.id, :core_indicator_id => parent_core_indicator.id)
 							if !parent_indicator || parent_indicator.empty?
 				logger.debug "++++parent indicator could not be found"
 								msg = I18n.t('models.indicator.msgs.no_core_parent', :row_num => n)
