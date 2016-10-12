@@ -73,7 +73,7 @@ class OtherController < ApplicationController
     @news = News.find(params[:id])
 
     respond_to do |format|
-      format.html 
+      format.html
       format.json { render json: @news }
     end
   end
@@ -98,7 +98,7 @@ class OtherController < ApplicationController
         respond_to do |format|
           format.csv {
   logger.debug ">>>>>>>>>>>>>>>> format = csv"
-            send_file file_path, 
+            send_file file_path,
               :filename => filename,
               :type => 'text/csv; header=present',
               :disposition => "attachment"
@@ -108,7 +108,7 @@ class OtherController < ApplicationController
 
           format.xls{
   logger.debug ">>>>>>>>>>>>>>>> format = xls"
-            send_file file_path, 
+            send_file file_path,
               :filename => filename,
               :disposition => "attachment"
 
@@ -189,7 +189,7 @@ class OtherController < ApplicationController
         gon.json_indicator_event_type_data_url = json_indicator_event_type_data_path(:core_indicator_id => gon.placeholder_core_indicator, :event_type_id => gon.placeholder_event_type)
         gon.json_indicator_event_type_data_url_district_filter = json_indicator_event_type_data_path(:core_indicator_id => gon.placeholder_core_indicator, :event_type_id => gon.placeholder_event_type, :shape_type_id => gon.placeholder_shape_type_id, :common_id => gon.placeholder_common_id, :common_name => gon.placeholder_common_name)
       end
-      
+
       respond_to do |format|
         format.html # index.html.erb
         format.json { render json: @data }
@@ -198,7 +198,7 @@ class OtherController < ApplicationController
 			flash[:info] =  t('app.msgs.does_not_exist')
 			redirect_to indicator_profiles_path
     end
-  
+
   end
 
   #####################
@@ -248,11 +248,11 @@ class OtherController < ApplicationController
       gon.placeholder_indicator = I18n.t('app.common.placeholder_indicator')
       gon.placeholder_core_indicator = I18n.t('app.common.placeholder_core_indicator')
 
-      gon.json_district_event_type_summary_data_url = json_district_event_type_summary_data_path(:common_id => params[:id], 
-            :event_type_id => gon.placeholder_event_type, 
+      gon.json_district_event_type_summary_data_url = json_district_event_type_summary_data_path(:common_id => params[:id],
+            :event_type_id => gon.placeholder_event_type,
             :indicator_type_id => gon.placeholder_indicator)
-      gon.json_district_event_type_data_url = json_district_event_type_data_path(:common_id => params[:id], 
-            :event_type_id => gon.placeholder_event_type, 
+      gon.json_district_event_type_data_url = json_district_event_type_data_path(:common_id => params[:id],
+            :event_type_id => gon.placeholder_event_type,
             :core_indicator_id => gon.placeholder_core_indicator)
 
 
@@ -264,6 +264,6 @@ class OtherController < ApplicationController
 			flash[:info] =  t('app.msgs.does_not_exist')
 			redirect_to indicator_profiles_path
     end
-  
+
   end
 end

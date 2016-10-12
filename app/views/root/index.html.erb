@@ -300,11 +300,13 @@
                           <%= link_to @summary_lists[index][:list].name,
                             indicator_map_path(:event_id => @summary_lists[index][:list].id, :event_type_id => @summary_lists[index][:list].event_type_id) %>
                         </h3>
-                        <% @summary_lists[index][:summary_item].each do |item| %>
-                          <div>
-                            <strong><%= item['indicator_name_abbrv']%>:</strong>
-                            <%= item['formatted_value'] %>
-                          </div>
+                        <% if @summary_lists[index].present? && @summary_lists[index][:summary_item].present? %>
+                          <% @summary_lists[index][:summary_item].each do |item| %>
+                            <div>
+                              <strong><%= item['indicator_name_abbrv']%>:</strong>
+                              <%= item['formatted_value'] %>
+                            </div>
+                          <% end %>
                         <% end %>
                       </div>
                     </div>

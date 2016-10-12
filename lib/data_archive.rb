@@ -11,6 +11,7 @@ module DataArchive
   ###########################################
   def self.get_archive(event_id, locale, file_type)
     file_path = "#{archive_file_path(event_id)}/#{locale}.#{file_type.downcase}"
+
     # if file does not exist, create it
     create_file(event_id, locale) if !File.exists?(file_path)
 
@@ -41,36 +42,38 @@ module DataArchive
     original_locale = I18n.locale
     I18n.locale = locale.to_sym
 
-    events = Event.where(:id => event_id)
+    event = Event.where(:id => event_id).first
 
-    if events.present?
-      event = events.first
+    if event.present?
+      type = event.has_official_data? ? Datum::DATA_TYPE[:official] : event.has_live_data? ? Datum::DATA_TYPE[:live] : nil
 
-      # create folder for to store files
-      path = archive_file_path(event_id)
-      create_directory(path)
+      if type.present?
+        # create folder for to store files
+        path = archive_file_path(event_id)
+        create_directory(path)
 
-      # get the most recent official data set
-      most_recent_dataset = DataSet.current_dataset(event.id, 'official')
-      if most_recent_dataset.present?
-        # get the data for this event
-        data = Datum.get_all_data_for_event(event.id, most_recent_dataset.first.id)
+        # get the most recent official data set
+        most_recent_dataset = DataSet.current_dataset(event.id, type)
+        if most_recent_dataset.present?
+          # get the data for this event
+          data = Datum.get_all_data_for_event(event.id, most_recent_dataset.first.id)
 
-        if data.present?
-          # csv
-          csv_filename = "#{locale}.csv"
-          # create the csv file
-          File.open(path + "/" + csv_filename, 'w') do |f|
-            f.puts create_csv_formatted_string(data)
+          if data.present?
+            # csv
+            csv_filename = "#{locale}.csv"
+            # create the csv file
+            File.open(path + "/" + csv_filename, 'w') do |f|
+              f.puts create_csv_formatted_string(data)
+            end
+
+            # xls
+            xls_filename = "#{locale}.xls"
+            # create the xls file
+            File.open(path + "/" + xls_filename, 'w') do |f|
+              f.puts create_excel_formatted_string(data)
+            end
+
           end
-
-          # xls
-          xls_filename = "#{locale}.xls"
-          # create the xls file
-          File.open(path + "/" + xls_filename, 'w') do |f|
-            f.puts create_excel_formatted_string(data)
-          end
-
         end
       end
     end
