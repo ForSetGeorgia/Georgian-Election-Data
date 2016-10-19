@@ -3,6 +3,7 @@ var number_events;
 var datatable_first_column_value = "-9999";
 
 function show_appropriate_indicator_events(ths){
+
     var yd = $(ths).next().offset().top - $(window).scrollTop();
 
     // loop through each option in this select and show/hide as appropriate
@@ -627,7 +628,7 @@ $(document).ready(function() {
 
 
     // when event filter changes, update what events to show
-    $('#indicator_profile .tab-pane.active .event_filter select').on('change', function(){
+    $('#indicator_profile .tab-pane .event_filter select').on('change', function(){
       show_appropriate_indicator_events(this);
     });
 

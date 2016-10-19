@@ -644,7 +644,7 @@ $(document).ready(function() {
     });
 
     // when event filter changes, update what events to show
-    $('#district_profile .tab-pane.active .event_filter select').on('change', function(){
+    $('#district_profile .tab-pane .event_filter select').on('change', function(){
       show_appropriate_district_events(this);
     });
 
