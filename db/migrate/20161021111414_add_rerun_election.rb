@@ -65,7 +65,7 @@ EXISTING_PARTIES = [
 
         if inds.present?
           puts '> cloning event components'
-          event.clone_event_components(clone_ind_event_id, core_indicator_ids: inds, clone_indicators: false)
+          event.clone_event_components(clone_ind_event_id, core_indicator_ids: inds, clone_indicators: true)
         end
 
         puts "-----------------"
@@ -94,11 +94,16 @@ EXISTING_PARTIES = [
     Event.transaction do
       event = Event.includes(:event_translations).where(:event_date => '2016-10-22', event_translations: {name: '2016 Parliamentary - Majoritarian Rerun'}).first
       if event.present?
+        puts "deleting live menu"
+        MenuLiveEvent.where(event_id: event.id).delete_all
+
         puts "deleting the event"
         event.destroy
 
+
         puts "clearing cache"
         I18n.available_locales.each do |locale|
+          Rails.cache.delete("live_event_menu_json_#{locale}")
           JsonCache.clear_data_file("profiles/core_indicator_events_#{locale}")
           JsonCache.clear_data_file("profiles/core_indicator_events_table_#{locale}")
         end
