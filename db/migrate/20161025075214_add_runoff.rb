@@ -1,28 +1,19 @@
-class AddRerunElection < ActiveRecord::Migration
+class AddRunoff < ActiveRecord::Migration
 # the ids are the election party id, not related to any id in the system
 # parties = [
-    # {id: 1, name: 'State for the People', status: 'existing'}
-    # {id: 3, name: 'Democratic Movement', status: 'existing'}
     # {id: 5, name: 'United National Movement', status: 'existing'}
-    # {id: 7, name: 'For United Georgia', status: 'existing'}
-    # {id: 8, name: 'Alliance of Patriots', status: 'existing'}
-    # {id: 17, name: 'Georgia', status: 'existing'}
-    # {id: 23, name: 'Ours - People\'s Party', status: 'existing'}
-    # {id: 28, name: 'In the Name of the Lord', status: 'existing'}
+    # {id: 19, name: 'Industrialists - Our Homeland', status: 'new'}
+    # {id: 27, name: 'Free Democrats', status: 'new'}
     # {id: 41, name: 'Georgian Dream', status: 'existing'}
 #   ]
 
 # ids are core ids - names are just there to indicate what the party is
 EXISTING_PARTIES = [
-  [144, 'State for the People'],
-  [146, 'Democratic Movement'],
   [59, "United National Movement"],
-  [147, 'For United Georgia'],
-  [134, "Alliance of Patriots"],
-  [152, 'Georgia'],
-  [155, 'Ours - People\'s Party'],
-  [133, "In the Name of the Lord"],
-  [74, "Georgian Dream"]
+  [154, 'Industrialists - Our Homeland'],
+  [158, 'Free Democrats'],
+  [74, "Georgian Dream"],
+  [87, 'Initiative Group']
 ]
 
 
@@ -32,7 +23,7 @@ EXISTING_PARTIES = [
     clone_core_ind_id = 59 #unm
 
     Event.transaction do
-      event = Event.clone_from_event(clone_event_id, '2016-10-22')
+      event = Event.clone_from_event(clone_event_id, '2016-10-30')
 
       if event.present?
         puts "event created with id of #{event.id}"
@@ -40,13 +31,13 @@ EXISTING_PARTIES = [
         # update values
         event.event_translations.each do |trans|
           if trans.locale == 'ka'
-            trans.name = '2016 წლის საპარლამენტო არჩევნები - მაჟორიტარული არჩევნების განმეორებითი კენჭისყრა'
-            trans.name_abbrv = '2016 მაჟორიტარული არჩევნების განმეორებითი კენჭისყრა'
-            trans.description = '2016 წლის 22 ოქტომბერის საპარლამენტო არჩევნები -  2  მაჟორიტარულ ოლქში 4 უბანზე ჩატარებული  განმეორებითი კენჭისყრის შედეგები. პარლამენტის წევრები აირჩევიან ოთხი წლის ვადით.'
+            trans.name = '2016 წლის საპარლამენტო არჩევნები - მაჟორიტარული არჩევნების მეორე ტური'
+            trans.name_abbrv = '2016 მაჟორიტარული არჩევნების მეორე ტური'
+            trans.description = '2016 წლის 30 ოქტომბერს 50 მაჟორიტარულ ოლქში ჩატარებული საპარლამენტო არჩევნების მეორე ტურის შედეგები. პარლამენტის წევრები აირჩევიან 4 წლის ვადით.'
           elsif trans.locale == 'en'
-            trans.name = '2016 Parliamentary - Majoritarian Rerun'
-            trans.name_abbrv = '2016 Parliamentary - Majoritarian Rerun'
-            trans.description = 'The results of the October 22, 2016 rerun election for 4 precincts in two majoritarian districts of Parliament. Members of Parliament are elected for four year terms.'
+            trans.name = '2016 Parliamentary - Majoritarian Runoff'
+            trans.name_abbrv = '2016 Majoritarian Runoff'
+            trans.description = 'The results of the October 30, 2016 ruoff election for 50 majoritarian districts of Parliament. Members of Parliament are elected for four year terms.'
           end
         end
         event.save
@@ -71,9 +62,9 @@ EXISTING_PARTIES = [
         puts "-----------------"
 
         # create a live menu for this event
-        start_date = '2016-10-21'
-        end_date = '2016-11-21'
-        data_at = '2016-10-23 10:00:00 +0400'
+        start_date = '2016-10-25'
+        end_date = '2016-11-25'
+        data_at = '2016-10-31 10:00:00 +0400'
         if Time.now.to_date.to_s <= end_date
           puts "-> creating live event menu item"
           MenuLiveEvent.create(event_id: event.id, menu_start_date: start_date, menu_end_date: end_date, data_available_at: data_at)
@@ -92,7 +83,7 @@ EXISTING_PARTIES = [
 
   def down
     Event.transaction do
-      event = Event.includes(:event_translations).where(:event_date => '2016-10-22', event_translations: {name: '2016 Parliamentary - Majoritarian Rerun'}).first
+      event = Event.includes(:event_translations).where(:event_date => '2016-10-30', event_translations: {name: '2016 Parliamentary - Majoritarian Runoff'}).first
       if event.present?
         puts "deleting live menu"
         MenuLiveEvent.where(event_id: event.id).delete_all
