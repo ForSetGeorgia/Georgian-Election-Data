@@ -24,6 +24,7 @@ private
 	def self.colors
 		colors = Hash[
 			"OrRd" => Hash[
+						2 => ["#FEE8C8", "#E34A33"],
 						3 => ["#FEE8C8", "#FDBB84", "#E34A33"],
 						4 => ["#FEF0D9", "#FDCC8A", "#FC8D59", "#D7301F"],
 						5 => ["#FEF0D9", "#FDCC8A", "#FC8D59", "#E34A33", "#B30000"],
@@ -37,6 +38,7 @@ private
 						13 => ["#FFF7EC", "#FEE8C8", "#FDD49E", "#FDBB84", "#FC8D59", "#EF6548", "#D7301F", "#B30000", "#7F0000", "#5a0000", "#360000", "#1a0000", "#0c0000"]
 			],
 			"Oranges" => Hash[
+						2 => ["#FEE6CE", "#E6550D" ],
 						3 => ["#FEE6CE", "#FDAE6B", "#E6550D" ],
 						4 => ["#FEEDDE", "#FDBE85", "#FD8D3C", "#D94701" ],
 						5 => ["#FEEDDE", "#FDBE85", "#FD8D3C", "#E6550D", "#A63603" ],
@@ -46,6 +48,7 @@ private
 						9 => ["#FFF5EB", "#FEE6CE", "#FDD0A2", "#FDAE6B", "#FD8D3C", "#F16913", "#D94801", "#A63603", "#7F2704" ]
 			],
 			"Blues" => Hash[
+						2 => ["#DEEBF7", "#3182BD" ],
 						3 => ["#DEEBF7", "#9ECAE1", "#3182BD" ],
 						4 => ["#EFF3FF", "#BDD7E7", "#6BAED6", "#2171B5" ],
 						5 => ["#EFF3FF", "#BDD7E7", "#6BAED6", "#3182BD", "#08519C" ],
@@ -55,6 +58,7 @@ private
 						9 => ["#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1", "#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B" ]
 			],
 			"PuBu" => Hash[
+						2 => ["#ECE7F2" , "#2B8CBE" ],
 						3 => ["#ECE7F2" , "#A6BDDB" , "#2B8CBE" ],
 						4 => ["#F1EEF6" , "#BDC9E1" , "#74A9CF" , "#0570B0" ],
 						5 => ["#F1EEF6" , "#BDC9E1" , "#74A9CF" , "#2B8CBE" , "#045A8D" ],
