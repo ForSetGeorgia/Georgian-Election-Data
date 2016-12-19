@@ -466,7 +466,7 @@ logger.debug "---********----- shape type cache"
 		  .exception_notification(request.env, exception)
 		  .deliver
 		@error_type = "500"
-		render "layouts/error", :layout => false
+		render "layouts/error", :layout => false, :formats => [:html]
 #		render :file => "#{Rails.root}/public/500.html", :status => 500
 	end
 

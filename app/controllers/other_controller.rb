@@ -91,7 +91,7 @@ class OtherController < ApplicationController
 
     if event.present?
       file_path = DataArchive.get_archive(params[:event_id], params[:file_locale], params[:format])
-      if file_path.present?
+      if file_path.present? && File.exists?(file_path)
         filename = DataArchive.create_archive_filename(event.first.name, params[:file_locale], params[:format])
 
         # send the file
