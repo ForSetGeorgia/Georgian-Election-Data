@@ -1,5 +1,9 @@
 ElectionMap::Application.routes.draw do
 
+  # Disallow robots access if not production environment
+  require 'robots_generator'
+  match '/robots.txt' => RobotsGenerator
+
 	#--------------------------------
 	# all resources should be within the scope block below
 	#--------------------------------
