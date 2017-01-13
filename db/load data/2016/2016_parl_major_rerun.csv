@@ -1,0 +1,5 @@
+region,district_id,district name,precinct_id,special precinct,possible voters,special voters,votes by 12,votes by 17,ballots signed for,num ballots,invalid votes,valid votes,logic check,logic check2,logic check,logic check2,logic check,logic check2,1 - State for the People,3 - Democratic Movement,5 - United National Movement,7 - For United Georgia,8 - Alliance of Patriots,17 - Georgia,23 - Ours - People's Party,28 - In the Name of the Lord,41 - Georgian Dream
+,36,,22.48,,1436,0,306,615,762,1300,18,,,,,,,,3,2,381,4,7,1,0,0,313
+,66,,67.108,,774,8,183,365,440,700,12,,,,,,,,0,0,117,1,0,0,0,0,309
+,66,,67.38,,1145,4,164,393,461,1100,12,,,,,,,,4,0,156,2,1,0,0,1,285
+,66,,67.79,,925,3,174,432,565,850,5,,,,,,,,4,0,165,2,1,0,0,1,387
