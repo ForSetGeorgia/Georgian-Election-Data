@@ -253,13 +253,13 @@
 #                      cls << 'highlighted '
                     end
 	                  # if this is winner, highlight it
-                    ind_name = @table_data[0][i]
-	                  index = ind_name.index(' - ')
-	                  if index.present?
-	                    ind_name = ind_name.split(' - ')[1]
-	                  end
+                    ind_name_with_rank = @table_data[0][i]
+                    # format of name is: #x - party name
+                    # pull out party name using regexp
+                    match = /#\d* - (.*)/.match(ind_name_with_rank)
+                    ind_name = match.present? && match[1].present? ? match[1] : nil
 #	                  if has_summary && row[1] == @table_data[0][i]
-	                  if has_summary && row[1] == ind_name
+	                  if has_summary && ind_name.present? && row[1] == ind_name
 	                    cls << 'winner '
                       style << "background-color: #{ind_colors[i-2]};"
 	                  end

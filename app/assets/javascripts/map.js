@@ -287,6 +287,8 @@ console.log('scaling root summary images');
 	// - also take the feature title_location and push into the data json
 	function bindDataToShapes(features)
 	{
+    console.log('bind to data - features length = ' + features.length)
+    console.log(features)
 		for (var i in features)
 		{
 			var feature = features[i];
@@ -555,6 +557,7 @@ console.log('creating img');
 			for (var i=0; i<json_data["indicator"]["scales"].length; i++){
 				var isFirst = i==1 ? true : false // remember if this is the first record (we want i=1 cause i=0 is no data)
 				var name = json_data["indicator"]["scales"][i].name;
+        var is_summary = json_data["indicator"]["is_summary"];
 				var color = "";
 				// if the scale has a color, use it, otherwise use app color
 				if (json_data["indicator"]["scales"][i].color && json_data["indicator"]["scales"][i].color.length > 0){
@@ -591,7 +594,7 @@ console.log('creating img');
 					else {
 						// > is in middle of string.  can not handle
 					}
-				} else if (indexB >= 0) {
+				} else if (indexB >= 0 && !is_summary) {
 					// set to between
 					rules.push(build_rule(color, OpenLayers.Filter.Comparison.BETWEEN, name.slice(0, indexB), name.slice(indexB+1), isFirst));
 				} else {

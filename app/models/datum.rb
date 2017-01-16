@@ -979,6 +979,7 @@ Rails.logger.debug("************* shape type is precinct = '#{shape_type.is_prec
         # add info about this data
     	  # add the indicator info
     	  results["indicator"] = Hash.new
+        results["indicator"]["is_summary"] = true
         results["indicator"]["name"] = nil
 		    results["indicator"]["name_abbrv"] = indicator_type.nil? ? nil : indicator_type.summary_name
 		    results["indicator"]["description"] = indicator_type.nil? ? nil : indicator_type.summary_name
@@ -1039,6 +1040,7 @@ Rails.logger.debug "++++++++++++++++++++shape parent id = #{shape.parent_id}"
         # add info about this data
     	  # add the indicator info
     	  results["indicator"] = Hash.new
+        results["indicator"]["is_summary"] = false
         results["indicator"]["name"] = indicator.name
 			  results["indicator"]["name_abbrv"] = indicator.name_abbrv_w_parent
 			  results["indicator"]["description"] = indicator.description_w_parent
