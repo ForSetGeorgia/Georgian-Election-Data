@@ -10,14 +10,18 @@ require 'mysql2'
 @user = 'root'
 @password = 'root'
 @db = 'election_data-elections'
-@year = '2014'
-# indicate which election should be used to load precinct counts
-# - note - this election should be run first so it is available to all other elections
-@precinct_count_table = "#{@year} election local major - raw"
+@year = '2016'
+
+@initiative_group_merged_name = 'Independent Merged'
+@initiative_group_csv_name = 'Initiative Group'
 
 # if there is a local majoritarian election that requiest additional levels,
 # then set the param to true so the count includes a majoritarian id field
 @is_majoritarian = false
+
+# indicate if district/region names need to be added to data
+# - if not, the district name will be the district id
+@has_region_district_names = false
 
 @common_headers = [
   'shape',
@@ -50,13 +54,20 @@ require 'mysql2'
 @client = Mysql2::Client.new(:host => "localhost", :username => @user, password: @password, database: @db)
 
 
+################################################
+
+# determine whether the parties hash has the independent key
+def has_independent_parties?(parties)
+  !parties.map{|x| x[:independent]}.uniq.index{|x| x == true}.nil?
+end
+
 # truncate the table
 def truncate_table(table)
   @client.query("truncate table `#{table}`");
 end
 
 # load the csv data into a table
-def load_data(table, file)
+def load_data(table, file, has_independent_parties=false)
   data = CSV.read(file, {quote_char: '"', force_quotes: true} )
   total = data.length
   data.each_with_index do |row, index|
@@ -74,6 +85,9 @@ def load_data(table, file)
           values << ","
         end
       end
+      if has_independent_parties
+        values << ",NULL"
+      end
       # puts "insert into `#{table}` values (#{values})"
       @client.query("insert into `#{table}` values (#{values})")
     end
@@ -85,12 +99,20 @@ def run_custom_queries(table, parties)
   # create sql statement that sums all of the paries
   sql_party_sum = parties.map{|x| "`#{x[:id]} - #{x[:name]}`"}.join(' + ')
 
-  # add the region/district names
-  @client.query(
-    "update `#{table}` as t, regions_districts as rd
-    set t.region = rd.region,t.district_name = rd.district_name
-    where t.district_id = rd.district_id"
-  )
+  if @has_region_district_names
+    # add the region/district names
+    @client.query(
+      "update `#{table}` as t, regions_districts as rd
+      set t.region = rd.region,t.district_name = rd.district_name
+      where t.district_id = rd.district_id"
+    )
+  else
+    # set district name = district id
+    @client.query(
+      "update `#{table}`
+      set district_name = district_id"
+    )
+  end
 
   # add valid votes
   @client.query(
@@ -128,11 +150,30 @@ def run_custom_queries(table, parties)
     "update `#{table}`
     set more_votes_than_ballots = if(num_valid_votes < (#{sql_party_sum}), abs(num_valid_votes - (#{sql_party_sum})), 0)"
   )
+
+  # if this election has independent parties, sum up their votes
+  if has_independent_parties?(parties)
+    ind_parties = parties.select{|x| x[:independent] == true}
+    if ind_parties.length > 0
+      sql_party_sum = ind_parties.map{|x| "`#{x[:id]} - #{x[:name]}`"}.join(' + ')
+
+      @client.query(
+        "update `#{table}`
+        set `#{@initiative_group_merged_name}` = (#{sql_party_sum})"
+      )
+    end
+
+  end
+  
 end
 
 # download the data
-def download_data(table, file, party_names)
+def download_data(table, file, parties)
   data = @client.query("select * from `#{table}` where common_id != '' && common_name != ''")
+  party_names = parties.select{|x| x[:independent] != true}.map{|x| x[:name]}
+  if has_independent_parties?(parties)
+    party_names << @initiative_group_csv_name
+  end
   header = @common_headers + party_names
   header.flatten!
   CSV.open(file, 'wb') do |csv|
@@ -144,14 +185,14 @@ def download_data(table, file, party_names)
   end
 end
 
-def load_precinct_counts
-  sql = "insert into `#{@year} election - precinct count`
+def load_precinct_counts(election)
+  sql = "insert into `#{@year} election #{election} - precinct count`
                 select region, district_id, "
   if @is_majoritarian
     sql << "major_district_id, "
   end
   sql << "count(*) as num_precints
-          from `#{@precinct_count_table}`
+          from `#{@year} election #{election} - raw`
           group by region, district_id"
   if @is_majoritarian
     sql << ", major_district_id"
@@ -162,9 +203,14 @@ end
 
 
 # process an election
-def run_processing(table_raw, table_csv, input_csv, output_csv, parties)
+def run_processing(election, parties)
   puts "===================="
-  puts "> #{table_raw}"
+  puts "> #{election}"
+
+  table_raw = "#{@year} election #{election} - raw"
+  table_csv = "#{@year} election #{election} - csv"
+  input_csv = "#{@year}_official_#{election.gsub(' ', '_')}.csv"
+  output_csv = "upload_#{@year}_official_#{election.gsub(' ', '_')}.csv"
 
   # truncate the table
   puts "  - truncating"
@@ -172,7 +218,7 @@ def run_processing(table_raw, table_csv, input_csv, output_csv, parties)
 
   # load the data
   puts "  - loading"
-  load_data(table_raw, input_csv)
+  load_data(table_raw, input_csv, has_independent_parties?(parties))
 
   # run special scripts
   puts "  - running special scripts"
@@ -181,11 +227,11 @@ def run_processing(table_raw, table_csv, input_csv, output_csv, parties)
   # load precinct count data
   # - this needs to be done before downloading so the views get the correct data
   puts "  - loading precinct counts"
-  load_precinct_counts
+  load_precinct_counts(election)
 
   # download the data
   puts "  - downloading"
-  download_data(table_csv, output_csv, parties.map{|x| x[:name]})
+  download_data(table_csv, output_csv, parties)
 
   puts "> done"
   puts "===================="
@@ -196,84 +242,120 @@ end
 ###################################################3
 ###################################################3
 
-def local_party
-  table_raw = '2016 election parl party - raw'
-  table_csv = '2016 election parl party - csv'
-  input_csv = '2014_official_parl_party.csv'
-  output_csv = 'upload_2014_official_parl_party.csv'
+###################################################3
+
+def parl_party
+  election = 'parl party'
   parties = [
-    {id: 1, name: 'State for the People'}
-    {id: 2, name: 'Progressive Democratic Movement'}
-    {id: 3, name: 'Democratic Movement'}
-    {id: 4, name: 'Georgian Group'}
-    {id: 5, name: 'United National Movement'}
-    {id: 6, name: 'Republican Party'}
-    {id: 7, name: 'For United Georgia'}
-    {id: 8, name: 'Alliance of Patriots'}
-    {id: 10, name: 'Labour'}
-    {id: 11, name: 'People\'s Government'}
-    {id: 12, name: 'Communist Party - Stalin'}
-    {id: 14, name: 'Georgia for Peace'}
-    {id: 15, name: 'Socialist Workers Party'}
-    {id: 16, name: 'United Communist Party'}
-    {id: 17, name: 'Georgia'}
-    {id: 18, name: 'Georgian Idea'}
-    {id: 19, name: 'Industrialists - Our Homeland'}
-    {id: 22, name: 'Merab Kostava Society'}
-    {id: 23, name: 'Ours - People\'s Party'}
-    {id: 25, name: 'Leftist Alliance'}
-    {id: 26, name: 'National Forum'}
-    {id: 27, name: 'Free Democrats'}
-    {id: 28, name: 'In the Name of the Lord'}
-    {id: 30, name: 'Our Georgia'}
+    {id: 1, name: 'State for the People'},
+    {id: 2, name: 'Progressive Democratic Movement'},
+    {id: 3, name: 'Democratic Movement'},
+    {id: 4, name: 'Georgian Group'},
+    {id: 5, name: 'United National Movement'},
+    {id: 6, name: 'Republican Party'},
+    {id: 7, name: 'For United Georgia'},
+    {id: 8, name: 'Alliance of Patriots'},
+    {id: 10, name: 'Labour'},
+    {id: 11, name: 'People\'s Government'},
+    {id: 12, name: 'Communist Party - Stalin'},
+    {id: 14, name: 'Georgia for Peace'},
+    {id: 15, name: 'Socialist Workers Party'},
+    {id: 16, name: 'United Communist Party'},
+    {id: 17, name: 'Georgia'},
+    {id: 18, name: 'Georgian Idea'},
+    {id: 19, name: 'Industrialists - Our Homeland'},
+    {id: 22, name: 'Merab Kostava Society'},
+    {id: 23, name: 'Ours - People\'s Party'},
+    {id: 25, name: 'Leftist Alliance'},
+    {id: 26, name: 'National Forum'},
+    {id: 27, name: 'Free Democrats'},
+    {id: 28, name: 'In the Name of the Lord'},
+    {id: 30, name: 'Our Georgia'},
     {id: 41, name: 'Georgian Dream'}
   ]
 
-  run_processing(table_raw, table_csv, input_csv, output_csv, parties)
+  run_processing(election, parties)
 end
 
 ###################################################3
 
-def local_major
-  table_raw = '2016 election parl major - raw'
-  table_csv = '2016 election parl major - csv'
-  input_csv = '2014_official_parl_major.csv'
-  output_csv = 'upload_2014_official_parl_major.csv'
+def parl_major
+  election = 'parl major'
   parties = [
-    {id: 1, name: 'State for the People'}
-    {id: 2, name: 'Progressive Democratic Movement'}
-    {id: 3, name: 'Democratic Movement'}
-    {id: 4, name: 'Georgian Group'}
-    {id: 5, name: 'United National Movement'}
-    {id: 6, name: 'Republican Party'}
-    {id: 7, name: 'For United Georgia'}
-    {id: 8, name: 'Alliance of Patriots'}
-    {id: 10, name: 'Labour'}
-    # {id: 11, name: 'People\'s Government'}
-    {id: 12, name: 'Communist Party - Stalin'}
-    {id: 14, name: 'Georgia for Peace'}
-    {id: 15, name: 'Socialist Workers Party'}
-    {id: 16, name: 'United Communist Party'}
-    {id: 17, name: 'Georgia'}
-    {id: 18, name: 'Georgian Idea'}
-    {id: 19, name: 'Industrialists - Our Homeland'}
-    {id: 22, name: 'Merab Kostava Society'}
-    {id: 23, name: 'Ours - People\'s Party'}
-    {id: 25, name: 'Leftist Alliance'}
-    {id: 26, name: 'National Forum'}
-    {id: 27, name: 'Free Democrats'}
-    {id: 28, name: 'In the Name of the Lord'}
-    # {id: 30, name: 'Our Georgia'}
+    {id: 1, name: 'State for the People'},
+    {id: 2, name: 'Progressive Democratic Movement'},
+    {id: 3, name: 'Democratic Movement'},
+    {id: 4, name: 'Georgian Group'},
+    {id: 5, name: 'United National Movement'},
+    {id: 6, name: 'Republican Party'},
+    {id: 7, name: 'For United Georgia'},
+    {id: 8, name: 'Alliance of Patriots'},
+    {id: 10, name: 'Labour'},
+    {id: 12, name: 'Communist Party - Stalin'},
+    {id: 14, name: 'Georgia for Peace'},
+    {id: 15, name: 'Socialist Workers Party'},
+    {id: 16, name: 'United Communist Party'},
+    {id: 17, name: 'Georgia'},
+    {id: 18, name: 'Georgian Idea'},
+    {id: 19, name: 'Industrialists - Our Homeland'},
+    {id: 22, name: 'Merab Kostava Society'},
+    {id: 23, name: 'Ours - People\'s Party'},
+    {id: 25, name: 'Leftist Alliance'},
+    {id: 26, name: 'National Forum'},
+    {id: 27, name: 'Free Democrats'},
+    {id: 28, name: 'In the Name of the Lord'},
+    {id: 41, name: 'Georgian Dream'},
+    {id: 42, name: 'Initiative Group1', independent: true},
+    {id: 43, name: 'Initiative Group2', independent: true},
+    {id: 44, name: 'Initiative Group3', independent: true}
+  ]
+
+  run_processing(election, parties)
+end
+
+
+###################################################3
+
+def parl_major_rerun
+  election = 'parl major rerun'
+  parties = [
+    {id: 1, name: 'State for the People'},
+    {id: 3, name: 'Democratic Movement'},
+    {id: 5, name: 'United National Movement'},
+    {id: 7, name: 'For United Georgia'},
+    {id: 8, name: 'Alliance of Patriots'},
+    {id: 17, name: 'Georgia'},
+    {id: 23, name: 'Ours - People\'s Party'},
+    {id: 28, name: 'In the Name of the Lord'},
     {id: 41, name: 'Georgian Dream'}
   ]
 
-  run_processing(table_raw, table_csv, input_csv, output_csv, parties)
+  run_processing(election, parties)
 end
+
+###################################################3
+
+def parl_major_runoff
+  election = 'parl major runoff'
+  parties = [
+    {id: 5, name: 'United National Movement'},
+    {id: 19, name: 'Industrialists - Our Homeland'},
+    {id: 27, name: 'Free Democrats'},
+    {id: 41, name: 'Georgian Dream'},
+    {id: 42, name: 'Initiative Group', independent: true}
+  ]
+
+  run_processing(election, parties)
+end
+
+
 
 #################################
 #################################
 #################################
 
 # process the elections
-local_party
-local_major
+parl_party
+parl_major
+parl_major_rerun
+parl_major_runoff
