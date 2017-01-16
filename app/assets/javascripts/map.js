@@ -574,7 +574,7 @@ console.log('creating img');
 				var indexB = name.indexOf("-");
 				if (indexG >= 0) {
 					// set to >
-					if (indexG == 0){
+					if (indexG == 0 && !is_summary){
 						rules.push(build_rule(color, OpenLayers.Filter.Comparison.GREATER_THAN, name.slice(1)));
 					}
 					else if (indexG == name.length-1) {
@@ -583,7 +583,7 @@ console.log('creating img');
 					else {
 						// > is in middle of string.  can not handle
 					}
-				} else if (indexL >= 0) {
+				} else if (indexL >= 0 && !is_summary) {
 					// set to <
 					if (indexL == 0){
 						rules.push(build_rule(color, OpenLayers.Filter.Comparison.LESS_THAN, name.slice(1)));
