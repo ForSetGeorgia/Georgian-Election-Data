@@ -211,7 +211,7 @@ logger.debug "---********----- shape type cache"
     @summary_view_type_name = "summary"
 
     # indicate whether or not the news section is visible
-    @show_news = true
+    @show_news = false
 
   end
 
