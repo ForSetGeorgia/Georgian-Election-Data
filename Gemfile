@@ -1,9 +1,9 @@
 source 'http://rubygems.org'
 
-ruby "2.3.1"
+ruby "2.3.4"
 
 gem 'bundler'
-gem "rails", "3.2.22.2"
+gem "rails", "3.2.22.5"
 gem "mysql2", "~> 0.3.18" # this gem works better with utf-8
 
 gem 'jquery-rails', '1.0.19' #gem "jquery-rails", "3.1.2"
@@ -30,6 +30,7 @@ gem 'json', '~> 2.0', '>= 2.0.2' # json parser faster than default
 gem 'useragent', '~> 0.16.8'
 gem 'rubyzip', '~> 1.2' # generate zip files
 gem 'rack-utf8_sanitizer', '~> 1.3.2' # prevent invalid encoding error
+gem 'dotenv-rails', '~> 2.2', '>= 2.2.1' # environment variables
 
 
 gem 'test-unit', '~> 3.0' # required for running rails console
@@ -60,5 +61,5 @@ group :development do
 end
 
 group :staging, :production do
-	gem 'unicorn', '~> 5.1' # http server
+	gem 'unicorn', '~> 5.3.1' # http server
 end

@@ -41,7 +41,7 @@ ElectionMap::Application.configure do
 	# Disable/enable fragment and page caching in ActionController
 	config.action_controller.perform_caching = true
 	# The underlying cache store to use.
-	config.cache_store = :dalli_store, '127.0.0.1:11211', { :namespace => "election-map-#{Rails.env}-cache", :expires_in => 30.day, :compress => true }
+	config.cache_store = :dalli_store, '127.0.0.1:11211', { :namespace => "election-data-#{Rails.env}-cache", :expires_in => 30.day, :compress => true }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
@@ -51,7 +51,7 @@ ElectionMap::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   config.action_mailer.raise_delivery_errors = false
-	config.action_mailer.default_url_options = { :host => 'data.electionsportal.ge' }
+	config.action_mailer.default_url_options = { :host => ENV['APPLICATION_EMAIL_URL_HOST'] }
 	config.action_mailer.delivery_method = :smtp
 
   # Enable threaded mode
@@ -67,6 +67,6 @@ ElectionMap::Application.configure do
 	# options for exception notification gem
 	config.middleware.use ExceptionNotifier,
 		:email_prefix => "[Election Map App Error (#{Rails.env})] ",
-		:sender_address => ENV['APPLICATION_ERROR_FROM_EMAIL'],
-		:exception_recipients => [ENV['APPLICATION_ERROR_TO_EMAIL']]
+		:sender_address => ENV['APPLICATION_FEEDBACK_FROM_EMAIL'],
+		:exception_recipients => [ENV['APPLICATION_FEEDBACK_TO_EMAIL']]
 end

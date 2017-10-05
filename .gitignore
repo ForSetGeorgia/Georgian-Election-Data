@@ -23,4 +23,6 @@
 # ignore the system folder
 /public/system/*
 
-/config/database.yml
+# ignore .env
+/.env
+
