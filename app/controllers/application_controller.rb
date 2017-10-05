@@ -5,18 +5,17 @@ class ApplicationController < ActionController::Base
 	require 'utf8_converter'
   require 'data_archive'
 
-   layout "application-bootstrap"
+  layout "application-bootstrap"
 
-   before_filter :set_locale
-   before_filter :is_browser_supported?
-	 before_filter :set_data_type
-   before_filter :set_event_types
-   before_filter :set_event_menu
-   before_filter :set_live_event_menu
-   before_filter :set_shape_types
-   before_filter :set_default_values
-   before_filter :set_gon_data
-	before_filter :set_summary_view_type_name
+  before_filter :set_locale
+  before_filter :is_browser_supported?
+  before_filter :set_data_type
+  before_filter :set_event_types
+  before_filter :set_event_menu
+  before_filter :set_live_event_menu
+  before_filter :set_shape_types
+  before_filter :set_default_values
+  before_filter :set_gon_data
 
 	unless Rails.application.config.consider_all_requests_local
 		rescue_from Exception,
@@ -207,6 +206,13 @@ logger.debug "---********----- shape type cache"
 
     # color for % in precinct reporting summary bar for live events
     @precinct_reporting_summary_text_color = '#333'
+
+    # name for summary view type
+    @summary_view_type_name = "summary"
+
+    # indicate whether or not the news section is visible
+    @show_news = true
+
   end
 
 	def set_gon_data
@@ -235,10 +241,6 @@ logger.debug "---********----- shape type cache"
 
 	end
 
-	# name for summary view type
-	def set_summary_view_type_name
-	  @summary_view_type_name = "summary"
-  end
 
 	# after user logs in, go to admin page
 	def after_sign_in_path_for(resource)

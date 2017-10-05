@@ -31,9 +31,11 @@
    			<li>
    				<%= link_to t('.pages'), admin_pages_path %>
    			</li>
-   			<li>
-   				<%= link_to t('.news'), admin_news_index_path %>
-   			</li>
+        <% if @show_news %>
+     			<li>
+     				<%= link_to t('.news'), admin_news_index_path %>
+     			</li>
+        <% end %>
          </ul>
 
          <h3><%= t('.event_header')%></h3>
@@ -65,7 +67,7 @@
             <li>
                <%= link_to t('.menu_live_events'), admin_menu_live_events_path %>
             </li>
-         </ul>         
+         </ul>
     </div>
      <div class="span4">
    		<h3><%= t('.csv_header')%></h3>

@@ -326,49 +326,50 @@
       </div>
 
 
-      <div id="news">
-        <h2>
-          <div>
+      <% if @show_news %>
+        <div id="news">
+          <h2>
             <div>
-              <%= t('.news_header') %>
-            </div>
-          </div>
-        </h2>
-        <div class="arrow_right_side">
-          <%= image_tag('arrow_news.jpg') %>
-        </div>
-
-        <div class="row2_links">
-          <% if @news.present? %>
-            <div id="news_section">
-              <ul>
-                <% @news.each do |n| %>
-                  <li>
-                    <div class="news_date">
-                      <%= link_to news_path do %>
-                        <%= l Date.new(n.date_posted.year, n.date_posted.month, n.date_posted.day), :format => :long %>
-                      <% end %>
-                    </div>
-                    <div class="news_text">
-                      <%= truncate(strip_tags(n.description), :length => 125, :separator => ' ', :omission => '...')   %>
-                    </div>
-                  </li>
-                <% end %>
-              </ul>
-            </div>
-          <% end %>
-        </div>
-        <div class="show_all_circle news_show_all">
-          <%= link_to news_path do %>
-            <div class="grey">
-              <div class="show_all">
-                <%= t('.show_all') %>
+              <div>
+                <%= t('.news_header') %>
               </div>
             </div>
-          <% end %>
-        </div>
-      </div>
+          </h2>
+          <div class="arrow_right_side">
+            <%= image_tag('arrow_news.jpg') %>
+          </div>
 
+          <div class="row2_links">
+            <% if @news.present? %>
+              <div id="news_section">
+                <ul>
+                  <% @news.each do |n| %>
+                    <li>
+                      <div class="news_date">
+                        <%= link_to news_path do %>
+                          <%= l Date.new(n.date_posted.year, n.date_posted.month, n.date_posted.day), :format => :long %>
+                        <% end %>
+                      </div>
+                      <div class="news_text">
+                        <%= truncate(strip_tags(n.description), :length => 125, :separator => ' ', :omission => '...')   %>
+                      </div>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+          </div>
+          <div class="show_all_circle news_show_all">
+            <%= link_to news_path do %>
+              <div class="grey">
+                <div class="show_all">
+                  <%= t('.show_all') %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
 
       <div id="links">
         <h2>

@@ -15,7 +15,7 @@ class RootController < ApplicationController
 	  @about = Page.with_translations(I18n.locale).find_by_name("about_landing")
 	  @elections = Event.public_official_elections(3, [45, 46, 50])
 	  @voters_lists = Event.public_official_voters_lists(4)
-	  @news = News.with_translations(I18n.locale).recent.limit(2)
+	  @news = News.with_translations(I18n.locale).recent.limit(2) if @show_news
     gon.landing_page = true
 
     @summary_data = []

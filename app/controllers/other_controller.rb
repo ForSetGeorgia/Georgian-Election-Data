@@ -60,21 +60,29 @@ class OtherController < ApplicationController
   end
 
   def news
-    @news = News.recent.with_translations(I18n.locale)
+    if @show_news
+      @news = News.recent.with_translations(I18n.locale)
 
-    respond_to do |format|
-      format.html { @news = @news.paginate(:page => params[:page]) }
-      format.json { render json: @news }
-      format.atom { @news }
+      respond_to do |format|
+        format.html { @news = @news.paginate(:page => params[:page]) }
+        format.json { render json: @news }
+        format.atom { @news }
+      end
+    else
+      redirect_to root_path
     end
   end
 
   def news_show
-    @news = News.find(params[:id])
+    if @show_news
+      @news = News.find(params[:id])
 
-    respond_to do |format|
-      format.html
-      format.json { render json: @news }
+      respond_to do |format|
+        format.html
+        format.json { render json: @news }
+      end
+    else
+      redirect_to root_path
     end
   end
 
