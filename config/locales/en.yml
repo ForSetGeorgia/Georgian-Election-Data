@@ -252,15 +252,15 @@ en:
       visible: Is Visible
       not_visible_hint: "( * - not visible)"
       is_default_view: Default Event to Show on Site Load?
-      placeholder: "placeholder" 
-      placeholder_indicator: "placeholder_indicator" 
-      placeholder_core_indicator: "placeholder_core_indicator" 
-      placeholder_event_type: "placeholder_event_type" 
-      placeholder_shape_type_id: "placeholder_shape_type_id" 
-      placeholder_common_id: "placeholder_common_id" 
-      placeholder_common_name: "placeholder_common_name" 
+      placeholder: "placeholder"
+      placeholder_indicator: "placeholder_indicator"
+      placeholder_core_indicator: "placeholder_core_indicator"
+      placeholder_event_type: "placeholder_event_type"
+      placeholder_shape_type_id: "placeholder_shape_type_id"
+      placeholder_common_id: "placeholder_common_id"
+      placeholder_common_name: "placeholder_common_name"
       summary: Summary
-      added_on: "Added on: %{date}" 
+      added_on: "Added on: %{date}"
       district: District
       total_turnout: "Total Voter Turnout"
       total_turnout_num: "Total Voter Turnout (#)"
@@ -295,9 +295,8 @@ en:
       data_source: Data Source
       contact: Contact Us
       terms: Terms of Use
-      js_link_title: "Visit JumpStart Georgia's website"
-      js_slogan: JumpStart Georgia - Communicating Information Better
-      js_link_text: Built by
+      org_slogan: ForSet - Communicating With Data
+      org_link_text: Built by
       header: Elections / Voters Lists
       news: News
       data_archives: Download Data
@@ -329,8 +328,8 @@ en:
       about: About
       data_source: Data Source
       contact: Contact Us
-      js_link_title: "Visit JumpStart Georgia's website"
-      js_link_text: Built by JumpStart Georgia
+      org_slogan: ForSet - Communicating With Data
+      org_link_text: Built by
     map:
       title: Georgia Election Data
       ndi_alt: National Democratic Institute
@@ -344,8 +343,8 @@ en:
       about: About
       data_source: Data Source
       contact: Contact Us
-      js_link_title: "Visit JumpStart Georgia's website"
-      js_link_text: Built by JumpStart Georgia
+      org_slogan: ForSet - Communicating With Data
+      org_link_text: Built by
     event_menu:
       header: Elections
     error:
@@ -368,8 +367,8 @@ en:
       signed_in: Signed in as
       admin: Admin
       sign_out: Sign Out
-      js_link_title: "Visit JumpStart Georgia's website"
-      js_link_text: Built by
+      org_slogan: ForSet - Communicating With Data
+      org_link_text: Built by
   root:
     index:
       live_elections_header: Live Election Results
@@ -385,8 +384,8 @@ en:
       news_header: News
       links_header: Links
       timeline: Elections and Political Timeline
-      portal: Georgian Election Portal     
-      show_all: Show All 
+      portal: Georgian Election Portal
+      show_all: Show All
     map:
       export_link_text: Export Map
       footnote: "Note: %{note}"
@@ -399,7 +398,7 @@ en:
       live_election_date: "The %{name} election will be held on %{date}."
       live_election_source: 'This application relies on the election results being released on the <a href="http://cec.gov.ge/" target="_blank">CEC website</a>.'
       live_election_data_expectation: The CEC provides no promises on when precinct-level election results will be available, however we hope to have results to show around %{time} (%{time_est} EST).
-      follow: "You can follow future updates on Twitter at <a href='https://twitter.com/search?q=%23gvote&src=hash' target='_blank'>#gvote</a> or <a href='https://twitter.com/jsgeorgia' target='_blank'>@jsgeorgia</a> or on Facebook at <a href='http://www.facebook.com/JumpStartGeorgia' target='_blank'>JumpStartGeorgia</a>."
+      follow: "You can follow future updates on Twitter at <a href='https://twitter.com/search?q=%23gvote&src=hash' target='_blank'>#gvote</a> or <a href='https://twitter.com/ForSetGe' target='_blank'>@ForSetGe</a> or on Facebook at <a href='https://www.facebook.com/ForSet.ge/' target='_blank'>ForSet.ge</a>."
       delay: "We regret to inform you that the release of the official election results has been delayed. We will post the results as soon as they are available, but nothing is certain right now.	We apologize for the delay."
       download_image_instructions: "Please right click on the image and select 'Save Picture As...'."
     summary_ind_type:
@@ -438,7 +437,7 @@ en:
     indicator:
       summary_header: Overall
       details_header: Details
-    indicator_profile_filters: 
+    indicator_profile_filters:
       district_filter_header: District Filter
       all_districts_option: All Districts
       event_filter_header: Election Filter
@@ -446,7 +445,7 @@ en:
     districts:
       title: Districts
       no_records: I am sorry, but at this time we do not have any districts on file.
-      explanation: This section explains the population and location of each district and provides the ability to quickly view all results of each district across all elections. 
+      explanation: This section explains the population and location of each district and provides the ability to quickly view all results of each district across all elections.
     district:
       summary_header: Overall
       details_header: Details
@@ -454,7 +453,7 @@ en:
       indicator_filter_header: Indicator Filter
       event_filter_header: Election Filter
       event_filter_gt_3: "(you will have to scroll down if you select more than 3 events)"
-    profile_navigation: 
+    profile_navigation:
       districts: All Districts
       indicators: All Indicators
   messages:

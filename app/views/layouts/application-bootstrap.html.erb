@@ -54,7 +54,7 @@
     <!-- For all other devices -->
     <!-- Size should be 32 x 32 pixels -->
     <%= favicon_link_tag '/favicon.ico', :rel => 'shortcut icon' %>
-    
+
 		<%= yield(:head) %>
   </head>
   <body id='<%= yield(:body_id) %>'>
@@ -96,7 +96,7 @@
 
           	<div id="social_links_header">
         			<span class="f">
-        				<a href="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>" 
+        				<a href="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>"
                     target="_blank" title="facebook"
                     class="facebook_link" data-url="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}" %>"></a>
         			</span>
@@ -172,7 +172,7 @@
 													      </span>
 												      </p>
 <%
-=begin %>                           
+=begin %>
 												      <% if @show_precinct_percentages %>
 													      <div id="live_event_name_date_header">
 				                          <%= @event_name %>
@@ -197,7 +197,7 @@
 														      </p>
 												      <% end %>
 <%
-=end %>												      
+=end %>
 											      <% else %>
                               <p><%= @event_name %></p>
 											      <% end %>
@@ -207,7 +207,7 @@
                   </div>
                 	<div id="social_links" class="span3">
               			<span class="f">
-              				<a href="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>" 
+              				<a href="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>"
                           target="_blank" title="facebook"
                           class="facebook_link" data-url="<%= "http://www.facebook.com/share.php?u=#{request.protocol}#{request.host_with_port}" %>"></a>
               			</span>
@@ -284,8 +284,8 @@
 						</ul>
 					</div>
 				</div>
-        <div class="js-logo span4">
-          <%= link_to(image_tag("jumpstart-logo.png"), "http://www.jumpstart.ge", :target => "_blank", :title => t('.js_slogan')) %>
+        <div class="org-logo span4">
+          <%= link_to(image_tag("forset-logo.png"), "https://forset.ge", :target => "_blank", :title => t('.org_slogan')) %>
         </div>
 	    </div><!--/row-->
     </footer>

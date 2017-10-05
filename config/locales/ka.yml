@@ -256,9 +256,9 @@ ka:
       placeholder_indicator: "placeholder_indicator"  # do not translate
       placeholder_core_indicator: "placeholder_core_indicator"  # do not translate
       placeholder_event_type: "placeholder_event_type"  # do not translate
-      placeholder_shape_type_id: "placeholder_shape_type_id"  # do not translate 
-      placeholder_common_id: "placeholder_common_id"  # do not translate 
-      placeholder_common_name: "placeholder_common_name"  # do not translate 
+      placeholder_shape_type_id: "placeholder_shape_type_id"  # do not translate
+      placeholder_common_id: "placeholder_common_id"  # do not translate
+      placeholder_common_name: "placeholder_common_name"  # do not translate
       summary: შეჯამება
       added_on: "დამაყებულია: %{date}"
       district: ოლქი
@@ -295,9 +295,8 @@ ka:
       data_source: მონაცემთა წყარო
       contact: დაგვიკავშირდით
       terms: გამოყენების წესები
-      js_link_title: "ეწვიეთ ჯამპსტარტ ჯორჯიას ვებ-გვერდს"
-      js_slogan: ჯამპსტარტ ჯორჯიას - ჩვენ გაწვდით ინფორმაციას უკეთ
-      js_link_text: აგებულია
+      org_slogan: ფორსეტი - კომუნიკაცია მონაცემებით
+      org_link_text: აგებულია
       header: არჩევნები / ამომრჩეველთა სიები
       news: სიახლეები
       data_archives: მონაცემების ჩამოტვირთვა
@@ -329,8 +328,8 @@ ka:
       about: შესახებ
       data_source: მონაცემთა წყარო
       contact: დაგვიკავშირდით
-      js_link_title: "ეწვიეთ ჯამპსტარტ ჯორჯიას ვებ-გვერდს"
-      js_link_text: აგებულია ჯამპსტარტ ჯორჯიას მიერ
+      org_slogan: ფორსეტი - კომუნიკაცია მონაცემებით
+      org_link_text: აგებულია
     map:
       title: საქართველოს საარჩევნო მონაცემები
       ndi_alt: ეროვნული დემოკრატიული ინსტიტუტი
@@ -344,8 +343,8 @@ ka:
       about: შესახებ
       data_source: მონაცემთა წყარო
       contact: დაგვიკავშირდით
-      js_link_title: "ეწვიეთ ჯამპსტარტ ჯორჯიას ვებ-გვერდს"
-      js_link_text: აგებულია ჯამპსტარტ ჯორჯიას მიერ
+      org_slogan: ფორსეტი - კომუნიკაცია მონაცემებით
+      org_link_text: აგებულია
     event_menu:
       header: არჩევნების
     error:
@@ -368,8 +367,8 @@ ka:
       signed_in: Signed in as
       admin: Admin
       sign_out: Sign Out
-      js_link_title: "Visit JumpStart Georgia's website"
-      js_link_text: Built by
+      org_slogan: ფორსეტი - კომუნიკაცია მონაცემებით
+      org_link_text: აგებულია
   root:
     index:
       live_elections_header: მიმდინარე არჩევნების შედეგები
@@ -385,7 +384,7 @@ ka:
       news_header: სიახლეები
       links_header: ბმულები
       timeline: არჩევნები და პოლიტიკური ქრონიკა
-      portal: საქართველოს არჩევნების პორტალი      
+      portal: საქართველოს არჩევნების პორტალი
       show_all: ყველას ნახვა
     map:
       export_link_text: ჩამოტვირთეთ მონაცემები
@@ -399,7 +398,7 @@ ka:
       live_election_date: "%{name} გაიმართება %{date}."
       live_election_source: 'ეს აპლიკაცია ეყრდნობა <a href="http://cec.gov.ge/" target="_blank">ცესკოს ვებ-საიტზე</a> გამოქვეყნებულ არჩევნების შედეგებს.'
       live_election_data_expectation: ცესკო არ იძლევა დაპირებებს უბნის დონეზე არჩევნების შედეგების განთავსების თარიღთან დაკავშირებით, თუმცა ვიმედოვნებთ, რომ შედეგები განთავსდება დაახლოებით %{time} (%{time_est} EST).
-      follow: "განახლებებს თვალყური შეგიძლიათ მიადევნოთ Twitter-ზე  (<a href='https://twitter.com/search?q=%23gvote&src=hash' target='_blank'>#gvote</a> ან  <a href='https://twitter.com/jsgeorgia' target='_blank'>@jsgeorgia</a>) ან Facebook-ზე შემდეგ მისამართზე <a href='http://www.facebook.com/JumpStartGeorgia' target='_blank'>JumpStartGeorgia</a>."
+      follow: "განახლებებს თვალყური შეგიძლიათ მიადევნოთ Twitter-ზე  (<a href='https://twitter.com/search?q=%23gvote&src=hash' target='_blank'>#gvote</a> ან  <a href='https://twitter.com/ForSetGe' target='_blank'>@ForSetGe</a>) ან Facebook-ზე შემდეგ მისამართზე <a href='https://www.facebook.com/ForSet.ge/' target='_blank'>ForSet.ge</a>."
       delay: "სამწუხაროდ, გაცნობებთ რომ არჩევნების შედეგების გამოცხადება გაჭიანურდა. ჩვენ მოგაწოდებთ შედეგებს მათი განთავსებისთანავე, თუმცა ამ დროისთვის არ არსებობს დაზუსტებული ინფორმაცია. ბოდიშს ვიხდით შეფერხებისთვის."
       download_image_instructions: "დააჭირეთ მარჯვენა ღილაკს გამოსახულებაზე და აირჩიეთ 'Save Picture As...'."
     summary_ind_type:
@@ -438,7 +437,7 @@ ka:
     indicator:
       summary_header: სრული
       details_header: დეტალები
-    indicator_profile_filters: 
+    indicator_profile_filters:
       district_filter_header: ოლქის ფილტრი
       all_districts_option: ყველა ოლქი
       event_filter_header: არჩევნების ფილტრი
@@ -446,7 +445,7 @@ ka:
     districts:
       title: ოლქები
       no_records: სამწუხაროდ ამჟამად არ გვაქვს ოლქები ფაილზე.
-      explanation: ეს განყოფილება აღწერს თითოეული ოლქის მოსახლეობას და ოლქების მდებარეობას, ამგვარად, ყველა არჩევნების შედეგების სწრაფად ნახვის საშუალება გეძლევათ. 
+      explanation: ეს განყოფილება აღწერს თითოეული ოლქის მოსახლეობას და ოლქების მდებარეობას, ამგვარად, ყველა არჩევნების შედეგების სწრაფად ნახვის საშუალება გეძლევათ.
     district:
       summary_header: სრული
       details_header: დეტალები
@@ -454,7 +453,7 @@ ka:
       indicator_filter_header: მაჩვენებლის ფილტრი
       event_filter_header: არჩევნების ფილტრი
       event_filter_gt_3: "(თუ 3 მოვლენაზე მეტს შეარჩევთ მოგიწევთ ჩამოშლა)"
-    profile_navigation: 
+    profile_navigation:
       districts: ყველა ოლქი
       indicators: ყველა მაჩვენებელი
   messages:

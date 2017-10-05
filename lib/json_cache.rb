@@ -39,19 +39,19 @@ module JsonCache
 		end
 		return json
 	end
-	
+
 	def self.write_data(filename, &block)
 		if filename
 			json = write(JSON_DATA_PATH + "/#{filename}.json") {yield if block_given?}
 		end
 	end
-	
+
 	def self.write_image(filename, file_ext, &block)
 		if filename && file_ext
 			write_img(JSON_DATA_PATH + "/#{filename}.#{file_ext}") {yield if block_given?}
 		end
 	end
-	
+
 	def self.get_image_path(filename, file_ext)
     img_path = nil
 		if filename && file_ext && File.exists?(JSON_DATA_PATH + "/#{filename}.#{file_ext}")
@@ -59,7 +59,7 @@ module JsonCache
 		end
 		img_path
 	end
-	
+
 	###########################################
 	### clear cache
 	###########################################
@@ -458,7 +458,7 @@ protected
 		# domain
 		domain = "http://localhost:3000"
 		if Rails.env.staging?
-			domain = "http://dev-electiondata.jumpstart.ge"
+			domain = "http://dev-elections.forset.ge"
 		elsif Rails.env.production?
 			domain = "http://data.electionportal.ge"
 		end
