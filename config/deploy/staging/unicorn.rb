@@ -1,8 +1,8 @@
 ##################################
 ##### SET THESE VARIABLES ########
 ##################################
-root = "/home/election-data-staging/Election-Data-Staging/current" # path to application current folder
-sock_name = "unicorn_Election-Data-Staging" # must be unique name with no '.'
+root = "/home/deploy/Elections/current" # path to application current folder
+sock_name = "unicorn_Elections" # must be unique name with no '.'
 port_num = 8082 # must be a unique port number for this application
 tout = 7200 # time in seconds before process dies - need a long time for data uploads
 ##################################

@@ -321,10 +321,11 @@
     </div>
 
     <div class="span3">
-      <div id="about">
-        <%= simple_format(@about.description, {}, :sanitize => false) %>
-      </div>
-
+      <% if @about_site.present? %>
+        <div id="about">
+          <%= simple_format(@about_site.description, {}, :sanitize => false) %>
+        </div>
+      <% end %>
 
       <% if @show_news %>
         <div id="news">

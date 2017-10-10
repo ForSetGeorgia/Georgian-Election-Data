@@ -213,6 +213,10 @@ logger.debug "---********----- shape type cache"
     # indicate whether or not the news section is visible
     @show_news = false
 
+    # get the about text for the site
+    @about_site = Page.with_translations(I18n.locale).find_by_name("about_landing")
+
+
   end
 
 	def set_gon_data
