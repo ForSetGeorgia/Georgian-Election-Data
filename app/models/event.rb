@@ -347,7 +347,11 @@ class Event < ActiveRecord::Base
     # get core ids only in event
     # - have to get it here before indicators are deleted
     core_ids_in_event = Indicator.where(:event_id => self.id).pluck(:core_indicator_id).uniq.sort
-    core_ids_not_in_event = Indicator.where(['event_id != ? and core_indicator_id in (?)', self.id, core_ids_in_event]).pluck(:core_indicator_id).uniq.sort
+    core_ids_not_in_event = Indicator.where(['event_id != ?', self.id]).pluck(:core_indicator_id).uniq.sort
+
+    # if the core dies not in event have a parent, add the parent id to the list
+    core_ids_not_in_event_parents = CoreIndicator.where(['id in (?) and ancestry is not null', core_ids_not_in_event]).map{|x| x.root_id}.uniq.sort
+    core_ids_not_in_event = (core_ids_not_in_event + core_ids_not_in_event_parents).flatten.uniq.sort
     puts "core_ids_in_event       #{core_ids_in_event}"
     puts "core_ids_not_in_event   #{core_ids_not_in_event}"
     core_ids_only_in_event = core_ids_in_event - core_ids_not_in_event
