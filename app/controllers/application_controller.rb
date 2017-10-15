@@ -226,14 +226,15 @@ logger.debug "---********----- shape type cache"
 
     # tile url
     if Rails.env.development?
-  		gon.tile_url = "http://tile.openstreetmap.org/${z}/${x}/${y}.png"
+  		gon.tile_url = "https://tile.openstreetmap.org/${z}/${x}/${y}.png"
       gon.is_development = true
     else
-      # use jeff hack's tiles
-      gon.tile_url = "http://ec2-54-76-157-122.eu-west-1.compute.amazonaws.com/open-en/${z}/${x}/${y}.png"
-      if I18n.locale == :ka
-        gon.tile_url = "http://ec2-54-76-157-122.eu-west-1.compute.amazonaws.com/open-ka/${z}/${x}/${y}.png"
-      end
+      # # use jeff hack's tiles
+      # gon.tile_url = "https://ec2-54-76-157-122.eu-west-1.compute.amazonaws.com/open-en/${z}/${x}/${y}.png"
+      # if I18n.locale == :ka
+      #   gon.tile_url = "https://ec2-54-76-157-122.eu-west-1.compute.amazonaws.com/open-ka/${z}/${x}/${y}.png"
+      # end
+      gon.tile_url = "https://tile.openstreetmap.org/${z}/${x}/${y}.png"
     end
     gon.openlayers_img_path = "/assets/img/"
 
