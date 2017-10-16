@@ -27,7 +27,9 @@ class Create2017Mayor < ActiveRecord::Migration
   # { "id": 37, "name": "United Communist Party", "status": "existing" },
   # { "id": 38, "name": "Party of People", "status": "existing" },
   # { "id": 39, "name": "Progressive Democratic Movement", "status": "existing" },
-  # { "id": 41, "name": "Georgian Dream", "status": "existing" }
+  # { "id": 41, "name": "Georgian Dream", "status": "existing" },
+  # { "id": 42, "name": "Initiative Group", "status": "existing" }
+  # { "id": 43, "name": "Initiative Group", "status": "existing" }
 #   ]
 
 # ids are core ids - names are just there to indicate what the party is
@@ -53,7 +55,9 @@ EXISTING_PARTIES = [
 ]
 
 EXISTING_PARTIES_NO_RELATIONSHIPS = [
-  [122, "Union of Georgian Traditionalists"]
+  [122, "Union of Georgian Traditionalists"],
+  [87, "Initiative Group"]
+
 ]
 
 NEW_PARTIES = {
@@ -194,7 +198,7 @@ NEW_PARTIES = {
 
   def down
     Event.transaction do
-      event = Event.includes(:event_translations).where(:event_date => '2017-10-21', event_translations: {name: '2017 Local Election - Party List'}).first
+      event = Event.includes(:event_translations).where(:event_date => '2017-10-21', event_translations: {name: '2017 Mayor Election'}).first
       if event.present?
         puts "deleting the event"
         event.destroy
