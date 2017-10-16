@@ -92,7 +92,7 @@ NEW_PARTIES = {
         puts "event created with id of #{event.id}"
 
         # update values
-        event.shape_id = 69898
+        event.shape_id = 82062
         event.event_translations.each do |trans|
           trans.name = trans.name.gsub('2014', '2017')
           trans.name_abbrv = trans.name_abbrv.gsub('2014', '2017')

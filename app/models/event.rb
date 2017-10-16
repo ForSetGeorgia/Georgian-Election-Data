@@ -314,7 +314,7 @@ class Event < ActiveRecord::Base
         # create custom views
         views = EventCustomView.includes(:event_custom_view_translations).where(:event_id => event_id)
         if views.present?
-          puts "---> cloning #{views.length} views"
+          puts "---> cloning #{views.length} event custom views"
           views.each do |view|
             view.clone_for_event(self.id)
           end

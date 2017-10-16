@@ -1,4 +1,4 @@
-class Create2017Mayor < ActiveRecord::Migration
+class Create2017LocalMajor < ActiveRecord::Migration
 # the ids are the election party id, not related to any id in the system
 # parties = [
 ##  # { "id": 1, "name": "State for the People", "status": "existing" },
@@ -11,25 +11,27 @@ class Create2017Mayor < ActiveRecord::Migration
   # { "id": 8, "name": "Alliance of Patriots", "status": "existing" },
   # { "id": 9, "name": "Leftist Alliance", "status": "existing" },
   # { "id": 10, "name": "Labour Party", "status": "existing" },
-  # { "id": 11, "name": "National Democratic Party of Georgia", "status": "existing" },
-  # { "id": 14, "name": "Georgian Unity and Development Party", "status": "new" },
-##  # { "id": 15, "name": "Socialist Workers Party", "status": "existing" },
+##  # { "id": 11, "name": "National Democratic Party of Georgia", "status": "existing" },
+##  # { "id": 14, "name": "Georgian Unity and Development Party", "status": "new" },
+  # { "id": 15, "name": "Socialist Workers Party", "status": "existing" },
   # { "id": 17, "name": "Georgia", "status": "new" },
-  # { "id": 18, "name": "Union of Georgian Traditionalists", "status": "existing" },
+##  # { "id": 18, "name": "Union of Georgian Traditionalists", "status": "existing" },
   # { "id": 20, "name": "National Forum", "status": "existing" },
-##  # { "id": 22, "name": "Merab Kostava Society", "status": "existing" },
-  # { "id": 23, "name": "New Christian Democrats", "status": "new" },
+  # { "id": 22, "name": "Merab Kostava Society", "status": "existing" },
+##  # { "id": 23, "name": "New Christian Democrats", "status": "new" },
   # { "id": 27, "name": "Unity - New Georgia", "status": "new" },
   # { "id": 28, "name": "The Lord Our Righteousness", "status": "new" },
 ##  # { "id": 29, "name": "New Rights", "status": "existing" },
   # { "id": 31, "name": "Freedom Party", "status": "existing" },
-##  # { "id": 34, "name": "Mamulishvili", "status": "existing" },
+  # { "id": 34, "name": "Mamulishvili", "status": "existing" },
   # { "id": 37, "name": "United Communist Party", "status": "existing" },
   # { "id": 38, "name": "Party of People", "status": "existing" },
   # { "id": 39, "name": "Progressive Democratic Movement", "status": "existing" },
   # { "id": 41, "name": "Georgian Dream", "status": "existing" },
-  # { "id": 42, "name": "Initiative Group", "status": "existing" }
-  # { "id": 43, "name": "Initiative Group", "status": "existing" }
+  # { "id": 42, "name": "Initiative Group", "status": "existing" },
+  # { "id": 43, "name": "Initiative Group", "status": "existing" },
+  # { "id": 44, "name": "Initiative Group", "status": "existing" },
+  # { "id": 45, "name": "Initiative Group", "status": "existing" }
 #   ]
 
 # ids are core ids - names are just there to indicate what the party is
@@ -41,13 +43,13 @@ EXISTING_PARTIES = [
   [134, "Alliance of Patriots"],
   [156, "Leftist Alliance"],
   [36, "Labour"],
-  [43, "National Democratic Party"],
-  # [151, "Socialist Workers Party"],
+  # [43, "National Democratic Party"],
+  [151, "Socialist Workers Party"],
   [157, "National Forum"],
-  # [72, "Merab Kostava Society"],
+  [72, "Merab Kostava Society"],
   # [64, "New Rights"],
   [24, "Freedom Party"],
-  # [38, "Mamulishvili"],
+  [38, "Mamulishvili"],
   [58, "United Communist Party"],
   [143, "Party of People"],
   [145, "Progressive Democratic Movement"],
@@ -55,7 +57,7 @@ EXISTING_PARTIES = [
 ]
 
 EXISTING_PARTIES_NO_RELATIONSHIPS = [
-  [122, "Union of Georgian Traditionalists"],
+  # [122, "Union of Georgian Traditionalists"],
   [87, "Initiative Group"]
 
 ]
@@ -65,9 +67,9 @@ NEW_PARTIES = {
     ['European Georgia', 'Euro Georgia', 'Vote share European Georgia (%)', '#'],
     ['Democratic Movement - Free Georgia', 'Dem Mvmnt', 'Vote share Democratic Movement - Free Georgia (%)', '#'],
     # ['United Democratic Movement', 'United Dem Mvmnt', 'Vote share United Democratic Movement (%)', '#'],
-    ['Georgian Unity and Development Party', 'Geo Unity and Dvlpmnt', 'Vote share Georgian Unity and Development Party (%)', '#'],
+    # ['Georgian Unity and Development Party', 'Geo Unity and Dvlpmnt', 'Vote share Georgian Unity and Development Party (%)', '#'],
     ['Georgia', 'Georgia', 'Vote share Georgia (%)', '#'],
-    ['New Christian Democrats', 'New Christian Dems', 'Vote share New Christian Democrats (%)', '#'],
+    # ['New Christian Democrats', 'New Christian Dems', 'Vote share New Christian Democrats (%)', '#'],
     ['Unity - New Georgia', 'Unity-New Geo', 'Vote share Unity - New Georgia (%)', '#'],
     ['Lord Our Righteousness', 'Lord Our Righteousness', 'Vote share The Lord Our Righteousness (%)', '#'],
 
@@ -76,17 +78,17 @@ NEW_PARTIES = {
     ['მოძრაობა თავისუფლებისთვის', 'ევროპული საქართველო', 'ხმების გადანაწილება, მოძრაობა თავისუფლებისთვის (%)'],
     ['დემოკრატიული მოძრაობა - თავისუფალი საქართველო', 'დემოკრატიული მოძრაობა', 'ხმების გადანაწილება, დემოკრატიული მოძრაობა - თავისუფალი საქართველო (%)'],
     # ['გაერთიანებული დემოკრატიული მოძრაობა', 'გაერთიანებული დემოკრატიული მოძრაობა', 'ხმების გადანაწილება, გაერთიანებული დემოკრატიული მოძრაობა (%)'],
-    ['ერთობისა და განვითარების პარტია', 'ერთობა და განვითარება', 'ხმების გადანაწილება, ერთობისა და განვითარების პარტია (%)'],
+    # ['ერთობისა და განვითარების პარტია', 'ერთობა და განვითარება', 'ხმების გადანაწილება, ერთობისა და განვითარების პარტია (%)'],
     ['საქართველო', 'საქართველო', 'ხმების გადანაწილება, საქართველო (%)'],
-    ['ახალი ქრისტიან დემოკრატები', 'ახალი ქრისტიან დემოკრატები', 'ხმების გადანაწილება, ახალი ქრისტიან დემოკრატები (%)'],
+    # ['ახალი ქრისტიან დემოკრატები', 'ახალი ქრისტიან დემოკრატები', 'ხმების გადანაწილება, ახალი ქრისტიან დემოკრატები (%)'],
     ['ერთობა-ახალი საქართველო', 'ერთობა-ახალი საქართველო', 'ხმების გადანაწილება, ერთობა-ახალი საქართველო (%)'],
     ['უფალია ჩვენი სიმართლე', 'უფალია ჩვენი სიმართლე', 'ხმების გადანაწილება, უფალია ჩვენი სიმართლე (%)'],
   ]
 }
 
   def up
-    clone_event_id = 42 # 2014 mayor
-    clone_ind_event_id = 42 # 2014 mayor
+    clone_event_id = 41 # 2017 major
+    clone_ind_event_id = 41 # 2017 major
     clone_core_ind_id = 59 #unm
 
     Event.transaction do
@@ -96,15 +98,11 @@ NEW_PARTIES = {
         puts "event created with id of #{event.id}"
 
         # update values
-        event.shape_id = 82062
+        event.shape_id = 77328
         event.event_translations.each do |trans|
           trans.name = trans.name.gsub('2014', '2017')
           trans.name_abbrv = trans.name_abbrv.gsub('2014', '2017')
-          trans.description = if trans.locale = 'en'
-            'The results of the October 21, 2017 election. Mayors are elected for four year terms.'
-          else
-            '2017 წლის 21 ოქტომბერის მერის არჩევნების შედეგები. მერები არჩეულია ოთხი წლის ვადით.'
-          end
+          trans.description = trans.description.gsub('June 15, 2014', 'October 21, 2017').gsub('2014 წლის 15 ივნისის', '2017 წლის 21 ოქტომბერის')
         end
         event.save
 
@@ -123,6 +121,18 @@ NEW_PARTIES = {
         if inds.present?
           puts '> cloning event components'
           event.clone_event_components(clone_ind_event_id, core_indicator_ids: inds)
+
+          # update event custom views
+          # - there are no districts - only majoritarian districts
+          # - so update the custom view to go from country to major districts
+          major_district_shape_type_id = 5
+          if event.event_custom_views.count > 0
+            puts "- updating event custom view to country -> major district"
+            cv = event.event_custom_views.first
+            cv.descendant_shape_type_id = major_district_shape_type_id
+            cv.save
+          end
+
         end
 
         puts "-----------------"
@@ -198,7 +208,7 @@ NEW_PARTIES = {
 
   def down
     Event.transaction do
-      event = Event.includes(:event_translations).where(:event_date => '2017-10-21', event_translations: {name: '2017 Mayor Election'}).first
+      event = Event.includes(:event_translations).where(:event_date => '2017-10-21', event_translations: {name: '2017 Local Election - Majoritarian'}).first
       if event.present?
         puts "deleting the event"
         event.destroy
