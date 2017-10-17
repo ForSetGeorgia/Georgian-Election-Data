@@ -600,17 +600,21 @@ logger.debug "++++**missing data in row"
 
               if d.length > 1 && d[1].has_key?("summary_data")
                 # winner
-                row[:winner_name] = d[1]["summary_data"]["data"][0]["indicator_name"]
-                cell = d[1]["summary_data"]["data"][0]["formatted_value"]
-                cell << d[1]["summary_data"]["data"][0]["number_format"] if d[1]["summary_data"]["data"][0]["number_format"].present?
-                row[:winner_percent] = cell
-                row[:winner_color] = d[1]["summary_data"]["data"][0]["color"]
+                if d[1]["summary_data"]["data"][0].present?
+                  row[:winner_name] = d[1]["summary_data"]["data"][0]["indicator_name"]
+                  cell = d[1]["summary_data"]["data"][0]["formatted_value"]
+                  cell << d[1]["summary_data"]["data"][0]["number_format"] if d[1]["summary_data"]["data"][0]["number_format"].present?
+                  row[:winner_percent] = cell
+                  row[:winner_color] = d[1]["summary_data"]["data"][0]["color"]
+                end
                 # 2nd place
-                row[:second_name] = d[1]["summary_data"]["data"][1]["indicator_name"]
-                cell = d[1]["summary_data"]["data"][1]["formatted_value"]
-                cell << d[1]["summary_data"]["data"][1]["number_format"] if d[1]["summary_data"]["data"][1]["number_format"].present?
-                row[:second_percent] = cell
-                row[:second_color] = d[1]["summary_data"]["data"][1]["color"]
+                if d[1]["summary_data"]["data"][1].present?
+                  row[:second_name] = d[1]["summary_data"]["data"][1]["indicator_name"]
+                  cell = d[1]["summary_data"]["data"][1]["formatted_value"]
+                  cell << d[1]["summary_data"]["data"][1]["number_format"] if d[1]["summary_data"]["data"][1]["number_format"].present?
+                  row[:second_percent] = cell
+                  row[:second_color] = d[1]["summary_data"]["data"][1]["color"]
+                end
               end
 
               # total turnout #
@@ -626,9 +630,9 @@ logger.debug "++++**missing data in row"
 
 # compute number from percent * total turnout #
 num = tt_num.first["data_item"]["value"].present? ? tt_num.first["data_item"]["value"].to_f : 0
-perc = d[1]["summary_data"]["data"][0]["value"].present? ? d[1]["summary_data"]["data"][0]["value"].to_f : 0
+perc = d[1]["summary_data"]["data"][0].present? && d[1]["summary_data"]["data"][0]["value"].present? ? d[1]["summary_data"]["data"][0]["value"].to_f : 0
 row[:winner_number] = ActionController::Base.helpers.number_with_delimiter((num * perc / 100).floor)
-perc = d[1]["summary_data"]["data"][1]["value"].present? ? d[1]["summary_data"]["data"][1]["value"].to_f : 0
+perc = d[1]["summary_data"]["data"][1].present? && d[1]["summary_data"]["data"][1]["value"].present? ? d[1]["summary_data"]["data"][1]["value"].to_f : 0
 row[:second_number] = ActionController::Base.helpers.number_with_delimiter((num * perc / 100).floor)
 
 
