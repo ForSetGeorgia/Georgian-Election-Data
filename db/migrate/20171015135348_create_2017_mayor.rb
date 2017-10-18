@@ -100,7 +100,7 @@ NEW_PARTIES = {
         event.event_translations.each do |trans|
           trans.name = trans.name.gsub('2014', '2017')
           trans.name_abbrv = trans.name_abbrv.gsub('2014', '2017')
-          trans.description = if trans.locale = 'en'
+          trans.description = if trans.locale == 'en'
             'The results of the October 21, 2017 election. Mayors are elected for four year terms.'
           else
             '2017 წლის 21 ოქტომბერის მერის არჩევნების შედეგები. მერები არჩეულია ოთხი წლის ვადით.'
