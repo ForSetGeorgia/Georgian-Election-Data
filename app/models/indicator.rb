@@ -267,9 +267,10 @@ logger.debug "++++ - this event and shape type have custom nav -> using it to ge
 	          # if the indicator already exists and deleteExistingRecord is true, delete the indicator
 	          if alreadyExists.present? && deleteExistingRecord
 	logger.debug "+++++++ deleting existing indicator"
-              alreadyExists.each do |exists|
-	              Indicator.destroy (exists.id)
-	            end
+              Indicator.destroy_all_indicators(alreadyExists.map{|x| x.id})
+             #  alreadyExists.each do |exists|
+	            #   Indicator.destroy (exists.id)
+	            # end
 	            alreadyExists = nil
 	          end
 
@@ -475,6 +476,56 @@ logger.debug "no indicator type translation found"
 
         return obj
       end
+    end
+  end
+
+
+  # doing indicator.destroy takes a long time due to all the indciators and data
+  # this method will be quicker for it uses delete instead of destroy when there can be lots of records to delete
+  def destroy
+    puts "deleting event indicators and data"
+    Datum.where(indicator_id: self.id).delete_all
+    scales = IndicatorScale.where(indicator_id: self.id)
+    if scales.present?
+      IndicatorScaleTranslation.where(indicator_scale_id: scales.map{|x| x.id}).delete_all
+      scales.delete_all
+    end
+
+    puts "deleting the indicator"
+    self.delete
+
+    I18n.available_locales.each do |locale|
+      JsonCache.clear_data_file("profiles/core_indicator_events_#{locale}")
+      JsonCache.clear_data_file("profiles/core_indicator_events_table_#{locale}")
+    end
+  end
+
+  # doing indicator.destroy takes a long time due to all the indciators and data
+  # this method will be quicker for it uses delete instead of destroy when there can be lots of records to delete
+  def self.destroy_all_indicators(indicator_ids)
+    puts ">> deleting event indicators and data"
+    puts "- indicator_ids = #{indicator_ids.length}"
+
+    if indicator_ids.present?
+      puts ">> - found #{indicator_ids.length} indicators to delete"
+      puts ">> - deleting datum"
+      Datum.where(indicator_id: indicator_ids).delete_all
+      scales = IndicatorScale.where(indicator_id: indicator_ids)
+      if scales.present?
+        puts ">> - deleting scale translations"
+        IndicatorScaleTranslation.where(indicator_scale_id: scales.map{|x| x.id}).delete_all
+        puts ">> - deleting scales"
+        scales.delete_all
+      end
+
+      puts ">> -deleting indicators"
+      Indicator.where(id: indicator_ids).delete_all
+
+    end
+
+    I18n.available_locales.each do |locale|
+      JsonCache.clear_data_file("profiles/core_indicator_events_#{locale}")
+      JsonCache.clear_data_file("profiles/core_indicator_events_table_#{locale}")
     end
   end
 
