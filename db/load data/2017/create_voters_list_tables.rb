@@ -40,8 +40,8 @@ def create_table(month)
   sql = "CREATE TABLE IF NOT EXISTS `#{table_name}` (
     `region` varchar(255) DEFAULT NULL,
     `district_name` varchar(255) DEFAULT NULL,
-    `district_id` varchar(255) DEFAULT NULL,
-    `precinct_id` varchar(255) DEFAULT NULL,
+    `district_id` int(11) DEFAULT NULL,
+    `precinct_id` int(11) DEFAULT NULL,
     `precinct_name` varchar(255) DEFAULT NULL,
     `avg_age` decimal(15,12) DEFAULT NULL,
     `greater_99` int(11) DEFAULT NULL,

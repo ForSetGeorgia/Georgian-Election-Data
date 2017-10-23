@@ -122,7 +122,7 @@ console.log('scaling root summary images');
 		  units: 'm',
 		  maxResolution: 156543.0339,
 		  maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
-        restrictedExtent: new OpenLayers.Bounds(4225848.9623142, 4905270.1993499, 5870773.8107822, 5683093.3990715),
+      restrictedExtent: new OpenLayers.Bounds(4225848.9623142, 4905270.1993499, 5870773.8107822, 5683093.3990715),
 //	  restrictedExtent: new OpenLayers.Bounds(4277826.1415408, 4844120.5767302, 5378519.3486942, 5577916.0481658),
 		  theme: null,
 		  controls: []

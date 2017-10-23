@@ -64,14 +64,14 @@ EXISTING_PARTIES_NO_RELATIONSHIPS = [
 
 NEW_PARTIES = {
   :en => [
-    ['European Georgia', 'Euro Georgia', 'Vote share European Georgia (%)', '#'],
-    ['Democratic Movement - Free Georgia', 'Dem Mvmnt', 'Vote share Democratic Movement - Free Georgia (%)', '#'],
-    # ['United Democratic Movement', 'United Dem Mvmnt', 'Vote share United Democratic Movement (%)', '#'],
-    # ['Georgian Unity and Development Party', 'Geo Unity and Dvlpmnt', 'Vote share Georgian Unity and Development Party (%)', '#'],
-    ['Georgia', 'Georgia', 'Vote share Georgia (%)', '#'],
-    # ['New Christian Democrats', 'New Christian Dems', 'Vote share New Christian Democrats (%)', '#'],
-    ['Unity - New Georgia', 'Unity-New Geo', 'Vote share Unity - New Georgia (%)', '#'],
-    ['Lord Our Righteousness', 'Lord Our Righteousness', 'Vote share The Lord Our Righteousness (%)', '#'],
+    ['European Georgia', 'Euro Georgia', 'Vote share European Georgia (%)', nil],
+    ['Democratic Movement - Free Georgia', 'Dem Mvmnt', 'Vote share Democratic Movement - Free Georgia (%)', nil],
+    # ['United Democratic Movement', 'United Dem Mvmnt', 'Vote share United Democratic Movement (%)', nil],
+    # ['Georgian Unity and Development Party', 'Geo Unity and Dvlpmnt', 'Vote share Georgian Unity and Development Party (%)', nil],
+    ['Georgia', 'Georgia', 'Vote share Georgia (%)', nil],
+    # ['New Christian Democrats', 'New Christian Dems', 'Vote share New Christian Democrats (%)', nil],
+    ['Unity - New Georgia', 'Unity-New Geo', 'Vote share Unity - New Georgia (%)', nil],
+    ['Lord Our Righteousness', 'Lord Our Righteousness', 'Vote share The Lord Our Righteousness (%)', nil],
 
   ],
   :ka => [
