@@ -165,7 +165,7 @@ NEW_PARTIES = {
         # create a live menu for this event
         start_date = '2017-10-15'
         end_date = '2017-11-30'
-        data_at = '2017-10-22 06:00:00 +0400'
+        data_at = '2017-10-25 18:00:00 +0400'
         if Time.now.to_date.to_s <= end_date
           puts "-> creating live event menu item"
           MenuLiveEvent.create(event_id: event.id, menu_start_date: start_date, menu_end_date: end_date, data_available_at: data_at)

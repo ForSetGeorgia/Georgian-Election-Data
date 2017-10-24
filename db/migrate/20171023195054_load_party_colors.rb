@@ -1,7 +1,7 @@
 class LoadPartyColors < ActiveRecord::Migration
   def up
     colors = [
-      ['European Georgia', '#df5d70'],
+      ['European Georgia', '#e57d8c'],
       ['Democratic Movement - Free Georgia', '#6187BE'],
       ['United Democratic Movement', '#e3e6de'],
       ['Georgian Unity and Development Party', '#8bb6be'],
