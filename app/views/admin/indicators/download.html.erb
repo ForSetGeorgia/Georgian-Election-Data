@@ -9,7 +9,7 @@
 	<div>
 		<p>
 			<%= t('app.common.event') %>
-			<%= select_tag "event_id", options_from_collection_for_select(@events, "id", "name") %>
+			<%= select_tag "event_id", options_from_collection_for_select(@events, "id", "name"), style: 'width: auto;' %>
 		</p>
 		<p>
 			<%= t('.which_download') %>
