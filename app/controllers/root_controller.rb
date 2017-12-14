@@ -12,7 +12,7 @@ class RootController < ApplicationController
   # GET /.json
 	def index
 
-	  @elections = Event.public_official_elections(3, [45, 46, 50])
+	  @elections = Event.public_official_elections(6, [51,52,53,55,56,60])
 	  @voters_lists = Event.public_official_voters_lists(4)
 	  @news = News.with_translations(I18n.locale).recent.limit(2) if @show_news
     gon.landing_page = true
