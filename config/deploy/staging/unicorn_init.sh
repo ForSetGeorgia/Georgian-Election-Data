@@ -1,4 +1,16 @@
 #!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          Elections_unicorn_initialization
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Elections unicorn initialization
+# Description:       This file provides methods to manage a unicorn
+#                    process for a rails application.
+### END INIT INFO
+
 set -e
 
 ##################################
