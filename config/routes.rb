@@ -118,9 +118,9 @@ ElectionMap::Application.routes.draw do
 
 
     # contact form
-		match '/contact' => 'messages#new', :as => 'contact', :via => :get
-		match '/contact' => 'messages#create', :as => 'contact', :via => :post
-		match '/contact_success' => 'messages#success', :as => 'contact_success', :via => :get
+		# match '/contact' => 'messages#new', :as => 'contact', :via => :get
+		# match '/contact' => 'messages#create', :as => 'contact', :via => :post
+		# match '/contact_success' => 'messages#success', :as => 'contact_success', :via => :get
 
 
     # routes to root#map

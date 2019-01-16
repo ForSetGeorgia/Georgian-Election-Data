@@ -291,10 +291,13 @@
 								<%= link_to t('.data_source'), data_source_path(:layout => "fancybox"), :class => "fancybox" %>
 							</li>
 							<li class="spacer">|</li>
+<% if false %>
+
 							<li>
 								<%= link_to t('.contact'), contact_path %>
 							</li>
               <li class="spacer">|</li>
+<% end %>              
               <li>
                 &copy; 2012-<%= DateTime.now.year %>
               </li>
