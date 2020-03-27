@@ -3,8 +3,8 @@ if Rails.env.production? || Rails.env.staging?
     :address              => ENV['APPLICATION_EMAIL_SMTP_ADDRESS'],
     :port                 => 587,
     :domain               => ENV['APPLICATION_EMAIL_DOMAIN'],
-    :user_name            => ENV['APPLICATION_FEEDBACK_FROM_EMAIL'],
-    :password             => ENV['APPLICATION_FEEDBACK_FROM_PWD'],
+    :user_name            => ENV['APPLICATION_EMAIL_SMTP_AUTH_USER'],
+    :password             => ENV['APPLICATION_EMAIL_SMTP_AUTH_PASSWORD'],
 		:authentication       => 'plain',
 		:enable_starttls_auto => true
 	}
